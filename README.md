@@ -53,8 +53,6 @@ let verifyApi = TFAVerifyApi(
     requestSigner: requestSigner
 )
 
-let requestSigner: RequestSignerProtocol = ...
-
 // Key Server Api
 let keyServerApi = KeyServerApi(
     apiConfiguration: apiConfiguration,
