@@ -1,0 +1,60 @@
+PODS:
+  - Alamofire (4.7.3)
+  - DLCryptoKit (1.0):
+    - DLCryptoKit/AES256 (= 1.0)
+    - DLCryptoKit/ECDSA (= 1.0)
+    - DLCryptoKit/TokenDKDF (= 1.0)
+    - DLOpenSSL
+    - libsodium
+  - DLCryptoKit/AES256 (1.0):
+    - DLOpenSSL
+    - libsodium
+  - DLCryptoKit/ECDSA (1.0):
+    - DLOpenSSL
+    - libsodium
+  - DLCryptoKit/TokenDKDF (1.0):
+    - DLOpenSSL
+    - libsodium
+  - DLOpenSSL (1.0)
+  - libsodium (1.0.12)
+  - TokenDSDK (1.0):
+    - Alamofire (~> 4.1)
+    - TokenDSDK/API (= 1.0)
+    - TokenDSDK/KeyServer (= 1.0)
+    - TokenDWallet (< 2.0)
+  - TokenDSDK/API (1.0):
+    - Alamofire (~> 4.1)
+    - TokenDWallet (< 2.0)
+  - TokenDSDK/KeyServer (1.0):
+    - Alamofire (~> 4.1)
+    - TokenDWallet (< 2.0)
+  - TokenDWallet (1.0):
+    - DLCryptoKit (< 2.0)
+
+DEPENDENCIES:
+  - TokenDSDK (from `../`)
+
+SPEC REPOS:
+  "git@github.com:tokend/ios-specs.git":
+    - DLCryptoKit
+    - DLOpenSSL
+    - TokenDWallet
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - libsodium
+
+EXTERNAL SOURCES:
+  TokenDSDK:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  DLCryptoKit: b59461c8333d67828707f2e85ccf2255a61c0969
+  DLOpenSSL: e7f152c7108fcf5dcec54b46ecfd22051bd941aa
+  libsodium: 9a8faa5ef2fa0d2d57bd7f7d79bf8fb7c1a9f0ea
+  TokenDSDK: 522cb71fa3e363021cc1a950bbf88f56ff578936
+  TokenDWallet: dc9a94ac070498d682e8e0cf33783b8c1b6466ea
+
+PODFILE CHECKSUM: 574746c697923c78b63879bd82221101404cd4b6
+
+COCOAPODS: 1.5.3
