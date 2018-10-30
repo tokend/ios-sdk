@@ -17,15 +17,15 @@ PODS:
     - libsodium
   - DLOpenSSL (1.0)
   - libsodium (1.0.12)
-  - TokenDSDK (1.0):
+  - TokenDSDK (1.0.2):
     - Alamofire (~> 4.1)
-    - TokenDSDK/API (= 1.0)
-    - TokenDSDK/KeyServer (= 1.0)
+    - TokenDSDK/API (= 1.0.2)
+    - TokenDSDK/KeyServer (= 1.0.2)
     - TokenDWallet (< 2.0)
-  - TokenDSDK/API (1.0):
+  - TokenDSDK/API (1.0.2):
     - Alamofire (~> 4.1)
     - TokenDWallet (< 2.0)
-  - TokenDSDK/KeyServer (1.0):
+  - TokenDSDK/KeyServer (1.0.2):
     - Alamofire (~> 4.1)
     - TokenDWallet (< 2.0)
   - TokenDWallet (1.0):
@@ -52,7 +52,7 @@ SPEC CHECKSUMS:
   DLCryptoKit: b59461c8333d67828707f2e85ccf2255a61c0969
   DLOpenSSL: e7f152c7108fcf5dcec54b46ecfd22051bd941aa
   libsodium: 9a8faa5ef2fa0d2d57bd7f7d79bf8fb7c1a9f0ea
-  TokenDSDK: 522cb71fa3e363021cc1a950bbf88f56ff578936
+  TokenDSDK: 69d4d318a27ecfeaf6ba2f92ac53089743155088
   TokenDWallet: dc9a94ac070498d682e8e0cf33783b8c1b6466ea
 
 PODFILE CHECKSUM: 574746c697923c78b63879bd82221101404cd4b6

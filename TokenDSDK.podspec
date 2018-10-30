@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'TokenDSDK'
-  s.version          = '1.0'
+  s.version          = '1.0.2'
   s.summary          = 'TokenD SDK for iOS.'
   s.homepage         = 'https://github.com/tokend/ios-sdk'
   s.author           = { 'Distributed Lab' => 'info@distributedlab.com' }
