@@ -22,6 +22,7 @@ public class SalesRequestBuilder: BaseApiRequestBuilder {
         orderDescending: Bool = true,
         limit: Int?,
         cursor: String?,
+        page: Int?,
         owner: String?,
         name: String?,
         baseAsset: String?,
@@ -45,6 +46,10 @@ public class SalesRequestBuilder: BaseApiRequestBuilder {
         
         if let cursor = cursor {
             parameters["cursor"] = cursor
+        }
+        
+        if let page = page {
+            parameters["page"] = page
         }
         
         if let owner = owner {

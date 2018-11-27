@@ -91,6 +91,7 @@ public struct ApiError: Decodable, Swift.Error, LocalizedError, CustomDebugStrin
     public let meta: TFAMetaResponse?
     
     public let horizonError: HorizonError?
+    public let horizonErrorV2: HorizonErrorV2?
     public let nsError: NSError?
     
     public enum Status {
@@ -129,6 +130,7 @@ public struct ApiError: Decodable, Swift.Error, LocalizedError, CustomDebugStrin
         detail: String?,
         meta: TFAMetaResponse? = nil,
         horizonError: HorizonError? = nil,
+        horizonErrorV2: HorizonErrorV2? = nil,
         nsError: NSError? = nil
         ) {
         
@@ -139,6 +141,7 @@ public struct ApiError: Decodable, Swift.Error, LocalizedError, CustomDebugStrin
         self.meta = meta
         
         self.horizonError = horizonError
+        self.horizonErrorV2 =  horizonErrorV2
         self.nsError = nsError
     }
     
@@ -152,6 +155,7 @@ public struct ApiError: Decodable, Swift.Error, LocalizedError, CustomDebugStrin
         self.meta = container.decodeOptionalObject(TFAMetaResponse.self, key: .meta)
         
         self.horizonError = nil
+        self.horizonErrorV2 = nil
         self.nsError = nil
     }
     
@@ -206,6 +210,11 @@ public struct ApiError: Decodable, Swift.Error, LocalizedError, CustomDebugStrin
         
         if let horizonError = self.horizonError {
             let horizonErrorDescription = horizonError.debugDescription
+            fields.append("HorizonError: \(DebugIndentedString(horizonErrorDescription))")
+        }
+        
+        if let horizonErrorV2 = self.horizonErrorV2 {
+            let horizonErrorDescription = horizonErrorV2.debugDescription
             fields.append("HorizonError: \(DebugIndentedString(horizonErrorDescription))")
         }
         

@@ -400,6 +400,15 @@ public class Network {
         return preparedHeaders
     }
     
+    private func addContentTypeHeader(headers: RequestHeaders?) -> RequestHeaders {
+        var existingHeaders = headers ?? RequestHeaders()
+        
+        existingHeaders["Content-Type"] = "application/vnd.api+json"
+        existingHeaders["Accept"] = "application/vnd.api+json"
+        
+        return existingHeaders
+    }
+    
     private func errorsFromResponseData(
         _ responseData: Data?,
         defaultError: Swift.Error
@@ -418,7 +427,23 @@ public class Network {
             return defaultApiErrors
         }
         
-        if let errors = try? ApiErrors.decode(from: data) {
+        if let updatedHorrizonError = try? HorizonErrorsV2.decode(from: data) {
+            var errors: [ApiError] = []
+            
+            for error in updatedHorrizonError.errors {
+                errors.append(
+                    ApiError(
+                        status: "\(error.status)",
+                        code: error.code,
+                        title: error.title,
+                        detail: error.detail,
+                        meta: nil,
+                        horizonErrorV2: error
+                    )
+                )
+            }
+            return ApiErrors(errors: errors)
+        } else if let errors = try? ApiErrors.decode(from: data) {
             return errors
         } else if let horizonError = try? HorizonError.decode(from: data) {
             return ApiErrors(
