@@ -3,7 +3,8 @@ Pod::Spec.new do |s|
   s.version          = '1.0'
   s.summary          = 'TokenD SDK for iOS.'
   s.homepage         = 'https://github.com/tokend/ios-sdk'
-  s.author           = { 'Distributed Lab' => 'info@distributedlab.com' }
+  s.license          = { :type => 'Apache License, Version 2.0', :file => 'LICENSE' }
+  s.author           = { 'Distributed Lab' => 'dev@distributedlab.com' }
   s.source           = { :git => 'https://github.com/tokend/ios-sdk.git', :tag => s.version.to_s }
   s.ios.deployment_target = '10.0'
   s.swift_version    = '4.2'
