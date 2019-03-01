@@ -6,15 +6,27 @@ source 'https://github.com/CocoaPods/Specs.git'
 use_modular_headers!
 
 def main_pods
-    pod 'TokenDSDK', :path => '../'
+  pod 'TokenDSDK', path: '../'
+  pod 'TokenDSDK/AlamofireNetwork', :path => '../'
+
+  pod 'TokenDSDK/AlamofireNetworkJSONAPI', path: '../'
+  pod 'TokenDSDK/RxJSONAPI', path: '../'
+
+  pod 'SnapKit'
 end
 
 target 'TokenDSDK_Example' do
-    main_pods
+  main_pods
 end
 
 target 'TokenDSDK_Tests' do
-    inherit! :search_paths
+  inherit! :search_paths
 
-    main_pods
+  main_pods
+end
+
+target 'TokenDSDK_IntegrationTests' do
+  inherit! :search_paths
+
+  main_pods
 end

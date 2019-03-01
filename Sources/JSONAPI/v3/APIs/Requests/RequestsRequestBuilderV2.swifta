@@ -1,0 +1,32 @@
+import Foundation
+
+/// Class provides functionality that allows to build requests
+/// which are used to fetch key value entries
+public class RequestsRequestBuilderV2: BaseApiRequestBuilderV2 {
+    
+    // MARK: - Public properties
+    
+    public let requests = "requests"
+    
+    // MARK: - Public
+    
+    /// Builds request to fetch reviewable request from api
+    /// - Parameters:
+    ///   - completion: Returns `RequestModelV2` or nil.
+    public func buildRequestsRequest(
+        sendDate: Date = Date(),
+        completion: @escaping (RequestModelV2?) -> Void
+        ) {
+        
+        let path = /self.requests
+        
+        self.buildRequestSigned(
+            BaseRequestBuildModelV2.simple(
+                path: path,
+                method: .get
+            ),
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+}

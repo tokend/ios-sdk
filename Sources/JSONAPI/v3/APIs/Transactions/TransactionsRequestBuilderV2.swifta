@@ -1,0 +1,71 @@
+import Foundation
+
+/// Class provides functionality that allows to build requests
+/// which are used to fetch and send transactions
+public class TransactionsRequestBuilderV2: JSONAPI.BaseApiRequestBuilder {
+    
+    // MARK: - Public properties
+    
+    public let transactions = "transactions"
+    public let accountIdParam = "accountId"
+    
+    // MARK: -
+    
+    public override init(builderStack: JSONAPI.BaseApiRequestBuilderStack) {
+        super.init(builderStack: builderStack)
+    }
+    
+    // MARK: - Public
+    
+    /// Builds request to fetch transaction by it's id, hash or paging token.
+    /// - Parameters:
+    ///   - transactionId: Id of transaction to be fetched.
+    ///   - completion: Returns `RequestModel` or nil.
+    public func buildTransactionsRequest(
+        transactionId: String,
+        sendDate: Date = Date(),
+        completion: @escaping(JSONAPI.RequestModel?) -> Void
+        ) {
+        
+        let path = /self.v3/self.transactions/transactionId
+        
+        self.buildRequestSigned(
+            JSONAPI.BaseRequestBuildModel.simple(
+                path: path,
+                method: .get
+            ),
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+    
+    /// Builds request to fetch transactions from api.
+    /// - Parameters:
+    ///   - accountId: If present, the result will contain only transactions related to the specified account.
+    ///   - pagination: Pagination option.
+    ///   - completion: Returns `RequestModel` or nil.
+    public func buildTransactionsRequest(
+        accountId: String,
+        pagination: RequestPagination,
+        sendDate: Date = Date(),
+        completion: @escaping(JSONAPI.RequestModel?) -> Void
+        ) {
+        
+        let path = /self.v3/self.transactions
+        
+        let parameters = [
+            self.accountIdParam: accountId
+        ]
+        
+        self.buildRequestSigned(
+            JSONAPI.BaseRequestBuildModel.simpleQueryPagination(
+                path: path,
+                method: .get,
+                queryParameters: parameters,
+                pagination: pagination
+            ),
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+}

@@ -1,0 +1,85 @@
+import Foundation
+import DLJSONAPI
+
+/// Class provides functionality that allows to fetch and send transactions
+public class TransactionsApiV2: JSONAPI.BaseApi {
+    
+    // MARK: - Public properties
+    
+    public let requestBuilder: TransactionsRequestBuilderV2
+    
+    // MARK: -
+    
+    public override init(apiStack: JSONAPI.BaseApiStack) {
+        self.requestBuilder = TransactionsRequestBuilderV2(
+            builderStack: JSONAPI.BaseApiRequestBuilderStack.fromApiStack(apiStack)
+        )
+        
+        super.init(apiStack: apiStack)
+    }
+    
+    // MARK: - Public
+    
+    /// Method sends request to fetch transaction by it's id, hash or paging token.
+    /// - Parameters:
+    ///   - transactionId: Id of transaction to be fetched.
+    ///   - completion: Returns `RequestSingleResult<TransactionResource>`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func getTransactions(
+        transactionId: String,
+        completion: @escaping (RequestSingleResult<TransactionResource>) -> Void
+        ) -> Cancelable {
+        
+        var cancellable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildTransactionsRequest(
+            transactionId: transactionId,
+            completion: { [weak self] (request) in
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancellable.cancelable = self?.responseDocumentSingle(
+                    TransactionResource.self,
+                    request: request,
+                    completion: completion
+                )
+        })
+        return cancellable
+    }
+    
+    /// Method sends request to fetch transactions from api.
+    /// - Parameters:
+    ///   - accountId: If present, the result will contain only transactions related to the specified account.
+    ///   - pagination: Pagination option.
+    ///   - completion: Returns `RequestCollectionResult<TransactionResource>`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func getTransactions(
+        accountId: String,
+        pagination: RequestPagination,
+        completion: @escaping (RequestCollectionResult<TransactionResource>) -> Void
+        ) -> Cancelable {
+        
+        var cancellable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildTransactionsRequest(
+            accountId: accountId,
+            pagination: pagination,
+            completion: { [weak self] (request) in
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancellable.cancelable = self?.responseDocumentCollection(
+                    TransactionResource.self,
+                    request: request,
+                    completion: completion
+                )
+        })
+        return cancellable
+    }
+}

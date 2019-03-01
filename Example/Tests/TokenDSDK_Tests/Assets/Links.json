@@ -1,0 +1,8 @@
+{
+    "data": [],
+    "links": {
+        "self": "/v3/resource?&page[number]=0&page[limit]=15",
+        "next": "/v3/resource?&page[number]=1&page[limit]=15",
+        "last": "/v3/resource?&page[number]=1&page[limit]=15"
+    }
+}

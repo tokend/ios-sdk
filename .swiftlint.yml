@@ -21,13 +21,14 @@ type_body_length:
     warning: 400
     error: 600
 file_length:
-    warning: 800
+    warning: 900
     error: 1000
 function_body_length:
     warning: 100 # Should be 20
     error: 200 # Should 40
 identifier_name:
     min_length: 2
+    max_length: 50
     excluded:
         - x
         - y
@@ -45,6 +46,3 @@ type_name:
 
 nesting:
     level: 2
-
-
-

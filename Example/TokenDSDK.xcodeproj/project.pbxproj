@@ -7,15 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		36C2265A6F130F6D57C3A192 /* libPods-TokenDSDK_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6421A7B4B9AB44857FA1C48B /* libPods-TokenDSDK_Tests.a */; };
-		4C285F9D0FEF5502C24A766D /* libPods-TokenDSDK_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A5E3D3BFB8D19AABE90BC30C /* libPods-TokenDSDK_Example.a */; };
+		1790A374EAFFD2FE807DC7BF /* libPods-TokenDSDK_IntegrationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC6FC85D0B04436C56966E1B /* libPods-TokenDSDK_IntegrationTests.a */; };
+		2A0A46594968B92EEC0AEFD6 /* libPods-TokenDSDK_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471F854665D42EB0D3EEAE6 /* libPods-TokenDSDK_Tests.a */; };
+		442BD57650252D1C90CBBAFF /* libPods-TokenDSDK_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB5F215BB9404B36B94E2A1 /* libPods-TokenDSDK_Example.a */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
-		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
-		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
-		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
+		7F01C1902217094800205456 /* KeyServerIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F01C18F2217094800205456 /* KeyServerIntegrationTests.swift */; };
+		7F5119F021F75B8A00025F96 /* AssetsRequestBuilderV3Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5119EF21F75B8A00025F96 /* AssetsRequestBuilderV3Tests.swift */; };
+		7F5119F221F75C8300025F96 /* BaseJSONAPIRequestBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5119F121F75C8300025F96 /* BaseJSONAPIRequestBuilderTests.swift */; };
+		7F5119F521F7745C00025F96 /* BaseJSONAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5119F421F7745C00025F96 /* BaseJSONAPITests.swift */; };
+		7F5119F821F7775C00025F96 /* Links.json in Resources */ = {isa = PBXBuildFile; fileRef = 7F5119F721F7775C00025F96 /* Links.json */; };
+		7F5119FA21F7778B00025F96 /* TestsHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5119F921F7778B00025F96 /* TestsHelpers.swift */; };
+		7F5119FB21F77A5000025F96 /* TestsHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5119F921F7778B00025F96 /* TestsHelpers.swift */; };
+		7F5119FF21F879C200025F96 /* RequestPaginationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5119FE21F879C200025F96 /* RequestPaginationTests.swift */; };
+		7F90A485220C548800091A77 /* ApiExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F186FBE21FF67AD009ED556 /* ApiExampleViewController.swift */; };
+		7F90A486220C56A200091A77 /* KeyServerExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA55D8121D3A2290092E536 /* KeyServerExampleViewController.swift */; };
+		7FA55D8521D3ACE70092E536 /* ApiExampleViewControllerV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA55D8221D3A2290092E536 /* ApiExampleViewControllerV3.swift */; };
 		7FE04A5521749F1B0018399F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE04A5421749F1B0018399F /* Constants.swift */; };
+		7FECDD232213157E00EB0367 /* HistoryApiIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FECDD222213157E00EB0367 /* HistoryApiIntegrationTests.swift */; };
+		7FECDD252213158E00EB0367 /* BaseIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FECDD242213158E00EB0367 /* BaseIntegrationTests.swift */; };
+		7FECDD27221317B400EB0367 /* IntegrationTestsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FECDD26221317B400EB0367 /* IntegrationTestsConstants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,29 +38,52 @@
 			remoteGlobalIDString = 607FACCF1AFB9204008FA782;
 			remoteInfo = TokenDSDK;
 		};
+		7FA55D3D21D279F80092E536 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 607FACCF1AFB9204008FA782;
+			remoteInfo = TokenDSDK_Example;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		2102703D8F1F1DFCDB4C9849 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		293C9056AE218279F67FCD52 /* Pods-TokenDSDK_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokenDSDK_Tests/Pods-TokenDSDK_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		3471F854665D42EB0D3EEAE6 /* libPods-TokenDSDK_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokenDSDK_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		41E5AA6C8B3C46F254B27FF8 /* TokenDSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = TokenDSDK.podspec; path = ../TokenDSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		4FB5F215BB9404B36B94E2A1 /* libPods-TokenDSDK_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokenDSDK_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD01AFB9204008FA782 /* TokenDSDK_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TokenDSDK_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		607FACD71AFB9204008FA782 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		607FACDA1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* TokenDSDK_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokenDSDK_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
-		6421A7B4B9AB44857FA1C48B /* libPods-TokenDSDK_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokenDSDK_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		77D755B343B4167CEB9D5522 /* Pods-TokenDSDK_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Example.debug.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_Example/Pods-TokenDSDK_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		7F01C18F2217094800205456 /* KeyServerIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyServerIntegrationTests.swift; sourceTree = "<group>"; };
+		7F186FBE21FF67AD009ED556 /* ApiExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiExampleViewController.swift; sourceTree = "<group>"; };
+		7F5119EF21F75B8A00025F96 /* AssetsRequestBuilderV3Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsRequestBuilderV3Tests.swift; sourceTree = "<group>"; };
+		7F5119F121F75C8300025F96 /* BaseJSONAPIRequestBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseJSONAPIRequestBuilderTests.swift; sourceTree = "<group>"; };
+		7F5119F421F7745C00025F96 /* BaseJSONAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseJSONAPITests.swift; sourceTree = "<group>"; };
+		7F5119F721F7775C00025F96 /* Links.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Links.json; sourceTree = "<group>"; };
+		7F5119F921F7778B00025F96 /* TestsHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsHelpers.swift; sourceTree = "<group>"; };
+		7F5119FE21F879C200025F96 /* RequestPaginationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPaginationTests.swift; sourceTree = "<group>"; };
+		7FA55D3821D279F80092E536 /* TokenDSDK_IntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokenDSDK_IntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7FA55D4521D27AA10092E536 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7FA55D4721D27AA20092E536 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7FA55D4821D27AA20092E536 /* TokenDSDK_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDSDK_Tests.swift; sourceTree = "<group>"; };
+		7FA55D8121D3A2290092E536 /* KeyServerExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyServerExampleViewController.swift; sourceTree = "<group>"; };
+		7FA55D8221D3A2290092E536 /* ApiExampleViewControllerV3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiExampleViewControllerV3.swift; sourceTree = "<group>"; };
 		7FE04A5421749F1B0018399F /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		95C909E87F235721227E4221 /* Pods-TokenDSDK_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokenDSDK_Example/Pods-TokenDSDK_Example.release.xcconfig"; sourceTree = "<group>"; };
-		A0015DC22F1F81FAD05CBFCF /* Pods-TokenDSDK_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokenDSDK_Tests/Pods-TokenDSDK_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		A5E3D3BFB8D19AABE90BC30C /* libPods-TokenDSDK_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokenDSDK_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7FECDD222213157E00EB0367 /* HistoryApiIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryApiIntegrationTests.swift; sourceTree = "<group>"; };
+		7FECDD242213158E00EB0367 /* BaseIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseIntegrationTests.swift; sourceTree = "<group>"; };
+		7FECDD26221317B400EB0367 /* IntegrationTestsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationTestsConstants.swift; sourceTree = "<group>"; };
+		88B6A9B90B443C13A977F189 /* Pods-TokenDSDK_IntegrationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_IntegrationTests.release.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_IntegrationTests/Pods-TokenDSDK_IntegrationTests.release.xcconfig"; sourceTree = "<group>"; };
+		976BCCEDDBF16A300BE60E98 /* Pods-TokenDSDK_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Example.release.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_Example/Pods-TokenDSDK_Example.release.xcconfig"; sourceTree = "<group>"; };
+		C46B692F3572BACFE0A827CE /* Pods-TokenDSDK_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Tests.release.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_Tests/Pods-TokenDSDK_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		CA870871D23FF6195488CBCB /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		E96F625F78A9BF7A149430F6 /* Pods-TokenDSDK_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokenDSDK_Example/Pods-TokenDSDK_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		D7CC5FAA68093D676BC7208C /* Pods-TokenDSDK_IntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_IntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_IntegrationTests/Pods-TokenDSDK_IntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
+		DC6FC85D0B04436C56966E1B /* libPods-TokenDSDK_IntegrationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokenDSDK_IntegrationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F50A5DF749D44B9A7EAB2BC7 /* Pods-TokenDSDK_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Tests.debug.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_Tests/Pods-TokenDSDK_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C285F9D0FEF5502C24A766D /* libPods-TokenDSDK_Example.a in Frameworks */,
+				442BD57650252D1C90CBBAFF /* libPods-TokenDSDK_Example.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,18 +99,40 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				36C2265A6F130F6D57C3A192 /* libPods-TokenDSDK_Tests.a in Frameworks */,
+				2A0A46594968B92EEC0AEFD6 /* libPods-TokenDSDK_Tests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7FA55D3521D279F80092E536 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1790A374EAFFD2FE807DC7BF /* libPods-TokenDSDK_IntegrationTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		364ACF0BCD47B1BC47985CCB /* Frameworks */ = {
+		01731069C4855BF1992C969A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A5E3D3BFB8D19AABE90BC30C /* libPods-TokenDSDK_Example.a */,
-				6421A7B4B9AB44857FA1C48B /* libPods-TokenDSDK_Tests.a */,
+				77D755B343B4167CEB9D5522 /* Pods-TokenDSDK_Example.debug.xcconfig */,
+				976BCCEDDBF16A300BE60E98 /* Pods-TokenDSDK_Example.release.xcconfig */,
+				D7CC5FAA68093D676BC7208C /* Pods-TokenDSDK_IntegrationTests.debug.xcconfig */,
+				88B6A9B90B443C13A977F189 /* Pods-TokenDSDK_IntegrationTests.release.xcconfig */,
+				F50A5DF749D44B9A7EAB2BC7 /* Pods-TokenDSDK_Tests.debug.xcconfig */,
+				C46B692F3572BACFE0A827CE /* Pods-TokenDSDK_Tests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		1B794C8D56CF516417AC53E8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4FB5F215BB9404B36B94E2A1 /* libPods-TokenDSDK_Example.a */,
+				DC6FC85D0B04436C56966E1B /* libPods-TokenDSDK_IntegrationTests.a */,
+				3471F854665D42EB0D3EEAE6 /* libPods-TokenDSDK_Tests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -87,8 +144,8 @@
 				607FACD21AFB9204008FA782 /* Example for TokenDSDK */,
 				607FACE81AFB9204008FA782 /* Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
-				8E3AD00AFBCD6C3270AE0510 /* Pods */,
-				364ACF0BCD47B1BC47985CCB /* Frameworks */,
+				01731069C4855BF1992C969A /* Pods */,
+				1B794C8D56CF516417AC53E8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -97,6 +154,7 @@
 			children = (
 				607FACD01AFB9204008FA782 /* TokenDSDK_Example.app */,
 				607FACE51AFB9204008FA782 /* TokenDSDK_Tests.xctest */,
+				7FA55D3821D279F80092E536 /* TokenDSDK_IntegrationTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -104,12 +162,13 @@
 		607FACD21AFB9204008FA782 /* Example for TokenDSDK */ = {
 			isa = PBXGroup;
 			children = (
+				7F186FBE21FF67AD009ED556 /* ApiExampleViewController.swift */,
+				7FA55D8221D3A2290092E536 /* ApiExampleViewControllerV3.swift */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				7FE04A5421749F1B0018399F /* Constants.swift */,
-				607FACD71AFB9204008FA782 /* ViewController.swift */,
+				7FA55D8121D3A2290092E536 /* KeyServerExampleViewController.swift */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
-				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
 			);
 			name = "Example for TokenDSDK";
@@ -127,18 +186,11 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				607FACEB1AFB9204008FA782 /* Tests.swift */,
-				607FACE91AFB9204008FA782 /* Supporting Files */,
+				7F5119F921F7778B00025F96 /* TestsHelpers.swift */,
+				7FA55D4321D27AA10092E536 /* TokenDSDK_IntegrationTests */,
+				7FA55D4621D27AA20092E536 /* TokenDSDK_Tests */,
 			);
 			path = Tests;
-			sourceTree = "<group>";
-		};
-		607FACE91AFB9204008FA782 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				607FACEA1AFB9204008FA782 /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		607FACF51AFB993E008FA782 /* Podspec Metadata */ = {
@@ -151,15 +203,70 @@
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
-		8E3AD00AFBCD6C3270AE0510 /* Pods */ = {
+		7F5119ED21F75B6700025F96 /* APIv2 */ = {
 			isa = PBXGroup;
 			children = (
-				E96F625F78A9BF7A149430F6 /* Pods-TokenDSDK_Example.debug.xcconfig */,
-				95C909E87F235721227E4221 /* Pods-TokenDSDK_Example.release.xcconfig */,
-				293C9056AE218279F67FCD52 /* Pods-TokenDSDK_Tests.debug.xcconfig */,
-				A0015DC22F1F81FAD05CBFCF /* Pods-TokenDSDK_Tests.release.xcconfig */,
+				7F5119F321F76FD500025F96 /* APIs */,
+				7F5119FD21F8799E00025F96 /* Common */,
+				7F5119EE21F75B6E00025F96 /* RequestBuilders */,
 			);
-			name = Pods;
+			path = APIv2;
+			sourceTree = "<group>";
+		};
+		7F5119EE21F75B6E00025F96 /* RequestBuilders */ = {
+			isa = PBXGroup;
+			children = (
+				7F5119EF21F75B8A00025F96 /* AssetsRequestBuilderV3Tests.swift */,
+				7F5119F121F75C8300025F96 /* BaseJSONAPIRequestBuilderTests.swift */,
+			);
+			path = RequestBuilders;
+			sourceTree = "<group>";
+		};
+		7F5119F321F76FD500025F96 /* APIs */ = {
+			isa = PBXGroup;
+			children = (
+				7F5119F421F7745C00025F96 /* BaseJSONAPITests.swift */,
+			);
+			path = APIs;
+			sourceTree = "<group>";
+		};
+		7F5119F621F7775C00025F96 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				7F5119F721F7775C00025F96 /* Links.json */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		7F5119FD21F8799E00025F96 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				7F5119FE21F879C200025F96 /* RequestPaginationTests.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		7FA55D4321D27AA10092E536 /* TokenDSDK_IntegrationTests */ = {
+			isa = PBXGroup;
+			children = (
+				7FA55D4521D27AA10092E536 /* Info.plist */,
+				7FECDD242213158E00EB0367 /* BaseIntegrationTests.swift */,
+				7FECDD222213157E00EB0367 /* HistoryApiIntegrationTests.swift */,
+				7FECDD26221317B400EB0367 /* IntegrationTestsConstants.swift */,
+				7F01C18F2217094800205456 /* KeyServerIntegrationTests.swift */,
+			);
+			path = TokenDSDK_IntegrationTests;
+			sourceTree = "<group>";
+		};
+		7FA55D4621D27AA20092E536 /* TokenDSDK_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				7FA55D4721D27AA20092E536 /* Info.plist */,
+				7FA55D4821D27AA20092E536 /* TokenDSDK_Tests.swift */,
+				7F5119ED21F75B6700025F96 /* APIv2 */,
+				7F5119F621F7775C00025F96 /* Assets */,
+			);
+			path = TokenDSDK_Tests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,7 +276,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "TokenDSDK_Example" */;
 			buildPhases = (
-				BE717FE844C9A4E39D858EA5 /* [CP] Check Pods Manifest.lock */,
+				97D9D2B8D57917767CEBA3D9 /* [CP] Check Pods Manifest.lock */,
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
@@ -188,7 +295,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "TokenDSDK_Tests" */;
 			buildPhases = (
-				A9DCF798A99938858D83C54E /* [CP] Check Pods Manifest.lock */,
+				4A5BEAF0E56C194CB84F2DCB /* [CP] Check Pods Manifest.lock */,
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
@@ -203,13 +310,32 @@
 			productReference = 607FACE51AFB9204008FA782 /* TokenDSDK_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		7FA55D3721D279F80092E536 /* TokenDSDK_IntegrationTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7FA55D4121D279F80092E536 /* Build configuration list for PBXNativeTarget "TokenDSDK_IntegrationTests" */;
+			buildPhases = (
+				735B8092D0344F6CC0D4F86C /* [CP] Check Pods Manifest.lock */,
+				7FA55D3421D279F80092E536 /* Sources */,
+				7FA55D3521D279F80092E536 /* Frameworks */,
+				7FA55D3621D279F80092E536 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7FA55D3E21D279F80092E536 /* PBXTargetDependency */,
+			);
+			name = TokenDSDK_IntegrationTests;
+			productName = TokenDSDK_IntegrationTests;
+			productReference = 7FA55D3821D279F80092E536 /* TokenDSDK_IntegrationTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
@@ -221,8 +347,12 @@
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = TW4HA36GCB;
 						LastSwiftMigration = 0900;
+						ProvisioningStyle = Manual;
+						TestTargetID = 607FACCF1AFB9204008FA782;
+					};
+					7FA55D3721D279F80092E536 = {
+						CreatedOnToolsVersion = 10.1;
 						ProvisioningStyle = Manual;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -242,6 +372,7 @@
 			projectRoot = "";
 			targets = (
 				607FACCF1AFB9204008FA782 /* TokenDSDK_Example */,
+				7FA55D3721D279F80092E536 /* TokenDSDK_IntegrationTests */,
 				607FACE41AFB9204008FA782 /* TokenDSDK_Tests */,
 			);
 		};
@@ -252,7 +383,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
@@ -262,31 +392,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F5119F821F7775C00025F96 /* Links.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7FA55D3621D279F80092E536 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		7FE04BB82174C52D0018399F /* SwiftLint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = SwiftLint;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd ..\nif which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		A9DCF798A99938858D83C54E /* [CP] Check Pods Manifest.lock */ = {
+		4A5BEAF0E56C194CB84F2DCB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -308,7 +428,47 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		BE717FE844C9A4E39D858EA5 /* [CP] Check Pods Manifest.lock */ = {
+		735B8092D0344F6CC0D4F86C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TokenDSDK_IntegrationTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7FE04BB82174C52D0018399F /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd ..\nif which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		97D9D2B8D57917767CEBA3D9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -337,9 +497,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				7FE04A5521749F1B0018399F /* Constants.swift in Sources */,
+				7F90A486220C56A200091A77 /* KeyServerExampleViewController.swift in Sources */,
+				7F90A485220C548800091A77 /* ApiExampleViewController.swift in Sources */,
+				7FA55D8521D3ACE70092E536 /* ApiExampleViewControllerV3.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,7 +509,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
+				7F5119F221F75C8300025F96 /* BaseJSONAPIRequestBuilderTests.swift in Sources */,
+				7F5119F021F75B8A00025F96 /* AssetsRequestBuilderV3Tests.swift in Sources */,
+				7F5119FA21F7778B00025F96 /* TestsHelpers.swift in Sources */,
+				7F5119F521F7745C00025F96 /* BaseJSONAPITests.swift in Sources */,
+				7F5119FF21F879C200025F96 /* RequestPaginationTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7FA55D3421D279F80092E536 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F01C1902217094800205456 /* KeyServerIntegrationTests.swift in Sources */,
+				7F5119FB21F77A5000025F96 /* TestsHelpers.swift in Sources */,
+				7FECDD232213157E00EB0367 /* HistoryApiIntegrationTests.swift in Sources */,
+				7FECDD252213158E00EB0367 /* BaseIntegrationTests.swift in Sources */,
+				7FECDD27221317B400EB0367 /* IntegrationTestsConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,17 +537,14 @@
 			target = 607FACCF1AFB9204008FA782 /* TokenDSDK_Example */;
 			targetProxy = 607FACE61AFB9204008FA782 /* PBXContainerItemProxy */;
 		};
+		7FA55D3E21D279F80092E536 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 607FACCF1AFB9204008FA782 /* TokenDSDK_Example */;
+			targetProxy = 7FA55D3D21D279F80092E536 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		607FACD91AFB9204008FA782 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				607FACDA1AFB9204008FA782 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		607FACDE1AFB9204008FA782 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -484,7 +659,7 @@
 		};
 		607FACF01AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E96F625F78A9BF7A149430F6 /* Pods-TokenDSDK_Example.debug.xcconfig */;
+			baseConfigurationReference = 77D755B343B4167CEB9D5522 /* Pods-TokenDSDK_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
@@ -494,7 +669,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = com.dl.bitxfy.testnet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dl.sdk.testnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "58568282-b7b7-45a3-9fa5-11356970ed86";
 				PROVISIONING_PROFILE_SPECIFIER = BitxfyTestnetDev;
@@ -505,7 +680,7 @@
 		};
 		607FACF11AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 95C909E87F235721227E4221 /* Pods-TokenDSDK_Example.release.xcconfig */;
+			baseConfigurationReference = 976BCCEDDBF16A300BE60E98 /* Pods-TokenDSDK_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
@@ -515,7 +690,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = com.dl.bitxfy.testnet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dl.sdk.testnet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -525,10 +700,11 @@
 		};
 		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 293C9056AE218279F67FCD52 /* Pods-TokenDSDK_Tests.debug.xcconfig */;
+			baseConfigurationReference = F50A5DF749D44B9A7EAB2BC7 /* Pods-TokenDSDK_Tests.debug.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = TW4HA36GCB;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -537,7 +713,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = Tests/Info.plist;
+				INFOPLIST_FILE = Tests/TokenDSDK_Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dl.bitxfy.testnet;
@@ -551,15 +727,16 @@
 		};
 		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A0015DC22F1F81FAD05CBFCF /* Pods-TokenDSDK_Tests.release.xcconfig */;
+			baseConfigurationReference = C46B692F3572BACFE0A827CE /* Pods-TokenDSDK_Tests.release.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = Tests/Info.plist;
+				INFOPLIST_FILE = Tests/TokenDSDK_Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dl.bitxfy.testnet;
@@ -567,6 +744,69 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TokenDSDK_Example.app/TokenDSDK_Example";
+			};
+			name = Release;
+		};
+		7FA55D3F21D279F80092E536 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D7CC5FAA68093D676BC7208C /* Pods-TokenDSDK_IntegrationTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Tests/TokenDSDK_IntegrationTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dl.tokend.sdk.doc.TokenDSDK-IntegrationTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TokenDSDK_Example.app/TokenDSDK_Example";
+			};
+			name = Debug;
+		};
+		7FA55D4021D279F80092E536 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 88B6A9B90B443C13A977F189 /* Pods-TokenDSDK_IntegrationTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Tests/TokenDSDK_IntegrationTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dl.tokend.sdk.doc.TokenDSDK-IntegrationTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TokenDSDK_Example.app/TokenDSDK_Example";
 			};
 			name = Release;
@@ -597,6 +837,15 @@
 			buildConfigurations = (
 				607FACF31AFB9204008FA782 /* Debug */,
 				607FACF41AFB9204008FA782 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7FA55D4121D279F80092E536 /* Build configuration list for PBXNativeTarget "TokenDSDK_IntegrationTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7FA55D3F21D279F80092E536 /* Debug */,
+				7FA55D4021D279F80092E536 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
