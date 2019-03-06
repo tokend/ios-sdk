@@ -66,3 +66,6 @@ let keyServerApi = KeyServerApi(
 Visit our [Knowledge base](https://tokend.gitbook.io/knowledge-base/) and [API documentation](https://tokend.gitlab.io/docs) to get information on working with TokenD.
 
 Also take a look at [Wiki](https://github.com/tokend/ios-sdk/wiki) to learn how to use SDK in your projects.
+
+## Credits
+<a href="https://distributedlab.com/" target="_blank">Distributed Lab</a>, 2019
