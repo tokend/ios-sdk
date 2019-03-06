@@ -2,7 +2,7 @@ import Foundation
 
 /// Class provides functionality that allows to build requests
 /// which are used to fetch balances
-public class BalancesRequestBuilderV2: JSONAPI.BaseApiRequestBuilder {
+public class BalancesRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     
     // MARK: - Public properties
     
@@ -34,12 +34,13 @@ public class BalancesRequestBuilderV2: JSONAPI.BaseApiRequestBuilder {
             parameters["asset"] = asset
         }
         
-        self.buildRequestSigned(
+        self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simpleQuery(
                 path: path,
                 method: .get,
                 queryParameters: parameters
             ),
+            shouldSign: true,
             sendDate: sendDate,
             completion: completion
         )
@@ -57,11 +58,12 @@ public class BalancesRequestBuilderV2: JSONAPI.BaseApiRequestBuilder {
         
         let path = /self.v3/self.balances/balanceId
         
-        self.buildRequestSigned(
+        self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(
                 path: path,
                 method: .get
             ),
+            shouldSign: true,
             sendDate: sendDate,
             completion: completion
         )

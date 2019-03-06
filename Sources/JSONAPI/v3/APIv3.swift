@@ -23,6 +23,7 @@ public class APIv3 {
     public private(set) lazy var accountsApi: AccountsApiV3 = { return self.create(AccountsApiV3.self) }()
     public private(set) lazy var assetPairsApi: AssetPairsApiV3 = { return self.create(AssetPairsApiV3.self) }()
     public private(set) lazy var assetsApi: AssetsApiV3 = { return self.create(AssetsApiV3.self) }()
+    public private(set) lazy var balancesApi: BalancesApiV3 = { return self.create(BalancesApiV3.self) }()
     public private(set) lazy var historyApi: HistoryApiV3 = { return self.create(HistoryApiV3.self) }()
     public private(set) lazy var offersApi: OffersApiV3 = { return self.create(OffersApiV3.self) }()
     public private(set) lazy var orderBookApi: OrderBookApiV3 = { return self.create(OrderBookApiV3.self) }()
