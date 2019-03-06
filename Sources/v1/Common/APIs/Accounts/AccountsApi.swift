@@ -319,4 +319,11 @@ public class AccountsApi: BaseApi {
         
         return cancelable
     }
+    
+    public enum GetUploadPolicy {
+        
+        case failure(ApiErrors)
+        
+        case success()
+    }
 }
