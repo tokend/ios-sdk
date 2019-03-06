@@ -2,16 +2,16 @@ import Foundation
 import DLJSONAPI
 
 /// Class provides functionality that allows to fetch balances
-public class BalancesApiV2: JSONAPI.BaseApi {
+public class BalancesApiV3: JSONAPI.BaseApi {
     
     // MARK: - Public properties
     
-    public let requestBuilder: BalancesRequestBuilderV2
+    public let requestBuilder: BalancesRequestBuilderV3
     
     // MARK: -
     
-    public override init(apiStack: JSONAPI.BaseApiStack) {
-        self.requestBuilder = BalancesRequestBuilderV2(
+    public required init(apiStack: JSONAPI.BaseApiStack) {
+        self.requestBuilder = BalancesRequestBuilderV3(
             builderStack: JSONAPI.BaseApiRequestBuilderStack.fromApiStack(apiStack)
         )
         
@@ -48,7 +48,7 @@ public class BalancesApiV2: JSONAPI.BaseApi {
                     return
                 }
                 
-                cancelable.cancelable = self?.responseDocumentCollection(
+                cancelable.cancelable = self?.requestCollection(
                     BalanceResource.self,
                     request: request,
                     completion: completion
@@ -81,7 +81,7 @@ public class BalancesApiV2: JSONAPI.BaseApi {
                     return
                 }
                 
-                cancelable.cancelable = self?.responseDocumentSingle(
+                cancelable.cancelable = self?.requestSingle(
                     BalanceResource.self,
                     request: request,
                     completion: completion
