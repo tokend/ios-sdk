@@ -312,7 +312,7 @@ extension KeyServerApi {
                             status: ApiError.Status.forbidden,
                             code: ApiError.Code.tfaRequired
                         ),
-                        let meta = error.meta {
+                        let meta = error.tfaMeta {
                         
                         if initiateTFA {
                             let onHandleTFAResult: (TFAResult) -> Void = { [weak self] tfaResult in

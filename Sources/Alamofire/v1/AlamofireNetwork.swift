@@ -397,4 +397,68 @@ extension AlamofireNetwork: NetworkProtocol {
                 }
         })
     }
+    
+    public func uploadMultiPartFormData(
+        url: String,
+        formData: JSON,
+        uploadOption: DocumentUploadOption,
+        completion: @escaping (ResponseMultiPartFormDataResult) -> Void
+        ) -> Cancelable {
+        
+        let cancelable = AlamofireCancelable(request: nil)
+        
+        Alamofire.upload(
+            multipartFormData: { (multipartFormData) in
+                formData.forEach({ (key, value) in
+                    guard let valueData = "\(value)".data(using: .utf8) else {
+                        return
+                    }
+                    
+                    multipartFormData.append(valueData, withName: key)
+                })
+                
+                switch uploadOption {
+                    
+                case .data(let data, let meta):
+                    multipartFormData.append(
+                        data,
+                        withName: meta.name,
+                        fileName: meta.fileName,
+                        mimeType: meta.mimeType
+                    )
+                    
+                case .stream(let stream, let length, let meta):
+                    multipartFormData.append(
+                        stream,
+                        withLength: length,
+                        name: meta.name,
+                        fileName: meta.fileName,
+                        mimeType: meta.mimeType
+                    )
+                }
+        },
+            to: url,
+            encodingCompletion: { (encodingResult) in
+                switch encodingResult {
+                    
+                case .failure(let error):
+                    completion(.failure(error: error))
+                    
+                case .success(let request, _, _):
+                    cancelable.request = request
+                    
+                    request.response(completionHandler: { (response) in
+                        if let error = response.error {
+                            completion(.failure(error: error))
+                            return
+                        }
+                        
+                        completion(.success)
+                    })
+                }
+                
+        })
+        
+        return cancelable
+    }
 }

@@ -154,7 +154,10 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     
     // MARK: -
     
-    func performLogin(onSuccess: @escaping (_ walletData: WalletDataModel) -> Void) {
+    func performLogin(
+        onSuccess: @escaping (_ walletData: WalletDataModel) -> Void,
+        onFailed: @escaping (_ error: KeyServerApi.LoginRequestResult.LoginError) -> Void
+        ) {
         self.keyServerApi.loginWith(
             email: Constants.userEmail,
             password: Constants.userPassword,
@@ -170,7 +173,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                     onSuccess(walletData)
                     
                 case .failure(let error):
-                    self?.showError(title: "Login", error)
+                    onFailed(error)
                 }
         })
     }
@@ -343,7 +346,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         }
     }
     
-    private func requestCharts() {
+    func requestCharts() {
         self.tokenDApi.chartsApi.requestCharts(
             asset: "CTOKEN-ETH",
             completion: { [weak self] (result) in
@@ -356,7 +359,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         })
     }
     
-    private func requestBalancesDetails() {
+    func requestBalancesDetails() {
         self.tokenDApi.balancesApi.requestDetails(
             accountId: self.accountId,
             completion: { [weak self] (result) in
@@ -367,6 +370,20 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                     self?.showError(error)
                 }
         })
+    }
+    
+    func requestUploadPolicy(
+        policyType: String,
+        contentType: String,
+        completion: @escaping (_ result: DocumentsApi.GetUploadPolicyResult) -> Void
+        ) {
+        
+        self.tokenDApi.documentsApi.requestUploadPolicy(
+            accountId: self.accountId,
+            policyType: policyType,
+            contentType: contentType,
+            completion: completion
+        )
     }
     
     func sendTransaction(walletData: WalletDataModel, key: ECDSA.KeyData) {
@@ -413,7 +430,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         })
     }
     
-    private func sendTransaction(
+    func sendTransaction(
         networkInfo: NetworkInfoModel,
         walletData: WalletDataModel,
         key: ECDSA.KeyData,
@@ -447,7 +464,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         })
     }
     
-    private func sendTransaction(
+    func sendTransaction(
         networkInfo: NetworkInfoModel,
         walletData: WalletDataModel,
         key: ECDSA.KeyData,
@@ -541,7 +558,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         }
     }
     
-    private func getFactors(walletId: String) {
+    func getFactors(walletId: String) {
         self.tokenDApi.tfaApi.getFactors(
             walletId: walletId,
             completion: { (result) in
@@ -559,7 +576,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         })
     }
     
-    private func setTFAEnabled(_ enabled: Bool, walletId: String) {
+    func setTFAEnabled(_ enabled: Bool, walletId: String) {
         self.deleteTOTPFactors(
             walletId: walletId,
             completion: { [weak self] (result) in
@@ -578,7 +595,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         })
     }
     
-    private func enableTOTPFactor(walletId: String) {
+    func enableTOTPFactor(walletId: String) {
         let createFactor: (_ priority: Int) -> Void = { (priority) in
             self.tokenDApi.tfaApi.createFactor(
                 walletId: walletId,
@@ -614,7 +631,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         })
     }
     
-    private func updateTOTPFactor(walletId: String, factorId: Int, priority: Int) {
+    func updateTOTPFactor(walletId: String, factorId: Int, priority: Int) {
         self.tokenDApi.tfaApi.updateFactor(
             walletId: walletId,
             factorId: factorId,
@@ -635,7 +652,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         case failure
         case success
     }
-    private func deleteTOTPFactors(
+    func deleteTOTPFactors(
         walletId: String,
         completion: @escaping (_ result: DeleteTOTPFactorsResult) -> Void
         ) {
@@ -790,7 +807,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     
     // MARK: - TFA
     
-    private func initiateTFA(input: ApiCallbacks.TFAInput, cancel: @escaping () -> Void) {
+    func initiateTFA(input: ApiCallbacks.TFAInput, cancel: @escaping () -> Void) {
         let alertTitle: String
         switch input {
             
@@ -830,7 +847,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         })
     }
     
-    private func presentTextField(
+    func presentTextField(
         title: String,
         text: String? = nil,
         cancelTitle: String = "Cancel",
@@ -866,7 +883,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         self.present(alert, animated: true, completion: nil)
     }
     
-    private func processInput(
+    func processInput(
         password: String,
         tokenSignData: ApiCallbacks.TokenSignData,
         inputCallback: @escaping (_ signedToken: String) -> Void,
@@ -905,7 +922,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         })
     }
     
-    private func showRecoverySeedAlert(seedBase32Check: String, completion: @escaping (() -> Void)) {
+    func showRecoverySeedAlert(seedBase32Check: String, completion: @escaping (() -> Void)) {
         let alert = UIAlertController(
             title: "Save Recovery Seed",
             message: seedBase32Check,
@@ -931,7 +948,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         self.present(alert, animated: true, completion: nil)
     }
     
-    private func showTOTPSetupDialog(response: TFACreateFactorResponse, walletId: String, priority: Int) {
+    func showTOTPSetupDialog(response: TFACreateFactorResponse, walletId: String, priority: Int) {
         let alert = UIAlertController(
             title: "Set up 2FA",
             message: "To enable Two-factor authentication open Google Authenticator or similar app with the button below or copy and manually enter this key:\n\n\(response.attributes.secret)",
@@ -1004,7 +1021,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         return signedToken
     }
     
-    private func requestDefaultKDF(completion: @escaping (KeyServerApi.RequestDefaultKDFResult) -> Void) {
+    func requestDefaultKDF(completion: @escaping (KeyServerApi.RequestDefaultKDFResult) -> Void) {
         self.keyServerApi.requestDefaultKDF { (result) in
             switch result {
                 
@@ -1016,7 +1033,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
             }
         }
     }
-    private func showError(title: String = "Error", _ error: Swift.Error) {
+    func showError(title: String = "Error", _ error: Swift.Error) {
         let localizedDescription = error.localizedDescription
         
         let alert = UIAlertController(
@@ -1039,7 +1056,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         self.present(alert, animated: true, completion: nil)
     }
     
-    private func showMessage(title: String = "Result", _ message: String) {
+    func showMessage(title: String = "Result", _ message: String) {
         let alert = UIAlertController(
             title: title,
             message: message,

@@ -97,7 +97,7 @@ public struct ApiError: Decodable, Swift.Error, LocalizedError, CustomDebugStrin
     public let code: String?
     public let title: String?
     public let detail: String?
-    public let meta: TFAMetaResponse?
+    public let meta: JSON?
     
     public let horizonError: HorizonError?
     public let horizonErrorV2: HorizonErrorV2?
@@ -134,6 +134,18 @@ public struct ApiError: Decodable, Swift.Error, LocalizedError, CustomDebugStrin
         case meta
     }
     
+    public var tfaMeta: TFAMetaResponse? {
+        guard let meta = self.meta else { return nil }
+        
+        guard
+            let jsonData = try? JSONSerialization.data(withJSONObject: meta, options: []),
+            let decoded = try? JSONDecoder().decode(TFAMetaResponse.self, from: jsonData) else {
+                return nil
+        }
+        
+        return decoded
+    }
+    
     // MARK: -
     
     public init(
@@ -141,7 +153,7 @@ public struct ApiError: Decodable, Swift.Error, LocalizedError, CustomDebugStrin
         code: String?,
         title: String?,
         detail: String?,
-        meta: TFAMetaResponse? = nil,
+        meta: JSON? = nil,
         horizonError: HorizonError? = nil,
         horizonErrorV2: HorizonErrorV2? = nil,
         nsError: NSError? = nil
@@ -165,7 +177,7 @@ public struct ApiError: Decodable, Swift.Error, LocalizedError, CustomDebugStrin
         self.code = container.decodeOptionalString(key: .code)
         self.title = container.decodeOptionalString(key: .title)
         self.detail = container.decodeOptionalString(key: .detail)
-        self.meta = container.decodeOptionalObject(TFAMetaResponse.self, key: .meta)
+        self.meta = try container.decodeDictionaryIfPresent(JSON.self, forKey: .meta)
         
         self.horizonError = nil
         self.horizonErrorV2 = nil
@@ -190,26 +202,23 @@ public struct ApiError: Decodable, Swift.Error, LocalizedError, CustomDebugStrin
         } else if let nsError = self.nsError {
             description = nsError.localizedDescription
         } else {
+            var fields: [String] = []
+            
             if let title = self.title {
-                var titledDescription: String = ""
-                
-                titledDescription.append(title)
-                if let detail = self.detail {
-                    titledDescription.append(": \(detail)")
-                }
-                titledDescription.append(" (\(self.status))")
-                
-                description = titledDescription
-            } else if let detail = self.detail {
-                var detailedDescription: String = ""
-                
-                detailedDescription.append(detail)
-                detailedDescription.append(" (\(self.status))")
-                
-                description = detailedDescription
-            } else {
-                description = "Error: \(self.status)"
+                fields.append("\(title) \(self.status)")
             }
+            if let detail = self.detail {
+                fields.append(detail)
+            }
+            if let metaError = self.meta?["error"] as? String {
+                fields.append("Error: \(metaError)")
+            }
+            
+            if fields.count == 0 {
+                fields.append("Error status: \(self.status)")
+            }
+            
+            description = fields.joined(separator: " ")
         }
         
         return description
