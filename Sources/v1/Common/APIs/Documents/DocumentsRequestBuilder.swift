@@ -1,15 +1,17 @@
 import Foundation
 
 /// Class provides functionality that allows to build requests
-/// which are used to fetch and upload documents
+/// which are used to fetch and upload documents.
 public class DocumentsRequestBuilder: BaseApiRequestBuilder {
     
-    private let accounts: String = "accounts"
-    private let documents: String = "documents"
+    // MARK: - Public properties
+    
+    public let accounts: String = "accounts"
+    public let documents: String = "documents"
     
     // MARK: - Public
     
-    /// Builds request to request upload policy
+    /// Builds request to request upload policy.
     /// - Parameters:
     ///   - accountId: Account Id.
     ///   - policyType: Policy type. See possible values in `UploadPolicy.Type`.
@@ -40,6 +42,31 @@ public class DocumentsRequestBuilder: BaseApiRequestBuilder {
             url: url,
             method: .post,
             requestData: requestDataEncoded,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+    
+    /// Builds request to fetch document url.
+    /// - Parameters:
+    ///   - accountId: Account Id.
+    ///   - documentId: Document Id.
+    ///   - sendDate: Send time of request.
+    ///   - completion: Returns `RequestSigned` or nil.
+    public func buildGetDocumentURLRequest(
+        accountId: String,
+        documentId: String,
+        sendDate: Date = Date(),
+        completion: @escaping (RequestSigned?) -> Void
+        ) {
+        
+        let baseUrl = self.apiConfiguration.urlString
+        let url = baseUrl/self.accounts/accountId/self.documents/documentId
+        
+        self.buildRequestSigned(
+            baseUrl: baseUrl,
+            url: url,
+            method: .get,
             sendDate: sendDate,
             completion: completion
         )

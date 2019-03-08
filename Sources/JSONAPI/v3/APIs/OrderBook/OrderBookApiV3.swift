@@ -27,7 +27,7 @@ public class OrderBookApiV3: JSONAPI.BaseApi {
     ///   - pagination: Pagination option.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `RequestCollectionResult<OrderBookEntryResource>`.
-    /// - Returns: `Cancelable`.
+    /// - Returns: `Cancelable`
     @discardableResult
     public func requestOffers(
         orderBookId: String,

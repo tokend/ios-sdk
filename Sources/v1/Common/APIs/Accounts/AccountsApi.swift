@@ -15,7 +15,7 @@ public class AccountsApi: BaseApi {
     
     // MARK: - Public
     
-    /// Model that will be fetched in `completion` block of ` AccountsApi.requestAccount(...) `
+    /// Model that will be fetched in `completion` block of ` AccountsApi.requestAccount(...)`
     public enum RequestAccountResult {
         
         /// Errors that are possible to be fetched.
@@ -263,7 +263,7 @@ public class AccountsApi: BaseApi {
         return cancelable
     }
     
-    /// Model that will be fetched in `completion` block of `requestBlob(...) `
+    /// Model that will be fetched in `completion` block of `requestBlob(...)`
     public enum GetBlobResult {
         
         /// Case of succesful response from api with `BlobResponse` model

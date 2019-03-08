@@ -1,5 +1,6 @@
 import Foundation
 
+/// Namespace for upload policy possible values.
 public enum UploadPolicy {}
 
 extension UploadPolicy {

@@ -422,7 +422,7 @@ extension AlamofireNetwork: NetworkProtocol {
                 case .data(let data, let meta):
                     multipartFormData.append(
                         data,
-                        withName: meta.name,
+                        withName: "file",
                         fileName: meta.fileName,
                         mimeType: meta.mimeType
                     )
@@ -431,7 +431,7 @@ extension AlamofireNetwork: NetworkProtocol {
                     multipartFormData.append(
                         stream,
                         withLength: length,
-                        name: meta.name,
+                        name: "file",
                         fileName: meta.fileName,
                         mimeType: meta.mimeType
                     )
@@ -447,7 +447,7 @@ extension AlamofireNetwork: NetworkProtocol {
                 case .success(let request, _, _):
                     cancelable.request = request
                     
-                    request.response(completionHandler: { (response) in
+                    request.responseData(completionHandler: { (response) in
                         if let error = response.error {
                             completion(.failure(error: error))
                             return

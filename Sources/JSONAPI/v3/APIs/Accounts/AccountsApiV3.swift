@@ -16,7 +16,7 @@ public class AccountsApiV3: JSONAPI.BaseApi {
     
     // MARK: - Public
     
-    /// Model that will be fetched in `completion` block of ` AccountsApiV3.requestAccount(...) `
+    /// Model that will be fetched in `completion` block of ` AccountsApiV3.requestAccount(...)`
     public enum RequestAccountResult<AccountResourceType: AccountResource> {
         
         /// Errors that are possible to be fetched.

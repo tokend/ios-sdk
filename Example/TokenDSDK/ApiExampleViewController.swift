@@ -386,6 +386,18 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         )
     }
     
+    func requestDocumentUrl(
+        documentId: String,
+        completion: @escaping (_ result: DocumentsApi.GetDocumentURLResult) -> Void
+        ) {
+        
+        self.tokenDApi.documentsApi.requestDocumentURL(
+            accountId: self.accountId,
+            documentId: documentId,
+            completion: completion
+        )
+    }
+    
     func sendTransaction(walletData: WalletDataModel, key: ECDSA.KeyData) {
         self.tokenDApi.generalApi.requestNetworkInfo(completion: { (result) in
             switch result {

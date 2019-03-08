@@ -414,19 +414,18 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             image = img
         }
         
-        guard let data = image.pngData() else {
+        guard let data = self.resizeImageToMaxSizePNGData(image: image) else {
             return
         }
         
         let documentUploadOption = DocumentUploadOption.data(
             data: data,
             meta: DocumentUploadOption.MetaInfo(
-                name: "image",
-                fileName: "image.png",
+                fileName: "\(Date()).png",
                 mimeType: UploadPolicy.ContentType.imagePng
             )
         )
-        let policyType = UploadPolicy.PolicyType.generalPrivate
+        let policyType = UploadPolicy.PolicyType.generalPublic
         let contentType = UploadPolicy.ContentType.imagePng
         
         self.vc.requestUploadPolicy(
@@ -449,7 +448,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         documentUploadOption: DocumentUploadOption
         ) {
         
-        self.vc.tokenDApi.documentsApi.uploadDocument(
+        _ = self.vc.tokenDApi.documentsApi.uploadDocument(
             uploadPolicy: uploadPolicy,
             uploadOption: documentUploadOption,
             completion: { (result) in
@@ -460,8 +459,55 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
                     
                 case .success:
                     print("File uploaded")
+                    self.requestDocumentUrl(documentId: uploadPolicy.documentId)
                 }
         })
+    }
+    
+    func requestDocumentUrl(documentId: String) {
+        self.vc.requestDocumentUrl(
+            documentId: documentId,
+            completion: { (result) in
+                switch result {
+                    
+                case .failure(let error):
+                    print("Get document url error: \(error.localizedDescription)")
+                    
+                case .success(let response):
+                    print("Get document url: \(response.attributes.url)")
+                }
+        })
+    }
+    
+    func resizeImageToMaxSizePNGData(image: UIImage) -> Data? {
+        var pngData = image.pngData()
+        
+        let imageSize = image.size
+        let imageSquare: CGFloat = sqrt(imageSize.width * imageSize.height)
+        let expectedImageSquare: CGFloat = 1500.0
+        let estimatedDownScale: CGFloat = round((1.0 / (imageSquare / expectedImageSquare)) * 10.0) / 10.0 + 0.1
+        var downScale: CGFloat = min(1.0, estimatedDownScale)
+        var dataSize: Int = pngData?.count ?? 0
+        while dataSize > DocumentsApi.maxRecommendedDocumentSize && downScale > 0.1 {
+            downScale -= 0.1
+            let downScaledSize = CGSize(
+                width: round(imageSize.width * downScale),
+                height: round(imageSize.width * downScale)
+            )
+            
+            UIGraphicsBeginImageContextWithOptions(
+                downScaledSize,
+                false,
+                image.scale
+            )
+            
+            image.draw(in: CGRect(origin: CGPoint.zero, size: downScaledSize))
+            let downScaledImage = UIGraphicsGetImageFromCurrentImageContext()
+            pngData = downScaledImage?.pngData()
+            dataSize = pngData?.count ?? 0
+        }
+        
+        return dataSize > 0 ? pngData : nil
     }
     
     private func presentTextField(
@@ -566,6 +612,8 @@ extension ApiExampleViewControllerV3: UIImagePickerControllerDelegate, UINavigat
         _ picker: UIImagePickerController,
         didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
         ) {
+        
+        picker.dismiss(animated: true, completion: nil)
         
         if #available(iOS 11.0, *) {
             if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL {
