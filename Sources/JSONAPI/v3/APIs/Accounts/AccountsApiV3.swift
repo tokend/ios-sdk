@@ -131,4 +131,45 @@ public class AccountsApiV3: JSONAPI.BaseApi {
         
         return cancelable
     }
+    
+    /// Returns the list of the reviewable requests.
+    /// - Parameters:
+    ///   - filters: Request filters.
+    ///   - include: Resource to include.
+    ///   - pagination: Pagination option.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `RequestCollectionResult<ReviewableRequestResource>`.
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func requestChangeRoleRequests(
+        filters: ChangeRoleRequestsFiltersV3,
+        include: [String]? = nil,
+        pagination: RequestPagination,
+        onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
+        completion: @escaping (_ result: RequestCollectionResult<ReviewableRequestResource>) -> Void
+        ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildChangeRoleRequestsRequest(
+            filters: filters,
+            include: include,
+            pagination: pagination,
+            completion: { [weak self] (request) in
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                onRequestBuilt?(request)
+                
+                cancelable.cancelable = self?.requestCollection(
+                    ReviewableRequestResource.self,
+                    request: request,
+                    completion: completion
+                )
+        })
+        
+        return cancelable
+    }
 }

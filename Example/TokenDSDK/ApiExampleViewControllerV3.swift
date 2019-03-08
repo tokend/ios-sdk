@@ -479,6 +479,17 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         })
     }
     
+    func requestChangeRoleRequests() {
+        let filters = ChangeRoleRequestsFiltersV3.with(.requestor(self.vc.accountId))
+        
+//        self.tokenDApi.accountsApi.requestChangeRoleRequests(
+//            filters: filters,
+//            include: <#T##[String]?#>,
+//            pagination: <#T##RequestPagination#>,
+//            onRequestBuilt: <#T##((JSONAPI.RequestModel) -> Void)?##((JSONAPI.RequestModel) -> Void)?##(JSONAPI.RequestModel) -> Void#>,
+//            completion: <#T##(RequestCollectionResult<ReviewableRequestResource>) -> Void#>)
+    }
+    
     func resizeImageToMaxSizePNGData(image: UIImage) -> Data? {
         var pngData = image.pngData()
         
