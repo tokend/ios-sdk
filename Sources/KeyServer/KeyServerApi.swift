@@ -136,7 +136,7 @@ public class KeyServerApi {
     ///   - isRecovery: Indicates whether is recovery wallet data should be fetched. Default is **false**.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `KeyServerApi.RequestWalletKDFResult`
-    /// - Returns: `Cancelable`.
+    /// - Returns: `Cancelable`
     @discardableResult
     public func requestWalletKDF(
         email: String,
@@ -229,7 +229,7 @@ public class KeyServerApi {
     ///   - password: Password to decypher private key.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `KeyServerApi.LoginRequestResult`
-    /// - Returns: `Cancelable`.
+    /// - Returns: `Cancelable`
     @discardableResult
     public func loginWith(
         email: String,

@@ -1,11 +1,20 @@
 import Foundation
 
-public struct ApiDataRequest<T: Encodable, U: Encodable>: Encodable {
+public struct ApiDataRequest
+<DataType: Encodable, IncludeType: Encodable>: Encodable {
     
-    public let data: T
-    public let included: [U]?
+    // MARK: - Public properties
     
-    public init(data: T, included: [U]? = nil) {
+    public let data: DataType
+    public let included: [IncludeType]?
+    
+    // MARK: -
+    
+    public init(
+        data: DataType,
+        included: [IncludeType]? = nil
+        ) {
+        
         self.data = data
         self.included = included
     }
