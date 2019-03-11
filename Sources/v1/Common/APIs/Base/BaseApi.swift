@@ -45,3 +45,18 @@ public class BaseApi {
         )
     }
 }
+
+extension ApiErrors {
+    
+    public static var failedToDecodeResponse: ApiErrors {
+        return ApiErrors(errors: [
+            ApiError(
+                status: ApiError.Status.responseDecodeFailed,
+                code: nil,
+                title: ApiError.Title.responseDecodeFailed,
+                detail: nil
+            )
+            ]
+        )
+    }
+}

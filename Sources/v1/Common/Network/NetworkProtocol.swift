@@ -61,6 +61,17 @@ public enum ResponseDataObjectResult<T: Decodable> {
     case failure(errors: ApiErrors)
 }
 
+/// Model that will be fetched in `completion` block
+/// of `Network.uploadMultiPartFormData(...)`
+public enum ResponseMultiPartFormDataResult {
+    
+    /// Case of successful response
+    case success
+    
+    /// Case of failed response with `ApiErrors` model
+    case failure(error: Swift.Error)
+}
+
 /// Network access protocol
 public protocol NetworkProtocol {
     
@@ -164,5 +175,20 @@ public protocol NetworkProtocol {
         headers: RequestHeaders?,
         bodyData: Data?,
         completion: @escaping (_ result: ResponseDataObjectResult<T>) -> Void
+        ) -> Cancelable
+    
+    /// Method sends request to api and expects to fetch the model of `T` type
+    /// - Parameters:
+    ///   - url: URL of request
+    ///   - formData: Form data fields.
+    ///   - dataStream: Output body data stream.
+    ///   - completion: The block which is called when the result of request is fetched
+    ///   - result: The member of `ResponseMultiPartFormDataResult`
+    /// - Returns: `Cancelable`
+    func uploadMultiPartFormData(
+        url: String,
+        formData: JSON,
+        uploadOption: DocumentUploadOption,
+        completion: @escaping (_ result: ResponseMultiPartFormDataResult) -> Void
         ) -> Cancelable
 }

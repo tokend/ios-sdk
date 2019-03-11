@@ -27,7 +27,7 @@ public class HistoryApiV3: JSONAPI.BaseApi {
     ///   - pagination: Pagination option.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `RequestCollectionResult<ParticipantEffectResource>`.
-    /// - Returns: `Cancelable`.
+    /// - Returns: `Cancelable`
     @discardableResult
     public func requestHistory(
         filters: HistoryRequestFiltersV3,

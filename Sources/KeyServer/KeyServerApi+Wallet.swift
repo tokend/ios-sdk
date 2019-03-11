@@ -145,7 +145,7 @@ extension KeyServerApi {
     ///   - walletKDF: Wallet KDF params.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `KeyServerApi.RequestWalletResult`
-    /// - Returns: `Cancelable`.
+    /// - Returns: `Cancelable`
     @discardableResult
     public func requestWallet(
         walletId: String,
@@ -173,7 +173,7 @@ extension KeyServerApi {
     ///   - initiateTFA: Flag to initiate TFA in case of TFA required error.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `KeyServerApi.RequestWalletResult`
-    /// - Returns: `Cancelable`.
+    /// - Returns: `Cancelable`
     @discardableResult
     public func requestWallet(
         walletId: String,
@@ -312,7 +312,7 @@ extension KeyServerApi {
                             status: ApiError.Status.forbidden,
                             code: ApiError.Code.tfaRequired
                         ),
-                        let meta = error.meta {
+                        let meta = error.tfaMeta {
                         
                         if initiateTFA {
                             let onHandleTFAResult: (TFAResult) -> Void = { [weak self] tfaResult in
