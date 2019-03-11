@@ -90,7 +90,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     @objc func runTest() {
         self.vc.performLogin(
             onSuccess: { _ in
-                self.requestChangeRoleRequests()
+                self.requestKeyValueEntries()
         },
             onFailed: { (error) in
                 print("Failed to login: \(error.localizedDescription)")
@@ -356,6 +356,23 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
                     
                 case .success(let document):
                     print("Sales result: \(String(describing: document.data))")
+                }
+        })
+    }
+    
+    func requestKeyValueEntries() {
+        let pagination = IndexedPaginationStrategy(index: nil, limit: 100, order: .ascending)
+        
+        self.tokenDApi.keyValuesApi.requestKeyValueEntries(
+            pagination: RequestPagination(.strategy(pagination)),
+            completion: { (result) in
+                switch result {
+                    
+                case .failure(let error):
+                    print("key value entries error: \(error)")
+                    
+                case .success(let document):
+                    print("key value entries: \(String(describing: document.data))")
                 }
         })
     }
