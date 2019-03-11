@@ -273,7 +273,7 @@ public class AccountsApi: BaseApi {
         case failure(ApiErrors)
     }
     
-    /// Method sends request to create user for according account.
+    /// Method sends request to request blob.
     /// The result of request will be fetched in `completion` block as `GetBlobResult`
     /// - Parameters:
     ///   - accountId: Identifier of account for which blob should be fetched.
@@ -313,6 +313,70 @@ public class AccountsApi: BaseApi {
                             
                         case .success(let object):
                             completion(.success(blob: object.data))
+                        }
+                })
+        })
+        
+        return cancelable
+    }
+    
+    /// Model that will be fetched in `completion` block of `uploadBlob(...)`
+    public enum UploadBlobResult {
+        
+        /// Case of succesful response from api
+        case success(UploadBlobModel)
+        
+        /// Case of failed response from api with `ApiErrors` model
+        case failure(ApiErrors)
+    }
+    
+    /// Method sends request to upload blob.
+    /// The result of request will be fetched in `completion` block as `UploadBlobResult`
+    /// - Parameters:
+    ///   - accountId: Identifier of account for which blob should be uploaded.
+    ///   - blob: Blob object.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `UploadBlobResult`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func uploadBlob(
+        accountId: String,
+        blob: UploadBlobModel,
+        completion: @escaping (_ result: UploadBlobResult) -> Void
+        ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildUploadBlobRequest(
+            accountId: accountId,
+            blob: blob,
+            sendDate: Date(),
+            completion: { [weak self] (request) in
+                guard let request = request else {
+                    completion(.failure(.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self?.network.responseRawData(
+                    url: request.url,
+                    method: request.method,
+                    headers: request.signedHeaders,
+                    bodyData: request.requestData,
+                    completion: { (result) in
+                        switch result {
+                            
+                        case .failure(let errors):
+                            completion(.failure(errors))
+                            
+                        case .success(let data):
+                            guard let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
+                                let json = jsonObject as? JSON,
+                                let model = UploadBlobModel(json: json) else {
+                                    completion(.failure(ApiErrors.failedToDecodeResponse))
+                                    return
+                            }
+                            
+                            completion(.success(model))
                         }
                 })
         })

@@ -92,6 +92,7 @@ public struct ApiError: Decodable, Swift.Error, LocalizedError, CustomDebugStrin
     
     public static let noInternetErrorCode: Int = 10000
     public static let requestSignErrorCode: Int = 1999
+    public static let responseDecodeErrorCode: Int = 2999
     
     public let status: String
     public let code: String?
@@ -111,6 +112,7 @@ public struct ApiError: Decodable, Swift.Error, LocalizedError, CustomDebugStrin
         static public let unknown           = "-999"
         static public let urlEncodeFailed   = "999"
         static public let requestSignFailed = "\(requestSignErrorCode)"
+        static public let responseDecodeFailed = "\(responseDecodeErrorCode)"
     }
     
     public enum Code {
@@ -124,6 +126,7 @@ public struct ApiError: Decodable, Swift.Error, LocalizedError, CustomDebugStrin
         static public let unknown           = "Unknown"
         static public let urlEncodeFailed   = "URL encode failed"
         static public let requestSignFailed = "Request sign failed"
+        static public let responseDecodeFailed = "Response decode failed"
     }
     
     public enum CodingKeys: String, CodingKey {

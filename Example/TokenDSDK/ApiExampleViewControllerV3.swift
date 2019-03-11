@@ -90,7 +90,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     @objc func runTest() {
         self.vc.performLogin(
             onSuccess: { _ in
-                self.uploadDocument()
+                self.requestChangeRoleRequests()
         },
             onFailed: { (error) in
                 print("Failed to login: \(error.localizedDescription)")
@@ -481,13 +481,31 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     
     func requestChangeRoleRequests() {
         let filters = ChangeRoleRequestsFiltersV3.with(.requestor(self.vc.accountId))
+        let pagination = RequestPagination(.strategy(IndexedPaginationStrategy(
+            index: 0,
+            limit: 10,
+            order: .descending))
+        )
         
-//        self.tokenDApi.accountsApi.requestChangeRoleRequests(
-//            filters: filters,
-//            include: <#T##[String]?#>,
-//            pagination: <#T##RequestPagination#>,
-//            onRequestBuilt: <#T##((JSONAPI.RequestModel) -> Void)?##((JSONAPI.RequestModel) -> Void)?##(JSONAPI.RequestModel) -> Void#>,
-//            completion: <#T##(RequestCollectionResult<ReviewableRequestResource>) -> Void#>)
+        self.tokenDApi.accountsApi.requestChangeRoleRequests(
+            filters: filters,
+            include: ["request_details"],
+            pagination: pagination,
+            completion: { (result) in
+                switch result {
+                    
+                case .failure(let error):
+                    print("Change role requests error: \(error.localizedDescription)")
+                    
+                case .success(let document):
+                    guard let data = document.data else {
+                        print("Change role requests empty data")
+                        return
+                    }
+                    
+                    print("Change role requests: \(data)")
+                }
+        })
     }
     
     func resizeImageToMaxSizePNGData(image: UIImage) -> Data? {
