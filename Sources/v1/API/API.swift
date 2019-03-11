@@ -22,7 +22,6 @@ public class API {
     }()
     
     public private(set) lazy var accountsApi: AccountsApi         = { return self.createAccountsApi() }()
-    public private(set) lazy var documentsApi: DocumentsApi       = { return self.createDocumentsApi() }()
     public private(set) lazy var assetPairsApi: AssetPairsApi     = { return self.createAssetPairsApi() }()
     public private(set) lazy var assetsApi: AssetsApi             = { return self.createAssetsApi() }()
     public private(set) lazy var balancesApi: BalancesApi         = { return self.createBalancesApi() }()
@@ -55,11 +54,6 @@ public class API {
     
     private func createAccountsApi() -> AccountsApi {
         let api = AccountsApi(apiStack: self.baseApiStack)
-        return api
-    }
-    
-    private func createDocumentsApi() -> DocumentsApi {
-        let api = DocumentsApi(apiStack: self.baseApiStack)
         return api
     }
     

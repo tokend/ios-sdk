@@ -8,7 +8,6 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
 
     private let accounts = "accounts"
     private let signers = "signers"
-    private let changeRoleRequests = "change_role_requests"
     
     // MARK: - Public
     
@@ -51,33 +50,6 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
             JSONAPI.BaseRequestBuildModel.simple(
                 path: path,
                 method: .get
-            ),
-            shouldSign: true,
-            sendDate: sendDate,
-            completion: completion
-        )
-    }
-    
-    /// Builds request to fetch reviewable requests
-    public func buildChangeRoleRequestsRequest(
-        filters: ChangeRoleRequestsFiltersV3,
-        include: [String]?,
-        pagination: RequestPagination,
-        sendDate: Date = Date(),
-        completion: @escaping (JSONAPI.RequestModel?) -> Void
-        ) {
-        
-        let path = /self.v3/self.changeRoleRequests
-        
-        let queryParameters = self.buildFilterQueryItems(filters.filterItems)
-        
-        self.buildRequest(
-            JSONAPI.BaseRequestBuildModel.simpleQueryIncludePagination(
-                path: path,
-                method: .get,
-                queryParameters: queryParameters,
-                include: include,
-                pagination: pagination
             ),
             shouldSign: true,
             sendDate: sendDate,

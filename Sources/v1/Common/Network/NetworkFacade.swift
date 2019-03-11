@@ -116,19 +116,4 @@ public class NetworkFacade {
             completion: completion
         )
     }
-    
-    func uploadMultiPartFormData(
-        url: String,
-        formData: JSON,
-        uploadOption: DocumentUploadOption,
-        completion: @escaping (_ result: ResponseMultiPartFormDataResult) -> Void
-        ) -> Cancelable {
-        
-        return self.network.uploadMultiPartFormData(
-            url: url,
-            formData: formData,
-            uploadOption: uploadOption,
-            completion: completion
-        )
-    }
 }

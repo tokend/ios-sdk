@@ -25,7 +25,6 @@
 		7F90A486220C56A200091A77 /* KeyServerExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA55D8121D3A2290092E536 /* KeyServerExampleViewController.swift */; };
 		7FA55D8521D3ACE70092E536 /* ApiExampleViewControllerV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA55D8221D3A2290092E536 /* ApiExampleViewControllerV3.swift */; };
 		7FE04A5521749F1B0018399F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE04A5421749F1B0018399F /* Constants.swift */; };
-		7FE317B322328E39007ECDAE /* test_upload_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FE317B222328E39007ECDAE /* test_upload_image.png */; };
 		7FECDD232213157E00EB0367 /* HistoryApiIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FECDD222213157E00EB0367 /* HistoryApiIntegrationTests.swift */; };
 		7FECDD252213158E00EB0367 /* BaseIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FECDD242213158E00EB0367 /* BaseIntegrationTests.swift */; };
 		7FECDD27221317B400EB0367 /* IntegrationTestsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FECDD26221317B400EB0367 /* IntegrationTestsConstants.swift */; };
@@ -75,7 +74,6 @@
 		7FA55D8121D3A2290092E536 /* KeyServerExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyServerExampleViewController.swift; sourceTree = "<group>"; };
 		7FA55D8221D3A2290092E536 /* ApiExampleViewControllerV3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiExampleViewControllerV3.swift; sourceTree = "<group>"; };
 		7FE04A5421749F1B0018399F /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		7FE317B222328E39007ECDAE /* test_upload_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test_upload_image.png; sourceTree = "<group>"; };
 		7FECDD222213157E00EB0367 /* HistoryApiIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryApiIntegrationTests.swift; sourceTree = "<group>"; };
 		7FECDD242213158E00EB0367 /* BaseIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseIntegrationTests.swift; sourceTree = "<group>"; };
 		7FECDD26221317B400EB0367 /* IntegrationTestsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationTestsConstants.swift; sourceTree = "<group>"; };
@@ -252,7 +250,6 @@
 			isa = PBXGroup;
 			children = (
 				7FA55D4521D27AA10092E536 /* Info.plist */,
-				7FE317B222328E39007ECDAE /* test_upload_image.png */,
 				7FECDD242213158E00EB0367 /* BaseIntegrationTests.swift */,
 				7FECDD222213157E00EB0367 /* HistoryApiIntegrationTests.swift */,
 				7FECDD26221317B400EB0367 /* IntegrationTestsConstants.swift */,
@@ -403,7 +400,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7FE317B322328E39007ECDAE /* test_upload_image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

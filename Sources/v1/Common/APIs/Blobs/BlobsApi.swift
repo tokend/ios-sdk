@@ -15,7 +15,7 @@ public class BlobsApi: BaseApi {
     
     // MARK: - Public
     
-    /// Model that will be fetched in `completion` block of `BlobsApi.requestBlob(...)`
+    /// Model that will be fetched in `completion` block of `BlobsApi.requestBlob(...) `
     public enum GetBlobResult {
         
         /// Case of succesful response from api with `BlobResponse` model

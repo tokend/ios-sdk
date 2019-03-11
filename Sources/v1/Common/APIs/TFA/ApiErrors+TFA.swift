@@ -20,7 +20,7 @@ extension ApiErrors {
         if let error = self.firstErrorWith(
             status: ApiError.Status.forbidden,
             code: ApiError.Code.tfaRequired
-            ), let meta = error.tfaMeta {
+            ), let meta = error.meta {
             
             if initiateTFA {
                 handler.initiateTFA(

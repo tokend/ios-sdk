@@ -2,4 +2,4 @@ import Foundation
 
 public typealias JSON = [String: Any]
 
-public struct Empty: Codable {}
+public struct Empty: Decodable {}

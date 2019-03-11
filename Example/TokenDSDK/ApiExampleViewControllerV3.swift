@@ -1,12 +1,9 @@
 import UIKit
-import CoreServices
-import DLCryptoKit
-import DLJSONAPI
-import RxCocoa
-import RxSwift
-import SnapKit
 import TokenDSDK
+import DLCryptoKit
 import TokenDWallet
+import DLJSONAPI
+import SnapKit
 
 // swiftlint:disable line_length
 class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderProtocol {
@@ -67,8 +64,6 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         return api
     }()
     
-    let disposeBag = DisposeBag()
-    
     var inputTFAText: String = ""
     
     override func viewDidLoad() {
@@ -88,13 +83,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     @objc func runTest() {
-        self.vc.performLogin(
-            onSuccess: { _ in
-                self.requestChangeRoleRequests()
-        },
-            onFailed: { (error) in
-                print("Failed to login: \(error.localizedDescription)")
-        })
+        
     }
     
     // MARK: -
@@ -115,37 +104,34 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     func loginAndRequestHistoryForFirstBalance() {
-        self.vc.performLogin(
-            onSuccess: { (walledData) in
-                self.vc.tokenDApi.balancesApi.requestDetails(
-                    accountId: walledData.accountId,
-                    completion: { (result) in
-                        switch result {
-                            
-                        case .failure(let errors):
-                            print("failed to fetch balances: \(errors.localizedDescription)")
-                            
-                        case .success(let balances):
-                            guard let balance = balances.first else {
-                                print("No balances")
-                                return
-                            }
-                            
-                            self.requestHistory(
-                                balance: balance.balanceId,
-                                completion: { (document) in
-                                    guard let data = document.data else {
-                                        print("failed to get data: \(document)")
-                                        return
-                                    }
-                                    
-                                    print("history: \(data)")
-                            })
+        self.vc.performLogin(onSuccess: { (walledData) in
+            self.vc.tokenDApi.balancesApi.requestDetails(
+                accountId: walledData.accountId,
+                completion: { (result) in
+                    switch result {
+                        
+                    case .failure(let errors):
+                        print("failed to fetch balances: \(errors.localizedDescription)")
+                        
+                    case .success(let balances):
+                        guard let balance = balances.first else {
+                            print("No balances")
+                            return
                         }
-                })
-        },
-            onFailed: { _ in }
-        )
+                        
+                        self.requestHistory(
+                            balance: balance.balanceId,
+                            completion: { (document) in
+                                guard let data = document.data else {
+                                    print("failed to get data: \(document)")
+                                    return
+                                }
+                                
+                                print("history: \(data)")
+                        })
+                    }
+            })
+        })
     }
     
     func requestHistory(
@@ -360,185 +346,6 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         })
     }
     
-    func uploadDocument() {
-        let vc = UIImagePickerController()
-        
-        vc.sourceType = .photoLibrary
-        vc.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary) ?? []
-        
-        vc.delegate = self
-        
-        self.present(vc, animated: true, completion: nil)
-    }
-    
-//    func uploadDocument() {
-//        let vc = UIDocumentPickerViewController(
-//            documentTypes: [
-//                kUTTypePDF,
-//                kUTTypeGIF,
-//                kUTTypeJPEG,
-//                kUTTypePNG,
-//                kUTTypeTIFF
-//                ].map({ (type) -> String in
-//                    return type as String
-//                }),
-//            in: .import
-//        )
-//
-//        vc.delegate = self
-//
-//        self.present(vc, animated: true, completion: nil)
-//    }
-    
-    enum UploadOption {
-        
-        case imageUrl(URL)
-        case image(UIImage)
-    }
-    
-    func requestPolicyAndUpload(uploadOption: UploadOption) {
-        let image: UIImage
-        
-        switch uploadOption {
-            
-        case .image(let img):
-            image = img
-            
-        case .imageUrl(let url):
-            guard
-                let data = try? Data(contentsOf: url),
-                let img = UIImage(data: data) else {
-                    return
-            }
-            
-            image = img
-        }
-        
-        guard let data = self.resizeImageToMaxSizePNGData(image: image) else {
-            return
-        }
-        
-        let documentUploadOption = DocumentUploadOption.data(
-            data: data,
-            meta: DocumentUploadOption.MetaInfo(
-                fileName: "\(Date()).png",
-                mimeType: UploadPolicy.ContentType.imagePng
-            )
-        )
-        let policyType = UploadPolicy.PolicyType.generalPublic
-        let contentType = UploadPolicy.ContentType.imagePng
-        
-        self.vc.requestUploadPolicy(
-            policyType: policyType,
-            contentType: contentType,
-            completion: { (result) in
-                switch result {
-                    
-                case .failure(let errors):
-                    print("Failed to request policy: \(errors.localizedDescription)")
-                    
-                case .success(let response):
-                    self.uploadDocument(uploadPolicy: response, documentUploadOption: documentUploadOption)
-                }
-        })
-    }
-    
-    func uploadDocument(
-        uploadPolicy: GetUploadPolicyResponse,
-        documentUploadOption: DocumentUploadOption
-        ) {
-        
-        _ = self.vc.tokenDApi.documentsApi.uploadDocument(
-            uploadPolicy: uploadPolicy,
-            uploadOption: documentUploadOption,
-            completion: { (result) in
-                switch result {
-                    
-                case .failure(let error):
-                    print("Failed to upload file: \(error)")
-                    
-                case .success:
-                    print("File uploaded")
-                    self.requestDocumentUrl(documentId: uploadPolicy.documentId)
-                }
-        })
-    }
-    
-    func requestDocumentUrl(documentId: String) {
-        self.vc.requestDocumentUrl(
-            documentId: documentId,
-            completion: { (result) in
-                switch result {
-                    
-                case .failure(let error):
-                    print("Get document url error: \(error.localizedDescription)")
-                    
-                case .success(let response):
-                    print("Get document url: \(response.attributes.url)")
-                }
-        })
-    }
-    
-    func requestChangeRoleRequests() {
-        let filters = ChangeRoleRequestsFiltersV3.with(.requestor(self.vc.accountId))
-        let pagination = RequestPagination(.strategy(IndexedPaginationStrategy(
-            index: 0,
-            limit: 10,
-            order: .descending))
-        )
-        
-        self.tokenDApi.accountsApi.requestChangeRoleRequests(
-            filters: filters,
-            include: ["request_details"],
-            pagination: pagination,
-            completion: { (result) in
-                switch result {
-                    
-                case .failure(let error):
-                    print("Change role requests error: \(error.localizedDescription)")
-                    
-                case .success(let document):
-                    guard let data = document.data else {
-                        print("Change role requests empty data")
-                        return
-                    }
-                    
-                    print("Change role requests: \(data)")
-                }
-        })
-    }
-    
-    func resizeImageToMaxSizePNGData(image: UIImage) -> Data? {
-        var pngData = image.pngData()
-        
-        let imageSize = image.size
-        let imageSquare: CGFloat = sqrt(imageSize.width * imageSize.height)
-        let expectedImageSquare: CGFloat = 1500.0
-        let estimatedDownScale: CGFloat = round((1.0 / (imageSquare / expectedImageSquare)) * 10.0) / 10.0 + 0.1
-        var downScale: CGFloat = min(1.0, estimatedDownScale)
-        var dataSize: Int = pngData?.count ?? 0
-        while dataSize > DocumentsApi.maxRecommendedDocumentSize && downScale > 0.1 {
-            downScale -= 0.1
-            let downScaledSize = CGSize(
-                width: round(imageSize.width * downScale),
-                height: round(imageSize.width * downScale)
-            )
-            
-            UIGraphicsBeginImageContextWithOptions(
-                downScaledSize,
-                false,
-                image.scale
-            )
-            
-            image.draw(in: CGRect(origin: CGPoint.zero, size: downScaledSize))
-            let downScaledImage = UIGraphicsGetImageFromCurrentImageContext()
-            pngData = downScaledImage?.pngData()
-            dataSize = pngData?.count ?? 0
-        }
-        
-        return dataSize > 0 ? pngData : nil
-    }
-    
     private func presentTextField(
         title: String,
         text: String? = nil,
@@ -621,44 +428,6 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     
     @objc func tfaTextFieldEditingChanged(_ tf: UITextField) {
         self.inputTFAText = tf.text ?? ""
-    }
-}
-
-//extension ApiExampleViewControllerV3: UIDocumentPickerDelegate {
-//
-//    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-//        guard let url = urls.first else {
-//            return
-//        }
-//
-//        self.requestPolicyAndUpload(documentUrl: url)
-//    }
-//}
-
-extension ApiExampleViewControllerV3: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    func imagePickerController(
-        _ picker: UIImagePickerController,
-        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
-        ) {
-        
-        picker.dismiss(animated: true, completion: nil)
-        
-        if #available(iOS 11.0, *) {
-            if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL {
-                self.requestPolicyAndUpload(uploadOption: .imageUrl(url))
-            } else if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-                self.requestPolicyAndUpload(uploadOption: .image(image))
-            } else if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-                self.requestPolicyAndUpload(uploadOption: .image(image))
-            }
-        } else {
-            if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-                self.requestPolicyAndUpload(uploadOption: .image(image))
-            } else if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-                self.requestPolicyAndUpload(uploadOption: .image(image))
-            }
-        }
     }
 }
 // swiftlint:enable line_length
