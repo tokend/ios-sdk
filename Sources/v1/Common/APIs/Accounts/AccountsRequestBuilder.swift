@@ -4,7 +4,7 @@ import Foundation
 /// which are used to fetch account data
 public class AccountsRequestBuilder: BaseApiRequestBuilder {
     
-    private let basePathComponent: String = "accounts"
+    private let accounts: String = "accounts"
     private let signersPathComponent: String = "signers"
     private let authResultPathComponent: String = "authresult"
     private let blobs: String = "blobs"
@@ -23,7 +23,7 @@ public class AccountsRequestBuilder: BaseApiRequestBuilder {
         ) {
         
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath(self.basePathComponent).addPath(accountId)
+        let url = baseUrl.addPath(self.accounts).addPath(accountId)
         
         self.buildRequestSigned(
             baseUrl: baseUrl,
@@ -46,7 +46,7 @@ public class AccountsRequestBuilder: BaseApiRequestBuilder {
         ) {
         
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath(self.basePathComponent).addPath(accountId).addPath(self.signersPathComponent)
+        let url = baseUrl.addPath(self.accounts).addPath(accountId).addPath(self.signersPathComponent)
         
         self.buildRequestSigned(
             baseUrl: baseUrl,
@@ -127,7 +127,7 @@ public class AccountsRequestBuilder: BaseApiRequestBuilder {
         ) {
         
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath(accountId).addPath(self.blobs).addPath(blobId)
+        let url = baseUrl.addPath(self.accounts).addPath(accountId).addPath(self.blobs).addPath(blobId)
         
         self.buildRequestSigned(
             baseUrl: baseUrl,
@@ -152,7 +152,7 @@ public class AccountsRequestBuilder: BaseApiRequestBuilder {
         ) {
         
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath(accountId).addPath(self.blobs)
+        let url = baseUrl.addPath(self.accounts).addPath(accountId).addPath(self.blobs)
         
         let requestJSON = blob.requestJSON()
         guard let data = try? JSONSerialization.data(withJSONObject: requestJSON, options: []) else {
