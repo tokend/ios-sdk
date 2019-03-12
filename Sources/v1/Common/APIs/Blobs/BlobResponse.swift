@@ -16,6 +16,7 @@ public struct BlobResponse: Decodable {
         case assetDescription   = "asset_description"
         case fundOverview       = "fund_overview"
         case fundUpdate         = "fund_update"
+        case kycForm            = "kyc_form"
         case tokenMetrics       = "token_metrics"
         case unknown
     }
@@ -40,6 +41,7 @@ extension BlobResponse {
         case fundDocument(document: FundDocumentResponse)
         case fundOverview(markdown: String)
         case fundUpdate(update: FundUpdateResponse)
+        case kycForm(form: KYCFormResponse)
         case tokenMetrics(metrics: FundDocumentResponse)
         case unknown
     }
@@ -62,6 +64,17 @@ extension BlobResponse {
                 return BlobContent.fundUpdate(update: update)
             } else if let document = try? BlobContent.FundDocumentResponse.decode(from: data) {
                 return BlobContent.fundDocument(document: document)
+            } else {
+                return .unknown
+            }
+            
+        case .kycForm:
+            guard let data = self.attributes.value.data(using: String.Encoding.utf8) else {
+                return .unknown
+            }
+            
+            if let form = try? BlobContent.KYCFormResponse.decode(from: data) {
+                return BlobContent.kycForm(form: form)
             } else {
                 return .unknown
             }
@@ -122,6 +135,31 @@ extension BlobResponse.BlobContent {
     }
 }
 
+// MARK: - KYCFormResponse
+
+extension BlobResponse.BlobContent {
+    
+    public struct KYCFormResponse: Decodable {
+        
+        public struct Documents: Decodable {
+            
+            public struct Attachment: Decodable {
+                
+                public let mimeType: String?
+                public let name: String?
+                public let key: String?
+            }
+            
+            public let kycIdDocument: Attachment?
+            public let kycSelfie: Attachment?
+        }
+        
+        public let firstName: String?
+        public let lastName: String?
+        public let documents: Documents?
+    }
+}
+
 // MARK: - Debug Description
 
 extension BlobResponse.BlobContent: CustomDebugStringConvertible {
@@ -142,6 +180,9 @@ extension BlobResponse.BlobContent: CustomDebugStringConvertible {
             
         case .fundUpdate(let update):
             description.append(".fundUpdate: \(update)")
+            
+        case .kycForm(let form):
+            description.append(".kycForm: \(form)")
             
         case .tokenMetrics(let metrics):
             description.append(".tokenMetrics: \(metrics)")
