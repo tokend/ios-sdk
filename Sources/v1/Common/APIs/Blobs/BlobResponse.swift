@@ -139,24 +139,55 @@ extension BlobResponse.BlobContent {
 
 extension BlobResponse.BlobContent {
     
-    public struct KYCFormResponse: Decodable {
+    public struct KYCFormResponse: Codable {
         
-        public struct Documents: Decodable {
+        public struct Documents: Codable {
             
-            public struct Attachment: Decodable {
+            public struct Attachment: Codable {
                 
                 public let mimeType: String?
                 public let name: String?
                 public let key: String?
+                
+                public init(
+                    mimeType: String?,
+                    name: String?,
+                    key: String?
+                    ) {
+                    
+                    self.mimeType = mimeType
+                    self.name = name
+                    self.key = key
+                }
             }
             
             public let kycIdDocument: Attachment?
             public let kycSelfie: Attachment?
+            
+            public init(
+                kycIdDocument: Attachment?,
+                kycSelfie: Attachment?
+                ) {
+                
+                self.kycIdDocument = kycIdDocument
+                self.kycSelfie = kycSelfie
+            }
         }
         
         public let firstName: String?
         public let lastName: String?
         public let documents: Documents?
+        
+        public init(
+            firstName: String?,
+            lastName: String?,
+            documents: Documents?
+            ) {
+            
+            self.firstName = firstName
+            self.lastName = lastName
+            self.documents = documents
+        }
     }
 }
 
