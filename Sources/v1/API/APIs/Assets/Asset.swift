@@ -15,6 +15,7 @@ public struct Asset {
     public let policies: [PolicyStruct]?
     public let policy: Int
     public let preissuedAssetSigner: String
+    public let type: Int
     
     // MARK: - Public
     
@@ -39,6 +40,22 @@ public struct Asset {
         }
         
         return try? JSONDecoder().decode(DetailsType.self, from: jsonData)
+    }
+    
+    public var typeValue: AssetType {
+        guard let type = AssetType(rawValue: self.type) else {
+            return .noRequirements
+        }
+        
+        return type
+    }
+}
+
+extension Asset {
+    
+    public enum AssetType: Int {
+        case noRequirements = 0
+        case requiresAccountApproved = 1
     }
 }
 
@@ -93,6 +110,7 @@ extension Asset: Decodable {
         case policies
         case policy
         case preissuedAssetSigner
+        case type
     }
     
     public init(from decoder: Decoder) throws {
@@ -108,6 +126,7 @@ extension Asset: Decodable {
         self.policies = try container.decodeIfPresent([PolicyStruct].self, forKey: .policies)
         self.policy = try container.decode(Int.self, forKey: .policy)
         self.preissuedAssetSigner = try container.decode(String.self, forKey: .preissuedAssetSigner)
+        self.type = try container.decode(Int.self, forKey: .type)
     }
 }
 
