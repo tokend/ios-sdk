@@ -88,20 +88,16 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     @objc func runTest() {
-        self.vc.performLogin(
-            onSuccess: { _ in
-                self.requestKeyValueEntries()
-        },
-            onFailed: { (error) in
-                print("Failed to login: \(error.localizedDescription)")
-        })
+        self.requestAccount()
     }
     
     // MARK: -
     
     func requestAccount() {
         self.tokenDApi.accountsApi.requestAccount(
-            accountId: "GBLTOG6EJS5OWDNQNSCEAVDNMPBY6F73XZHHKR27YE5AKE23ZZEXOLBK",
+            accountId: "GDD4FBEFMHJ2CCEX64CY5743T2JSZKOWQMTCGFVJKTHUJMD6ASG6H2VU",
+            include: ["balances", "balances.asset"],
+            pagination: nil,
             completion: { [weak self] (result) in
                 switch result {
                     

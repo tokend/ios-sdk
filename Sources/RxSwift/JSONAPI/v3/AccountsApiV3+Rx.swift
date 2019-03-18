@@ -8,12 +8,16 @@ extension Reactive where Base: AccountsRequestBuilderV3 {
     
     public func buildAccountRequest(
         accountId: String,
+        include: [String]?,
+        pagination: RequestPagination?,
         sendDate: Date = Date()
         ) -> Single<JSONAPI.RequestModel> {
         
         return Single<JSONAPI.RequestModel>.create(subscribe: { (event) -> Disposable in
             self.base.buildAccountRequest(
                 accountId: accountId,
+                include: include,
+                pagination: pagination,
                 sendDate: sendDate,
                 completion: { (request) in
                     guard let request = request else {
@@ -53,10 +57,17 @@ extension Reactive where Base: AccountsRequestBuilderV3 {
 
 extension Reactive where Base: AccountsApiV3 {
     
-    public func requestAccount(accountId: String) -> Single<Document<AccountResource>> {
+    public func requestAccount(
+        accountId: String,
+        include: [String]?,
+        pagination: RequestPagination
+        ) -> Single<Document<AccountResource>> {
+        
         return Single<Document<AccountResource>>.create(subscribe: { (event) in
             let cancelable = self.base.requestAccount(
                 accountId: accountId,
+                include: include,
+                pagination: pagination,
                 completion: { (result) in
                     switch result {
                         

@@ -53,12 +53,16 @@ public class AccountsApiV3: JSONAPI.BaseApi {
     /// The result of request will be fetched in `completion` block
     /// - Parameters:
     ///   - accountId: Identifier of account to be fetched.
+    ///   - include: Resource to include.
+    ///   - pagination: Pagination option.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `RequestAccountResult<AccountResource>`
     /// - Returns: `Cancelable`
     @discardableResult
     public func requestAccount(
         accountId: String,
+        include: [String]?,
+        pagination: RequestPagination?,
         completion: @escaping (_ result: RequestSingleResult<AccountResource>) -> Void
         ) -> Cancelable {
         
@@ -66,6 +70,8 @@ public class AccountsApiV3: JSONAPI.BaseApi {
         
         self.requestBuilder.buildAccountRequest(
             accountId: accountId,
+            include: include,
+            pagination: pagination,
             completion: { [weak self] (request) in
                 guard let request = request else {
                     completion(.failure(JSONAPIError.failedToSignRequest))
