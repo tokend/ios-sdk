@@ -29,12 +29,18 @@ public class AssetPairsApiV3: JSONAPI.BaseApi {
     /// - Returns: `Cancelable`
     @discardableResult
     public func requestAssetPairs(
+        filters: AssetPairsRequestsFiltersV3,
+        include: [String]? = nil,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
         completion: @escaping (_ result: RequestCollectionResult<AssetPairResource>) -> Void
         ) -> Cancelable {
         
-        let request = self.requestBuilder.buildAssetPairsRequest()
+        let request = self.requestBuilder.buildAssetPairsRequest(
+            filters: filters,
+            include: include,
+            pagination: pagination
+        )
         
         onRequestBuilt?(request)
         

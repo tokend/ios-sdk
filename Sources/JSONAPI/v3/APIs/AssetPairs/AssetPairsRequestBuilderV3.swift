@@ -14,18 +14,23 @@ public class AssetPairsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     /// - Parameters:
     /// - Returns: `RequestModel`.
     public func buildAssetPairsRequest(
-        sendDate: Date = Date()
+        filters: AssetPairsRequestsFiltersV3,
+        include: [String]?,
+        pagination: RequestPagination
         ) -> JSONAPI.RequestModel {
         
         let path = /self.v3/self.assetPairs
         
-        // TODO: Check signing required
+        let queryParameters = self.buildFilterQueryItems(filters.filterItems)
+        
         return self.buildRequest(
-            JSONAPI.BaseRequestBuildModel.simple(
+            JSONAPI.BaseRequestBuildModel.simpleQueryIncludePagination(
                 path: path,
-                method: .get
-            )
-        )
+                method: .get,
+                queryParameters: queryParameters,
+                include: include,
+                pagination: pagination
+        ))
     }
     
     /// Builds request to fetch asset pairs from api
