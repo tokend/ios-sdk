@@ -90,10 +90,10 @@ public class GeneralApi: BaseApi {
     public enum RequestIdentitiesFilter {
         
         /// Filter is used when it is needed to fetch identities by email
-        case email(email: String)
+        case email(_ email: String)
         
         /// Filter is used when it is needed to fetch identities by accountId
-        case accountId(accountId: String)
+        case accountId(_ accountId: String)
     }
     
     /// Method sends request to get identities via email or accountId.

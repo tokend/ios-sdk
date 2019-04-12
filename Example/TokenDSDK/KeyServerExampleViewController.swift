@@ -402,7 +402,7 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
     
     func requestAccountIdForEmail(_ email: String) {
         self.generalApi.requestIdentities(
-        filter: .email(email: email)) { [weak self] (result) in
+        filter: .email(email)) { [weak self] (result) in
             switch result {
             case .succeeded:
                 print("\(#function) - success")
