@@ -1,6 +1,6 @@
 import Foundation
 
-public struct GetAccountIdRequest {
+public struct GetIdentitiesRequest {
     public let url: String
     public let method: RequestMethod
     public let parameters: RequestParameters
