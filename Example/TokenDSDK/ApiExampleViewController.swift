@@ -311,10 +311,23 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     }
     
     func requestAccountIdForEmail(_ email: String) {
-        self.tokenDApi.generalApi.requestAccountId(
-        email: email) { [weak self] (result) in
+        self.tokenDApi.generalApi.requestIdentities(
+            filter: .email(email)) { [weak self] (result) in
             switch result {
             case .succeeded:
+                print("\(#function) - success")
+            case .failed(let error):
+                self?.showError(error)
+            }
+        }
+    }
+    
+    func requestEmailForAccountId(_ accountId: String) {
+        self.tokenDApi.generalApi.requestIdentities(
+        filter: .accountId(accountId)) { [weak self] (result) in
+            switch result {
+            case .succeeded(let data):
+                print(data)
                 print("\(#function) - success")
             case .failed(let error):
                 self?.showError(error)
@@ -450,8 +463,8 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         asset: String
         ) {
         
-        self.tokenDApi.generalApi.requestAccountId(
-            email: Constants.sendTransactionDestinationEmail,
+        self.tokenDApi.generalApi.requestIdentities(
+            filter: .email(Constants.sendTransactionDestinationEmail),
             completion: { result in
                 switch result {
                     

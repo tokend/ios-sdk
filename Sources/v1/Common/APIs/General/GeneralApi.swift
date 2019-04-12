@@ -77,7 +77,7 @@ public class GeneralApi: BaseApi {
     }
     
     /// Model that will be fetched in `completion` block of `GeneralApi.requestAccountId(...)`
-    public enum RequestAccountIdResult {
+    public enum RequestIdentitiesResult {
         
         /// Case of failed response with `ApiErrors` model
         case failed(ApiErrors)
@@ -86,18 +86,28 @@ public class GeneralApi: BaseApi {
         case succeeded(identities: [AccountIdentityResponse])
     }
     
-    /// Method sends request to get account id for according email.
-    /// The result of request will be fetched in `completion` block as `GeneralApi.RequestAccountIdResult`
+    /// Model that is used to define filter whick will be used to fetch identities
+    public enum RequestIdentitiesFilter {
+        
+        /// Filter is used when it is needed to fetch identities by email
+        case email(_ email: String)
+        
+        /// Filter is used when it is needed to fetch identities by accountId
+        case accountId(_ accountId: String)
+    }
+    
+    /// Method sends request to get identities via email or accountId.
+    /// The result of request will be fetched in `completion` block as `GeneralApi.RequestIdentitiesResult`
     /// - Parameters:
-    ///   - email: Email which will be used to fetch account id.
+    ///   - filter: Filter which will be used to fetch identities.
     ///   - completion: Block that will be called when the result will be received.
-    ///   - result: Member of `GeneralApi.RequestAccountIdResult`
-    public func requestAccountId(
-        email: String,
-        completion: @escaping (_ result: RequestAccountIdResult) -> Void
+    ///   - result: Member of `GeneralApi.RequestIdentitiesResult`
+    public func requestIdentities(
+        filter: RequestIdentitiesFilter,
+        completion: @escaping (_ result: RequestIdentitiesResult) -> Void
         ) {
         
-        let request = self.requestBuilder.buildGetAccountIdRequest(email: email)
+        let request = self.requestBuilder.buildGetIdentitiesRequest(filter: filter)
         
         self.network.responseObject(
             ApiDataResponse<[AccountIdentityResponse]>.self,
