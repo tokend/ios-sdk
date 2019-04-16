@@ -88,7 +88,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     @objc func runTest() {
-        self.vc.requestEmailForAccountId(Constants.userAccountId)
+        self.vc.requestTrades()
     }
     
     // MARK: -

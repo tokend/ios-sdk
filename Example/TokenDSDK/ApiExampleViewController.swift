@@ -200,6 +200,27 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                 baseAsset: "BTC",
                 quoteAsset: "ETH"
             ),
+            limit: 20,
+            cursor: nil,
+            completion: { [weak self] (result) in
+                switch result {
+                case .success:
+                    print("\(#function) - success")
+                case .failure(let error):
+                    self?.showError(error)
+                }
+        })
+    }
+    
+    func requestTrades() {
+        self.tokenDApi.orderBookApi.requestTrades(
+            parameters: TradesRequestParameters(
+                baseAsset: "DLT10",
+                quoteAsset: "EUR",
+                orderBookId: "0"
+            ),
+            limit: 20,
+            cursor: nil,
             completion: { [weak self] (result) in
                 switch result {
                 case .success:
