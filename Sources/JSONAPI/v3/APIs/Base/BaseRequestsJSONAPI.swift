@@ -23,7 +23,7 @@ public class RequestModelJSONAPI {
         headers: RequestHeaders? = nil
         ) {
         
-        self.baseUrl = baseUrl
+        self.baseUrl = baseUrl.getTrailingSlashTrimmed()
         self.path = path
         self.method = method
         self.queryItems = queryItems
