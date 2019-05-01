@@ -88,7 +88,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     @objc func runTest() {
-        self.vc.requestTrades()
+        self.requestOrderBookV3()
     }
     
     // MARK: -
@@ -311,15 +311,12 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     func requestOrderBookV3() {
-        let parameters = OrderBookRequestFiltersV3
-            .with(.baseAsset("BTC"))
-            .addFilter(.quoteAsset("USD"))
-            .addFilter(.isBuy(true))
-        
         self.tokenDApi.orderBookApi.requestOffers(
+            baseAsset: "SS0EE",
+            quoteAsset: "EUR",
             orderBookId: "0",
-            filters: parameters,
-            pagination: RequestPagination(.single(index: 0, limit: 10, order: .descending)),
+            maxEntries: 10,
+            include: self.tokenDApi.orderBookApi.requestBuilder.offersIncludeAll,
             completion: { (result) in
                 switch result {
                     

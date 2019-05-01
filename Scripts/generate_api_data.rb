@@ -1,8 +1,8 @@
 require 'yaml'
 require 'json-schema'
 
-$output_root_path = '/Users/dmytronadtochyj/Projects/tokend-gitlab/ios/ios-sdk/Sources/JSONAPI/v3/ApiModels/Generated'
-configs_root_path = '/Users/dmytronadtochyj/Projects/tokend-gitlab/regources/v2/yaml'
+$output_root_path = '.../ios-sdk/Sources/JSONAPI/v3/ApiModels/Generated'
+configs_root_path = '.../regources/v2/yaml'
 
 $output_resources_directory = $output_root_path + '/Resources'
 $output_inner_directory = $output_root_path + '/Inner'

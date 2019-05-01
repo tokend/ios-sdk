@@ -22,43 +22,36 @@ public class OrderBookApiV3: JSONAPI.BaseApi {
     
     /// Returns the list of the placed offers without private details.
     /// - Parameters:
+    ///   - baseAsset: Base asset.
+    ///   - quoteAsset: Quote asset.
     ///   - orderBookId: Order book id. `0` for secondary market, `sale ID` - otherwise.
     ///   - include: Resource to include.
-    ///   - pagination: Pagination option.
     ///   - completion: Block that will be called when the result will be received.
-    ///   - result: Member of `RequestCollectionResult<OrderBookEntryResource>`.
+    ///   - result: Member of `RequestSingleResult<OrderBookResource>`.
     /// - Returns: `Cancelable`
     @discardableResult
     public func requestOffers(
-        orderBookId: String,
-        filters: OrderBookRequestFiltersV3,
+        baseAsset: String,
+        quoteAsset: String,
+        orderBookId: String = "0",
+        maxEntries: Int,
         include: [String]? = nil,
-        pagination: RequestPagination,
-        onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
-        completion: @escaping (_ result: RequestCollectionResult<OrderBookEntryResource>) -> Void
+        completion: @escaping (_ result: RequestSingleResult<OrderBookResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
-        
-        self.requestBuilder.buildOffersRequest(
+        let request = self.requestBuilder.buildOffersRequest(
+            baseAsset: baseAsset,
+            quoteAsset: quoteAsset,
             orderBookId: orderBookId,
-            filters: filters,
-            include: include,
-            pagination: pagination,
-            completion: { [weak self] (request) in
-                guard let request = request else {
-                    completion(.failure(JSONAPIError.failedToSignRequest))
-                    return
-                }
-                
-                onRequestBuilt?(request)
-                
-                cancelable.cancelable = self?.requestCollection(
-                    OrderBookEntryResource.self,
-                    request: request,
-                    completion: completion
-                )
-        })
+            maxEntries: maxEntries,
+            include: include
+        )
+        
+        let cancelable = self.requestSingle(
+            OrderBookResource.self,
+            request: request,
+            completion: completion
+        )
         
         return cancelable
     }

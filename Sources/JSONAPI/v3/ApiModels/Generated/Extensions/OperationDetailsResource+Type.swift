@@ -16,6 +16,7 @@ public enum OperationDetailsType {
     case opCreatePreIssuanceRequestDetails(_ resource: OpCreatePreIssuanceRequestDetailsResource)
     case opCreateSaleRequestDetails(_ resource: OpCreateSaleRequestDetailsResource)
     case opCreateWithdrawRequestDetails(_ resource: OpCreateWithdrawRequestDetailsResource)
+    case opLicenseDetails(_ resource: OpLicenseDetailsResource)
     case opManageAccountRoleDetails(_ resource: OpManageAccountRoleDetailsResource)
     case opManageAccountRuleDetails(_ resource: OpManageAccountRuleDetailsResource)
     case opManageAssetDetails(_ resource: OpManageAssetDetailsResource)
@@ -33,6 +34,7 @@ public enum OperationDetailsType {
     case opPayoutDetails(_ resource: OpPayoutDetailsResource)
     case opReviewRequestDetails(_ resource: OpReviewRequestDetailsResource)
     case opSetFeeDetails(_ resource: OpSetFeeDetailsResource)
+    case opStamlDetails(_ resource: OpStamlDetailsResource)
     case `self`(_ resource: OperationDetailsResource)
 }
 
@@ -63,6 +65,8 @@ extension OperationDetailsResource {
             return .opCreateSaleRequestDetails(resource)
         } else if let resource = self as? OpCreateWithdrawRequestDetailsResource {
             return .opCreateWithdrawRequestDetails(resource)
+        } else if let resource = self as? OpLicenseDetailsResource {
+            return .opLicenseDetails(resource)
         } else if let resource = self as? OpManageAccountRoleDetailsResource {
             return .opManageAccountRoleDetails(resource)
         } else if let resource = self as? OpManageAccountRuleDetailsResource {
@@ -97,6 +101,8 @@ extension OperationDetailsResource {
             return .opReviewRequestDetails(resource)
         } else if let resource = self as? OpSetFeeDetailsResource {
             return .opSetFeeDetails(resource)
+        } else if let resource = self as? OpStamlDetailsResource {
+            return .opStamlDetails(resource)
         } else {
             return .`self`(self)
         }
@@ -140,6 +146,9 @@ extension OperationDetailsResource {
         
         
     case .opCreateWithdrawRequestDetails(let resource):
+        
+        
+    case .opLicenseDetails(let resource):
         
         
     case .opManageAccountRoleDetails(let resource):
@@ -191,6 +200,9 @@ extension OperationDetailsResource {
         
         
     case .opSetFeeDetails(let resource):
+        
+        
+    case .opStamlDetails(let resource):
         
         
     case .`self`(let resource):

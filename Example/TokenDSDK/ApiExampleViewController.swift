@@ -193,25 +193,6 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         })
     }
     
-    func requestOrderBook() {
-        self.tokenDApi.orderBookApi.requestOrderBook(
-            parameters: OrderBookRequestParameters(
-                isBuy: true,
-                baseAsset: "BTC",
-                quoteAsset: "ETH"
-            ),
-            limit: 20,
-            cursor: nil,
-            completion: { [weak self] (result) in
-                switch result {
-                case .success:
-                    print("\(#function) - success")
-                case .failure(let error):
-                    self?.showError(error)
-                }
-        })
-    }
-    
     func requestTrades() {
         self.tokenDApi.orderBookApi.requestTrades(
             parameters: TradesRequestParameters(
