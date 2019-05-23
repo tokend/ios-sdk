@@ -11,7 +11,12 @@ import TokenDWallet
 // swiftlint:disable line_length
 class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderProtocol {
     
-    var privateKey: ECDSA.KeyData?
+    var privateKey: ECDSA.KeyData? = try? ECDSA.KeyData(
+        seed: Base32Check.decodeCheck(
+            expectedVersion: .seedEd25519,
+            encoded: Constants.masterKeySeed
+        )
+    )
     
     func getPrivateKeyData(completion: @escaping (ECDSA.KeyData?) -> Void) {
         completion(self.privateKey)
@@ -62,7 +67,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             configuration: self.apiConfig,
             callbacks: self.apiCallbacks,
             network: self.network,
-            requestSigner: JSONAPI.RequestSigner(keyDataProvider: self.vc)
+            requestSigner: JSONAPI.RequestSigner(keyDataProvider: self)
         )
         return api
     }()
@@ -88,7 +93,12 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     @objc func runTest() {
-        self.requestOrderBookV3()
+        self.requestMovements(
+            account: Constants.userAccountId,
+            completion: { (documents) in
+                print(documents)
+            }
+        )
     }
     
     // MARK: -
@@ -156,6 +166,33 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
         
         self.tokenDApi.historyApi.requestHistory(
+            filters: filters,
+            include: ["effect", "operation.details", "operation"],
+            pagination: pagination,
+            completion: { (result) in
+                switch result {
+                    
+                case .failure(let error):
+                    self.showError(error)
+                    
+                case .success(let document):
+                    completion(document)
+                }
+        })
+    }
+    
+    func requestMovements(
+        account: String,
+        completion: @escaping (_ doc: Document<[ParticipantEffectResource]>) -> Void
+        ) {
+        
+        let filters = MovementsRequestFilterV3.with(
+            .account(account)
+        )
+        
+        let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
+        
+        self.tokenDApi.historyApi.requestMovements(
             filters: filters,
             include: ["effect", "operation.details", "operation"],
             pagination: pagination,
