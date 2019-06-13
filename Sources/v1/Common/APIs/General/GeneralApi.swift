@@ -3,6 +3,13 @@ import Foundation
 /// Class provides functionality that allows to fetch data which is necessary
 /// for other requests building
 public class GeneralApi: BaseApi {
+    
+    // MARK: - Private properties
+    
+    private let transportSecurityErrorStatus: String = "-1022"
+    
+    // MARK: - Public properties
+    
     let requestBuilder: GeneralRequestBuilder
     
     public override init(apiStack: BaseApiStack) {
@@ -22,6 +29,7 @@ public class GeneralApi: BaseApi {
         public enum RequestError: Swift.Error, LocalizedError {
             case failedToDecode(NetworkInfoResponse)
             case requestError(ApiErrors)
+            case transportSecurity
             
             // MARK: - Swift.Error
             
@@ -31,6 +39,8 @@ public class GeneralApi: BaseApi {
                     return "Failed to decode network info"
                 case .requestError(let errors):
                     return errors.localizedDescription
+                case .transportSecurity:
+                    return "HTTP connections are restricted because of iOS security policy"
                 }
             }
         }
@@ -71,7 +81,11 @@ public class GeneralApi: BaseApi {
                     }
                     
                 case .failure(let errors):
-                    completion(.failed(.requestError(errors)))
+                    if errors.contains(status: self.transportSecurityErrorStatus) {
+                        completion(.failed(.transportSecurity))
+                    } else {
+                        completion(.failed(.requestError(errors)))
+                    }
                 }
         }
     }
