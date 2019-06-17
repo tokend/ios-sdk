@@ -23,7 +23,6 @@ open class OrderBookEntryResource: Resource {
         
         // relations
         case baseAsset
-        case offer
         case quoteAsset
     }
     
@@ -61,10 +60,6 @@ open class OrderBookEntryResource: Resource {
     
     open var baseAsset: AssetResource? {
         return self.relationSingleOptionalValue(key: CodingKeys.baseAsset)
-    }
-    
-    open var offer: OfferResource? {
-        return self.relationSingleOptionalValue(key: CodingKeys.offer)
     }
     
     open var quoteAsset: AssetResource? {

@@ -8,7 +8,7 @@ import DLJSONAPI
 open class OpPaymentDetailsResource: OperationDetailsResource {
     
     open override class var resourceType: String {
-        return "operations-payment-v2"
+        return "operations-payment"
     }
     
     public enum CodingKeys: String, CodingKey {
