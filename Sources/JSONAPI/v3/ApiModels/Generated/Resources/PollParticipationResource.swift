@@ -3,23 +3,23 @@
 import Foundation
 import DLJSONAPI
 
-// MARK: - PublicKeyEntryResource
+// MARK: - PollParticipationResource
 
-open class PublicKeyEntryResource: Resource {
+open class PollParticipationResource: Resource {
     
     open override class var resourceType: String {
-        return "public-key-entries"
+        return "poll-outcome"
     }
     
     public enum CodingKeys: String, CodingKey {
         // relations
-        case accounts
+        case votes
     }
     
     // MARK: Relations
     
-    open var accounts: [AccountResource]? {
-        return self.relationCollectionOptionalValue(key: CodingKeys.accounts)
+    open var votes: [VoteResource]? {
+        return self.relationCollectionOptionalValue(key: CodingKeys.votes)
     }
     
 }
