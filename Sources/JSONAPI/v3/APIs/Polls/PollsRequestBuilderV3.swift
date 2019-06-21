@@ -11,6 +11,7 @@ public class PollsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     
     // MARK: - Public
     
+    // Builds the request to fetch polls.
     public func buildPollsRequest(
         filter: PollsRequestFiltersV3,
         pagination: RequestPagination
@@ -30,6 +31,7 @@ public class PollsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         )
     }
     
+    // Builds the request to fetch poll by id.
     public func buildPollByIdRequest(
         pollId: String
         ) -> JSONAPI.RequestModel {
@@ -43,6 +45,7 @@ public class PollsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         )
     }
     
+    // Builds the request to fetch votes for poll with given id.
     public func buildVotesRequest(
         pollId: String,
         pagination: RequestPagination
@@ -57,6 +60,7 @@ public class PollsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         )
     }
     
+    // Builds the request to fetch votes for voter with given accountId, for poll with given id.
     public func buildVotesByIdRequest(
         pollId: String,
         voterAccountId: String,
@@ -73,6 +77,7 @@ public class PollsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         )
     }
     
+    // Builds the request to fetch votes for voter with given accountId.
     public func buildVotesByIdRequest(
         voterAccountId: String,
         pagination: RequestPagination
