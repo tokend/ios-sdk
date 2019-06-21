@@ -93,12 +93,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     @objc func runTest() {
-        self.requestMovements(
-            account: Constants.userAccountId,
-            completion: { (documents) in
-                print(documents)
-            }
-        )
+        self.requestPolls()
     }
     
     // MARK: -
@@ -116,6 +111,108 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
                     
                 case .success(let document):
                     print("account document: \(document)")
+                }
+        })
+    }
+    
+    func requestPolls() {
+        let filter = PollsRequestFiltersV3.with(
+            .owner("GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB")
+        )
+        let single = RequestPagination.Option.single(
+            index: 0,
+            limit: 10,
+            order: .descending
+        )
+        let pagination = RequestPagination(single)
+        _ = self.tokenDApi.pollsApi.requestPolls(
+            filters: filter,
+            pagination: pagination,
+            completion: { (result) in
+                switch result {
+                case .failure(let error):
+                    print(error.localizedDescription)
+                case .success(let document):
+                    guard let resources = document.data else {
+                        print("Data is empty.........")
+                        return
+                    }
+                    print(resources)
+                }
+        })
+    }
+    
+    private var loadAllVotesController: LoadAllResourcesController<VoteResource>?
+    func requestVotes() {
+        let strategy = IndexedPaginationStrategy(
+            index: nil,
+            limit: 1,
+            order: .descending
+        )
+        let pagination = RequestPagination( .strategy(strategy))
+        self.loadAllVotesController = LoadAllResourcesController<VoteResource>(
+            requestPagination: pagination
+        )
+        
+        self.loadAllVotesController?.loadResources(
+            loadPage: { (pagination, completion) in
+                _ = self.tokenDApi.pollsApi.requestVotesById(
+                    voterAccountId: "GCREPRFV33DNIH5DE2KUXQZAKNJBR5CG4AO7T3ICGCYSMDTZE635CPPD",
+                    pagination: pagination,
+                    completion: { (result) in
+                        switch result {
+                            
+                        case .failure(let error):
+                            completion(.failed(error))
+                            
+                        case .success(let document):
+                            let data = document.data ?? []
+                            completion(.succeeded(data))
+                        }
+                })
+        }, completion: { (result, data) in
+            switch result {
+            case .failed(let error):
+                print("All votes loading failure: \(error)\n loaded data\n\(data)")
+                
+            case .succeded:
+                print("Success")
+                print(data)
+            }
+        })
+    }
+    
+    private var loadAllAssetsController: LoadAllResourcesController<AssetResource>?
+    func requestAssetsV3() {
+        let paginationStrategy = IndexedPaginationStrategy(index: nil, limit: 2, order: .ascending)
+        self.loadAllAssetsController = LoadAllResourcesController(
+            requestPagination: RequestPagination(.strategy(paginationStrategy))
+        )
+        
+        self.loadAllAssetsController?.loadResources(
+            loadPage: { [weak self] (pagination, completion) in
+                self?.tokenDApi.assetsApi.requestAssets(
+                    pagination: pagination,
+                    completion: { (result) in
+                        switch result {
+                            
+                        case .failure(let error):
+                            completion(.failed(error))
+                            
+                        case .success(let document):
+                            let data = document.data ?? []
+                            completion(.succeeded(data))
+                        }
+                })
+            },
+            completion: { (result, data) in
+                switch result {
+                    
+                case .failed(let error):
+                    print("All assets load failed: \(error). Loaded: \(data)")
+                    
+                case .succeded:
+                    print("All assets loaded: \(data)")
                 }
         })
     }
@@ -258,41 +355,6 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         })
     }
     
-    private var loadAllAssetsController: LoadAllResourcesController<AssetResource>?
-    func requestAssetsV3() {
-        let paginationStrategy = IndexedPaginationStrategy(index: nil, limit: 2, order: .ascending)
-        self.loadAllAssetsController = LoadAllResourcesController(
-            requestPagination: RequestPagination(.strategy(paginationStrategy))
-        )
-        
-        self.loadAllAssetsController?.loadResources(
-            loadPage: { [weak self] (pagination, completion) in
-                self?.tokenDApi.assetsApi.requestAssets(
-                    pagination: pagination,
-                    completion: { (result) in
-                        switch result {
-                            
-                        case .failure(let error):
-                            completion(.failed(error))
-                            
-                        case .success(let document):
-                            let data = document.data ?? []
-                            completion(.succeeded(data))
-                        }
-                })
-            },
-            completion: { (result, data) in
-                switch result {
-                    
-                case .failed(let error):
-                    print("All assets load failed: \(error). Loaded: \(data)")
-                    
-                case .succeded:
-                    print("All assets loaded: \(data)")
-                }
-        })
-    }
-    
     func requestAssetByIdV3(assetId: String) {
         let assetsApi = self.tokenDApi.assetsApi
         
@@ -418,24 +480,24 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         self.present(vc, animated: true, completion: nil)
     }
     
-//    func uploadDocument() {
-//        let vc = UIDocumentPickerViewController(
-//            documentTypes: [
-//                kUTTypePDF,
-//                kUTTypeGIF,
-//                kUTTypeJPEG,
-//                kUTTypePNG,
-//                kUTTypeTIFF
-//                ].map({ (type) -> String in
-//                    return type as String
-//                }),
-//            in: .import
-//        )
-//
-//        vc.delegate = self
-//
-//        self.present(vc, animated: true, completion: nil)
-//    }
+    //    func uploadDocument() {
+    //        let vc = UIDocumentPickerViewController(
+    //            documentTypes: [
+    //                kUTTypePDF,
+    //                kUTTypeGIF,
+    //                kUTTypeJPEG,
+    //                kUTTypePNG,
+    //                kUTTypeTIFF
+    //                ].map({ (type) -> String in
+    //                    return type as String
+    //                }),
+    //            in: .import
+    //        )
+    //
+    //        vc.delegate = self
+    //
+    //        self.present(vc, animated: true, completion: nil)
+    //    }
     
     enum UploadOption {
         
