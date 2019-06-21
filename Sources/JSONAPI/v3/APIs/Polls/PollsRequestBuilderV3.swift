@@ -33,30 +33,40 @@ public class PollsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     
     // Builds the request to fetch poll by id.
     public func buildPollByIdRequest(
-        pollId: String
-        ) -> JSONAPI.RequestModel {
+        pollId: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+        ) {
 
         let path = /self.v3/self.polls/pollId
-        return self.buildRequest(
+        self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(
                 path: path,
                 method: .get
-            )
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
         )
     }
     
     // Builds the request to fetch votes for poll with given id.
     public func buildVotesRequest(
         pollId: String,
-        pagination: RequestPagination
-        ) -> JSONAPI.RequestModel {
+        pagination: RequestPagination,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+        ) {
         
         let path = /self.v3/self.polls/pollId/self.relationships/self.votes
-        return self.buildRequest(
+        self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(
                 path: path,
                 method: .get
-            )
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
         )
     }
     
@@ -64,8 +74,10 @@ public class PollsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     public func buildVotesByIdRequest(
         pollId: String,
         voterAccountId: String,
-        pagination: RequestPagination
-        ) -> JSONAPI.RequestModel {
+        pagination: RequestPagination,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+        ) {
         
         let path = /self.v3/self.polls/pollId/self.relationships/self.votes/voterAccountId
         return self.buildRequest(
@@ -73,15 +85,20 @@ public class PollsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
                 path: path,
                 method: .get,
                 pagination: pagination
-            )
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
         )
     }
     
     // Builds the request to fetch votes for voter with given accountId.
     public func buildVotesByIdRequest(
         voterAccountId: String,
-        pagination: RequestPagination
-        ) -> JSONAPI.RequestModel {
+        pagination: RequestPagination,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+        ) {
         
         let path = /self.v3/self.votes/voterAccountId
         return self.buildRequest(
@@ -89,7 +106,10 @@ public class PollsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
                 path: path,
                 method: .get,
                 pagination: pagination
-            )
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
         )
     }
 }

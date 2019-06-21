@@ -28,6 +28,7 @@ public class PollsApiV3: JSONAPI.BaseApi {
     public func requestPolls(
         filters: PollsRequestFiltersV3,
         pagination: RequestPagination,
+        onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
         completion: @escaping(_ result: RequestCollectionResult<PollResource>) -> Void
         ) -> Cancelable {
         
@@ -58,12 +59,19 @@ public class PollsApiV3: JSONAPI.BaseApi {
         
         var cancellable = self.network.getEmptyCancelable()
         
-        let request = self.requestBuilder.buildPollByIdRequest(pollId: pollId)
-        cancellable.cancelable = self.requestSingle(
-            PollResource.self,
-            request: request,
-            completion: completion
-        )
+        self.requestBuilder.buildPollByIdRequest(
+            pollId: pollId,
+            completion: { [weak self] (requestModel) in
+                guard let request = requestModel else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                cancellable.cancelable = self?.requestSingle(
+                    PollResource.self,
+                    request: request,
+                    completion: completion
+                )
+            })
         return cancellable
     }
     
@@ -77,20 +85,27 @@ public class PollsApiV3: JSONAPI.BaseApi {
     public func requestVotes(
         pollId: String,
         pagination: RequestPagination,
+        onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
         completion: @escaping(_ result: RequestCollectionResult<VoteResource>) -> Void
         ) -> Cancelable {
         
         var cancellable = self.network.getEmptyCancelable()
         
-        let request = self.requestBuilder.buildVotesRequest(
+        self.requestBuilder.buildVotesRequest(
             pollId: pollId,
-            pagination: pagination
-        )
-        cancellable.cancelable = self.requestCollection(
-            VoteResource.self,
-            request: request,
-            completion: completion
-        )
+            pagination: pagination,
+            completion: { [weak self] (requestModel) in
+                guard let request = requestModel else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                onRequestBuilt?(request)
+                cancellable.cancelable = self?.requestCollection(
+                    VoteResource.self,
+                    request: request,
+                    completion: completion
+                )
+        })
         return cancellable
     }
     
@@ -106,21 +121,28 @@ public class PollsApiV3: JSONAPI.BaseApi {
         pollId: String,
         voterAccountId: String,
         pagination: RequestPagination,
+        onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
         completion: @escaping(_ result: RequestCollectionResult<VoteResource>) -> Void
         ) -> Cancelable {
         
         var cancellable = self.network.getEmptyCancelable()
         
-        let request = self.requestBuilder.buildVotesByIdRequest(
+        self.requestBuilder.buildVotesByIdRequest(
             pollId: pollId,
             voterAccountId: voterAccountId,
-            pagination: pagination
-        )
-        cancellable.cancelable = self.requestCollection(
-            VoteResource.self,
-            request: request,
-            completion: completion
-        )
+            pagination: pagination,
+            completion: { [weak self] (requestModel) in
+                guard let request = requestModel else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                onRequestBuilt?(request)
+                cancellable.cancelable = self?.requestCollection(
+                    VoteResource.self,
+                    request: request,
+                    completion: completion
+                )
+        })
         return cancellable
     }
     
@@ -134,20 +156,27 @@ public class PollsApiV3: JSONAPI.BaseApi {
     public func requestVotesById(
         voterAccountId: String,
         pagination: RequestPagination,
+        onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
         completion: @escaping(_ result: RequestCollectionResult<VoteResource>) -> Void
         ) -> Cancelable {
         
         var cancellable = self.network.getEmptyCancelable()
         
-        let request = self.requestBuilder.buildVotesByIdRequest(
+        self.requestBuilder.buildVotesByIdRequest(
             voterAccountId: voterAccountId,
-            pagination: pagination
-        )
-        cancellable.cancelable = self.requestCollection(
-            VoteResource.self,
-            request: request,
-            completion: completion
-        )
+            pagination: pagination,
+            completion: { [weak self] (requestModel) in
+                guard let request = requestModel else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                onRequestBuilt?(request)
+                cancellable.cancelable = self?.requestCollection(
+                    VoteResource.self,
+                    request: request,
+                    completion: completion
+                )
+            })
         return cancellable
     }
 }
