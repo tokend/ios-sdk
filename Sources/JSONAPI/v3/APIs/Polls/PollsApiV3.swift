@@ -38,6 +38,7 @@ public class PollsApiV3: JSONAPI.BaseApi {
             filter: filters,
             pagination: pagination
         )
+        onRequestBuilt?(request)
         cancellable.cancelable = self.requestCollection(
             PollResource.self,
             request: request,
