@@ -19,14 +19,14 @@ open class BusinessResource: Resource {
     // MARK: Attributes
     
     open var name: String {
-        return self.codableOptionalValue(key: CodingKeys.name) ?? ""
+        return self.stringOptionalValue(key: CodingKeys.name) ?? ""
     }
     
     open var accountId: String {
-        return self.codableOptionalValue(key: CodingKeys.accountId) ?? ""
+        return self.stringOptionalValue(key: CodingKeys.accountId) ?? ""
     }
     
     open var logoLink: String {
-        return self.codableOptionalValue(key: CodingKeys.logoLink) ?? ""
+        return self.stringOptionalValue(key: CodingKeys.logoLink) ?? ""
     }
 }
