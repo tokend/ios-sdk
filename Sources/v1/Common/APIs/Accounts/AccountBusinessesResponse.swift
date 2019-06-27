@@ -8,7 +8,7 @@ public struct AccountBusinessesResponse: Decodable {
 extension AccountBusinessesResponse {
     
     public struct Data: Decodable {
-        public let id: UInt64
+        public let id: String
         public let type: String
         public let attributes: Attributes
     }

@@ -183,6 +183,7 @@ public class AccountsApi: BaseApi {
                     AccountBusinessesResponse.self,
                     url: request.url,
                     method: request.method,
+                    headers: request.signedHeaders,
                     completion: { (result) in
                         switch result {
                             
@@ -194,7 +195,6 @@ public class AccountsApi: BaseApi {
                         }
                 })
         })
-        
         
         return cancelable
     }
