@@ -183,22 +183,6 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         })
     }
     
-    func requestAccountBusinesses() {
-        self.accountApi.requestAccountBusinesses(
-            accountId: Constants.userAccountId,
-            completion: { (result) in
-                switch result {
-                    
-                case .failure(let error):
-                    print("Error: \(error)")
-                    
-                case .success(let businesses):
-                    print("Success: \(businesses)")
-                }
-            }
-        )
-    }
-    
     func requestDefaultSignerRoleId() {
         self.keyServerApi.requestDefaultSignerRoleId(
             completion: { (result) in

@@ -138,6 +138,48 @@ public class AccountsApiV3: JSONAPI.BaseApi {
         return cancelable
     }
     
+    /// Method sends request to get businesses for exact account.
+    /// The result of request will be fetched in `completion` block
+    /// - Parameters:
+    ///   - accountId: Identifier of account fro which businesses should be fetched.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `RequestCollectionResult<BusinessResource>`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func requestBusinesses(
+        accountId: String,
+        completion: @escaping (_ result: RequestCollectionResult<BusinessResource>) -> Void
+        ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildBusinessesRequest(
+            accountId: accountId,
+            completion: { [weak self] (request) in
+                
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self?.requestCollection(
+                    BusinessResource.self,
+                    request: request,
+                    completion: { (result) in
+                        switch result {
+                            
+                        case .failure(let error):
+                            completion(.failure(error))
+                            
+                        case .success(let document):
+                            completion(.success(document))
+                        }
+                })
+        })
+        
+        return cancelable
+    }
+    
     /// Returns the list of the reviewable requests.
     /// - Parameters:
     ///   - filters: Request filters.

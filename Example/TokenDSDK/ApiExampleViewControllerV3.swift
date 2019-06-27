@@ -94,7 +94,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     @objc func runTest() {
-        self.vc.requestAccountBusinesses()
+        self.requestBusinesses()
     }
     
     // MARK: -
@@ -112,6 +112,24 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
                     
                 case .success(let document):
                     print("account document: \(document)")
+                }
+        })
+    }
+    
+    func requestBusinesses() {
+        self.tokenDApi.accountsApi.requestBusinesses(
+            accountId: Constants.userAccountId,
+            completion: { (result) in
+                switch result {
+                case .failure(let error):
+                    print("ERROR: \(error)")
+                    
+                case .success(let document):
+                    guard let data = document.data else {
+                        print("ERROR: EMPTY")
+                        return
+                    }
+                    print("Success: \(data)")
                 }
         })
     }
