@@ -103,7 +103,7 @@ public class AccountsApi: BaseApi {
     }
     
     /// Method sends request to get signers for according account from api.
-    /// The result of request will be fetched in `completion` block as `AccountsApi.RequestAccountResult`
+    /// The result of request will be fetched in `completion` block as `AccountsApi.RequestSignersResult`
     /// - Parameters:
     ///   - accountId: Identifier of account for which signers will be fetched.
     ///   - sendDate: Send time of request.
@@ -144,6 +144,57 @@ public class AccountsApi: BaseApi {
                         }
                 })
         })
+        
+        return cancelable
+    }
+    
+    /// Model that will be fetched in completion block of `AccountsApi.requestAccountBusinesses(...)`
+    public enum RequestAccountBusinessesResult {
+        
+        /// Case of successful response from api with `AccountBusinessesResponse` model
+        case success(businesses: AccountBusinessesResponse)
+        
+        /// Case of failed response with `ApiErrors` model
+        case failure(ApiErrors)
+    }
+    
+    /// Method sends request to get signers for according account from api.
+    /// The result of request will be fetched in `completion` block as `AccountsApi.RequestAccountBusinessesResult`
+    /// - Parameters:
+    ///   - accountId: Identifier of account for which signers will be fetched.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `AccountsApi.RequestAccountBusinessesResult`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func requestAccountBusinesses(
+        accountId: String,
+        completion: @escaping (_ result: RequestAccountBusinessesResult) -> Void
+        ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+        self.requestBuilder.buildAccountBusinessesRequest(
+            accountId: accountId,
+            completion: { [weak self] (request) in
+                guard let request = request else {
+                    completion(.failure(.failedToSignRequest))
+                    return
+                }
+                cancelable.cancelable = self?.network.responseObject(
+                    AccountBusinessesResponse.self,
+                    url: request.url,
+                    method: request.method,
+                    completion: { (result) in
+                        switch result {
+                            
+                        case .failure(let errors):
+                            completion(.failure(errors))
+                            
+                        case .success(let businesses):
+                            completion(.success(businesses: businesses))
+                        }
+                })
+        })
+        
         
         return cancelable
     }

@@ -4,8 +4,8 @@ import Foundation
 
 public enum RequestDetailsRelatedToQuoteAsset {
     
-    case aSwapBidRequestDetails(_ resource: ASwapBidRequestDetailsResource)
-    case atomicSwapRequestDetails(_ resource: AtomicSwapRequestDetailsResource)
+    case atomicSwapAskRequestDetails(_ resource: AtomicSwapAskRequestDetailsResource)
+    case atomicSwapBidRequestDetails(_ resource: AtomicSwapBidRequestDetailsResource)
     case saleRequestDetails(_ resource: SaleRequestDetailsResource)
     case `self`(_ resource: RequestDetailsResource)
 }
@@ -13,10 +13,10 @@ public enum RequestDetailsRelatedToQuoteAsset {
 extension RequestDetailsResource {
     
     public var requestDetailsRelatedToQuoteAsset: RequestDetailsRelatedToQuoteAsset {
-        if let resource = self as? ASwapBidRequestDetailsResource {
-            return .aSwapBidRequestDetails(resource)
-        } else if let resource = self as? AtomicSwapRequestDetailsResource {
-            return .atomicSwapRequestDetails(resource)
+        if let resource = self as? AtomicSwapAskRequestDetailsResource {
+            return .atomicSwapAskRequestDetails(resource)
+        } else if let resource = self as? AtomicSwapBidRequestDetailsResource {
+            return .atomicSwapBidRequestDetails(resource)
         } else if let resource = self as? SaleRequestDetailsResource {
             return .saleRequestDetails(resource)
         } else {
@@ -28,10 +28,10 @@ extension RequestDetailsResource {
 /*
     switch type {
         
-    case .aSwapBidRequestDetails(let resource):
+    case .atomicSwapAskRequestDetails(let resource):
         
         
-    case .atomicSwapRequestDetails(let resource):
+    case .atomicSwapBidRequestDetails(let resource):
         
         
     case .saleRequestDetails(let resource):

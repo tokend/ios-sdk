@@ -8,6 +8,8 @@ public class AccountsRequestBuilder: BaseApiRequestBuilder {
     private let signersPathComponent: String = "signers"
     private let authResultPathComponent: String = "authresult"
     private let blobs: String = "blobs"
+    private let clients = "integrations/dns/clients"
+    private let businesses: String = "businesses"
     
     // MARK: - Public
     
@@ -47,6 +49,28 @@ public class AccountsRequestBuilder: BaseApiRequestBuilder {
         
         let baseUrl = self.apiConfiguration.urlString
         let url = baseUrl.addPath(self.accounts).addPath(accountId).addPath(self.signersPathComponent)
+        
+        self.buildRequestSigned(
+            baseUrl: baseUrl,
+            url: url,
+            method: .get,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+    
+    /// Builds request to fetch account's businesses data from api
+    /// - Parameters:
+    ///   - accountId: Identifier of account for which businesses will be fetched.
+    ///   - sendDate: Send time of request.
+    ///   - completion: Returns `SignersRequest` or nil.
+    public func buildAccountBusinessesRequest(
+        accountId: String,
+        sendDate: Date = Date(),
+        completion: @escaping (AccountBussinessesRequest?) -> Void
+        ) {
+        let baseUrl = self.apiConfiguration.urlString
+        let url = baseUrl.addPath(self.clients).addPath(accountId).addPath(self.businesses)
         
         self.buildRequestSigned(
             baseUrl: baseUrl,

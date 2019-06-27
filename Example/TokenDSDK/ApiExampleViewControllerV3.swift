@@ -9,6 +9,7 @@ import TokenDSDK
 import TokenDWallet
 
 // swiftlint:disable line_length
+// swiftlint:disable type_body_length
 class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderProtocol {
     
     var privateKey: ECDSA.KeyData? = try? ECDSA.KeyData(
@@ -93,7 +94,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     @objc func runTest() {
-        self.requestPolls()
+        self.vc.requestAccountBusinesses()
     }
     
     // MARK: -
@@ -770,4 +771,5 @@ extension ApiExampleViewControllerV3: UIImagePickerControllerDelegate, UINavigat
         }
     }
 }
+// swiftlint:enable type_body_length
 // swiftlint:enable line_length
