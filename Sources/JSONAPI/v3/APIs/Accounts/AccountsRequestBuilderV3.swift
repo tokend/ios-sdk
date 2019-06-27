@@ -9,6 +9,8 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     private let accounts = "accounts"
     private let signers = "signers"
     private let changeRoleRequests = "change_role_requests"
+    private let clients = "integrations/dns/clients"
+    private let businesses: String = "businesses"
     
     // MARK: - Public
     
@@ -56,6 +58,29 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         ) {
         
         let path = /self.v3/self.accounts/accountId/self.signers
+        
+        self.buildRequest(
+            JSONAPI.BaseRequestBuildModel.simple(
+                path: path,
+                method: .get
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+    
+    /// Builds request to fetch businesses for client
+    /// - Parameters:
+    ///   - accountId: Identifier of account for which businesses should be fetched.
+    ///   - completion: Returns `RequestModel` or nil.
+    public func buildBusinessesRequest(
+        accountId: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+        ) {
+        
+        let path = /self.clients/accountId/self.businesses
         
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(

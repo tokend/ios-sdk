@@ -542,6 +542,8 @@ add_line 'import DLJSONAPI'
 break_line
 add_line 'enum AllResources {'
 indent_break 1
+
+add_indented_line 1, line: '// swiftlint:disable function_body_length'
 add_indented_line 1, line: 'public static func registerAllResources() {'
 add_indented_line 2, line: 'let allResources: [Resource.Type] = ['
 
@@ -553,7 +555,12 @@ add_indented_line 2, line: ''
 add_indented_line 2, line: 'for res in allResources {'
 add_indented_line 3, line: 'Context.registerClass(res)'
 add_indented_line 2, line: '}'
+add_indented_line 2, line: ''
+add_indented_line 2, line: 'for res in ManualResources.resources {'
+add_indented_line 3, line: 'Context.registerClass(res)'
+add_indented_line 2, line: '}'
 add_indented_line 1, line: '}'
+add_indented_line 1, line: '// swiftlint:enable function_body_length'
 close_block 0
 
 output_file_path = $output_root_path + '/AllResources.swift'

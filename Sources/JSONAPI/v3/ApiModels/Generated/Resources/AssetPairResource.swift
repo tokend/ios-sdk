@@ -13,6 +13,8 @@ open class AssetPairResource: Resource {
     
     public enum CodingKeys: String, CodingKey {
         // attributes
+        case maxPriceStep
+        case physicalPriceCorrection
         case policies
         case price
         
@@ -22,6 +24,14 @@ open class AssetPairResource: Resource {
     }
     
     // MARK: Attributes
+    
+    open var maxPriceStep: Decimal {
+        return self.decimalOptionalValue(key: CodingKeys.maxPriceStep) ?? 0.0
+    }
+    
+    open var physicalPriceCorrection: Decimal {
+        return self.decimalOptionalValue(key: CodingKeys.physicalPriceCorrection) ?? 0.0
+    }
     
     open var policies: XdrEnumBitmask? {
         return self.codableOptionalValue(key: CodingKeys.policies)

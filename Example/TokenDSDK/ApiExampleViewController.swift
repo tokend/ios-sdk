@@ -8,7 +8,12 @@ import SnapKit
 // swiftlint:disable file_length type_body_length force_try line_length
 class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProtocol {
     
-    var privateKey: ECDSA.KeyData?
+    var privateKey: ECDSA.KeyData? = try? ECDSA.KeyData(
+        seed: try! Base32Check.decodeCheck(
+            expectedVersion: .seedEd25519,
+            encoded: Constants.masterKeySeed
+        )
+    )
     
     func getPrivateKeyData(completion: @escaping (ECDSA.KeyData?) -> Void) {
         completion(self.privateKey)

@@ -103,7 +103,7 @@ public class AccountsApi: BaseApi {
     }
     
     /// Method sends request to get signers for according account from api.
-    /// The result of request will be fetched in `completion` block as `AccountsApi.RequestAccountResult`
+    /// The result of request will be fetched in `completion` block as `AccountsApi.RequestSignersResult`
     /// - Parameters:
     ///   - accountId: Identifier of account for which signers will be fetched.
     ///   - sendDate: Send time of request.
