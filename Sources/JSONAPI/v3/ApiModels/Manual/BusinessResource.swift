@@ -13,7 +13,7 @@ open class BusinessResource: Resource {
         // attributes
         case name
         case accountId
-        case logoLink
+        case logo
     }
     
     // MARK: Attributes
@@ -26,7 +26,7 @@ open class BusinessResource: Resource {
         return self.stringOptionalValue(key: CodingKeys.accountId) ?? ""
     }
     
-    open var logoLink: String {
-        return self.stringOptionalValue(key: CodingKeys.logoLink) ?? ""
+    open var logoJSON: String {
+        return self.stringOptionalValue(key: CodingKeys.logo) ?? ""
     }
 }

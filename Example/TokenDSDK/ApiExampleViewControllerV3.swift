@@ -94,15 +94,15 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     @objc func runTest() {
-        self.requestBusinesses()
+        self.requestAccount()
     }
     
     // MARK: -
     
     func requestAccount() {
         self.tokenDApi.accountsApi.requestAccount(
-            accountId: "GDD4FBEFMHJ2CCEX64CY5743T2JSZKOWQMTCGFVJKTHUJMD6ASG6H2VU",
-            include: ["balances", "balances.asset"],
+            accountId: Constants.userAccountId,
+            include: ["external_system_ids"],
             pagination: nil,
             completion: { [weak self] (result) in
                 switch result {
