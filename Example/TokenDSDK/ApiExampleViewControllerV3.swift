@@ -94,7 +94,15 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     @objc func runTest() {
-        self.requestAccount()
+        self.vc.performLogin(onSuccess: { [weak self] walletData in
+            guard let key = self?.privateKey else {
+                    print("ERROR")
+                    return
+            }
+            self?.vc.sendTransaction(walletData: walletData, key: key)
+            }, onFailed: { _ in 
+                
+            })
     }
     
     // MARK: -

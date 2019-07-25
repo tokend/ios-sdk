@@ -154,7 +154,12 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     }
     
     @objc func runTest() {
-        
+        guard let walletData = self.walletData,
+            let key = self.privateKey else {
+                print("ERRRROROROR")
+                return
+        }
+        self.sendTransaction(walletData: walletData, key: key)
     }
     
     // MARK: -
@@ -436,7 +441,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                             
                         case .success(let balances):
                             if let balance = balances.first(where: { (balanceDetails) -> Bool in
-                                return balanceDetails.asset == "BTC"
+                                return balanceDetails.asset == "ECO"
                             }) {
                                 self.sendTransaction(
                                     networkInfo: networkInfo,
@@ -581,8 +586,8 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                     case .failure(let error):
                         print("\(#function) - failure: \(error)")
                         
-                    case .success:
-                        print("\(#function) - success")
+                    case .success(let response):
+                        print("\(#function) - success \(response.ledger)")
                     }
             })
         } catch let error {
