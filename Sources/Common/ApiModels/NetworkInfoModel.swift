@@ -17,6 +17,7 @@ public struct NetworkInfoModel {
     public let requestTime: Date
     public let responseTime: Date
     public let precision: Int64
+    public let ledger: UInt64
     
     // MARK: -
     
@@ -28,7 +29,8 @@ public struct NetworkInfoModel {
         networkTime: Int64,
         requestTime: Date,
         responseTime: Date,
-        precision: Int64
+        precision: Int64,
+        ledger: UInt64
         ) {
         
         guard let networkParams = NetworkParams(passphrase: networkPassphrase) else {
@@ -43,6 +45,7 @@ public struct NetworkInfoModel {
         self.requestTime = requestTime
         self.responseTime = responseTime
         self.precision = precision
+        self.ledger = ledger
     }
     
     public init?(
@@ -59,7 +62,8 @@ public struct NetworkInfoModel {
             networkTime: networkInfoResponse.currentTime,
             requestTime: requestTime,
             responseTime: responseTime,
-            precision: networkInfoResponse.precision
+            precision: networkInfoResponse.precision,
+            ledger: networkInfoResponse.ledgersState.core.latest
         )
     }
     

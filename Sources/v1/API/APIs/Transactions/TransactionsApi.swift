@@ -87,7 +87,7 @@ public class TransactionsApi: BaseApi {
         case failure(PaymentError)
         
         /// Case when payment was succesfully sent
-        case success
+        case success(TransactionResponse)
         
         /// Errors that are able to be fetched while trying to send payment
         public enum PaymentError: Swift.Error, LocalizedError {
@@ -153,7 +153,8 @@ public class TransactionsApi: BaseApi {
         
         var cancellable = self.network.getEmptyCancelable()
         
-        cancellable.cancelable = self.network.responseJSON(
+        cancellable.cancelable = self.network.responseObject(
+            TransactionResponse.self,
             url: request.url,
             method: request.method,
             parameters: request.parameters,
@@ -162,8 +163,8 @@ public class TransactionsApi: BaseApi {
             completion: { [weak self] result in
                 switch result {
                     
-                case .success:
-                    completion(.success)
+                case .success(let response):
+                    completion(.success(response))
                     
                 case .failure(let errors):
                     guard let sself = self else {
