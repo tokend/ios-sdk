@@ -220,4 +220,43 @@ public class AccountsApiV3: JSONAPI.BaseApi {
         
         return cancelable
     }
+    
+    /// Returns the specified reviewable request.
+    /// - Parameters:
+    ///   - accountId: Account id for which request will be fetched.
+    ///   - requestId: Id of request to be fetched.
+    ///   - pagination: Pagination option.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `RequestSingleResult<ReviewableRequestResource>`.
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func requestAccountRequest(
+        accountId: String,
+        requestId: String,
+        pagination: RequestPagination,
+        onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
+        completion: @escaping (_ result: RequestSingleResult<ReviewableRequestResource>) -> Void
+        ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildRequestRequest(
+            accountId: accountId,
+            requestId: requestId,
+            pagination: pagination,
+            completion: { (request) in
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self.requestSingle(
+                    ReviewableRequestResource.self,
+                    request: request,
+                    completion: completion
+                )
+        })
+        
+        return cancelable
+    }
 }
