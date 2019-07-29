@@ -94,15 +94,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     @objc func runTest() {
-        self.vc.performLogin(onSuccess: { [weak self] walletData in
-            guard let key = self?.privateKey else {
-                    print("ERROR")
-                    return
-            }
-            self?.vc.sendTransaction(walletData: walletData, key: key)
-            }, onFailed: { _ in 
-                
-            })
+        self.requestAccountRequests()
     }
     
     // MARK: -
@@ -120,6 +112,85 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
                     
                 case .success(let document):
                     print("account document: \(document)")
+                }
+        })
+    }
+    
+    func requestAtomicSwapAsks() {
+        let filters = AtomicSwapFiltersV3.with(.baseAsset("OLE"))
+        
+        let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
+        self.tokenDApi.atomicSwapApi
+            .requestAtomicSwapAsks(
+                filters: filters,
+                include: ["quote_assets"],
+                pagination: pagination,
+                onRequestBuilt: nil,
+                completion: { (response) in
+                    switch response {
+                        
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                        
+                    case .success(let document):
+                        if let data = document.data {
+                            print("Success: \(data)")
+                        } else {
+                            print("Error: empty data")
+                        }
+                    }
+            }
+        )
+    }
+    
+    func requestRequests() {
+        let filters = RequestsFiltersV3.with(.requestor(Constants.userAccountId))
+        
+        let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
+        self.tokenDApi.requetsApi
+            .requestRequests(
+                filters: filters,
+                include: ["request_details"],
+                pagination: pagination,
+                onRequestBuilt: nil,
+                completion: { (response) in
+                    switch response {
+                        
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                        
+                    case .success(let document):
+                        if let data = document.data {
+                            print("Success: \(data)")
+                        } else {
+                            print("Error: empty data")
+                        }
+                    }
+            }
+        )
+    }
+    
+    func requestAccountRequests() {
+        let accountId = Constants.userAccountId
+        let requestId = "131"
+        let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
+        
+        self.tokenDApi.accountsApi.requestAccountRequest(
+            accountId: accountId,
+            requestId: requestId,
+            pagination: pagination,
+            completion: { (response) in
+                switch response {
+                    
+                case .failure(let error):
+                    print("Error: \(error.localizedDescription)")
+                    
+                case .success(let document):
+                    guard let request = document.data else {
+                        print("ERROR: Empty data")
+                        return
+                    }
+                    print("Success: \(request)")
                 }
         })
     }

@@ -6,11 +6,12 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     
     // MARK: - Public properties
     
-    private let accounts = "accounts"
-    private let signers = "signers"
-    private let changeRoleRequests = "change_role_requests"
-    private let clients = "integrations/dns/clients"
+    private let accounts: String = "accounts"
+    private let signers: String = "signers"
+    private let changeRoleRequests: String = "change_role_requests"
+    private let clients: String = "integrations/dns/clients"
     private let businesses: String = "businesses"
+    private let requests: String = "requests"
     
     // MARK: - Public
     
@@ -93,7 +94,7 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         )
     }
     
-    /// Builds request to fetch reviewable requests
+    /// Builds request to fetch change role requests
     public func buildChangeRoleRequestsRequest(
         filters: ChangeRoleRequestsFiltersV3,
         include: [String]?,
@@ -112,6 +113,29 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
                 method: .get,
                 queryParameters: queryParameters,
                 include: include,
+                pagination: pagination
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+    
+    /// Builds request to fetch reviewable request
+    public func buildRequestRequest(
+        accountId: String,
+        requestId: String,
+        pagination: RequestPagination,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+        ) {
+        
+        let path = /self.v3/self.accounts/accountId/self.requests/requestId
+        
+        self.buildRequest(
+            JSONAPI.BaseRequestBuildModel.simplePagination(
+                path: path,
+                method: .get,
                 pagination: pagination
             ),
             shouldSign: true,
