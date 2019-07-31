@@ -20,6 +20,7 @@ open class AtomicSwapAskResource: Resource {
         case lockedAmount
         
         // relations
+        case baseAsset
         case baseBalance
         case owner
         case quoteAssets
@@ -48,6 +49,10 @@ open class AtomicSwapAskResource: Resource {
     }
     
     // MARK: Relations
+    
+    open var baseAsset: AssetResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.baseAsset)
+    }
     
     open var baseBalance: BalanceResource? {
         return self.relationSingleOptionalValue(key: CodingKeys.baseBalance)

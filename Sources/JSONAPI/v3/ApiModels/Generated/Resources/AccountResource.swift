@@ -12,6 +12,9 @@ open class AccountResource: Resource {
     }
     
     public enum CodingKeys: String, CodingKey {
+        // attributes
+        case kycRecoveryStatus
+        
         // relations
         case balances
         case externalSystemIds
@@ -19,6 +22,12 @@ open class AccountResource: Resource {
         case limits
         case referrer
         case role
+    }
+    
+    // MARK: Attributes
+    
+    open var kycRecoveryStatus: XdrEnumValue? {
+        return self.codableOptionalValue(key: CodingKeys.kycRecoveryStatus)
     }
     
     // MARK: Relations

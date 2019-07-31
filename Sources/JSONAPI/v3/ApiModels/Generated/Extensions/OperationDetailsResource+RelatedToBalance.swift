@@ -5,6 +5,7 @@ import Foundation
 public enum OperationDetailsRelatedToBalance {
     
     case opCreateAMLAlertRequestDetails(_ resource: OpCreateAMLAlertRequestDetailsResource)
+    case opCreateAtomicSwapAskRequestDetails(_ resource: OpCreateAtomicSwapAskRequestDetailsResource)
     case opCreateIssuanceRequestDetails(_ resource: OpCreateIssuanceRequestDetailsResource)
     case opCreateWithdrawRequestDetails(_ resource: OpCreateWithdrawRequestDetailsResource)
     case opPaymentDetails(_ resource: OpPaymentDetailsResource)
@@ -17,6 +18,8 @@ extension OperationDetailsResource {
     public var operationDetailsRelatedToBalance: OperationDetailsRelatedToBalance {
         if let resource = self as? OpCreateAMLAlertRequestDetailsResource {
             return .opCreateAMLAlertRequestDetails(resource)
+        } else if let resource = self as? OpCreateAtomicSwapAskRequestDetailsResource {
+            return .opCreateAtomicSwapAskRequestDetails(resource)
         } else if let resource = self as? OpCreateIssuanceRequestDetailsResource {
             return .opCreateIssuanceRequestDetails(resource)
         } else if let resource = self as? OpCreateWithdrawRequestDetailsResource {
@@ -35,6 +38,9 @@ extension OperationDetailsResource {
     switch type {
         
     case .opCreateAMLAlertRequestDetails(let resource):
+        
+        
+    case .opCreateAtomicSwapAskRequestDetails(let resource):
         
         
     case .opCreateIssuanceRequestDetails(let resource):
