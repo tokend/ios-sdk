@@ -4,6 +4,7 @@ import Foundation
 
 public enum OperationDetailsRelatedToAsset {
     
+    case opCreateAtomicSwapAskRequestDetails(_ resource: OpCreateAtomicSwapAskRequestDetailsResource)
     case opCreateAtomicSwapBidRequestDetails(_ resource: OpCreateAtomicSwapBidRequestDetailsResource)
     case opCreateIssuanceRequestDetails(_ resource: OpCreateIssuanceRequestDetailsResource)
     case opCreatePreIssuanceRequestDetails(_ resource: OpCreatePreIssuanceRequestDetailsResource)
@@ -19,7 +20,9 @@ public enum OperationDetailsRelatedToAsset {
 extension OperationDetailsResource {
     
     public var operationDetailsRelatedToAsset: OperationDetailsRelatedToAsset {
-        if let resource = self as? OpCreateAtomicSwapBidRequestDetailsResource {
+        if let resource = self as? OpCreateAtomicSwapAskRequestDetailsResource {
+            return .opCreateAtomicSwapAskRequestDetails(resource)
+        } else if let resource = self as? OpCreateAtomicSwapBidRequestDetailsResource {
             return .opCreateAtomicSwapBidRequestDetails(resource)
         } else if let resource = self as? OpCreateIssuanceRequestDetailsResource {
             return .opCreateIssuanceRequestDetails(resource)
@@ -45,6 +48,9 @@ extension OperationDetailsResource {
 
 /*
     switch type {
+        
+    case .opCreateAtomicSwapAskRequestDetails(let resource):
+        
         
     case .opCreateAtomicSwapBidRequestDetails(let resource):
         

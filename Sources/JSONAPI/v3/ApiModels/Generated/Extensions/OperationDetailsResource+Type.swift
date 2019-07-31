@@ -9,6 +9,7 @@ public enum OperationDetailsType {
     case opCheckSaleStateDetails(_ resource: OpCheckSaleStateDetailsResource)
     case opCreateAMLAlertRequestDetails(_ resource: OpCreateAMLAlertRequestDetailsResource)
     case opCreateAccountDetails(_ resource: OpCreateAccountDetailsResource)
+    case opCreateAtomicSwapAskRequestDetails(_ resource: OpCreateAtomicSwapAskRequestDetailsResource)
     case opCreateAtomicSwapBidRequestDetails(_ resource: OpCreateAtomicSwapBidRequestDetailsResource)
     case opCreateChangeRoleRequestDetails(_ resource: OpCreateChangeRoleRequestDetailsResource)
     case opCreateIssuanceRequestDetails(_ resource: OpCreateIssuanceRequestDetailsResource)
@@ -51,6 +52,8 @@ extension OperationDetailsResource {
             return .opCreateAMLAlertRequestDetails(resource)
         } else if let resource = self as? OpCreateAccountDetailsResource {
             return .opCreateAccountDetails(resource)
+        } else if let resource = self as? OpCreateAtomicSwapAskRequestDetailsResource {
+            return .opCreateAtomicSwapAskRequestDetails(resource)
         } else if let resource = self as? OpCreateAtomicSwapBidRequestDetailsResource {
             return .opCreateAtomicSwapBidRequestDetails(resource)
         } else if let resource = self as? OpCreateChangeRoleRequestDetailsResource {
@@ -125,6 +128,9 @@ extension OperationDetailsResource {
         
         
     case .opCreateAccountDetails(let resource):
+        
+        
+    case .opCreateAtomicSwapAskRequestDetails(let resource):
         
         
     case .opCreateAtomicSwapBidRequestDetails(let resource):

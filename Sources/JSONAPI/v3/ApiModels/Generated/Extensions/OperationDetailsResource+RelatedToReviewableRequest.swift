@@ -4,6 +4,7 @@ import Foundation
 
 public enum OperationDetailsRelatedToReviewableRequest {
     
+    case opCreateAtomicSwapAskRequestDetails(_ resource: OpCreateAtomicSwapAskRequestDetailsResource)
     case opCreateAtomicSwapBidRequestDetails(_ resource: OpCreateAtomicSwapBidRequestDetailsResource)
     case opCreateChangeRoleRequestDetails(_ resource: OpCreateChangeRoleRequestDetailsResource)
     case opCreateIssuanceRequestDetails(_ resource: OpCreateIssuanceRequestDetailsResource)
@@ -16,7 +17,9 @@ public enum OperationDetailsRelatedToReviewableRequest {
 extension OperationDetailsResource {
     
     public var operationDetailsRelatedToReviewableRequest: OperationDetailsRelatedToReviewableRequest {
-        if let resource = self as? OpCreateAtomicSwapBidRequestDetailsResource {
+        if let resource = self as? OpCreateAtomicSwapAskRequestDetailsResource {
+            return .opCreateAtomicSwapAskRequestDetails(resource)
+        } else if let resource = self as? OpCreateAtomicSwapBidRequestDetailsResource {
             return .opCreateAtomicSwapBidRequestDetails(resource)
         } else if let resource = self as? OpCreateChangeRoleRequestDetailsResource {
             return .opCreateChangeRoleRequestDetails(resource)
@@ -36,6 +39,9 @@ extension OperationDetailsResource {
 
 /*
     switch type {
+        
+    case .opCreateAtomicSwapAskRequestDetails(let resource):
+        
         
     case .opCreateAtomicSwapBidRequestDetails(let resource):
         

@@ -13,9 +13,10 @@ open class SaleResource: Resource {
     
     public enum CodingKeys: String, CodingKey {
         // attributes
+        case accessDefinitionType
+        case baseHardCap
         case details
         case endTime
-        case investorsCount
         case saleState
         case saleType
         case startTime
@@ -29,16 +30,20 @@ open class SaleResource: Resource {
     
     // MARK: Attributes
     
+    open var accessDefinitionType: XdrEnumValue? {
+        return self.codableOptionalValue(key: CodingKeys.accessDefinitionType)
+    }
+    
+    open var baseHardCap: Decimal {
+        return self.decimalOptionalValue(key: CodingKeys.baseHardCap) ?? 0.0
+    }
+    
     open var details: [String: Any] {
         return self.dictionaryOptionalValue(key: CodingKeys.details) ?? [:]
     }
     
     open var endTime: Date {
         return self.dateOptionalValue(key: CodingKeys.endTime) ?? Date()
-    }
-    
-    open var investorsCount: Int {
-        return self.intOptionalValue(key: CodingKeys.investorsCount) ?? 0
     }
     
     open var saleState: XdrEnumValue? {
