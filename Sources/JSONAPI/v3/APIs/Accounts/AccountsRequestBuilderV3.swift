@@ -94,6 +94,33 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         )
     }
     
+    /// Builds request to add business for client
+    /// - Parameters:
+    ///   - clientAccountId: Identifier of account for which business should be added.
+    ///   - businessAccountId: Identifier of businesses account to be added.
+    ///   - body: Body of request.
+    ///   - completion: Returns `RequestModel` or nil.
+    public func buildAddBusinessesRequest(
+        clientAccountId: String,
+        businessAccountId: String,
+        body: [String: Any],
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+        ) {
+        
+        let path = /self.clients/clientAccountId/self.businesses
+        self.buildRequest(
+            JSONAPI.BaseRequestBuildModel.simpleBody(
+                path: path,
+                method: .post,
+                bodyParameters: body
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+    
     /// Builds request to fetch change role requests
     public func buildChangeRoleRequestsRequest(
         filters: ChangeRoleRequestsFiltersV3,

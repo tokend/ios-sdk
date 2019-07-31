@@ -19,14 +19,17 @@ open class BusinessResource: Resource {
     // MARK: Attributes
     
     open var name: String {
-        return self.stringOptionalValue(key: CodingKeys.name) ?? ""
+        get { return self.stringOptionalValue(key: CodingKeys.name) ?? "" }
+        set { self.setStringOptionalValue(newValue, key: CodingKeys.name) }
     }
     
     open var accountId: String {
-        return self.stringOptionalValue(key: CodingKeys.accountId) ?? ""
+        get { return self.stringOptionalValue(key: CodingKeys.accountId) ?? "" }
+        set { self.setStringOptionalValue(newValue, key: CodingKeys.accountId) }
     }
     
     open var logoJSON: String {
-        return self.stringOptionalValue(key: CodingKeys.logo) ?? ""
+        get { return self.stringOptionalValue(key: CodingKeys.logo) ?? "" }
+        set { self.setStringOptionalValue(newValue, key: CodingKeys.logo) }
     }
 }

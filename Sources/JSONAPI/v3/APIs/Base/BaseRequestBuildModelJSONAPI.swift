@@ -58,6 +58,19 @@ public struct BaseRequestBuildModelJSONAPI {
         )
     }
     
+    static public func simpleBody(
+        path: String,
+        method: RequestMethod,
+        bodyParameters: RequestBodyParameters
+        ) -> JSONAPI.BaseRequestBuildModel {
+        
+        return JSONAPI.BaseRequestBuildModel(
+            path: path,
+            method: method,
+            bodyParameters: bodyParameters
+        )
+    }
+    
     static public func simplePagination(
         path: String,
         method: RequestMethod,

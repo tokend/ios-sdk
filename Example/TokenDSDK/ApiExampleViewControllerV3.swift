@@ -94,10 +94,25 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     @objc func runTest() {
-        self.requestAccountRequests()
+        self.addBusiness()
     }
     
     // MARK: -
+    
+    func addBusiness() {
+        self.tokenDApi.accountsApi.addBusinesses(
+            clientAccountId: "GDF2KPCIOOLADKDIXIRFTEKCW4RKACBQNAYWVINXOASNH6YYMCVEZ2BA",
+            businessAccountId: "GDWGKJ7TMUD53KYXGAVLAUCR3A5IZQF5TCEM36KJGDV6OUBYJGZQWHVM",
+            completion: { (response) in
+                switch response {
+                case .failure(let error):
+                    print(error.localizedDescription)
+                case .success:
+                    print("Success")
+                }
+            }
+        )
+    }
     
     func requestAccount() {
         self.tokenDApi.accountsApi.requestAccount(

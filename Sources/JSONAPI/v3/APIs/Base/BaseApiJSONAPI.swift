@@ -47,6 +47,24 @@ public class BaseApiJSONAPI {
     // MARK: - Public
     
     @discardableResult
+    public func requestEmpty(
+        request: JSONAPI.RequestModel,
+        completion: @escaping (_ result: RequestEmptyResult) -> Void
+        ) -> Cancelable {
+        
+        return self.network.perform(
+            request: request,
+            responseType: JSONAPI.ResponseType<EmptyResource, Empty>.raw(
+                .empty({
+                    completion(.success)
+                })
+            ),
+            onFailed: { (error) in
+                completion(.failure(error))
+        })
+    }
+    
+    @discardableResult
     public func requestSingle<ResourceType: Resource>(
         _ resource: ResourceType.Type,
         request: JSONAPI.RequestModel,
