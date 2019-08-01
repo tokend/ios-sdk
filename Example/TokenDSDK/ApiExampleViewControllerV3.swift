@@ -8,6 +8,7 @@ import SnapKit
 import TokenDSDK
 import TokenDWallet
 
+// swiftlint:disable file_length
 // swiftlint:disable line_length
 // swiftlint:disable type_body_length
 class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderProtocol {
@@ -99,10 +100,28 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     
     // MARK: -
     
+    func requestBusiness() {
+        self.tokenDApi.accountsApi.requestBusiness(
+            accountId: "GDF2KPCIOOLADKDIXIRFTEKCW4RKACBQNAYWVINXOASNH6YYMCVEZ2BA",
+            completion: { (result) in
+                switch result {
+                case .failure(let error):
+                    print("ERROR: \(error)")
+                    
+                case .success(let document):
+                    guard let data = document.data else {
+                        print("ERROR: EMPTY")
+                        return
+                    }
+                    print("Success: \(data)")
+                }
+        })
+    }
+    
     func addBusiness() {
         self.tokenDApi.accountsApi.addBusinesses(
-            clientAccountId: "GDF2KPCIOOLADKDIXIRFTEKCW4RKACBQNAYWVINXOASNH6YYMCVEZ2BA",
-            businessAccountId: "GDWGKJ7TMUD53KYXGAVLAUCR3A5IZQF5TCEM36KJGDV6OUBYJGZQWHVM",
+            clientAccountId: "GAI2AGVAERR5XAZ7JEASZDFESNEBBH2R6DN6UMYI3UYXKP5TQOFGXPOL",
+            businessAccountId: "GBYADDE267JDJNZ5TV2FQKEHWBU4QA6D5EQHNNSVBRLFKFKAK462WTYK",
             completion: { (response) in
                 switch response {
                 case .failure(let error):
@@ -212,7 +231,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     
     func requestBusinesses() {
         self.tokenDApi.accountsApi.requestBusinesses(
-            accountId: Constants.userAccountId,
+            accountId: "GAI2AGVAERR5XAZ7JEASZDFESNEBBH2R6DN6UMYI3UYXKP5TQOFGXPOL",
             completion: { (result) in
                 switch result {
                 case .failure(let error):
@@ -885,3 +904,4 @@ extension ApiExampleViewControllerV3: UIImagePickerControllerDelegate, UINavigat
 }
 // swiftlint:enable type_body_length
 // swiftlint:enable line_length
+// swiftlint:enable file_length

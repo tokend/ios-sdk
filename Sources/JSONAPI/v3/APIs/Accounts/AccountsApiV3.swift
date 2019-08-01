@@ -180,6 +180,48 @@ public class AccountsApiV3: JSONAPI.BaseApi {
         return cancelable
     }
     
+    /// Method sends request to get business by id.
+    /// The result of request will be fetched in `completion` block
+    /// - Parameters:
+    ///   - accountId: Identifier of the business to be fetched.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `RequestSingleResult<BusinessResource>`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func requestBusiness(
+        accountId: String,
+        completion: @escaping (_ result: RequestSingleResult<BusinessResource>) -> Void
+        ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildBusinessRequest(
+            accountId: accountId,
+            completion: { [weak self] (request) in
+                
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self?.requestSingle(
+                    BusinessResource.self,
+                    request: request,
+                    completion: { (result) in
+                        switch result {
+                            
+                        case .failure(let error):
+                            completion(.failure(error))
+                            
+                        case .success(let document):
+                            completion(.success(document))
+                        }
+                })
+        })
+        
+        return cancelable
+    }
+    
     /// Method sends request to add business for exact account.
     /// The result of request will be fetched in `completion` block
     /// - Parameters:
