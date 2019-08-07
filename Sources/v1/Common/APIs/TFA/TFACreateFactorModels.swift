@@ -7,7 +7,7 @@ public struct TFACreateFactorModel: Encodable {
 
 public struct TFACreateFactorResponse: Decodable {
     
-    public let id: Int
+    public let id: String
     public let type: String
     public let attributes: Attributes
     

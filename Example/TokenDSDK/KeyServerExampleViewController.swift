@@ -549,9 +549,12 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
                     
                     let totpFactors = factors.getTOTPFactors()
                     if let totpFactor = totpFactors.first {
+                        guard let id = Int(totpFactor.id) else {
+                            return
+                        }
                         self.tfaApi.deleteFactor(
                             walletId: walletId,
-                            factorId: totpFactor.id,
+                            factorId: id,
                             completion: { (deleteResult) in
                                 switch deleteResult {
                                     
@@ -724,8 +727,10 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
             style: .default,
             handler: { _ in
                 UIPasteboard.general.string = response.attributes.secret
-                
-                self.updateTOTPFactor(walletId: walletId, factorId: response.id, priority: priority)
+                guard let id = Int(response.id) else {
+                    return
+                }
+                self.updateTOTPFactor(walletId: walletId, factorId: id, priority: priority)
         }))
         
         if let url = URL(string: response.attributes.seed),
@@ -736,8 +741,10 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
                 handler: { _ in
                     UIPasteboard.general.string = response.attributes.secret
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                    
-                    self.updateTOTPFactor(walletId: walletId, factorId: response.id, priority: priority)
+                    guard let id = Int(response.id) else {
+                        return
+                    }
+                    self.updateTOTPFactor(walletId: walletId, factorId: id, priority: priority)
             }))
         }
         

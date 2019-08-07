@@ -81,7 +81,7 @@ public struct TFAMetaResponse: Codable, CustomDebugStringConvertible {
 public struct TFAFactor: Decodable {
     
     public let type: String
-    public let id: Int
+    public let id: String
     public let attributes: Attributes
     
     public struct Attributes: Decodable {
