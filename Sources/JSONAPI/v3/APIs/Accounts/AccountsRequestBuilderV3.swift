@@ -13,6 +13,7 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     private let businesses: String = "businesses"
     private let requests: String = "requests"
     private let dns: String = "integrations/dns/"
+    private let convertedBalances: String = "converted_balances"
     
     // MARK: - Public
     
@@ -188,6 +189,30 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
                 path: path,
                 method: .get,
                 pagination: pagination
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+    
+    /// Builds request to fetch converted balances
+    public func buildConvertedBalancesRequest(
+        accountId: String,
+        convertationAsset: String,
+        include: [String]?,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+        ) {
+        
+        let path = /self.v3/self.accounts/accountId/self.convertedBalances/convertationAsset
+        
+        self.buildRequest(
+            JSONAPI.BaseRequestBuildModel.simpleQueryInclude(
+                path: path,
+                method: .get,
+                queryParameters: [:],
+                include: include
             ),
             shouldSign: true,
             sendDate: sendDate,

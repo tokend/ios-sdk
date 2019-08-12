@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'TokenDSDK'
-  s.version          = '3.1.0-rc.16'
+  s.version          = '3.1.0-rc.17'
   s.summary          = 'TokenD SDK for iOS.'
   s.homepage         = 'https://github.com/tokend/ios-sdk'
   s.license          = { type: 'Apache License, Version 2.0', file: 'LICENSE' }

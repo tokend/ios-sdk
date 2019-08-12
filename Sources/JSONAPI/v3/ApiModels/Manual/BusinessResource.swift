@@ -14,6 +14,8 @@ open class BusinessResource: Resource {
         case name
         case accountId
         case logo
+        case industry
+        case statsQuoteAsset
     }
     
     // MARK: Attributes
@@ -31,5 +33,15 @@ open class BusinessResource: Resource {
     open var logoJSON: String {
         get { return self.stringOptionalValue(key: CodingKeys.logo) ?? "" }
         set { self.setStringOptionalValue(newValue, key: CodingKeys.logo) }
+    }
+    
+    open var industry: String {
+        get { return self.stringOptionalValue(key: CodingKeys.industry) ?? "" }
+        set { self.setStringOptionalValue(newValue, key: CodingKeys.industry) }
+    }
+    
+    open var statsQuoteAsset: String {
+        get { return self.stringOptionalValue(key: CodingKeys.statsQuoteAsset) ?? "" }
+        set { self.setStringOptionalValue(newValue, key: CodingKeys.statsQuoteAsset) }
     }
 }

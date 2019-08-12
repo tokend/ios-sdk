@@ -354,4 +354,42 @@ public class AccountsApiV3: JSONAPI.BaseApi {
         
         return cancelable
     }
+    
+    /// Returns the specified reviewable request.
+    /// - Parameters:
+    ///   - accountId: Account id for which request will be fetched.
+    ///   - convertationAsset: Asset to be converted in.
+    ///   - include: Resource to include.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `RequestSingleResult<ConvertedBalancesCollectionResource>`.
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func requestConvertedBalances(
+        accountId: String,
+        convertationAsset: String,
+        include: [String]?,
+        completion: @escaping (_ result: RequestSingleResult<ConvertedBalancesCollectionResource>) -> Void
+        ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildConvertedBalancesRequest(
+            accountId: accountId,
+            convertationAsset: convertationAsset,
+            include: include,
+            completion: { (request) in
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self.requestSingle(
+                    ConvertedBalancesCollectionResource.self,
+                    request: request,
+                    completion: completion
+                )
+        })
+        
+        return cancelable
+    }
 }

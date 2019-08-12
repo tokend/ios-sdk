@@ -95,10 +95,31 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     @objc func runTest() {
-        self.addBusiness()
+        self.requestBusinesses()
     }
     
     // MARK: -
+    
+    func requestConvertedBalances() {
+        self.tokenDApi.accountsApi.requestConvertedBalances(
+            accountId: Constants.userAccountId,
+            convertationAsset: "UAH",
+            include: ["states", "balance", "balance.state", "balance.asset"],
+            completion: { (result) in
+                switch result {
+                case .failure(let error):
+                    print("ERROR: \(error)")
+                    
+                case .success(let document):
+                    guard let data = document.data else {
+                        print("ERROR: EMPTY")
+                        return
+                    }
+                    
+                    print("Success: \(data)")
+                }
+            })
+    }
     
     func requestBusiness() {
         self.tokenDApi.accountsApi.requestBusiness(
@@ -231,7 +252,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     
     func requestBusinesses() {
         self.tokenDApi.accountsApi.requestBusinesses(
-            accountId: "GAI2AGVAERR5XAZ7JEASZDFESNEBBH2R6DN6UMYI3UYXKP5TQOFGXPOL",
+            accountId: Constants.userAccountId,
             completion: { (result) in
                 switch result {
                 case .failure(let error):
