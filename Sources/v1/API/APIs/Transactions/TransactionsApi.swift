@@ -107,7 +107,7 @@ public class TransactionsApi: BaseApi {
         }
     }
     
-    /// Method sends request to get payments.
+    /// Method sends transaction.
     /// The result of request will be fetched in `completion` block as `TransactionsApi.PaymentSendResult`
     /// - Parameters:
     ///   - envelope: Transaction envelope
@@ -138,6 +138,69 @@ public class TransactionsApi: BaseApi {
                     initiateTFA: true,
                     completion: completion
                     )
+        })
+        
+        return cancelable
+    }
+    
+    /// Model that will be fetched in completion block of `TransactionsApi.sendFiatPayment(...)`
+    public enum FiatPaymentSendResult {
+        
+        /// Case of failed response with `PaymentError` model
+        case failure(PaymentError)
+        
+        /// Case when payment was succesfully sent
+        case success(FiatPaymentResponse)
+        
+        /// Errors that are able to be fetched while trying to send payment
+        public enum PaymentError: Swift.Error, LocalizedError {
+            case other(ApiErrors)
+            case tfaFailed
+            
+            // MARK: - Swift.Error
+            
+            public var errorDescription: String? {
+                switch self {
+                case .other(let errors):
+                    return errors.localizedDescription
+                case .tfaFailed:
+                    return "TFA failed"
+                }
+            }
+        }
+    }
+    
+    /// Method sends fiat payments.
+    /// The result of request will be fetched in `completion` block as `TransactionsApi.FiatPaymentSendResult`
+    /// - Parameters:
+    ///   - envelope: Transaction envelope
+    ///   - sendDate: Send time of request.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `TransactionsApi.FiatPaymentSendResult`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func sendFiatPayment(
+        envelope: String,
+        sendDate: Date = Date(),
+        completion: @escaping (_ result: FiatPaymentSendResult) -> Void
+        ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildFiatSendPaymentRequest(
+            envelope: envelope,
+            sendDate: sendDate,
+            completion: { [weak self] (request) in
+                guard let request = request else {
+                    completion(.failure(.other(.failedToSignRequest)))
+                    return
+                }
+                
+                cancelable.cancelable = self?.sendFiatPaymentTransaction(
+                    request: request,
+                    initiateTFA: true,
+                    completion: completion
+                )
         })
         
         return cancelable
@@ -184,6 +247,59 @@ public class TransactionsApi: BaseApi {
                                     initiateTFA: false,
                                     completion: completion
                                     )
+                                
+                            case .failure, .canceled:
+                                completion(.failure(.tfaFailed))
+                            }
+                    },
+                        onNoTFA: {
+                            completion(.failure(.other(errors)))
+                    })
+                }
+        })
+        
+        return cancellable
+    }
+    
+    private func sendFiatPaymentTransaction(
+        request: TransactionsSendPaymentRequest,
+        initiateTFA: Bool,
+        completion: @escaping (_ result: FiatPaymentSendResult) -> Void
+        ) -> Cancelable {
+        
+        var cancellable = self.network.getEmptyCancelable()
+        
+        cancellable.cancelable = self.network.responseObject(
+            FiatPaymentResponse.self,
+            url: request.url,
+            method: request.method,
+            parameters: request.parameters,
+            encoding: request.parametersEncoding,
+            headers: request.signedHeaders,
+            completion: { [weak self] result in
+                switch result {
+                    
+                case .success(let response):
+                    completion(.success(response))
+                    
+                case .failure(let errors):
+                    guard let sself = self else {
+                        completion(.failure(.other(errors)))
+                        return
+                    }
+                    
+                    errors.checkTFARequired(
+                        handler: sself.tfaHandler,
+                        initiateTFA: initiateTFA,
+                        onCompletion: { (tfaResult) in
+                            switch tfaResult {
+                                
+                            case .success:
+                                cancellable.cancelable = self?.sendFiatPaymentTransaction(
+                                    request: request,
+                                    initiateTFA: false,
+                                    completion: completion
+                                )
                                 
                             case .failure, .canceled:
                                 completion(.failure(.tfaFailed))

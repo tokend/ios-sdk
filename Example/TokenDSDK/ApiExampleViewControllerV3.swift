@@ -95,10 +95,24 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     @objc func runTest() {
-        self.requestBusinesses()
+        self.sendFiatPayment()
     }
     
     // MARK: -
+    
+    func sendFiatPayment() {
+        self.vc.transactionsApi.sendFiatPayment(
+            envelope: "AAAAAKbDjaev91h/pGho2pP/H0bmS6zQemCK/NBnvugPSv6FA7OCxl9K5RMAAAAAXVZiuQAAAABdX48pAAAAAAAAAAEAAAAAAAAAJQAAAAAAAAAMAAAAAABMS0AAAAADVUFIAAAAAAAAAAAAAAAAAAAAAAAAAAABD0r+hQAAAEBNuuXNsMBEPkjzWmJ5R4zsKq8fnW7hyJo4sqZTqW9xZyC37B6PxGx1PrSA1SN8um99nThzVC8Kv0NuT7chD4ID",
+            completion: { (result) in
+                switch result {
+                case .failure(let error):
+                    print("Error: \(error)")
+                    
+                case .success(let resposnse):
+                    print("Success: \(resposnse.data.attributes.payUrl)")
+                }
+        })
+    }
     
     func requestConvertedBalances() {
         self.tokenDApi.accountsApi.requestConvertedBalances(

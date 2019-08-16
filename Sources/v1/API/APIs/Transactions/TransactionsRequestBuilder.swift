@@ -4,6 +4,10 @@ import Foundation
 /// which are used to fetch and send transactions
 public class TransactionsRequestBuilder: BaseApiRequestBuilder {
     
+    // MARK: - Private properties
+    
+    private let fiatPaymentPath: String = "/integrations/fiat/pay"
+    
     // MARK: - Public
     
     /// Builds request to fetch payments
@@ -48,6 +52,48 @@ public class TransactionsRequestBuilder: BaseApiRequestBuilder {
         ) {
         
         let url = self.apiConfiguration.urlString.addPath("transactions")
+        let method: RequestMethod = .post
+        
+        let requestSignModel = RequestSignParametersModel(
+            baseUrlString: self.apiConfiguration.urlString,
+            urlString: url,
+            httpMethod: method
+        )
+        
+        self.requestSigner.sign(
+            request: requestSignModel,
+            sendDate: sendDate,
+            completion: { (signedHeaders) in
+                guard let signedHeaders = signedHeaders else {
+                    completion(nil)
+                    return
+                }
+                
+                let parameters: RequestParameters = [ "tx": envelope ]
+                
+                let request = TransactionsSendPaymentRequest(
+                    url: url,
+                    method: method,
+                    parameters: parameters,
+                    signedHeaders: signedHeaders
+                )
+                
+                completion(request)
+        })
+    }
+    
+    /// Builds request to send fiat payment
+    /// - Parameters:
+    ///   - envelope: Transaction envelope
+    ///   - sendDate: Send time of request.
+    ///   - completion: Returns `TransactionsSendPaymentRequest` or nil.
+    public func buildFiatSendPaymentRequest(
+        envelope: String,
+        sendDate: Date,
+        completion: @escaping (TransactionsSendPaymentRequest?) -> Void
+        ) {
+        
+        let url = self.apiConfiguration.urlString.addPath(self.fiatPaymentPath)
         let method: RequestMethod = .post
         
         let requestSignModel = RequestSignParametersModel(
