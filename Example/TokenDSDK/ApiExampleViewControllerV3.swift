@@ -96,10 +96,30 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     
     @objc func runTest() {
         self.addChild(self.vc)
-        self.setPhone()
+        self.getPhoneByAccountId()
     }
     
     // MARK: -
+    
+    func getPhoneByAccountId() {
+        self.vc.tokenDApi.generalApi.requestIdentities(
+            filter: .accountId(Constants.userAccountId),
+            completion: { result in
+                switch result {
+                    
+                case .failed(let error):
+                    print("error")
+                    
+                case .succeeded(let identities):
+                    guard let number = identities.first(where: { (identity) -> Bool in
+                        return identity.attributes.phoneNumber != nil
+                    })?.attributes.phoneNumber else {
+                        return
+                    }
+                    print(number)
+                }
+        })
+    }
     
     func setPhone() {
         self.vc.tokenDApi

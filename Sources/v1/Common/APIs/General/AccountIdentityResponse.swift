@@ -13,5 +13,6 @@ extension AccountIdentityResponse {
         
         public let address: String
         public let email: String
+        public let phoneNumber: String?
     }
 }
