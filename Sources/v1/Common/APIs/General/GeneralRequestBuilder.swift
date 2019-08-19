@@ -43,9 +43,9 @@ public class GeneralRequestBuilder: BaseApiRequestBuilder {
             parameters = [
                 "filter[email]": email
             ]
-        case .phone(let email):
+        case .phone(let phone):
             parameters = [
-                "filter[phone]": email
+                "filter[phone]": phone
             ]
         }
         
