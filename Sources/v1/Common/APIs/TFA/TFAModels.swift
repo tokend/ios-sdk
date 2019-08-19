@@ -4,6 +4,7 @@ public enum TFAFactorType: String {
     case password
     case totp
     case email
+    case phone
 }
 
 public struct TFAMetaResponse: Codable, CustomDebugStringConvertible {
@@ -23,6 +24,7 @@ public struct TFAMetaResponse: Codable, CustomDebugStringConvertible {
     public enum CodeBasedType {
         case totp
         case email
+        case phone
         case other(String)
     }
     

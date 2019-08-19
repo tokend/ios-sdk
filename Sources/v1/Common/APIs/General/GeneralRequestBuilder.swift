@@ -7,6 +7,7 @@ public class GeneralRequestBuilder: BaseApiRequestBuilder {
     // MARK: - Public properties
     
     public let identities: String = "identities"
+    public let setPhonePath: String = "settings/phone"
     
     // MARK: - Public
     
@@ -42,6 +43,10 @@ public class GeneralRequestBuilder: BaseApiRequestBuilder {
             parameters = [
                 "filter[email]": email
             ]
+        case .phone(let email):
+            parameters = [
+                "filter[phone]": email
+            ]
         }
         
         let request = GetIdentitiesRequest(
@@ -49,6 +54,33 @@ public class GeneralRequestBuilder: BaseApiRequestBuilder {
             method: .get,
             parameters: parameters,
             parametersEncoding: .url
+        )
+        
+        return request
+    }
+    
+    /// Builds request to fetch identities.
+    /// - Parameters:
+    ///   - filter: Filter which will be used to fetch identities.
+    /// - Returns: `GetIdentitiesRequest`
+    public func buildSetPhoneIdentityRequest(
+        accountId: String,
+        body: SetPhoneRequestBody
+        ) -> GetIdentitiesRequest {
+        
+        let baseUrl = self.apiConfiguration.urlString
+        let url = baseUrl/self.identities/accountId/self.setPhonePath
+        
+        var parameters: [String: Any] = [:]
+        if let json = body.toJSON() {
+            parameters = json
+        }
+        
+        let request = GetIdentitiesRequest(
+            url: url,
+            method: .put,
+            parameters: parameters,
+            parametersEncoding: .json
         )
         
         return request

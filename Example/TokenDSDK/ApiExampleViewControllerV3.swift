@@ -95,10 +95,32 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     @objc func runTest() {
-        self.requestAtomicSwapAsks()
+        self.addChild(self.vc)
+        self.setPhone()
     }
     
     // MARK: -
+    
+    func setPhone() {
+        self.vc.tokenDApi
+            .generalApi
+            .requestSetPhone(
+                accountId: Constants.userAccountId,
+                phone: .init(phone: "+88005553535"),
+                completion: { (result) in
+                    switch result {
+                        
+                    case .failed(let error):
+                        if error.contains(status: "403") {
+                            
+                        }
+                        
+                    case .succeeded:
+                        print("Success")
+                    }
+            }
+        )
+    }
     
     func sendFiatPayment() {
         self.vc.transactionsApi.sendFiatPayment(
@@ -132,7 +154,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
                     
                     print("Success: \(data)")
                 }
-            })
+        })
     }
     
     func requestBusiness() {
@@ -164,7 +186,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
                 case .success:
                     print("Success")
                 }
-            }
+        }
         )
     }
     

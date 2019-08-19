@@ -860,6 +860,9 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
             case .email:
                 alertTitle = "Input Code from Email"
                 
+            case .phone:
+                alertTitle = "Input Code from SMS"
+                
             case .totp:
                 alertTitle = "Input Code from Authenticator"
                 
@@ -920,7 +923,11 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                 cancel()
         }))
         
-        self.present(alert, animated: true, completion: nil)
+        if let parent = self.parent {
+            parent.present(alert, animated: true, completion: nil)
+        } else {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     func processInput(

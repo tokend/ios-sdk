@@ -587,6 +587,9 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
             case .email:
                 alertTitle = "Input Code from Email"
                 
+            case .phone:
+                alertTitle = "Input Code from SMS"
+                
             case .totp:
                 alertTitle = "Input Code from Authenticator"
                 
