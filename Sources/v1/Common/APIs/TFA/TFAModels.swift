@@ -53,6 +53,8 @@ public struct TFAMetaResponse: Codable, CustomDebugStringConvertible {
             return .totp
         case "email":
             return .email
+        case "phone":
+            return .phone
         default:
             return .other(self.factorType)
         }
