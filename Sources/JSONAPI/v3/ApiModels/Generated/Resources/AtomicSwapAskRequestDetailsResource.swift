@@ -37,7 +37,7 @@ open class AtomicSwapAskRequestDetailsResource: RequestDetailsResource {
         return self.relationSingleOptionalValue(key: CodingKeys.baseBalance)
     }
     
-    open var quoteAssets: [QuoteAssetResource]? {
+    open var quoteAssets: [AtomicSwapQuoteAssetResource]? {
         return self.relationCollectionOptionalValue(key: CodingKeys.quoteAssets)
     }
     

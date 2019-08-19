@@ -95,7 +95,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     @objc func runTest() {
-        self.sendFiatPayment()
+        self.requestAtomicSwapAsks()
     }
     
     // MARK: -
@@ -186,7 +186,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     func requestAtomicSwapAsks() {
-        let filters = AtomicSwapFiltersV3.with(.baseAsset("OLE"))
+        let filters = AtomicSwapFiltersV3.with(.baseAsset("82745DB9210D4AD4"))
         
         let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
         self.tokenDApi.atomicSwapApi

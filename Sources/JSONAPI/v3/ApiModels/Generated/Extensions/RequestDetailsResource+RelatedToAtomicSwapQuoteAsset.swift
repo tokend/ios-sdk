@@ -2,23 +2,20 @@
 
 import Foundation
 
-public enum RequestDetailsRelatedToQuoteAsset {
+public enum RequestDetailsRelatedToAtomicSwapQuoteAsset {
     
     case atomicSwapAskRequestDetails(_ resource: AtomicSwapAskRequestDetailsResource)
     case atomicSwapBidRequestDetails(_ resource: AtomicSwapBidRequestDetailsResource)
-    case saleRequestDetails(_ resource: SaleRequestDetailsResource)
     case `self`(_ resource: RequestDetailsResource)
 }
 
 extension RequestDetailsResource {
     
-    public var requestDetailsRelatedToQuoteAsset: RequestDetailsRelatedToQuoteAsset {
+    public var requestDetailsRelatedToAtomicSwapQuoteAsset: RequestDetailsRelatedToAtomicSwapQuoteAsset {
         if let resource = self as? AtomicSwapAskRequestDetailsResource {
             return .atomicSwapAskRequestDetails(resource)
         } else if let resource = self as? AtomicSwapBidRequestDetailsResource {
             return .atomicSwapBidRequestDetails(resource)
-        } else if let resource = self as? SaleRequestDetailsResource {
-            return .saleRequestDetails(resource)
         } else {
             return .`self`(self)
         }
@@ -32,9 +29,6 @@ extension RequestDetailsResource {
         
         
     case .atomicSwapBidRequestDetails(let resource):
-        
-        
-    case .saleRequestDetails(let resource):
         
         
     case .`self`(let resource):

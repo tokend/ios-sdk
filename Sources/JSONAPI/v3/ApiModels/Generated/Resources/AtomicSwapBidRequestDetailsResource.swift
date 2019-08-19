@@ -37,7 +37,7 @@ open class AtomicSwapBidRequestDetailsResource: RequestDetailsResource {
         return self.relationSingleOptionalValue(key: CodingKeys.ask)
     }
     
-    open var quoteAsset: QuoteAssetResource? {
+    open var quoteAsset: AtomicSwapQuoteAssetResource? {
         return self.relationSingleOptionalValue(key: CodingKeys.quoteAsset)
     }
     
