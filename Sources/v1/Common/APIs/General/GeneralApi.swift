@@ -149,6 +149,9 @@ public class GeneralApi: BaseApi {
         /// Case of failed response with `ApiErrors` model
         case failed(Swift.Error)
         
+        /// Case of failed tfa
+        case tfaFailed
+        
         /// Case of successful response
         case succeeded
     }
@@ -185,8 +188,8 @@ public class GeneralApi: BaseApi {
                         onCompletion: { result in
                             switch result {
                                 
-                            case .failure(let error):
-                                completion(.failed(error))
+                            case .failure:
+                                completion(.tfaFailed)
                                 
                             case .success:
                                 self.requestSetPhone(

@@ -137,6 +137,9 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
                         
                     case .succeeded:
                         print("Success")
+                        
+                    case .tfaFailed:
+                        print("TFA Failed")
                     }
             }
         )
