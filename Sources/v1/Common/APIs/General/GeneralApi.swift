@@ -111,6 +111,9 @@ public class GeneralApi: BaseApi {
         
         /// Filter is used when it is needed to fetch identities by phone number
         case phone(_ phone: String)
+        
+        /// Filter is used when it is needed to fetch identities by telegram username
+        case telegram(_ telegram: String)
     }
     
     /// Method sends request to get identities via email or accountId.
@@ -195,6 +198,75 @@ public class GeneralApi: BaseApi {
                                 self.requestSetPhone(
                                     accountId: accountId,
                                     phone: phone,
+                                    completion: completion
+                                )
+                                
+                            case .canceled:
+                                break
+                            }
+                    },
+                        onNoTFA: {
+                            completion(.failed(errors))
+                    })
+                    
+                case .success:
+                    completion(.succeeded)
+                }
+        })
+    }
+    
+    /// Model that will be fetched in `completion` block of `GeneralApi.requestSetTelegram(...)`
+    public enum SetTelegramRequestResult {
+        /// Case of failed response with `ApiErrors` model
+        case failed(Swift.Error)
+        
+        /// Case of failed tfa
+        case tfaFailed
+        
+        /// Case of successful response
+        case succeeded
+    }
+    
+    /// Method sends request to set phone for account with given accountId.
+    /// The result of request will be fetched in `completion` block as `GeneralApi.SetPhoneRequestResult`
+    /// - Parameters:
+    ///   - accountId: Account id of account for which it is necessary to set phone.
+    ///   - phone: Model that contains phone to be set.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `GeneralApi.SetPhoneRequestResult`
+    public func requestSetTelegram(
+        accountId: String,
+        telegram: SetTelegramRequestBody,
+        completion: @escaping (_ result: SetTelegramRequestResult) -> Void
+        ) {
+        
+        let request = self.requestBuilder.buildSetTelegramIdentityRequest(
+            accountId: accountId,
+            body: telegram
+        )
+        
+        self.network.responseJSON(
+            url: request.url,
+            method: request.method,
+            parameters: request.parameters,
+            encoding: request.parametersEncoding,
+            completion: { (result) in
+                switch result {
+                    
+                case .failure(let errors):
+                    errors.checkTFARequired(
+                        handler: self.tfaHandler,
+                        initiateTFA: true,
+                        onCompletion: { result in
+                            switch result {
+                                
+                            case .failure:
+                                completion(.tfaFailed)
+                                
+                            case .success:
+                                self.requestSetTelegram(
+                                    accountId: accountId,
+                                    telegram: telegram,
                                     completion: completion
                                 )
                                 

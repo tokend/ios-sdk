@@ -12,6 +12,7 @@ public struct TFAMetaResponse: Codable, CustomDebugStringConvertible {
     public let factorId: Int
     public let factorType: String
     public let keychainData: String?
+    public let botUrl: String?
     public let salt: String?
     public let token: String
     public let walletId: String
@@ -25,6 +26,7 @@ public struct TFAMetaResponse: Codable, CustomDebugStringConvertible {
         case totp
         case email
         case phone
+        case telegram(url: String)
         case other(String)
     }
     
@@ -55,6 +57,11 @@ public struct TFAMetaResponse: Codable, CustomDebugStringConvertible {
             return .email
         case "phone":
             return .phone
+        case "telegram":
+            guard let url = self.botUrl else {
+                return .other(self.factorType)
+            }
+            return .telegram(url: url)
         default:
             return .other(self.factorType)
         }

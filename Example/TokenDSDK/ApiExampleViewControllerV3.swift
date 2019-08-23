@@ -96,10 +96,25 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     
     @objc func runTest() {
         self.addChild(self.vc)
-        self.getPhoneByAccountId()
+        self.setTelegram()
     }
     
     // MARK: -
+    
+    func getProxyPaymentAccount() {
+        self.tokenDApi.integrationsApi.requestProxyPaymentAccount( completion: { (result) in
+            switch result {
+            case .failure(let error):
+                print("Error: \(error)")
+                
+            case .success(let document):
+                guard let account = document.data else {
+                    return
+                }
+                print("Success: \(account.id!)")
+            }
+        })
+    }
     
     func getPhoneByAccountId() {
         self.vc.tokenDApi.generalApi.requestIdentities(
@@ -108,7 +123,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
                 switch result {
                     
                 case .failed(let error):
-                    print("error")
+                    print("error: \(error)")
                     
                 case .succeeded(let identities):
                     guard let number = identities.first(where: { (identity) -> Bool in
@@ -127,6 +142,30 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             .requestSetPhone(
                 accountId: Constants.userAccountId,
                 phone: .init(phone: "+88005553535"),
+                completion: { (result) in
+                    switch result {
+                        
+                    case .failed(let error):
+                        if error.contains(status: "403") {
+                            
+                        }
+                        
+                    case .succeeded:
+                        print("Success")
+                        
+                    case .tfaFailed:
+                        print("TFA Failed")
+                    }
+            }
+        )
+    }
+    
+    func setTelegram() {
+        self.vc.tokenDApi
+            .generalApi
+            .requestSetTelegram(
+                accountId: Constants.userAccountId,
+                telegram: .init(username: "username"),
                 completion: { (result) in
                     switch result {
                         
@@ -181,7 +220,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     func requestBusiness() {
-        self.tokenDApi.accountsApi.requestBusiness(
+        self.tokenDApi.integrationsApi.requestBusiness(
             accountId: "GDF2KPCIOOLADKDIXIRFTEKCW4RKACBQNAYWVINXOASNH6YYMCVEZ2BA",
             completion: { (result) in
                 switch result {
@@ -199,7 +238,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     func addBusiness() {
-        self.tokenDApi.accountsApi.addBusinesses(
+        self.tokenDApi.integrationsApi.addBusinesses(
             clientAccountId: "GAI2AGVAERR5XAZ7JEASZDFESNEBBH2R6DN6UMYI3UYXKP5TQOFGXPOL",
             businessAccountId: "GBYADDE267JDJNZ5TV2FQKEHWBU4QA6D5EQHNNSVBRLFKFKAK462WTYK",
             completion: { (response) in
@@ -310,7 +349,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     func requestBusinesses() {
-        self.tokenDApi.accountsApi.requestBusinesses(
+        self.tokenDApi.integrationsApi.requestBusinesses(
             accountId: Constants.userAccountId,
             completion: { (result) in
                 switch result {

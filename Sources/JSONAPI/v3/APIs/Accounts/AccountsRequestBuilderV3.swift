@@ -9,10 +9,7 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     private let accounts: String = "accounts"
     private let signers: String = "signers"
     private let changeRoleRequests: String = "change_role_requests"
-    private let clients: String = "clients"
-    private let businesses: String = "businesses"
     private let requests: String = "requests"
-    private let dns: String = "integrations/dns/"
     private let convertedBalances: String = "converted_balances"
     
     // MARK: - Public
@@ -66,79 +63,6 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
             JSONAPI.BaseRequestBuildModel.simple(
                 path: path,
                 method: .get
-            ),
-            shouldSign: true,
-            sendDate: sendDate,
-            completion: completion
-        )
-    }
-    
-    /// Builds request to fetch businesses for client
-    /// - Parameters:
-    ///   - accountId: Identifier of account for which businesses should be fetched.
-    ///   - completion: Returns `RequestModel` or nil.
-    public func buildBusinessesRequest(
-        accountId: String,
-        sendDate: Date = Date(),
-        completion: @escaping (JSONAPI.RequestModel?) -> Void
-        ) {
-        
-        let path = /self.dns/self.clients/accountId/self.businesses
-        
-        self.buildRequest(
-            JSONAPI.BaseRequestBuildModel.simple(
-                path: path,
-                method: .get
-            ),
-            shouldSign: true,
-            sendDate: sendDate,
-            completion: completion
-        )
-    }
-    
-    /// Builds request to fetch business
-    /// - Parameters:
-    ///   - accountId: Identifier of businesses account to be fetched.
-    ///   - completion: Returns `RequestModel` or nil.
-    public func buildBusinessRequest(
-        accountId: String,
-        sendDate: Date = Date(),
-        completion: @escaping (JSONAPI.RequestModel?) -> Void
-        ) {
-        
-        let path = /self.dns/self.businesses/accountId
-        
-        self.buildRequest(
-            JSONAPI.BaseRequestBuildModel.simple(
-                path: path,
-                method: .get
-            ),
-            shouldSign: true,
-            sendDate: sendDate,
-            completion: completion
-        )
-    }
-    
-    /// Builds request to add business for client
-    /// - Parameters:
-    ///   - clientAccountId: Identifier of account for which business should be added.
-    ///   - businessAccountId: Identifier of businesses account to be added.
-    ///   - body: Body of request.
-    ///   - completion: Returns `RequestModel` or nil.
-    public func buildAddBusinessesRequest(
-        clientAccountId: String,
-        businessAccountId: String,
-        body: [String: Any],
-        sendDate: Date = Date(),
-        completion: @escaping (JSONAPI.RequestModel?) -> Void
-        ) {
-        
-        let path = /self.dns/self.clients/clientAccountId/self.businesses
-        self.buildRequest(
-            JSONAPI.BaseRequestBuildModel.simpleBody(
-                path: path,
-                method: .post,
-                bodyParameters: body
             ),
             shouldSign: true,
             sendDate: sendDate,

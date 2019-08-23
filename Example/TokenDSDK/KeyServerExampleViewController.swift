@@ -595,6 +595,9 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
                 
             case .other(let other):
                 alertTitle = "Input Code from \(other)"
+                
+            case .telegram(let url):
+                alertTitle = "Input Code from \(url)"
             }
         }
         
