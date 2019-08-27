@@ -202,7 +202,7 @@ public class GeneralApi: BaseApi {
                                 )
                                 
                             case .canceled:
-                                break
+                                completion(.tfaFailed)
                             }
                     },
                         onNoTFA: {
@@ -271,7 +271,7 @@ public class GeneralApi: BaseApi {
                                 )
                                 
                             case .canceled:
-                                break
+                                completion(.tfaFailed)
                             }
                     },
                         onNoTFA: {
