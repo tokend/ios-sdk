@@ -854,7 +854,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         case .password:
             alertTitle = "Input password"
             
-        case .code(let type, _):
+        case .code(let type, let inputCallback):
             switch type {
                 
             case .email:
@@ -870,7 +870,19 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                 alertTitle = "Input Code from \(other)"
                 
             case .telegram(let url):
-                alertTitle = "Input Code from \(url)"
+                guard let url = URL(string: url) else {
+                    return
+                }
+                self.redirectAlert(
+                    title: "Open our Telegram bot to get verification code",
+                    actionTitle: "Open Bot",
+                    url: url,
+                    completion: { (text) in
+                        inputCallback(text)
+                },
+                    cancel: cancel
+                )
+                return
             }
         }
         
@@ -891,6 +903,42 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
             }, cancel: {
                 cancel()
         })
+    }
+    
+    func redirectAlert(
+        title: String,
+        actionTitle: String,
+        url: URL,
+        completion: @escaping (_ text: String) -> Void,
+        cancel: @escaping () -> Void
+        ) {
+        
+        let alert = UIAlertController(
+            title: title,
+            message: nil,
+            preferredStyle: .alert
+        )
+        let action = UIAlertAction(
+            title: actionTitle,
+            style: .default,
+            handler: { _ in
+                UIApplication.shared.open(
+                    url,
+                    options: [:],
+                    completionHandler: { [weak self] (_) in
+                        self?.presentTextField(
+                            title: "Input tfa code",
+                            completion: completion,
+                            cancel: cancel
+                        )
+                })
+        })
+        alert.addAction(action)
+        if let parent = self.parent {
+            parent.present(alert, animated: true, completion: nil)
+        } else {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     func presentTextField(
