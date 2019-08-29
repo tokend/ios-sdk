@@ -223,7 +223,8 @@ extension KeyServerApi {
     }
     
     /// Method sends request to check wallet's verification status.
-    /// The result of request will be fetched in `completion` block as `KeyServerApi.RequestWalletVerificationStateResult`
+    /// The result of request will be fetched in `completion` block as
+    /// `KeyServerApi.RequestWalletVerificationStateResult`
     /// - Parameters:
     ///   - walletId: Wallet id.
     ///   - completion: Block that will be called when the result will be received.

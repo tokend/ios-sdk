@@ -11,6 +11,7 @@ public class IntegrationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     private let integrations: String = "integrations"
     private let dns: String = "dns"
     private let paymentProxyInfo: String = "payment-proxy/info"
+    private let marketPlaceBuy: String = "marketplace/buy"
     
     // MARK: - Public
     
@@ -102,6 +103,34 @@ public class IntegrationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
             ),
             shouldSign: false,
             sendDate: Date(),
+            completion: completion
+        )
+    }
+    
+    /// Builds request to send atomic swap bid
+    /// - Parameters:
+    ///   - envelope: Transaction's envelope
+    ///   - completion: Returns `RequestModel` or nil.
+    public func buildSendAtomicSwapBuyRequest(
+        envelope: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+        ) {
+        
+        let path = self.integrations/self.marketPlaceBuy
+        let parameters: [String: Any] = [
+            "tx": envelope,
+            "wait_for_ingest": true
+        ]
+        
+        self.buildRequest(
+            JSONAPI.BaseRequestBuildModel.simpleBody(
+                path: path,
+                method: .post,
+                bodyParameters: parameters
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
             completion: completion
         )
     }

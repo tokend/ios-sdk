@@ -192,4 +192,47 @@ public class IntegrationsApiV3: JSONAPI.BaseApi {
         
         return cancelable
     }
+    
+    /// Method sends atomic swap buy request.
+    /// The result of request will be fetched in `completion` block
+    /// - Parameters:
+    ///   - envelope: Transaction's envelope.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `RequestCollectionResult<BusinessResource>`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func sendAtomicSwapBuyRequest(
+        envelope: String,
+        completion: @escaping (_ result: RequestSingleResult<AtomicSwapBuyResource>) -> Void
+        ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildSendAtomicSwapBuyRequest(
+            envelope: envelope,
+            completion: { [weak self] (request) in
+                
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self?.requestSingle(
+                    AtomicSwapBuyResource.self,
+                    request: request,
+                    completion: { (result) in
+                        switch result {
+                            
+                        case .failure(let error):
+                            completion(.failure(error))
+                            
+                        case .success(let document):
+                            completion(.success(document))
+                        }
+                })
+        })
+        
+        return cancelable
+    }
+    
 }
