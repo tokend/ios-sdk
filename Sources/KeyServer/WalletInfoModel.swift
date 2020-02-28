@@ -27,6 +27,7 @@ public struct WalletInfoModel: Encodable {
             public let transaction: ApiDataRequest<Transaction, Include>?
             public let kdf: ApiDataRequest<KDF, Include>
             public let recovery: ApiDataRequest<Factor, Include>
+            public let signers: ApiDataRequest<[Signer], Include>
             public let factor: ApiDataRequest<Factor, Include>
             
             public class Transaction: Include {
@@ -60,6 +61,35 @@ public struct WalletInfoModel: Encodable {
                 
                 public override init(id: String, type: String) {
                     super.init(id: id, type: type)
+                }
+            }
+
+            public class Signer: Include {
+
+                public init(id: String, type: String, attributes: Attributes) {
+                    self.attributes = attributes
+
+                    super.init(id: id, type: type)
+                }
+
+                public let attributes: Attributes
+
+                public struct Attributes: Encodable {
+
+                    public let roleId: Int64
+                    public let weight: Int64
+                    public let identity: Int64
+                }
+
+                public enum SignerIncludeKeys: CodingKey {
+                    case attributes
+                }
+
+                override public func encode(to encoder: Encoder) throws {
+                    try super.encode(to: encoder)
+                    var container = encoder.container(keyedBy: SignerIncludeKeys.self)
+
+                    try? container.encode(self.attributes, forKey: .attributes)
                 }
             }
             
@@ -170,6 +200,7 @@ extension WalletInfoModel.WalletInfoData.Relationships: CustomDebugStringConvert
         }
         fields.append("kdf: \(self.kdf.data.debugDescription)")
         fields.append("recovery: \(self.recovery.data.debugDescription)")
+        fields.append("recovery: \(self.signers.data.debugDescription)")
         fields.append("factor: \(self.factor.data.debugDescription)")
         
         let description = DebugFormattedDescription(fields)
@@ -218,6 +249,36 @@ extension WalletInfoModel.WalletInfoData.Relationships.Factor.Attributes: Custom
         
         let description = DebugFormattedDescription(fields)
         
+        return description
+    }
+}
+
+extension WalletInfoModel.WalletInfoData.Relationships.Signer: CustomDebugStringConvertible {
+
+    public var debugDescription: String {
+        var fields: [String] = []
+
+        fields.append("type: \(self.type)")
+        fields.append("id: \(id)")
+        fields.append("attributes: \(self.attributes.debugDescription)")
+
+        let description = DebugFormattedDescription(fields)
+
+        return description
+    }
+}
+
+extension WalletInfoModel.WalletInfoData.Relationships.Signer.Attributes: CustomDebugStringConvertible {
+
+    public var debugDescription: String {
+        var fields: [String] = []
+
+        fields.append("role_id: \(self.roleId)")
+        fields.append("weight: \(self.weight)")
+        fields.append("identity: \(self.identity)")
+
+        let description = DebugFormattedDescription(fields)
+
         return description
     }
 }

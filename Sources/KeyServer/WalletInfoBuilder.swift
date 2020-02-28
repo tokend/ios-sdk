@@ -186,6 +186,30 @@ public struct WalletInfoBuilder {
         )
         
         included.append(recoveryFactorRelationship)
+
+        // Signers
+        let accountId = Base32Check.encode(version: .accountIdEd25519, data: keychainParams.newKeyPair.getPublicKeyData())
+        let signers = [
+            WalletInfoModel.WalletInfoData.Relationships.Signer(
+                    id: recoveryDetails.accountIdBase32Check,
+                    type: "signer",
+                    attributes: WalletInfoModel.WalletInfoData.Relationships.Signer.Attributes(
+                            roleId: 1,
+                            weight: 1000,
+                            identity: 0)),
+            WalletInfoModel.WalletInfoData.Relationships.Signer(
+                    id: accountId,
+                    type: "signer",
+                    attributes: WalletInfoModel.WalletInfoData.Relationships.Signer.Attributes(
+                            roleId: 1,
+                            weight: 1000,
+                            identity: 0)),
+        ]
+
+        for signer in signers {
+            included.append(signer)
+        }
+
         
         // Transaction
         var transactionAPIData: ApiDataRequest<Transaction, WalletInfoModel.Include>?
@@ -209,6 +233,7 @@ public struct WalletInfoBuilder {
             transaction: transactionAPIData,
             kdf: ApiDataRequest(data: kdfRelationship),
             recovery: ApiDataRequest(data: recoveryFactorRelationship),
+            signers: ApiDataRequest(data: signers),
             factor: ApiDataRequest(data: passwordFactorRelationship)
         )
         
