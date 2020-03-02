@@ -4,11 +4,11 @@ import Foundation
 
 public enum RequestDetailsType {
     
-    case aSwapBidRequestDetails(_ resource: ASwapBidRequestDetailsResource)
     case amlAlertRequestDetails(_ resource: AmlAlertRequestDetailsResource)
     case assetCreateRequestDetails(_ resource: AssetCreateRequestDetailsResource)
     case assetUpdateREquestDetails(_ resource: AssetUpdateREquestDetailsResource)
-    case atomicSwapRequestDetails(_ resource: AtomicSwapRequestDetailsResource)
+    case atomicSwapAskRequestDetails(_ resource: AtomicSwapAskRequestDetailsResource)
+    case atomicSwapBidRequestDetails(_ resource: AtomicSwapBidRequestDetailsResource)
     case changeRoleRequestDetails(_ resource: ChangeRoleRequestDetailsResource)
     case issuanceRequestDetails(_ resource: IssuanceRequestDetailsResource)
     case limitsUpdateRequestDetails(_ resource: LimitsUpdateRequestDetailsResource)
@@ -22,16 +22,16 @@ public enum RequestDetailsType {
 extension RequestDetailsResource {
     
     public var requestDetailsType: RequestDetailsType {
-        if let resource = self as? ASwapBidRequestDetailsResource {
-            return .aSwapBidRequestDetails(resource)
-        } else if let resource = self as? AmlAlertRequestDetailsResource {
+        if let resource = self as? AmlAlertRequestDetailsResource {
             return .amlAlertRequestDetails(resource)
         } else if let resource = self as? AssetCreateRequestDetailsResource {
             return .assetCreateRequestDetails(resource)
         } else if let resource = self as? AssetUpdateREquestDetailsResource {
             return .assetUpdateREquestDetails(resource)
-        } else if let resource = self as? AtomicSwapRequestDetailsResource {
-            return .atomicSwapRequestDetails(resource)
+        } else if let resource = self as? AtomicSwapAskRequestDetailsResource {
+            return .atomicSwapAskRequestDetails(resource)
+        } else if let resource = self as? AtomicSwapBidRequestDetailsResource {
+            return .atomicSwapBidRequestDetails(resource)
         } else if let resource = self as? ChangeRoleRequestDetailsResource {
             return .changeRoleRequestDetails(resource)
         } else if let resource = self as? IssuanceRequestDetailsResource {
@@ -55,9 +55,6 @@ extension RequestDetailsResource {
 /*
     switch type {
         
-    case .aSwapBidRequestDetails(let resource):
-        
-        
     case .amlAlertRequestDetails(let resource):
         
         
@@ -67,7 +64,10 @@ extension RequestDetailsResource {
     case .assetUpdateREquestDetails(let resource):
         
         
-    case .atomicSwapRequestDetails(let resource):
+    case .atomicSwapAskRequestDetails(let resource):
+        
+        
+    case .atomicSwapBidRequestDetails(let resource):
         
         
     case .changeRoleRequestDetails(let resource):

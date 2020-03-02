@@ -60,4 +60,45 @@ public class HistoryApiV3: JSONAPI.BaseApi {
         
         return cancelable
     }
+    
+    /// Returns the list of the effects applied to account or balance by balance-change operation.
+    /// - Parameters:
+    ///   - filters: Request filters.
+    ///   - include: Resource to include.
+    ///   - pagination: Pagination option.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `RequestCollectionResult<ParticipantEffectResource>`.
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func requestMovements(
+        filters: MovementsRequestFilterV3,
+        include: [String]? = nil,
+        pagination: RequestPagination,
+        onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
+        completion: @escaping (_ result: RequestCollectionResult<ParticipantEffectResource>) -> Void
+        ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildMovementsRequest(
+            filters: filters,
+            include: include,
+            pagination: pagination,
+            completion: { [weak self] (request) in
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                onRequestBuilt?(request)
+                
+                cancelable.cancelable = self?.requestCollection(
+                    ParticipantEffectResource.self,
+                    request: request,
+                    completion: completion
+                )
+        })
+        
+        return cancelable
+    }
 }

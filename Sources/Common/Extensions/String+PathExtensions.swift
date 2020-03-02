@@ -38,6 +38,16 @@ extension String {
         }
     }
     
+    public func getTrailingSlashTrimmed() -> String {
+        guard !self.isEmpty else { return self }
+        
+        if self.hasSuffix("/") {
+            return String(self.dropLast())
+        } else {
+            return self
+        }
+    }
+    
     public func addParam(key: String, value: String) -> String {
         let prefix = self.contains("?") ? "&" : "?"
         return self.appending("\(prefix)\(key)=\(value)")

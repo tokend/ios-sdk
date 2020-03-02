@@ -103,7 +103,7 @@ public class AccountsApi: BaseApi {
     }
     
     /// Method sends request to get signers for according account from api.
-    /// The result of request will be fetched in `completion` block as `AccountsApi.RequestAccountResult`
+    /// The result of request will be fetched in `completion` block as `AccountsApi.RequestSignersResult`
     /// - Parameters:
     ///   - accountId: Identifier of account for which signers will be fetched.
     ///   - sendDate: Send time of request.
@@ -324,7 +324,7 @@ public class AccountsApi: BaseApi {
     public enum UploadBlobResult {
         
         /// Case of succesful response from api
-        case success(UploadBlobModel)
+        case success(UploadBlobResponse)
         
         /// Case of failed response from api with `ApiErrors` model
         case failure(ApiErrors)
@@ -357,7 +357,8 @@ public class AccountsApi: BaseApi {
                     return
                 }
                 
-                cancelable.cancelable = self?.network.responseRawData(
+                cancelable.cancelable = self?.network.responseDataObject(
+                    ApiDataResponse<UploadBlobResponse>.self,
                     url: request.url,
                     method: request.method,
                     headers: request.signedHeaders,
@@ -368,15 +369,8 @@ public class AccountsApi: BaseApi {
                         case .failure(let errors):
                             completion(.failure(errors))
                             
-                        case .success(let data):
-                            guard let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
-                                let json = jsonObject as? JSON,
-                                let model = UploadBlobModel(json: json) else {
-                                    completion(.failure(ApiErrors.failedToDecodeResponse))
-                                    return
-                            }
-                            
-                            completion(.success(model))
+                        case .success(let response):
+                            completion(.success(response.data))
                         }
                 })
         })

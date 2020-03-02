@@ -4,9 +4,9 @@ PODS:
     - Alamofire (~> 4.6)
   - DLCryptoKit (2.0.1):
     - DLOpenSSL
-  - DLJSONAPI (1.0.2):
-    - DLJSONAPI/Default (= 1.0.2)
-  - DLJSONAPI/Default (1.0.2)
+  - DLJSONAPI (1.0.3):
+    - DLJSONAPI/Default (= 1.0.3)
+  - DLJSONAPI/Default (1.0.3)
   - DLOpenSSL (1.0.2)
   - RxAtomic (4.4.1)
   - RxCocoa (4.4.1):
@@ -14,27 +14,27 @@ PODS:
   - RxSwift (4.4.1):
     - RxAtomic (~> 4.4)
   - SnapKit (4.2.0)
-  - TokenDSDK (3.1.0-x.3):
-    - TokenDSDK/API (= 3.1.0-x.3)
-    - TokenDSDK/JSONAPI (= 3.1.0-x.3)
-    - TokenDSDK/KeyServer (= 3.1.0-x.3)
+  - TokenDSDK (3.1.0-rc.28):
+    - TokenDSDK/API (= 3.1.0-rc.28)
+    - TokenDSDK/JSONAPI (= 3.1.0-rc.28)
+    - TokenDSDK/KeyServer (= 3.1.0-rc.28)
     - TokenDWallet (>= 3.0.1)
-  - TokenDSDK/AlamofireNetwork (3.1.0-x.3):
+  - TokenDSDK/AlamofireNetwork (3.1.0-rc.28):
     - Alamofire
     - AlamofireNetworkActivityLogger
     - TokenDWallet (>= 3.0.1)
-  - TokenDSDK/AlamofireNetworkJSONAPI (3.1.0-x.3):
+  - TokenDSDK/AlamofireNetworkJSONAPI (3.1.0-rc.28):
     - Alamofire
     - AlamofireNetworkActivityLogger
     - TokenDWallet (>= 3.0.1)
-  - TokenDSDK/API (3.1.0-x.3):
+  - TokenDSDK/API (3.1.0-rc.28):
     - TokenDWallet (>= 3.0.1)
-  - TokenDSDK/JSONAPI (3.1.0-x.3):
-    - DLJSONAPI (>= 1.0.2)
+  - TokenDSDK/JSONAPI (3.1.0-rc.28):
+    - DLJSONAPI (>= 1.0.3)
     - TokenDWallet (>= 3.0.1)
-  - TokenDSDK/KeyServer (3.1.0-x.3):
+  - TokenDSDK/KeyServer (3.1.0-rc.28):
     - TokenDWallet (>= 3.0.1)
-  - TokenDSDK/RxJSONAPI (3.1.0-x.3):
+  - TokenDSDK/RxJSONAPI (3.1.0-rc.28):
     - RxCocoa (~> 4.0)
     - RxSwift (~> 4.0)
     - TokenDWallet (>= 3.0.1)
@@ -70,13 +70,13 @@ SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   AlamofireNetworkActivityLogger: 6f3076652ab7fa6c819b59be08ea038d339e36d8
   DLCryptoKit: 491c522583e92c90c09c06bf1192ef741022af33
-  DLJSONAPI: 898ebfa4a61c5ea6150f2a7ea9acf009a4b8828f
+  DLJSONAPI: 4d448f06fd412dae20c53ba1c71d601c4b422ce5
   DLOpenSSL: 78d928228cb6d95fcaa354f4f9aba041ccf95457
   RxAtomic: f8d6adc1ccb87a767811269e4875887bc74dbf19
   RxCocoa: 2f35a76bf8887872e28a1914112395b11b8e0e64
   RxSwift: 92fcf68dfef21f3e2ab1965363d9e7b3d787597e
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  TokenDSDK: 587d9e23a01827637a7fc65dd6e43f5cab210a7f
+  TokenDSDK: 7e52823872e6965b85342d80e65af3a417cdfd2a
   TokenDWallet: 3904ec3d99691d6e1c98f58e03d657804e7d08b3
 
 PODFILE CHECKSUM: d1e797a0c0d30ff2c5cced44774ad26bca37e2a8

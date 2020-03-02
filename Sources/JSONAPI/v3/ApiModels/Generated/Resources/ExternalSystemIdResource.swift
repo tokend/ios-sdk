@@ -29,8 +29,8 @@ open class ExternalSystemIdResource: Resource {
         return self.dateOptionalValue(key: CodingKeys.bindedAt) ?? Date()
     }
     
-    open var data: String {
-        return self.stringOptionalValue(key: CodingKeys.data) ?? ""
+    open var data: ExternalSystemData? {
+        return self.codableOptionalValue(key: CodingKeys.data)
     }
     
     open var expiresAt: Date {

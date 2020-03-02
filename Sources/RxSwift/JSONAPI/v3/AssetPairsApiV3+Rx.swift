@@ -6,9 +6,18 @@ extension AssetPairsRequestBuilderV3: ReactiveCompatible {}
 
 extension Reactive where Base: AssetPairsRequestBuilderV3 {
     
-    public func buildAssetPairsRequest(sendDate: Date = Date()) -> Single<JSONAPI.RequestModel> {
+    public func buildAssetPairsRequest(
+        filters: AssetPairsRequestsFiltersV3,
+        include: [String]?,
+        pagination: RequestPagination
+        ) -> Single<JSONAPI.RequestModel> {
+        
         return Single<JSONAPI.RequestModel>.create(subscribe: { (event) in
-            let request = self.base.buildAssetPairsRequest(sendDate: sendDate)
+            let request = self.base.buildAssetPairsRequest(
+                filters: filters,
+                include: include,
+                pagination: pagination
+            )
             
             event(.success(request))
             
@@ -39,12 +48,16 @@ extension Reactive where Base: AssetPairsRequestBuilderV3 {
 extension Reactive where Base: AssetPairsApiV3 {
     
     public func requestAssetPairs(
+        filters: AssetPairsRequestsFiltersV3,
+        include: [String]? = nil,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil
         ) -> Single<Document<[AssetPairResource]>> {
         
         return Single<Document<[AssetPairResource]>>.create(subscribe: { (event) in
             let cancelable = self.base.requestAssetPairs(
+                filters: filters,
+                include: include,
                 pagination: pagination,
                 onRequestBuilt: onRequestBuilt,
                 completion: { (result) in

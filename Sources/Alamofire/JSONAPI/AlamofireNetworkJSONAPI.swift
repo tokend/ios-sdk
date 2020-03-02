@@ -197,6 +197,7 @@ extension JSONAPI.AlamofireNetwork: JSONAPI.NetworkProtocol {
         let cancelable = self.sessionManager
             .request(request)
             .validate(contentType: ["application/vnd.api+json"])
+            .validate()
             .responseData { (dataResponse) in
                 let data = dataResponse.data
                 

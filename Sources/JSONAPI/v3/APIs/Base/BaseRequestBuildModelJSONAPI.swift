@@ -58,18 +58,16 @@ public struct BaseRequestBuildModelJSONAPI {
         )
     }
     
-    static public func simpleQueryPagination(
+    static public func simpleBody(
         path: String,
         method: RequestMethod,
-        queryParameters: RequestQueryParameters,
-        pagination: RequestPagination
+        bodyParameters: RequestBodyParameters
         ) -> JSONAPI.BaseRequestBuildModel {
         
         return JSONAPI.BaseRequestBuildModel(
             path: path,
             method: method,
-            queryParameters: queryParameters,
-            pagination: pagination
+            bodyParameters: bodyParameters
         )
     }
     
@@ -82,6 +80,36 @@ public struct BaseRequestBuildModelJSONAPI {
         return JSONAPI.BaseRequestBuildModel(
             path: path,
             method: method,
+            pagination: pagination
+        )
+    }
+    
+    static public func simpleQueryInclude(
+        path: String,
+        method: RequestMethod,
+        queryParameters: RequestQueryParameters,
+        include: [String]?
+        ) -> JSONAPI.BaseRequestBuildModel {
+        
+        return JSONAPI.BaseRequestBuildModel(
+            path: path,
+            method: method,
+            queryParameters: queryParameters,
+            include: include
+        )
+    }
+    
+    static public func simpleQueryPagination(
+        path: String,
+        method: RequestMethod,
+        queryParameters: RequestQueryParameters,
+        pagination: RequestPagination
+        ) -> JSONAPI.BaseRequestBuildModel {
+        
+        return JSONAPI.BaseRequestBuildModel(
+            path: path,
+            method: method,
+            queryParameters: queryParameters,
             pagination: pagination
         )
     }

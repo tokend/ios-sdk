@@ -3,28 +3,29 @@
 import Foundation
 import DLJSONAPI
 
-// MARK: - ASwapBidRequestDetailsResource
+// MARK: - OpCreateAtomicSwapAskRequestDetailsResource
 
-open class ASwapBidRequestDetailsResource: RequestDetailsResource {
+open class OpCreateAtomicSwapAskRequestDetailsResource: OperationDetailsResource {
     
     open override class var resourceType: String {
-        return "request-details-aswap-bid"
+        return "operations-create-atomic-swap-ask-request"
     }
     
     public enum CodingKeys: String, CodingKey {
         // attributes
-        case baseAmount
+        case amount
         case creatorDetails
         
         // relations
         case baseBalance
         case quoteAssets
+        case request
     }
     
     // MARK: Attributes
     
-    open var baseAmount: Decimal {
-        return self.decimalOptionalValue(key: CodingKeys.baseAmount) ?? 0.0
+    open var amount: Decimal {
+        return self.decimalOptionalValue(key: CodingKeys.amount) ?? 0.0
     }
     
     open var creatorDetails: [String: Any] {
@@ -37,8 +38,12 @@ open class ASwapBidRequestDetailsResource: RequestDetailsResource {
         return self.relationSingleOptionalValue(key: CodingKeys.baseBalance)
     }
     
-    open var quoteAssets: [QuoteAssetResource]? {
+    open var quoteAssets: [AssetResource]? {
         return self.relationCollectionOptionalValue(key: CodingKeys.quoteAssets)
+    }
+    
+    open var request: ReviewableRequestResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.request)
     }
     
 }

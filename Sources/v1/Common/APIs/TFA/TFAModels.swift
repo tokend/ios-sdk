@@ -4,6 +4,7 @@ public enum TFAFactorType: String {
     case password
     case totp
     case email
+    case phone
 }
 
 public struct TFAMetaResponse: Codable, CustomDebugStringConvertible {
@@ -11,6 +12,7 @@ public struct TFAMetaResponse: Codable, CustomDebugStringConvertible {
     public let factorId: Int
     public let factorType: String
     public let keychainData: String?
+    public let botUrl: String?
     public let salt: String?
     public let token: String
     public let walletId: String
@@ -23,6 +25,8 @@ public struct TFAMetaResponse: Codable, CustomDebugStringConvertible {
     public enum CodeBasedType {
         case totp
         case email
+        case phone
+        case telegram(url: String)
         case other(String)
     }
     
@@ -51,6 +55,13 @@ public struct TFAMetaResponse: Codable, CustomDebugStringConvertible {
             return .totp
         case "email":
             return .email
+        case "phone":
+            return .phone
+        case "telegram":
+            guard let url = self.botUrl else {
+                return .other(self.factorType)
+            }
+            return .telegram(url: url)
         default:
             return .other(self.factorType)
         }
@@ -81,7 +92,7 @@ public struct TFAMetaResponse: Codable, CustomDebugStringConvertible {
 public struct TFAFactor: Decodable {
     
     public let type: String
-    public let id: Int
+    public let id: String
     public let attributes: Attributes
     
     public struct Attributes: Decodable {

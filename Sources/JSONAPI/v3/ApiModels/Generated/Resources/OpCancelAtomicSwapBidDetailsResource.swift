@@ -8,18 +8,18 @@ import DLJSONAPI
 open class OpCancelAtomicSwapBidDetailsResource: OperationDetailsResource {
     
     open override class var resourceType: String {
-        return "operations-cancel-aswap-bid"
+        return "operations-cancel-atomic-swap-ask"
     }
     
     public enum CodingKeys: String, CodingKey {
         // relations
-        case bid
+        case ask
     }
     
     // MARK: Relations
     
-    open var bid: ASwapBidRequestDetailsResource? {
-        return self.relationSingleOptionalValue(key: CodingKeys.bid)
+    open var ask: AtomicSwapAskResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.ask)
     }
     
 }

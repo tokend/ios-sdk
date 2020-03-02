@@ -1,18 +1,19 @@
 import Foundation
 
-public struct OrderBookRequestParameters: Encodable {
-    public let isBuy: Bool?
+public struct TradesRequestParameters: Encodable {
+    
     public let baseAsset: String
     public let quoteAsset: String
+    public let orderBookId: String
     
     public init(
-        isBuy: Bool?,
         baseAsset: String,
-        quoteAsset: String
+        quoteAsset: String,
+        orderBookId: String
         ) {
         
-        self.isBuy = isBuy
         self.baseAsset = baseAsset
         self.quoteAsset = quoteAsset
+        self.orderBookId = orderBookId
     }
 }

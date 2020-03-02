@@ -8,7 +8,12 @@ import SnapKit
 // swiftlint:disable file_length type_body_length force_try line_length
 class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProtocol {
     
-    var privateKey: ECDSA.KeyData?
+    var privateKey: ECDSA.KeyData? = try? ECDSA.KeyData(
+        seed: try! Base32Check.decodeCheck(
+            expectedVersion: .seedEd25519,
+            encoded: Constants.masterKeySeed
+        )
+    )
     
     func getPrivateKeyData(completion: @escaping (ECDSA.KeyData?) -> Void) {
         completion(self.privateKey)
@@ -149,7 +154,12 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     }
     
     @objc func runTest() {
-        
+        guard let walletData = self.walletData,
+            let key = self.privateKey else {
+                print("ERRRROROROR")
+                return
+        }
+        self.sendTransaction(walletData: walletData, key: key)
     }
     
     // MARK: -
@@ -193,13 +203,15 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         })
     }
     
-    func requestOrderBook() {
-        self.tokenDApi.orderBookApi.requestOrderBook(
-            parameters: OrderBookRequestParameters(
-                isBuy: true,
-                baseAsset: "BTC",
-                quoteAsset: "ETH"
+    func requestTrades() {
+        self.tokenDApi.orderBookApi.requestTrades(
+            parameters: TradesRequestParameters(
+                baseAsset: "DLT10",
+                quoteAsset: "EUR",
+                orderBookId: "0"
             ),
+            limit: 20,
+            cursor: nil,
             completion: { [weak self] (result) in
                 switch result {
                 case .success:
@@ -311,10 +323,23 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     }
     
     func requestAccountIdForEmail(_ email: String) {
-        self.tokenDApi.generalApi.requestAccountId(
-        email: email) { [weak self] (result) in
+        self.tokenDApi.generalApi.requestIdentities(
+            filter: .email(email)) { [weak self] (result) in
             switch result {
             case .succeeded:
+                print("\(#function) - success")
+            case .failed(let error):
+                self?.showError(error)
+            }
+        }
+    }
+    
+    func requestEmailForAccountId(_ accountId: String) {
+        self.tokenDApi.generalApi.requestIdentities(
+        filter: .accountId(accountId)) { [weak self] (result) in
+            switch result {
+            case .succeeded(let data):
+                print(data)
                 print("\(#function) - success")
             case .failed(let error):
                 self?.showError(error)
@@ -416,7 +441,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                             
                         case .success(let balances):
                             if let balance = balances.first(where: { (balanceDetails) -> Bool in
-                                return balanceDetails.asset == "BTC"
+                                return balanceDetails.asset == "ECO"
                             }) {
                                 self.sendTransaction(
                                     networkInfo: networkInfo,
@@ -450,8 +475,8 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         asset: String
         ) {
         
-        self.tokenDApi.generalApi.requestAccountId(
-            email: Constants.sendTransactionDestinationEmail,
+        self.tokenDApi.generalApi.requestIdentities(
+            filter: .email(Constants.sendTransactionDestinationEmail),
             completion: { result in
                 switch result {
                     
@@ -561,8 +586,8 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                     case .failure(let error):
                         print("\(#function) - failure: \(error)")
                         
-                    case .success:
-                        print("\(#function) - success")
+                    case .success(let response):
+                        print("\(#function) - success \(response.ledger)")
                     }
             })
         } catch let error {
@@ -683,9 +708,12 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                     
                     let totpFactors = factors.getTOTPFactors()
                     if let totpFactor = totpFactors.first {
+                        guard let id = Int(totpFactor.id) else {
+                            return
+                        }
                         self.tokenDApi.tfaApi.deleteFactor(
                             walletId: walletId,
-                            factorId: totpFactor.id,
+                            factorId: id,
                             completion: { (deleteResult) in
                                 switch deleteResult {
                                     
@@ -826,17 +854,35 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         case .password:
             alertTitle = "Input password"
             
-        case .code(let type, _):
+        case .code(let type, let inputCallback):
             switch type {
                 
             case .email:
                 alertTitle = "Input Code from Email"
+                
+            case .phone:
+                alertTitle = "Input Code from SMS"
                 
             case .totp:
                 alertTitle = "Input Code from Authenticator"
                 
             case .other(let other):
                 alertTitle = "Input Code from \(other)"
+                
+            case .telegram(let url):
+                guard let url = URL(string: url) else {
+                    return
+                }
+                self.redirectAlert(
+                    title: "Open our Telegram bot to get verification code",
+                    actionTitle: "Open Bot",
+                    url: url,
+                    completion: { (text) in
+                        inputCallback(text)
+                },
+                    cancel: cancel
+                )
+                return
             }
         }
         
@@ -857,6 +903,42 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
             }, cancel: {
                 cancel()
         })
+    }
+    
+    func redirectAlert(
+        title: String,
+        actionTitle: String,
+        url: URL,
+        completion: @escaping (_ text: String) -> Void,
+        cancel: @escaping () -> Void
+        ) {
+        
+        let alert = UIAlertController(
+            title: title,
+            message: nil,
+            preferredStyle: .alert
+        )
+        let action = UIAlertAction(
+            title: actionTitle,
+            style: .default,
+            handler: { _ in
+                UIApplication.shared.open(
+                    url,
+                    options: [:],
+                    completionHandler: { [weak self] (_) in
+                        self?.presentTextField(
+                            title: "Input tfa code",
+                            completion: completion,
+                            cancel: cancel
+                        )
+                })
+        })
+        alert.addAction(action)
+        if let parent = self.parent {
+            parent.present(alert, animated: true, completion: nil)
+        } else {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     func presentTextField(
@@ -892,7 +974,11 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                 cancel()
         }))
         
-        self.present(alert, animated: true, completion: nil)
+        if let parent = self.parent {
+            parent.present(alert, animated: true, completion: nil)
+        } else {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     func processInput(
@@ -972,8 +1058,10 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
             style: .default,
             handler: { _ in
                 UIPasteboard.general.string = response.attributes.secret
-                
-                self.updateTOTPFactor(walletId: walletId, factorId: response.id, priority: priority)
+                guard let id = Int(response.id) else {
+                    return
+                }
+                self.updateTOTPFactor(walletId: walletId, factorId: id, priority: priority)
         }))
         
         if let url = URL(string: response.attributes.seed),
@@ -984,8 +1072,10 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                 handler: { _ in
                     UIPasteboard.general.string = response.attributes.secret
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                    
-                    self.updateTOTPFactor(walletId: walletId, factorId: response.id, priority: priority)
+                    guard let id = Int(response.id) else {
+                        return
+                    }
+                    self.updateTOTPFactor(walletId: walletId, factorId: id, priority: priority)
             }))
         }
         

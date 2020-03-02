@@ -7,28 +7,23 @@ extension OrderBookRequestBuilderV3: ReactiveCompatible {}
 extension Reactive where Base: OrderBookRequestBuilderV3 {
     
     public func buildOffersRequest(
-        orderBookId: String,
-        filters: OrderBookRequestFiltersV3,
-        include: [String]?,
-        pagination: RequestPagination,
-        sendDate: Date = Date()
+        baseAsset: String,
+        quoteAsset: String,
+        orderBookId: String = "0",
+        maxEntries: Int,
+        include: [String]?
         ) -> Single<JSONAPI.RequestModel> {
         
         return Single<JSONAPI.RequestModel>.create(subscribe: { (event) in
-            self.base.buildOffersRequest(
+            let request = self.base.buildOffersRequest(
+                baseAsset: baseAsset,
+                quoteAsset: quoteAsset,
                 orderBookId: orderBookId,
-                filters: filters,
-                include: include,
-                pagination: pagination,
-                sendDate: sendDate,
-                completion: { (request) in
-                    guard let request = request else {
-                        event(.error(JSONAPIError.failedToSignRequest))
-                        return
-                    }
-                    
-                    event(.success(request))
-            })
+                maxEntries: maxEntries,
+                include: include
+            )
+            
+            event(.success(request))
             
             return Disposables.create()
         })
@@ -38,20 +33,20 @@ extension Reactive where Base: OrderBookRequestBuilderV3 {
 extension Reactive where Base: OrderBookApiV3 {
     
     public func requestOffers(
+        baseAsset: String,
+        quoteAsset: String,
         orderBookId: String,
-        filters: OrderBookRequestFiltersV3,
-        include: [String]? = nil,
-        pagination: RequestPagination,
-        onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil
-        ) -> Single<Document<[OrderBookEntryResource]>> {
+        maxEntries: Int,
+        include: [String]? = nil
+        ) -> Single<Document<OrderBookResource>> {
         
-        return Single<Document<[OrderBookEntryResource]>>.create(subscribe: { (event) in
+        return Single<Document<OrderBookResource>>.create(subscribe: { (event) in
             let cancelable = self.base.requestOffers(
+                baseAsset: baseAsset,
+                quoteAsset: quoteAsset,
                 orderBookId: orderBookId,
-                filters: filters,
+                maxEntries: maxEntries,
                 include: include,
-                pagination: pagination,
-                onRequestBuilt: onRequestBuilt,
                 completion: { (result) in
                     switch result {
                         

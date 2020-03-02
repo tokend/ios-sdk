@@ -5,16 +5,20 @@ import DLJSONAPI
 
 enum AllResources {
     
+    // swiftlint:disable function_body_length
     public static func registerAllResources() {
         let allResources: [Resource.Type] = [
             OpCreateSaleRequestDetailsResource.self,
+            AtomicSwapAskResource.self,
             EffectLockedResource.self,
+            LedgerEntryChangeResource.self,
             OpRemoveSignerRuleDetailsResource.self,
             OpBindExternalSystemAccountDetailsResource.self,
+            AtomicSwapQuoteAssetResource.self,
             BalanceResource.self,
             BalanceStateResource.self,
             SaleResource.self,
-            QuoteAssetResource.self,
+            AtomicSwapAskRequestDetailsResource.self,
             OpCreatePreIssuanceRequestDetailsResource.self,
             EffectWithdrawnResource.self,
             OpManageSaleDetailsResource.self,
@@ -23,15 +27,18 @@ enum AllResources {
             PreIssuanceRequestDetailsResource.self,
             FeeResource.self,
             AssetPairResource.self,
+            AtomicSwapBidRequestDetailsResource.self,
             OperationDetailsResource.self,
             OpManageExternalSystemPoolDetailsResource.self,
             LimitsUpdateRequestDetailsResource.self,
+            ConvertedBalancesCollectionResource.self,
             OpCreateIssuanceRequestDetailsResource.self,
             OpCreateWithdrawRequestDetailsResource.self,
             AmlAlertRequestDetailsResource.self,
             SaleRequestDetailsResource.self,
             OpManageKeyValueDetailsResource.self,
             SignerRuleResource.self,
+            OrderBookEntryResource.self,
             OpCreateAccountRuleDetailsResource.self,
             AccountRoleResource.self,
             AccountRuleResource.self,
@@ -42,26 +49,30 @@ enum AllResources {
             CalculatedFeeResource.self,
             OpCreateAccountDetailsResource.self,
             SignerRoleResource.self,
-            OrderBookEntryResource.self,
+            OrderBookResource.self,
             OpCreateManageLimitsRequestDetailsResource.self,
             LimitResource.self,
             ChangeRoleRequestDetailsResource.self,
             OpPaymentDetailsResource.self,
+            ConvertedBalanceStateResource.self,
             AssetUpdateREquestDetailsResource.self,
             OpManageSignerRuleDetailsResource.self,
             EffectChargedFromLockedResource.self,
             OpManageAccountRoleDetailsResource.self,
             OpManageSignerDetailsResource.self,
+            OpLicenseDetailsResource.self,
             ParticipantEffectResource.self,
             OpUpdateSignerDetailsResource.self,
             OpRemoveSignerDetailsResource.self,
             OpReviewRequestDetailsResource.self,
             OperationResource.self,
             OpUpdateSignerRoleDetailsResource.self,
+            OpStamlDetailsResource.self,
+            VoteResource.self,
             OpManageLimitsDetailsResource.self,
             AccountResource.self,
-            OpCancelAtomicSwapBidDetailsResource.self,
             OpUpdateSignerRuleDetailsResource.self,
+            OpCancelAtomicSwapBidDetailsResource.self,
             EffectBalanceChangeResource.self,
             OpManageAccountRuleDetailsResource.self,
             OpCreateAtomicSwapBidRequestDetailsResource.self,
@@ -78,17 +89,19 @@ enum AllResources {
             OpRemoveAccountRuleDetailsResource.self,
             EffectIssuedResource.self,
             UpdateSaleDetailsRequestDetailsResource.self,
+            PollResource.self,
+            PublicKeyEntryResource.self,
             OpManageBalanceDetailsResource.self,
             EffectMatchedResource.self,
             OpCreateSignerRoleDetailsResource.self,
             EffectChargedResource.self,
             ExternalSystemIdResource.self,
             WithdrawalRequestDetailsResource.self,
+            PollParticipationResource.self,
             OpUpdateAccountRuleDetailsResource.self,
-            AtomicSwapRequestDetailsResource.self,
             KeyValueEntryResource.self,
             OpPayoutDetailsResource.self,
-            ASwapBidRequestDetailsResource.self,
+            OpCreateAtomicSwapAskRequestDetailsResource.self,
             EffectResource.self,
             SaleQuoteAssetResource.self,
             OpUpdateAccountRoleDetailsResource.self,
@@ -104,5 +117,10 @@ enum AllResources {
         for res in allResources {
             Context.registerClass(res)
         }
+        
+        for res in ManualResources.resources {
+            Context.registerClass(res)
+        }
     }
+    // swiftlint:enable function_body_length
 }

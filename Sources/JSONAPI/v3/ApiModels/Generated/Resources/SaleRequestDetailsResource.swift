@@ -53,11 +53,11 @@ open class SaleRequestDetailsResource: RequestDetailsResource {
         return self.relationSingleOptionalValue(key: CodingKeys.baseAsset)
     }
     
-    open var defaultQuoteAsset: QuoteAssetResource? {
+    open var defaultQuoteAsset: SaleQuoteAssetResource? {
         return self.relationSingleOptionalValue(key: CodingKeys.defaultQuoteAsset)
     }
     
-    open var quoteAssets: [QuoteAssetResource]? {
+    open var quoteAssets: [SaleQuoteAssetResource]? {
         return self.relationCollectionOptionalValue(key: CodingKeys.quoteAssets)
     }
     

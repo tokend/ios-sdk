@@ -9,6 +9,7 @@ public enum OperationDetailsType {
     case opCheckSaleStateDetails(_ resource: OpCheckSaleStateDetailsResource)
     case opCreateAMLAlertRequestDetails(_ resource: OpCreateAMLAlertRequestDetailsResource)
     case opCreateAccountDetails(_ resource: OpCreateAccountDetailsResource)
+    case opCreateAtomicSwapAskRequestDetails(_ resource: OpCreateAtomicSwapAskRequestDetailsResource)
     case opCreateAtomicSwapBidRequestDetails(_ resource: OpCreateAtomicSwapBidRequestDetailsResource)
     case opCreateChangeRoleRequestDetails(_ resource: OpCreateChangeRoleRequestDetailsResource)
     case opCreateIssuanceRequestDetails(_ resource: OpCreateIssuanceRequestDetailsResource)
@@ -16,6 +17,7 @@ public enum OperationDetailsType {
     case opCreatePreIssuanceRequestDetails(_ resource: OpCreatePreIssuanceRequestDetailsResource)
     case opCreateSaleRequestDetails(_ resource: OpCreateSaleRequestDetailsResource)
     case opCreateWithdrawRequestDetails(_ resource: OpCreateWithdrawRequestDetailsResource)
+    case opLicenseDetails(_ resource: OpLicenseDetailsResource)
     case opManageAccountRoleDetails(_ resource: OpManageAccountRoleDetailsResource)
     case opManageAccountRuleDetails(_ resource: OpManageAccountRuleDetailsResource)
     case opManageAssetDetails(_ resource: OpManageAssetDetailsResource)
@@ -33,6 +35,7 @@ public enum OperationDetailsType {
     case opPayoutDetails(_ resource: OpPayoutDetailsResource)
     case opReviewRequestDetails(_ resource: OpReviewRequestDetailsResource)
     case opSetFeeDetails(_ resource: OpSetFeeDetailsResource)
+    case opStamlDetails(_ resource: OpStamlDetailsResource)
     case `self`(_ resource: OperationDetailsResource)
 }
 
@@ -49,6 +52,8 @@ extension OperationDetailsResource {
             return .opCreateAMLAlertRequestDetails(resource)
         } else if let resource = self as? OpCreateAccountDetailsResource {
             return .opCreateAccountDetails(resource)
+        } else if let resource = self as? OpCreateAtomicSwapAskRequestDetailsResource {
+            return .opCreateAtomicSwapAskRequestDetails(resource)
         } else if let resource = self as? OpCreateAtomicSwapBidRequestDetailsResource {
             return .opCreateAtomicSwapBidRequestDetails(resource)
         } else if let resource = self as? OpCreateChangeRoleRequestDetailsResource {
@@ -63,6 +68,8 @@ extension OperationDetailsResource {
             return .opCreateSaleRequestDetails(resource)
         } else if let resource = self as? OpCreateWithdrawRequestDetailsResource {
             return .opCreateWithdrawRequestDetails(resource)
+        } else if let resource = self as? OpLicenseDetailsResource {
+            return .opLicenseDetails(resource)
         } else if let resource = self as? OpManageAccountRoleDetailsResource {
             return .opManageAccountRoleDetails(resource)
         } else if let resource = self as? OpManageAccountRuleDetailsResource {
@@ -97,6 +104,8 @@ extension OperationDetailsResource {
             return .opReviewRequestDetails(resource)
         } else if let resource = self as? OpSetFeeDetailsResource {
             return .opSetFeeDetails(resource)
+        } else if let resource = self as? OpStamlDetailsResource {
+            return .opStamlDetails(resource)
         } else {
             return .`self`(self)
         }
@@ -121,6 +130,9 @@ extension OperationDetailsResource {
     case .opCreateAccountDetails(let resource):
         
         
+    case .opCreateAtomicSwapAskRequestDetails(let resource):
+        
+        
     case .opCreateAtomicSwapBidRequestDetails(let resource):
         
         
@@ -140,6 +152,9 @@ extension OperationDetailsResource {
         
         
     case .opCreateWithdrawRequestDetails(let resource):
+        
+        
+    case .opLicenseDetails(let resource):
         
         
     case .opManageAccountRoleDetails(let resource):
@@ -191,6 +206,9 @@ extension OperationDetailsResource {
         
         
     case .opSetFeeDetails(let resource):
+        
+        
+    case .opStamlDetails(let resource):
         
         
     case .`self`(let resource):

@@ -401,8 +401,8 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
     }
     
     func requestAccountIdForEmail(_ email: String) {
-        self.generalApi.requestAccountId(
-        email: email) { [weak self] (result) in
+        self.generalApi.requestIdentities(
+        filter: .email(email)) { [weak self] (result) in
             switch result {
             case .succeeded:
                 print("\(#function) - success")
@@ -549,9 +549,12 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
                     
                     let totpFactors = factors.getTOTPFactors()
                     if let totpFactor = totpFactors.first {
+                        guard let id = Int(totpFactor.id) else {
+                            return
+                        }
                         self.tfaApi.deleteFactor(
                             walletId: walletId,
-                            factorId: totpFactor.id,
+                            factorId: id,
                             completion: { (deleteResult) in
                                 switch deleteResult {
                                     
@@ -584,11 +587,17 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
             case .email:
                 alertTitle = "Input Code from Email"
                 
+            case .phone:
+                alertTitle = "Input Code from SMS"
+                
             case .totp:
                 alertTitle = "Input Code from Authenticator"
                 
             case .other(let other):
                 alertTitle = "Input Code from \(other)"
+                
+            case .telegram(let url):
+                alertTitle = "Input Code from \(url)"
             }
         }
         
@@ -724,8 +733,10 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
             style: .default,
             handler: { _ in
                 UIPasteboard.general.string = response.attributes.secret
-                
-                self.updateTOTPFactor(walletId: walletId, factorId: response.id, priority: priority)
+                guard let id = Int(response.id) else {
+                    return
+                }
+                self.updateTOTPFactor(walletId: walletId, factorId: id, priority: priority)
         }))
         
         if let url = URL(string: response.attributes.seed),
@@ -736,8 +747,10 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
                 handler: { _ in
                     UIPasteboard.general.string = response.attributes.secret
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                    
-                    self.updateTOTPFactor(walletId: walletId, factorId: response.id, priority: priority)
+                    guard let id = Int(response.id) else {
+                        return
+                    }
+                    self.updateTOTPFactor(walletId: walletId, factorId: id, priority: priority)
             }))
         }
         

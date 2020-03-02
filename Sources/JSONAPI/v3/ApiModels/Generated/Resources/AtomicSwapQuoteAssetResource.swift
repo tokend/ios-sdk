@@ -3,20 +3,18 @@
 import Foundation
 import DLJSONAPI
 
-// MARK: - QuoteAssetResource
+// MARK: - AtomicSwapQuoteAssetResource
 
-open class QuoteAssetResource: Resource {
+open class AtomicSwapQuoteAssetResource: Resource {
     
     open override class var resourceType: String {
-        return "quote-assets"
+        return "atomic-swap-quote-assets"
     }
     
     public enum CodingKeys: String, CodingKey {
         // attributes
         case price
-        
-        // relations
-        case asset
+        case quoteAsset
     }
     
     // MARK: Attributes
@@ -25,10 +23,8 @@ open class QuoteAssetResource: Resource {
         return self.decimalOptionalValue(key: CodingKeys.price) ?? 0.0
     }
     
-    // MARK: Relations
-    
-    open var asset: AssetResource? {
-        return self.relationSingleOptionalValue(key: CodingKeys.asset)
+    open var quoteAsset: String {
+        return self.stringOptionalValue(key: CodingKeys.quoteAsset) ?? ""
     }
     
 }
