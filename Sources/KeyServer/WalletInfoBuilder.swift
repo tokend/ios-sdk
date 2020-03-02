@@ -96,6 +96,7 @@ public struct WalletInfoBuilder {
         password: String,
         kdfParams: KDFParams,
         keychainParams: KeychainParams,
+        defaultSignerRole: UInt64 = 1,
         transaction: WalletInfoModel.WalletInfoData.Relationships.Transaction? = nil,
         referrerAccountId: String? = nil
         ) -> CreateResult {
@@ -175,17 +176,6 @@ public struct WalletInfoBuilder {
         )
         
         included.append(passwordFactorRelationship)
-        
-        // Recovery
-        let recoveryFactorRelationship = WalletInfoBuilder.getFactor(
-            accountId: recoveryDetails.accountIdBase32Check,
-            keychainData: recoveryDetails.keychainDataBase64,
-            salt: recoveryDetails.saltBase64,
-            id: recoveryDetails.walletIdHex,
-            type: "recovery"
-        )
-        
-        included.append(recoveryFactorRelationship)
 
         // Signers
         let accountId = Base32Check.encode(version: .accountIdEd25519, data: keychainParams.newKeyPair.getPublicKeyData())
@@ -201,7 +191,7 @@ public struct WalletInfoBuilder {
                     id: accountId,
                     type: "signer",
                     attributes: WalletInfoModel.WalletInfoData.Relationships.Signer.Attributes(
-                            roleId: 1,
+                            roleId: defaultSignerRole,
                             weight: 1000,
                             identity: 0)),
         ]
@@ -232,7 +222,6 @@ public struct WalletInfoBuilder {
             referrer: referrerAPIData,
             transaction: transactionAPIData,
             kdf: ApiDataRequest(data: kdfRelationship),
-            recovery: ApiDataRequest(data: recoveryFactorRelationship),
             signers: ApiDataRequest(data: signers),
             factor: ApiDataRequest(data: passwordFactorRelationship)
         )

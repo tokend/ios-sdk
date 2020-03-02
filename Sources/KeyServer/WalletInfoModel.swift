@@ -26,7 +26,6 @@ public struct WalletInfoModel: Encodable {
             public let referrer: ApiDataRequest<Referrer, Include>?
             public let transaction: ApiDataRequest<Transaction, Include>?
             public let kdf: ApiDataRequest<KDF, Include>
-            public let recovery: ApiDataRequest<Factor, Include>
             public let signers: ApiDataRequest<[Signer], Include>
             public let factor: ApiDataRequest<Factor, Include>
             
@@ -76,9 +75,9 @@ public struct WalletInfoModel: Encodable {
 
                 public struct Attributes: Encodable {
 
-                    public let roleId: Int64
-                    public let weight: Int64
-                    public let identity: Int64
+                    public let roleId: UInt64
+                    public let weight: UInt64
+                    public let identity: UInt64
                 }
 
                 public enum SignerIncludeKeys: CodingKey {
@@ -199,8 +198,7 @@ extension WalletInfoModel.WalletInfoData.Relationships: CustomDebugStringConvert
             fields.append("transaction: \(transaction.data.debugDescription)")
         }
         fields.append("kdf: \(self.kdf.data.debugDescription)")
-        fields.append("recovery: \(self.recovery.data.debugDescription)")
-        fields.append("recovery: \(self.signers.data.debugDescription)")
+        fields.append("signers: \(self.signers.data.debugDescription)")
         fields.append("factor: \(self.factor.data.debugDescription)")
         
         let description = DebugFormattedDescription(fields)
