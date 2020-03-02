@@ -68,6 +68,7 @@ public class SignUpRequestBuilder {
             passwordFactorKeyPair: passwordFactorKeyPair
         )
         
+        // TODO: Set default signer role from key value
         let createRegistrationInfoResult = WalletInfoBuilder.createWalletInfo(
             email: email,
             password: password,

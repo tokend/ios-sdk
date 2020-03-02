@@ -24,11 +24,11 @@
 		7F90A485220C548800091A77 /* ApiExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F186FBE21FF67AD009ED556 /* ApiExampleViewController.swift */; };
 		7F90A486220C56A200091A77 /* KeyServerExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA55D8121D3A2290092E536 /* KeyServerExampleViewController.swift */; };
 		7FA55D8521D3ACE70092E536 /* ApiExampleViewControllerV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA55D8221D3A2290092E536 /* ApiExampleViewControllerV3.swift */; };
-		7FE04A5521749F1B0018399F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE04A5421749F1B0018399F /* Constants.swift */; };
 		7FE317B322328E39007ECDAE /* test_upload_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FE317B222328E39007ECDAE /* test_upload_image.png */; };
 		7FECDD232213157E00EB0367 /* HistoryApiIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FECDD222213157E00EB0367 /* HistoryApiIntegrationTests.swift */; };
 		7FECDD252213158E00EB0367 /* BaseIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FECDD242213158E00EB0367 /* BaseIntegrationTests.swift */; };
-		7FECDD27221317B400EB0367 /* IntegrationTestsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FECDD26221317B400EB0367 /* IntegrationTestsConstants.swift */; };
+		C4C0129124095ED000018CC8 /* IntegrationTestsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C0129024095ED000018CC8 /* IntegrationTestsConstants.swift */; };
+		C4C012932409601300018CC8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C012922409601300018CC8 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,14 +74,14 @@
 		7FA55D4821D27AA20092E536 /* TokenDSDK_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDSDK_Tests.swift; sourceTree = "<group>"; };
 		7FA55D8121D3A2290092E536 /* KeyServerExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyServerExampleViewController.swift; sourceTree = "<group>"; };
 		7FA55D8221D3A2290092E536 /* ApiExampleViewControllerV3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiExampleViewControllerV3.swift; sourceTree = "<group>"; };
-		7FE04A5421749F1B0018399F /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		7FE317B222328E39007ECDAE /* test_upload_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test_upload_image.png; sourceTree = "<group>"; };
 		7FECDD222213157E00EB0367 /* HistoryApiIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryApiIntegrationTests.swift; sourceTree = "<group>"; };
 		7FECDD242213158E00EB0367 /* BaseIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseIntegrationTests.swift; sourceTree = "<group>"; };
-		7FECDD26221317B400EB0367 /* IntegrationTestsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationTestsConstants.swift; sourceTree = "<group>"; };
 		88B6A9B90B443C13A977F189 /* Pods-TokenDSDK_IntegrationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_IntegrationTests.release.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_IntegrationTests/Pods-TokenDSDK_IntegrationTests.release.xcconfig"; sourceTree = "<group>"; };
 		976BCCEDDBF16A300BE60E98 /* Pods-TokenDSDK_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Example.release.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_Example/Pods-TokenDSDK_Example.release.xcconfig"; sourceTree = "<group>"; };
 		C46B692F3572BACFE0A827CE /* Pods-TokenDSDK_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Tests.release.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_Tests/Pods-TokenDSDK_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		C4C0129024095ED000018CC8 /* IntegrationTestsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationTestsConstants.swift; sourceTree = "<group>"; };
+		C4C012922409601300018CC8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CA870871D23FF6195488CBCB /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		D7CC5FAA68093D676BC7208C /* Pods-TokenDSDK_IntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_IntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_IntegrationTests/Pods-TokenDSDK_IntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DC6FC85D0B04436C56966E1B /* libPods-TokenDSDK_IntegrationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokenDSDK_IntegrationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -167,11 +167,11 @@
 				7F186FBE21FF67AD009ED556 /* ApiExampleViewController.swift */,
 				7FA55D8221D3A2290092E536 /* ApiExampleViewControllerV3.swift */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
-				7FE04A5421749F1B0018399F /* Constants.swift */,
 				7FA55D8121D3A2290092E536 /* KeyServerExampleViewController.swift */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
+				C4C012922409601300018CC8 /* Constants.swift */,
 			);
 			name = "Example for TokenDSDK";
 			path = TokenDSDK;
@@ -255,7 +255,7 @@
 				7FE317B222328E39007ECDAE /* test_upload_image.png */,
 				7FECDD242213158E00EB0367 /* BaseIntegrationTests.swift */,
 				7FECDD222213157E00EB0367 /* HistoryApiIntegrationTests.swift */,
-				7FECDD26221317B400EB0367 /* IntegrationTestsConstants.swift */,
+				C4C0129024095ED000018CC8 /* IntegrationTestsConstants.swift */,
 				7F01C18F2217094800205456 /* KeyServerIntegrationTests.swift */,
 			);
 			path = TokenDSDK_IntegrationTests;
@@ -504,10 +504,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
-				7FE04A5521749F1B0018399F /* Constants.swift in Sources */,
 				7F90A486220C56A200091A77 /* KeyServerExampleViewController.swift in Sources */,
 				7F90A485220C548800091A77 /* ApiExampleViewController.swift in Sources */,
 				7FA55D8521D3ACE70092E536 /* ApiExampleViewControllerV3.swift in Sources */,
+				C4C012932409601300018CC8 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -531,7 +531,7 @@
 				7F5119FB21F77A5000025F96 /* TestsHelpers.swift in Sources */,
 				7FECDD232213157E00EB0367 /* HistoryApiIntegrationTests.swift in Sources */,
 				7FECDD252213158E00EB0367 /* BaseIntegrationTests.swift in Sources */,
-				7FECDD27221317B400EB0367 /* IntegrationTestsConstants.swift in Sources */,
+				C4C0129124095ED000018CC8 /* IntegrationTestsConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

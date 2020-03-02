@@ -94,7 +94,7 @@ class KeyServerIntegrationTests: BaseIntegrationTests {
         self.wait(for: [expectation], timeout: BaseIntegrationTests.requestTimeoutDuraton)
     }
     
-    func testSignUpSignChangePasswordRecovery() {
+    func testSignUpSignChangePassword() {
         guard self.isServerReachable else {
             XCTAssert(false, "Server is not reachable")
             return
@@ -119,15 +119,10 @@ class KeyServerIntegrationTests: BaseIntegrationTests {
             self.performPasswordUpdate(onSuccess: onSuccess, onFailed: onFailed)
         }
         
-        let performPasswordRecovery: (_ onSuccess: @escaping () -> Void) -> Void = { (onSuccess) in
-            self.performPasswordRecovery(onSuccess: onSuccess, onFailed: onFailed)
-        }
-        
         let consecutiveOperations: [(_ onSuccess: @escaping () -> Void) -> Void] = [
             performSignUp,
             performSignIn,
-            performPasswordUpdate,
-            performPasswordRecovery
+            performPasswordUpdate
         ]
         
         var performNextOperationRef: ((_ operationIndex: Int) -> Void)?
