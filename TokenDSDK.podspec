@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'TokenDSDK'
-  s.version          = '3.1.0-x.3'
+  s.version          = '3.1.0-rc.28'
   s.summary          = 'TokenD SDK for iOS.'
   s.homepage         = 'https://github.com/tokend/ios-sdk'
   s.license          = { type: 'Apache License, Version 2.0', file: 'LICENSE' }
@@ -45,7 +45,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'JSONAPI' do |ss|
     ss.source_files = jsonapi_v3_source_files
-    ss.dependency 'DLJSONAPI', '>= 1.0.2'
+    ss.dependency 'DLJSONAPI', '>= 1.0.3'
   end
 
   s.subspec 'AlamofireNetworkJSONAPI' do |ss|

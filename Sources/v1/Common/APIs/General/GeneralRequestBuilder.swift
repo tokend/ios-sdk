@@ -7,6 +7,8 @@ public class GeneralRequestBuilder: BaseApiRequestBuilder {
     // MARK: - Public properties
     
     public let identities: String = "identities"
+    public let setPhonePath: String = "settings/phone"
+    public let setTelegramPath: String = "settings/telegram"
     
     // MARK: - Public
     
@@ -24,23 +26,96 @@ public class GeneralRequestBuilder: BaseApiRequestBuilder {
         return request
     }
     
-    /// Builds request to fetch account data by email.
+    /// Builds request to fetch identities.
     /// - Parameters:
-    ///   - email: Email which will be used to fetch account id.
-    /// - Returns: `GetAccountIdRequest`
-    public func buildGetAccountIdRequest(email: String) -> GetAccountIdRequest {
+    ///   - filter: Filter which will be used to fetch identities.
+    /// - Returns: `GetIdentitiesRequest`
+    public func buildGetIdentitiesRequest(filter: GeneralApi.RequestIdentitiesFilter) -> GetIdentitiesRequest {
         let baseUrl = self.apiConfiguration.urlString
         let url = baseUrl.addPath(self.identities)
         
-        let parameters: RequestParameters = [
-            "filter[email]": email
-        ]
+        let parameters: RequestParameters
+        switch filter {
+        case .accountId(let accountId):
+            parameters = [
+                "filter[address]": accountId
+            ]
+        case .email(let email):
+            parameters = [
+                "filter[email]": email
+            ]
+        case .phone(let phone):
+            parameters = [
+                "filter[phone]": phone
+            ]
+            
+        case .telegram(let username):
+            parameters = [
+                "filter[telegram_username]": username
+            ]
+        }
         
-        let request = GetAccountIdRequest(
+        let request = GetIdentitiesRequest(
             url: url,
             method: .get,
             parameters: parameters,
             parametersEncoding: .url
+        )
+        
+        return request
+    }
+    
+    /// Builds request to set phone identity.
+    /// - Parameters:
+    ///   - accountId: Account's identifier.
+    ///   - body: Model of `SetPhoneRequestBody` type
+    /// - Returns: `SetIdentitiesRequest`
+    public func buildSetPhoneIdentityRequest(
+        accountId: String,
+        body: SetPhoneRequestBody
+        ) -> SetIdentitiesRequest {
+        
+        let baseUrl = self.apiConfiguration.urlString
+        let url = baseUrl/self.identities/accountId/self.setPhonePath
+        
+        var parameters: [String: Any] = [:]
+        if let json = body.toJSON() {
+            parameters = json
+        }
+        
+        let request = SetIdentitiesRequest(
+            url: url,
+            method: .put,
+            parameters: parameters,
+            parametersEncoding: .json
+        )
+        
+        return request
+    }
+    
+    /// Builds request to set phone identity.
+    /// - Parameters:
+    ///   - accountId: Account's identifier.
+    ///   - body: Model of `SetTelegramRequestBody` type
+    /// - Returns: `SetIdentitiesRequest`
+    public func buildSetTelegramIdentityRequest(
+        accountId: String,
+        body: SetTelegramRequestBody
+        ) -> SetIdentitiesRequest {
+        
+        let baseUrl = self.apiConfiguration.urlString
+        let url = baseUrl/self.identities/accountId/self.setTelegramPath
+        
+        var parameters: [String: Any] = [:]
+        if let json = body.toJSON() {
+            parameters = json
+        }
+        
+        let request = SetIdentitiesRequest(
+            url: url,
+            method: .put,
+            parameters: parameters,
+            parametersEncoding: .json
         )
         
         return request

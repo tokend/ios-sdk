@@ -17,59 +17,55 @@ public class OrderBookApi: BaseApi {
         super.init(apiStack: apiStack)
     }
     
+    // MARK: - Public
+    
     /// Model that will be fetched in completion block of `OrderBookApi.requestOrderBook(...)`
-    public enum RequestOrderBookResult {
+    public enum RequestTradesResult {
         
         /// Case of successful response with list of `OrderBookResponse`
-        case success(orderBook: [OrderBookResponse])
+        case success(trades: [TradeResponse])
         
         /// Case of failed response with `ApiErrors` model
         case failure(ApiErrors)
     }
     
-    /// Method sends request to order book.
-    /// The result of request will be fetched in `completion` block as `OrderBookApi.RequestOrderBookResult`
+    /// Method sends request to fetch trades data.
+    /// The result of request will be fetched in `completion` block as `OrderBookApi.RequestTradesResult`
     /// - Parameters:
-    ///   - sendDate: Send time of request.
-    ///   - parameters: Order book parameters.
+    ///   - parameters: Trades parameters.
     ///   - completion: Block that will be called when the result will be received.
-    ///   - result: Member of `OrderBookApi.RequestOrderBookResult`
+    ///   - result: Member of `OrderBookApi.RequestTradesResult`
     /// - Returns: `Cancelable`
     @discardableResult
-    public func requestOrderBook(
-        parameters: OrderBookRequestParameters?,
-        sendDate: Date = Date(),
-        completion: @escaping (_ result: RequestOrderBookResult) -> Void
+    public func requestTrades(
+        parameters: TradesRequestParameters?,
+        orderDescending: Bool = true,
+        limit: Int?,
+        cursor: String?,
+        completion: @escaping (_ result: RequestTradesResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
-        
-        self.requestBuilder.buildOrderBookRequest(
+        let request = self.requestBuilder.buildTradesRequest(
             parameters: parameters,
-            sendDate: sendDate,
-            completion: { [weak self] (request) in
-                guard let request = request else {
-                    completion(.failure(.failedToSignRequest))
-                    return
+            orderDescending: orderDescending,
+            limit: limit,
+            cursor: cursor
+        )
+        let cancelable = self.network.responseObject(
+            RequestResultPage<OrderBookEmbedded<TradeResponse>>.self,
+            url: request.url,
+            method: request.method,
+            parameters: request.parameters,
+            encoding: request.parametersEncoding,
+            completion: { (result) in
+                switch result {
+                    
+                case .success(let object):
+                    completion(.success(trades: object.embedded.records))
+                    
+                case .failure(let errors):
+                    completion(.failure(errors))
                 }
-                
-                cancelable.cancelable = self?.network.responseObject(
-                    RequestResultPage<OrderBookEmbedded>.self,
-                    url: request.url,
-                    method: request.method,
-                    parameters: request.parameters,
-                    encoding: request.parametersEncoding,
-                    headers: request.signedHeaders,
-                    completion: { (result) in
-                        switch result {
-                            
-                        case .success(let object):
-                            completion(.success(orderBook: object.embedded.records))
-                            
-                        case .failure(let errors):
-                            completion(.failure(errors))
-                        }
-                })
         })
         
         return cancelable

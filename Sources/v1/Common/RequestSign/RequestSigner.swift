@@ -22,7 +22,7 @@ public struct RequestSignParametersModel {
         parametersEncoding: RequestParametersEncoding? = nil
         ) {
         
-        self.baseUrlString = baseUrlString
+        self.baseUrlString = baseUrlString.getTrailingSlashTrimmed()
         self.urlString = urlString
         self.httpMethod = httpMethod
         self.parameters = parameters

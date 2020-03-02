@@ -3,6 +3,13 @@ import Foundation
 /// Class provides functionality that allows to fetch data which is necessary
 /// for other requests building
 public class GeneralApi: BaseApi {
+    
+    // MARK: - Private properties
+    
+    private let transportSecurityErrorStatus: String = "-1022"
+    
+    // MARK: - Public properties
+    
     let requestBuilder: GeneralRequestBuilder
     
     public override init(apiStack: BaseApiStack) {
@@ -22,6 +29,7 @@ public class GeneralApi: BaseApi {
         public enum RequestError: Swift.Error, LocalizedError {
             case failedToDecode(NetworkInfoResponse)
             case requestError(ApiErrors)
+            case transportSecurity
             
             // MARK: - Swift.Error
             
@@ -31,6 +39,8 @@ public class GeneralApi: BaseApi {
                     return "Failed to decode network info"
                 case .requestError(let errors):
                     return errors.localizedDescription
+                case .transportSecurity:
+                    return "HTTP connections are restricted because of iOS security policy"
                 }
             }
         }
@@ -71,13 +81,17 @@ public class GeneralApi: BaseApi {
                     }
                     
                 case .failure(let errors):
-                    completion(.failed(.requestError(errors)))
+                    if errors.contains(status: self.transportSecurityErrorStatus) {
+                        completion(.failed(.transportSecurity))
+                    } else {
+                        completion(.failed(.requestError(errors)))
+                    }
                 }
         }
     }
     
     /// Model that will be fetched in `completion` block of `GeneralApi.requestAccountId(...)`
-    public enum RequestAccountIdResult {
+    public enum RequestIdentitiesResult {
         
         /// Case of failed response with `ApiErrors` model
         case failed(ApiErrors)
@@ -86,18 +100,34 @@ public class GeneralApi: BaseApi {
         case succeeded(identities: [AccountIdentityResponse])
     }
     
-    /// Method sends request to get account id for according email.
-    /// The result of request will be fetched in `completion` block as `GeneralApi.RequestAccountIdResult`
+    /// Model that is used to define filter whick will be used to fetch identities
+    public enum RequestIdentitiesFilter {
+        
+        /// Filter is used when it is needed to fetch identities by accountId
+        case accountId(_ accountId: String)
+        
+        /// Filter is used when it is needed to fetch identities by email
+        case email(_ email: String)
+        
+        /// Filter is used when it is needed to fetch identities by phone number
+        case phone(_ phone: String)
+        
+        /// Filter is used when it is needed to fetch identities by telegram username
+        case telegram(_ telegram: String)
+    }
+    
+    /// Method sends request to get identities via email or accountId.
+    /// The result of request will be fetched in `completion` block as `GeneralApi.RequestIdentitiesResult`
     /// - Parameters:
-    ///   - email: Email which will be used to fetch account id.
+    ///   - filter: Filter which will be used to fetch identities.
     ///   - completion: Block that will be called when the result will be received.
-    ///   - result: Member of `GeneralApi.RequestAccountIdResult`
-    public func requestAccountId(
-        email: String,
-        completion: @escaping (_ result: RequestAccountIdResult) -> Void
+    ///   - result: Member of `GeneralApi.RequestIdentitiesResult`
+    public func requestIdentities(
+        filter: RequestIdentitiesFilter,
+        completion: @escaping (_ result: RequestIdentitiesResult) -> Void
         ) {
         
-        let request = self.requestBuilder.buildGetAccountIdRequest(email: email)
+        let request = self.requestBuilder.buildGetIdentitiesRequest(filter: filter)
         
         self.network.responseObject(
             ApiDataResponse<[AccountIdentityResponse]>.self,
@@ -113,6 +143,143 @@ public class GeneralApi: BaseApi {
                     
                 case .success(let object):
                     completion(.succeeded(identities: object.data))
+                }
+        })
+    }
+    
+    /// Model that will be fetched in `completion` block of `GeneralApi.requestSetPhone(...)`
+    public enum SetPhoneRequestResult {
+        /// Case of failed response with `ApiErrors` model
+        case failed(Swift.Error)
+        
+        /// Case of failed tfa
+        case tfaFailed
+        
+        /// Case of successful response
+        case succeeded
+    }
+    /// Method sends request to set phone for account with given accountId.
+    /// The result of request will be fetched in `completion` block as `GeneralApi.SetPhoneRequestResult`
+    /// - Parameters:
+    ///   - accountId: Account id of account for which it is necessary to set phone.
+    ///   - phone: Model that contains phone to be set.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `GeneralApi.SetPhoneRequestResult`
+    public func requestSetPhone(
+        accountId: String,
+        phone: SetPhoneRequestBody,
+        completion: @escaping (_ result: SetPhoneRequestResult) -> Void
+        ) {
+        
+        let request = self.requestBuilder.buildSetPhoneIdentityRequest(
+            accountId: accountId,
+            body: phone
+        )
+        
+        self.network.responseJSON(
+            url: request.url,
+            method: request.method,
+            parameters: request.parameters,
+            encoding: request.parametersEncoding,
+            completion: { (result) in
+                switch result {
+                    
+                case .failure(let errors):
+                    errors.checkTFARequired(
+                        handler: self.tfaHandler,
+                        initiateTFA: true,
+                        onCompletion: { result in
+                            switch result {
+                                
+                            case .failure:
+                                completion(.tfaFailed)
+                                
+                            case .success:
+                                self.requestSetPhone(
+                                    accountId: accountId,
+                                    phone: phone,
+                                    completion: completion
+                                )
+                                
+                            case .canceled:
+                                completion(.tfaFailed)
+                            }
+                    },
+                        onNoTFA: {
+                            completion(.failed(errors))
+                    })
+                    
+                case .success:
+                    completion(.succeeded)
+                }
+        })
+    }
+    
+    /// Model that will be fetched in `completion` block of `GeneralApi.requestSetTelegram(...)`
+    public enum SetTelegramRequestResult {
+        /// Case of failed response with `ApiErrors` model
+        case failed(Swift.Error)
+        
+        /// Case of failed tfa
+        case tfaFailed
+        
+        /// Case of successful response
+        case succeeded
+    }
+    
+    /// Method sends request to set phone for account with given accountId.
+    /// The result of request will be fetched in `completion` block as `GeneralApi.SetPhoneRequestResult`
+    /// - Parameters:
+    ///   - accountId: Account id of account for which it is necessary to set phone.
+    ///   - phone: Model that contains phone to be set.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `GeneralApi.SetPhoneRequestResult`
+    public func requestSetTelegram(
+        accountId: String,
+        telegram: SetTelegramRequestBody,
+        completion: @escaping (_ result: SetTelegramRequestResult) -> Void
+        ) {
+        
+        let request = self.requestBuilder.buildSetTelegramIdentityRequest(
+            accountId: accountId,
+            body: telegram
+        )
+        
+        self.network.responseJSON(
+            url: request.url,
+            method: request.method,
+            parameters: request.parameters,
+            encoding: request.parametersEncoding,
+            completion: { (result) in
+                switch result {
+                    
+                case .failure(let errors):
+                    errors.checkTFARequired(
+                        handler: self.tfaHandler,
+                        initiateTFA: true,
+                        onCompletion: { result in
+                            switch result {
+                                
+                            case .failure:
+                                completion(.tfaFailed)
+                                
+                            case .success:
+                                self.requestSetTelegram(
+                                    accountId: accountId,
+                                    telegram: telegram,
+                                    completion: completion
+                                )
+                                
+                            case .canceled:
+                                completion(.tfaFailed)
+                            }
+                    },
+                        onNoTFA: {
+                            completion(.failed(errors))
+                    })
+                    
+                case .success:
+                    completion(.succeeded)
                 }
         })
     }

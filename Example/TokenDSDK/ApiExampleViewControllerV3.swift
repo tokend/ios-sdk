@@ -8,10 +8,17 @@ import SnapKit
 import TokenDSDK
 import TokenDWallet
 
+// swiftlint:disable file_length
 // swiftlint:disable line_length
+// swiftlint:disable type_body_length
 class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderProtocol {
     
-    var privateKey: ECDSA.KeyData?
+    var privateKey: ECDSA.KeyData? = try? ECDSA.KeyData(
+        seed: Base32Check.decodeCheck(
+            expectedVersion: .seedEd25519,
+            encoded: Constants.masterKeySeed
+        )
+    )
     
     func getPrivateKeyData(completion: @escaping (ECDSA.KeyData?) -> Void) {
         completion(self.privateKey)
@@ -62,7 +69,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             configuration: self.apiConfig,
             callbacks: self.apiCallbacks,
             network: self.network,
-            requestSigner: JSONAPI.RequestSigner(keyDataProvider: self.vc)
+            requestSigner: JSONAPI.RequestSigner(keyDataProvider: self)
         )
         return api
     }()
@@ -88,20 +95,168 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     @objc func runTest() {
-        self.vc.performLogin(
-            onSuccess: { _ in
-                self.requestKeyValueEntries()
-        },
-            onFailed: { (error) in
-                print("Failed to login: \(error.localizedDescription)")
-        })
+        self.addChild(self.vc)
+        self.setTelegram()
     }
     
     // MARK: -
     
+    func getProxyPaymentAccount() {
+        self.tokenDApi.integrationsApi.requestProxyPaymentAccount( completion: { (result) in
+            switch result {
+            case .failure(let error):
+                print("Error: \(error)")
+                
+            case .success(let document):
+                guard let account = document.data else {
+                    return
+                }
+                print("Success: \(account.id!)")
+            }
+        })
+    }
+    
+    func getPhoneByAccountId() {
+        self.vc.tokenDApi.generalApi.requestIdentities(
+            filter: .accountId(Constants.userAccountId),
+            completion: { result in
+                switch result {
+                    
+                case .failed(let error):
+                    print("error: \(error)")
+                    
+                case .succeeded(let identities):
+                    guard let number = identities.first(where: { (identity) -> Bool in
+                        return identity.attributes.phoneNumber != nil
+                    })?.attributes.phoneNumber else {
+                        return
+                    }
+                    print(number)
+                }
+        })
+    }
+    
+    func setPhone() {
+        self.vc.tokenDApi
+            .generalApi
+            .requestSetPhone(
+                accountId: Constants.userAccountId,
+                phone: .init(phone: "+88005553535"),
+                completion: { (result) in
+                    switch result {
+                        
+                    case .failed(let error):
+                        if error.contains(status: "403") {
+                            
+                        }
+                        
+                    case .succeeded:
+                        print("Success")
+                        
+                    case .tfaFailed:
+                        print("TFA Failed")
+                    }
+            }
+        )
+    }
+    
+    func setTelegram() {
+        self.vc.tokenDApi
+            .generalApi
+            .requestSetTelegram(
+                accountId: Constants.userAccountId,
+                telegram: .init(username: "username"),
+                completion: { (result) in
+                    switch result {
+                        
+                    case .failed(let error):
+                        if error.contains(status: "403") {
+                            
+                        }
+                        
+                    case .succeeded:
+                        print("Success")
+                        
+                    case .tfaFailed:
+                        print("TFA Failed")
+                    }
+            }
+        )
+    }
+    
+    func sendFiatPayment() {
+        self.vc.transactionsApi.sendFiatPayment(
+            envelope: "AAAAAKbDjaev91h/pGho2pP/H0bmS6zQemCK/NBnvugPSv6FA7OCxl9K5RMAAAAAXVZiuQAAAABdX48pAAAAAAAAAAEAAAAAAAAAJQAAAAAAAAAMAAAAAABMS0AAAAADVUFIAAAAAAAAAAAAAAAAAAAAAAAAAAABD0r+hQAAAEBNuuXNsMBEPkjzWmJ5R4zsKq8fnW7hyJo4sqZTqW9xZyC37B6PxGx1PrSA1SN8um99nThzVC8Kv0NuT7chD4ID",
+            completion: { (result) in
+                switch result {
+                case .failure(let error):
+                    print("Error: \(error)")
+                    
+                case .success(let resposnse):
+                    print("Success: \(resposnse.data.attributes.payUrl)")
+                }
+        })
+    }
+    
+    func requestConvertedBalances() {
+        self.tokenDApi.accountsApi.requestConvertedBalances(
+            accountId: Constants.userAccountId,
+            convertationAsset: "UAH",
+            include: ["states", "balance", "balance.state", "balance.asset"],
+            completion: { (result) in
+                switch result {
+                case .failure(let error):
+                    print("ERROR: \(error)")
+                    
+                case .success(let document):
+                    guard let data = document.data else {
+                        print("ERROR: EMPTY")
+                        return
+                    }
+                    
+                    print("Success: \(data)")
+                }
+        })
+    }
+    
+    func requestBusiness() {
+        self.tokenDApi.integrationsApi.requestBusiness(
+            accountId: "GDF2KPCIOOLADKDIXIRFTEKCW4RKACBQNAYWVINXOASNH6YYMCVEZ2BA",
+            completion: { (result) in
+                switch result {
+                case .failure(let error):
+                    print("ERROR: \(error)")
+                    
+                case .success(let document):
+                    guard let data = document.data else {
+                        print("ERROR: EMPTY")
+                        return
+                    }
+                    print("Success: \(data)")
+                }
+        })
+    }
+    
+    func addBusiness() {
+        self.tokenDApi.integrationsApi.addBusinesses(
+            clientAccountId: "GAI2AGVAERR5XAZ7JEASZDFESNEBBH2R6DN6UMYI3UYXKP5TQOFGXPOL",
+            businessAccountId: "GBYADDE267JDJNZ5TV2FQKEHWBU4QA6D5EQHNNSVBRLFKFKAK462WTYK",
+            completion: { (response) in
+                switch response {
+                case .failure(let error):
+                    print(error.localizedDescription)
+                case .success:
+                    print("Success")
+                }
+        }
+        )
+    }
+    
     func requestAccount() {
         self.tokenDApi.accountsApi.requestAccount(
-            accountId: "GBLTOG6EJS5OWDNQNSCEAVDNMPBY6F73XZHHKR27YE5AKE23ZZEXOLBK",
+            accountId: Constants.userAccountId,
+            include: ["external_system_ids"],
+            pagination: nil,
             completion: { [weak self] (result) in
                 switch result {
                     
@@ -110,6 +265,205 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
                     
                 case .success(let document):
                     print("account document: \(document)")
+                }
+        })
+    }
+    
+    func requestAtomicSwapAsks() {
+        let filters = AtomicSwapFiltersV3.with(.baseAsset("82745DB9210D4AD4"))
+        
+        let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
+        self.tokenDApi.atomicSwapApi
+            .requestAtomicSwapAsks(
+                filters: filters,
+                include: ["quote_assets"],
+                pagination: pagination,
+                onRequestBuilt: nil,
+                completion: { (response) in
+                    switch response {
+                        
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                        
+                    case .success(let document):
+                        if let data = document.data {
+                            print("Success: \(data)")
+                        } else {
+                            print("Error: empty data")
+                        }
+                    }
+            }
+        )
+    }
+    
+    func requestRequests() {
+        let filters = RequestsFiltersV3.with(.requestor(Constants.userAccountId))
+        
+        let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
+        self.tokenDApi.requetsApi
+            .requestRequests(
+                filters: filters,
+                include: ["request_details"],
+                pagination: pagination,
+                onRequestBuilt: nil,
+                completion: { (response) in
+                    switch response {
+                        
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                        
+                    case .success(let document):
+                        if let data = document.data {
+                            print("Success: \(data)")
+                        } else {
+                            print("Error: empty data")
+                        }
+                    }
+            }
+        )
+    }
+    
+    func requestAccountRequests() {
+        let accountId = Constants.userAccountId
+        let requestId = "131"
+        let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
+        
+        self.tokenDApi.accountsApi.requestAccountRequest(
+            accountId: accountId,
+            requestId: requestId,
+            pagination: pagination,
+            completion: { (response) in
+                switch response {
+                    
+                case .failure(let error):
+                    print("Error: \(error.localizedDescription)")
+                    
+                case .success(let document):
+                    guard let request = document.data else {
+                        print("ERROR: Empty data")
+                        return
+                    }
+                    print("Success: \(request)")
+                }
+        })
+    }
+    
+    func requestBusinesses() {
+        self.tokenDApi.integrationsApi.requestBusinesses(
+            accountId: Constants.userAccountId,
+            completion: { (result) in
+                switch result {
+                case .failure(let error):
+                    print("ERROR: \(error)")
+                    
+                case .success(let document):
+                    guard let data = document.data else {
+                        print("ERROR: EMPTY")
+                        return
+                    }
+                    print("Success: \(data)")
+                }
+        })
+    }
+    
+    func requestPolls() {
+        let filter = PollsRequestFiltersV3.with(
+            .owner("GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB")
+        )
+        let single = RequestPagination.Option.single(
+            index: 0,
+            limit: 10,
+            order: .descending
+        )
+        let pagination = RequestPagination(single)
+        _ = self.tokenDApi.pollsApi.requestPolls(
+            filters: filter,
+            pagination: pagination,
+            completion: { (result) in
+                switch result {
+                case .failure(let error):
+                    print(error.localizedDescription)
+                case .success(let document):
+                    guard let resources = document.data else {
+                        print("Data is empty.........")
+                        return
+                    }
+                    print(resources)
+                }
+        })
+    }
+    
+    private var loadAllVotesController: LoadAllResourcesController<VoteResource>?
+    func requestVotes() {
+        let strategy = IndexedPaginationStrategy(
+            index: nil,
+            limit: 1,
+            order: .descending
+        )
+        let pagination = RequestPagination( .strategy(strategy))
+        self.loadAllVotesController = LoadAllResourcesController<VoteResource>(
+            requestPagination: pagination
+        )
+        
+        self.loadAllVotesController?.loadResources(
+            loadPage: { (pagination, completion) in
+                _ = self.tokenDApi.pollsApi.requestVotesById(
+                    voterAccountId: "GCREPRFV33DNIH5DE2KUXQZAKNJBR5CG4AO7T3ICGCYSMDTZE635CPPD",
+                    pagination: pagination,
+                    completion: { (result) in
+                        switch result {
+                            
+                        case .failure(let error):
+                            completion(.failed(error))
+                            
+                        case .success(let document):
+                            let data = document.data ?? []
+                            completion(.succeeded(data))
+                        }
+                })
+        }, completion: { (result, data) in
+            switch result {
+            case .failed(let error):
+                print("All votes loading failure: \(error)\n loaded data\n\(data)")
+                
+            case .succeded:
+                print("Success")
+                print(data)
+            }
+        })
+    }
+    
+    private var loadAllAssetsController: LoadAllResourcesController<AssetResource>?
+    func requestAssetsV3() {
+        let paginationStrategy = IndexedPaginationStrategy(index: nil, limit: 2, order: .ascending)
+        self.loadAllAssetsController = LoadAllResourcesController(
+            requestPagination: RequestPagination(.strategy(paginationStrategy))
+        )
+        
+        self.loadAllAssetsController?.loadResources(
+            loadPage: { [weak self] (pagination, completion) in
+                self?.tokenDApi.assetsApi.requestAssets(
+                    pagination: pagination,
+                    completion: { (result) in
+                        switch result {
+                            
+                        case .failure(let error):
+                            completion(.failed(error))
+                            
+                        case .success(let document):
+                            let data = document.data ?? []
+                            completion(.succeeded(data))
+                        }
+                })
+            },
+            completion: { (result, data) in
+                switch result {
+                    
+                case .failed(let error):
+                    print("All assets load failed: \(error). Loaded: \(data)")
+                    
+                case .succeded:
+                    print("All assets loaded: \(data)")
                 }
         })
     }
@@ -175,6 +529,33 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         })
     }
     
+    func requestMovements(
+        account: String,
+        completion: @escaping (_ doc: Document<[ParticipantEffectResource]>) -> Void
+        ) {
+        
+        let filters = MovementsRequestFilterV3.with(
+            .account(account)
+        )
+        
+        let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
+        
+        self.tokenDApi.historyApi.requestMovements(
+            filters: filters,
+            include: ["effect", "operation.details", "operation"],
+            pagination: pagination,
+            completion: { (result) in
+                switch result {
+                    
+                case .failure(let error):
+                    self.showError(error)
+                    
+                case .success(let document):
+                    completion(document)
+                }
+        })
+    }
+    
     func requestMoreHistory(balance: String) {
         let filters = HistoryRequestFiltersV3.with(
             .balance(balance)
@@ -221,41 +602,6 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
                                 print("Next page loaded: \(String(describing: doc.data))")
                             }
                     })
-                }
-        })
-    }
-    
-    private var loadAllAssetsController: LoadAllResourcesController<AssetResource>?
-    func requestAssetsV3() {
-        let paginationStrategy = IndexedPaginationStrategy(index: nil, limit: 2, order: .ascending)
-        self.loadAllAssetsController = LoadAllResourcesController(
-            requestPagination: RequestPagination(.strategy(paginationStrategy))
-        )
-        
-        self.loadAllAssetsController?.loadResources(
-            loadPage: { [weak self] (pagination, completion) in
-                self?.tokenDApi.assetsApi.requestAssets(
-                    pagination: pagination,
-                    completion: { (result) in
-                        switch result {
-                            
-                        case .failure(let error):
-                            completion(.failed(error))
-                            
-                        case .success(let document):
-                            let data = document.data ?? []
-                            completion(.succeeded(data))
-                        }
-                })
-            },
-            completion: { (result, data) in
-                switch result {
-                    
-                case .failed(let error):
-                    print("All assets load failed: \(error). Loaded: \(data)")
-                    
-                case .succeded:
-                    print("All assets loaded: \(data)")
                 }
         })
     }
@@ -315,15 +661,12 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     }
     
     func requestOrderBookV3() {
-        let parameters = OrderBookRequestFiltersV3
-            .with(.baseAsset("BTC"))
-            .addFilter(.quoteAsset("USD"))
-            .addFilter(.isBuy(true))
-        
         self.tokenDApi.orderBookApi.requestOffers(
+            baseAsset: "SS0EE",
+            quoteAsset: "EUR",
             orderBookId: "0",
-            filters: parameters,
-            pagination: RequestPagination(.single(index: 0, limit: 10, order: .descending)),
+            maxEntries: 10,
+            include: self.tokenDApi.orderBookApi.requestBuilder.offersIncludeAll,
             completion: { (result) in
                 switch result {
                     
@@ -388,24 +731,24 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         self.present(vc, animated: true, completion: nil)
     }
     
-//    func uploadDocument() {
-//        let vc = UIDocumentPickerViewController(
-//            documentTypes: [
-//                kUTTypePDF,
-//                kUTTypeGIF,
-//                kUTTypeJPEG,
-//                kUTTypePNG,
-//                kUTTypeTIFF
-//                ].map({ (type) -> String in
-//                    return type as String
-//                }),
-//            in: .import
-//        )
-//
-//        vc.delegate = self
-//
-//        self.present(vc, animated: true, completion: nil)
-//    }
+    //    func uploadDocument() {
+    //        let vc = UIDocumentPickerViewController(
+    //            documentTypes: [
+    //                kUTTypePDF,
+    //                kUTTypeGIF,
+    //                kUTTypeJPEG,
+    //                kUTTypePNG,
+    //                kUTTypeTIFF
+    //                ].map({ (type) -> String in
+    //                    return type as String
+    //                }),
+    //            in: .import
+    //        )
+    //
+    //        vc.delegate = self
+    //
+    //        self.present(vc, animated: true, completion: nil)
+    //    }
     
     enum UploadOption {
         
@@ -678,4 +1021,6 @@ extension ApiExampleViewControllerV3: UIImagePickerControllerDelegate, UINavigat
         }
     }
 }
+// swiftlint:enable type_body_length
 // swiftlint:enable line_length
+// swiftlint:enable file_length

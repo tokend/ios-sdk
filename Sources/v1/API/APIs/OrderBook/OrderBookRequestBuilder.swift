@@ -6,31 +6,44 @@ public class OrderBookRequestBuilder: BaseApiRequestBuilder {
     
     // MARK: - Public
     
-    /// Builds request to fetch account data from api
+    /// Builds request to fetch trades data from api
     /// - Parameters:
-    ///   - parameters: Order book parameters.
-    ///   - sendDate: Send time of request.
-    ///   - completion: Returns `OrderBookRequest` or nil.
-    public func buildOrderBookRequest(
-        parameters: OrderBookRequestParameters?,
-        sendDate: Date,
-        completion: @escaping (OrderBookRequest?) -> Void
-        ) {
+    ///   - parameters: Trades request parameters.
+    /// - Returns: `OrderBookRequest`
+    public func buildTradesRequest(
+        parameters: TradesRequestParameters?,
+        orderDescending: Bool = true,
+        limit: Int?,
+        cursor: String?
+        ) -> TradesRequest {
         
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath("order_book")
+        let url = baseUrl.addPath("trades")
         
         let parametersEncoding: RequestParametersEncoding = .url
-        let parametersDict: RequestParameters = self.requestParametersToDictionary(parameters) ?? [:]
+        var parametersDict: RequestParameters = self.requestParametersToDictionary(parameters) ?? [:]
         
-        self.buildRequestParametersSigned(
-            baseUrl: baseUrl,
+        if orderDescending {
+            parametersDict["order"] = "desc"
+        } else {
+            parametersDict["order"] = "asc"
+        }
+        
+        if let limit = limit {
+            parametersDict["limit"] = limit
+        }
+        
+        if let cursor = cursor {
+            parametersDict["cursor"] = cursor
+        }
+        
+        let request = TradesRequest(
             url: url,
             method: .get,
-            sendDate: sendDate,
             parameters: parametersDict,
-            parametersEncoding: parametersEncoding,
-            completion: completion
+            parametersEncoding: parametersEncoding
         )
+        
+        return request
     }
 }

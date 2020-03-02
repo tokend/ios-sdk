@@ -3,22 +3,59 @@ import TokenDWallet
 
 public struct Asset {
     
-    public let code: String
-    public let owner: String
+    // MARK: - Public properties
+    
     public let availableForIssuance: Decimal
-    public let preissuedAssetSigner: String
-    public let maxIssuanceAmount: Decimal
+    public let code: String
+    public let details: JSON
     public let issued: Decimal
+    public let maxIssuanceAmount: Decimal
+    public let owner: String
     public let pendingIssuance: Decimal
+    public let policies: [PolicyStruct]?
     public let policy: Int
-    private let policies: [PolicyStruct]?
-    public let details: Details
+    public let preissuedAssetSigner: String
+    public let type: Int
+    
+    // MARK: - Public
     
     public func meetsPolicy(_ policy: TokenDWallet.AssetPolicy) -> Bool {
         let containsPolicy = self.policies?.contains(where: { (policiesElement) -> Bool in
             return policy.rawValue == policiesElement.value
         })
         return containsPolicy ?? false
+    }
+    
+    public var defaultDetails: Details? {
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: self.details, options: []) else {
+            return nil
+        }
+        
+        return try? JSONDecoder().decode(Details.self, from: jsonData)
+    }
+    
+    public func getDetails<DetailsType: Decodable>(_ type: DetailsType.Type) -> DetailsType? {
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: self.details, options: []) else {
+            return nil
+        }
+        
+        return try? JSONDecoder().decode(DetailsType.self, from: jsonData)
+    }
+    
+    public var typeValue: AssetType {
+        guard let type = AssetType(rawValue: self.type) else {
+            return .noRequirements
+        }
+        
+        return type
+    }
+}
+
+extension Asset {
+    
+    public enum AssetType: Int {
+        case noRequirements = 0
+        case requiresAccountApproved = 1
     }
 }
 
@@ -54,40 +91,42 @@ extension Asset.Details {
 }
 
 extension Asset {
-    private struct PolicyStruct: Decodable {
+    public struct PolicyStruct: Decodable {
         
-        let name: String
-        let value: Int
+        public let name: String
+        public let value: Int
     }
 }
 
 extension Asset: Decodable {
     enum CodingKeys: String, CodingKey {
-        case code
-        case owner
         case availableForIssuance
-        case preissuedAssetSigner
-        case maxIssuanceAmount
-        case issued
-        case pendingIssuance
-        case policy
-        case policies
+        case code
         case details
+        case issued
+        case maxIssuanceAmount
+        case owner
+        case pendingIssuance
+        case policies
+        case policy
+        case preissuedAssetSigner
+        case type
     }
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.issued = try container.decodeDecimalString(key: .issued)
         self.availableForIssuance = try container.decodeDecimalString(key: .availableForIssuance)
-        self.maxIssuanceAmount = try container.decodeDecimalString(key: .maxIssuanceAmount)
-        self.pendingIssuance = try container.decodeDecimalString(key: .pendingIssuance)
         self.code = try container.decode(String.self, forKey: .code)
+        self.details = try container.decodeDictionary(JSON.self, forKey: .details)
+        self.issued = try container.decodeDecimalString(key: .issued)
+        self.maxIssuanceAmount = try container.decodeDecimalString(key: .maxIssuanceAmount)
         self.owner = try container.decode(String.self, forKey: .owner)
-        self.preissuedAssetSigner = try container.decode(String.self, forKey: .preissuedAssetSigner)
-        self.policy = try container.decode(Int.self, forKey: .policy)
+        self.pendingIssuance = try container.decodeDecimalString(key: .pendingIssuance)
         self.policies = try container.decodeIfPresent([PolicyStruct].self, forKey: .policies)
-        self.details = try container.decode(Details.self, forKey: .details)
+        self.policy = try container.decode(Int.self, forKey: .policy)
+        self.preissuedAssetSigner = try container.decode(String.self, forKey: .preissuedAssetSigner)
+        self.type = try container.decode(Int.self, forKey: .type)
     }
 }
 

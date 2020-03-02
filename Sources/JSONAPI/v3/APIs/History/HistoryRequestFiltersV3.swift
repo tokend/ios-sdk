@@ -8,3 +8,5 @@ public enum HistoryRequestFilterOptionV3: FilterOption {
 }
 
 public class HistoryRequestFiltersV3: RequestFilters<HistoryRequestFilterOptionV3> {}
+
+public typealias MovementsRequestFilterV3 = HistoryRequestFiltersV3

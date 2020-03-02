@@ -28,7 +28,7 @@ public struct RequestSignParametersModelJSONAPI {
         network: JSONAPI.NetworkProtocol
         ) {
         
-        self.baseUrl = baseUrl
+        self.baseUrl = baseUrl.getTrailingSlashTrimmed()
         self.path = path
         self.method = method
         self.queryItems = queryItems

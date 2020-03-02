@@ -8,6 +8,16 @@ public final class EmptyResource: Resource {
     }
 }
 
+/// Model that will be fetched in completion block of request empty.
+public enum RequestEmptyResult {
+    
+    /// Case of successful response
+    case success
+    
+    /// Case of failed response with `Error` model
+    case failure(Error)
+}
+
 /// Model that will be fetched in completion block of request single.
 public enum RequestSingleResult<ResourceType: Resource> {
     

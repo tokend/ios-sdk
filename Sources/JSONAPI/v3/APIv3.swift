@@ -29,6 +29,10 @@ public class APIv3 {
     public private(set) lazy var offersApi: OffersApiV3 = { return self.create(OffersApiV3.self) }()
     public private(set) lazy var orderBookApi: OrderBookApiV3 = { return self.create(OrderBookApiV3.self) }()
     public private(set) lazy var salesApi: SalesApiV3 = { return self.create(SalesApiV3.self) }()
+    public private(set) lazy var pollsApi: PollsApiV3 = { return self.create(PollsApiV3.self) }()
+    public private(set) lazy var atomicSwapApi: AtomicSwapApiV3 = { return self.create(AtomicSwapApiV3.self) }()
+    public private(set) lazy var requetsApi: RequestsApiV3 = { return self.create(RequestsApiV3.self) }()
+    public private(set) lazy var integrationsApi: IntegrationsApiV3 = { return self.create(IntegrationsApiV3.self) }()
     
     // MARK: -
     

@@ -8,38 +8,38 @@ import DLJSONAPI
 open class OpCreateAtomicSwapBidRequestDetailsResource: OperationDetailsResource {
     
     open override class var resourceType: String {
-        return "operations-create-aswap-bid-request"
+        return "operations-create-atomic-swap-bid-request"
     }
     
     public enum CodingKeys: String, CodingKey {
         // attributes
-        case amount
-        case details
+        case baseAmount
+        case creatorDetails
         
         // relations
-        case baseBalance
-        case quoteAssets
+        case ask
+        case quoteAsset
         case request
     }
     
     // MARK: Attributes
     
-    open var amount: Decimal {
-        return self.decimalOptionalValue(key: CodingKeys.amount) ?? 0.0
+    open var baseAmount: Decimal {
+        return self.decimalOptionalValue(key: CodingKeys.baseAmount) ?? 0.0
     }
     
-    open var details: [String: Any] {
-        return self.dictionaryOptionalValue(key: CodingKeys.details) ?? [:]
+    open var creatorDetails: [String: Any] {
+        return self.dictionaryOptionalValue(key: CodingKeys.creatorDetails) ?? [:]
     }
     
     // MARK: Relations
     
-    open var baseBalance: BalanceResource? {
-        return self.relationSingleOptionalValue(key: CodingKeys.baseBalance)
+    open var ask: AtomicSwapAskResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.ask)
     }
     
-    open var quoteAssets: [AssetResource]? {
-        return self.relationCollectionOptionalValue(key: CodingKeys.quoteAssets)
+    open var quoteAsset: AssetResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.quoteAsset)
     }
     
     open var request: ReviewableRequestResource? {

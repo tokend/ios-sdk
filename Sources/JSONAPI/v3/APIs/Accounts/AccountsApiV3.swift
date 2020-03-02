@@ -53,12 +53,16 @@ public class AccountsApiV3: JSONAPI.BaseApi {
     /// The result of request will be fetched in `completion` block
     /// - Parameters:
     ///   - accountId: Identifier of account to be fetched.
+    ///   - include: Resource to include.
+    ///   - pagination: Pagination option.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `RequestAccountResult<AccountResource>`
     /// - Returns: `Cancelable`
     @discardableResult
     public func requestAccount(
         accountId: String,
+        include: [String]?,
+        pagination: RequestPagination?,
         completion: @escaping (_ result: RequestSingleResult<AccountResource>) -> Void
         ) -> Cancelable {
         
@@ -66,6 +70,8 @@ public class AccountsApiV3: JSONAPI.BaseApi {
         
         self.requestBuilder.buildAccountRequest(
             accountId: accountId,
+            include: include,
+            pagination: pagination,
             completion: { [weak self] (request) in
                 guard let request = request else {
                     completion(.failure(JSONAPIError.failedToSignRequest))
@@ -165,6 +171,83 @@ public class AccountsApiV3: JSONAPI.BaseApi {
                 
                 cancelable.cancelable = self?.requestCollection(
                     ReviewableRequestResource.self,
+                    request: request,
+                    completion: completion
+                )
+        })
+        
+        return cancelable
+    }
+    
+    /// Returns the specified reviewable request.
+    /// - Parameters:
+    ///   - accountId: Account id for which request will be fetched.
+    ///   - requestId: Id of request to be fetched.
+    ///   - pagination: Pagination option.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `RequestSingleResult<ReviewableRequestResource>`.
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func requestAccountRequest(
+        accountId: String,
+        requestId: String,
+        pagination: RequestPagination,
+        onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
+        completion: @escaping (_ result: RequestSingleResult<ReviewableRequestResource>) -> Void
+        ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildRequestRequest(
+            accountId: accountId,
+            requestId: requestId,
+            pagination: pagination,
+            completion: { (request) in
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self.requestSingle(
+                    ReviewableRequestResource.self,
+                    request: request,
+                    completion: completion
+                )
+        })
+        
+        return cancelable
+    }
+    
+    /// Returns the specified reviewable request.
+    /// - Parameters:
+    ///   - accountId: Account id for which request will be fetched.
+    ///   - convertationAsset: Asset to be converted in.
+    ///   - include: Resource to include.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `RequestSingleResult<ConvertedBalancesCollectionResource>`.
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func requestConvertedBalances(
+        accountId: String,
+        convertationAsset: String,
+        include: [String]?,
+        completion: @escaping (_ result: RequestSingleResult<ConvertedBalancesCollectionResource>) -> Void
+        ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildConvertedBalancesRequest(
+            accountId: accountId,
+            convertationAsset: convertationAsset,
+            include: include,
+            completion: { (request) in
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self.requestSingle(
+                    ConvertedBalancesCollectionResource.self,
                     request: request,
                     completion: completion
                 )

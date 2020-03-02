@@ -15,13 +15,14 @@ open class OrderBookEntryResource: Resource {
         // attributes
         case baseAmount
         case createdAt
+        case cumulativeBaseAmount
+        case cumulativeQuoteAmount
         case isBuy
         case price
         case quoteAmount
         
         // relations
         case baseAsset
-        case offer
         case quoteAsset
     }
     
@@ -33,6 +34,14 @@ open class OrderBookEntryResource: Resource {
     
     open var createdAt: Date {
         return self.dateOptionalValue(key: CodingKeys.createdAt) ?? Date()
+    }
+    
+    open var cumulativeBaseAmount: Decimal {
+        return self.decimalOptionalValue(key: CodingKeys.cumulativeBaseAmount) ?? 0.0
+    }
+    
+    open var cumulativeQuoteAmount: Decimal {
+        return self.decimalOptionalValue(key: CodingKeys.cumulativeQuoteAmount) ?? 0.0
     }
     
     open var isBuy: Bool {
@@ -51,10 +60,6 @@ open class OrderBookEntryResource: Resource {
     
     open var baseAsset: AssetResource? {
         return self.relationSingleOptionalValue(key: CodingKeys.baseAsset)
-    }
-    
-    open var offer: OfferResource? {
-        return self.relationSingleOptionalValue(key: CodingKeys.offer)
     }
     
     open var quoteAsset: AssetResource? {

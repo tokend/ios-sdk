@@ -18,6 +18,9 @@ open class SaleQuoteAssetResource: Resource {
         case price
         case softCap
         case totalCurrentCap
+        
+        // relations
+        case asset
     }
     
     // MARK: Attributes
@@ -40,6 +43,12 @@ open class SaleQuoteAssetResource: Resource {
     
     open var totalCurrentCap: Decimal {
         return self.decimalOptionalValue(key: CodingKeys.totalCurrentCap) ?? 0.0
+    }
+    
+    // MARK: Relations
+    
+    open var asset: AssetResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.asset)
     }
     
 }

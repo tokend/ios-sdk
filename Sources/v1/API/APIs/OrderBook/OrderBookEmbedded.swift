@@ -1,14 +1,16 @@
 import Foundation
 
-public struct OrderBookEmbedded {
+public struct OrderBookEmbedded<RecordType: Decodable>: Decodable {
     
-    public let records: [OrderBookResponse]
-}
-
-extension OrderBookEmbedded: Decodable {
-    enum OrderBookEmbeddedCodingKeys: String, CodingKey {
+    public enum OrderBookEmbeddedCodingKeys: String, CodingKey {
         case records
     }
+    
+    // MARK: - Public properties
+    
+    public let records: [RecordType]
+    
+    // MARK: -
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: OrderBookEmbeddedCodingKeys.self)
@@ -21,8 +23,8 @@ extension OrderBookEmbedded: Decodable {
             )
         }
         
-        let records: [OrderBookResponse] = recordsData.compactMap { (recordData) -> OrderBookResponse? in
-            if let response = try? OrderBookResponse.decode(from: recordData) {
+        let records: [RecordType] = recordsData.compactMap { (recordData) -> RecordType? in
+            if let response = try? RecordType.decode(from: recordData) {
                 return response
             }
             print("unparsed base: \(recordData)")
