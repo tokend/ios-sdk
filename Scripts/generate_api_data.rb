@@ -1,8 +1,10 @@
 require 'yaml'
 require 'json-schema'
 
-$output_root_path = '../Sources/JSONAPI/v3/ApiModels/Generated'
-configs_root_path = '../../Regources/v2/yaml'
+$namespace = ARGV[0]
+$output_root_path = '../Sources/JSONAPI/v3/ApiModels/Generated/' + $namespace
+root_path = '../../Regources/v2/yaml/'
+configs_root_path = root_path + 'horizon_specs'
 
 $output_resources_directory = $output_root_path + '/Resources'
 $output_inner_directory = $output_root_path + '/Inner'
@@ -11,8 +13,8 @@ $output_extensions_directory = $output_root_path + '/Extensions'
 resource_folder_path = configs_root_path + '/resources'
 inner_folder_path = configs_root_path + '/inner'
 
-resource_schema_path = configs_root_path + '/schema/resource.yaml'
-inner_schema_path = configs_root_path + '/schema/inner.yaml'
+resource_schema_path = root_path + '/schema/resource.yaml'
+inner_schema_path = root_path + '/schema/inner.yaml'
 
 ## Parse schemas
 
@@ -95,24 +97,16 @@ end
 
 def get_resource(key)
   resource_config = $resource_configs[key]
-
   if resource_config.nil?
-    puts "Resource for key \"#{key}\" not found. Abort!"
-    exit
+    #puts "Resource for key \"#{key}\" not found. Abort!"
+    puts "Resource for key \"#{key}\" not found. Return Resource!"
+    resource_config = { "name" => "" }
   end
-
   resource_config
 end
 
 def get_inner(name)
-  inner_config = $inner_configs[name]
-
-  if inner_config.nil?
-    puts "Inner for name \"#{name}\" not found. Abort!"
-    exit
-  end
-
-  inner_config
+  $inner_configs[name]
 end
 
 $indention = '    '
@@ -291,6 +285,15 @@ def get_resource_relations(config)
   end
 end
 
+def get_resource_by_name(name)
+  resource_config = $resource_configs.find { |r| r[1]['name'] == name }
+  if resource_config.nil?
+    puts "Resource for name \"#{name}\" not found. Abort!"
+    exit
+  end
+  resource_config[1]
+end
+
 ## Render
 
 $all_resource_names = []
@@ -371,6 +374,7 @@ $resource_configs.each do |key, info|
     super_class = get_resource_output_name base_resource
   end
 
+  add_line "extension " + $namespace + " {"
   add_line "open class #{output_resource_name}: #{super_class} {"
   indent_break 1
   add_indented_line 1, line: 'open override class var resourceType: String {'
@@ -439,14 +443,26 @@ $resource_configs.each do |key, info|
 
         if output_type.nil?
           inner = get_inner type
-
           if inner.nil?
-            puts "Unknown attribute type: '#{type}'"
-            next
+
+            resource = get_resource_by_name type
+
+            if resource.nil?
+              puts "Unknown attribute type: '#{type}'"
+              next
+            else
+              resource_name = get_resource_output_name resource
+              if resource_name == 'Resource'
+                output_type = resource_name
+              else
+                output_type = $namespace + '.' + resource_name
+              end
+              cap_output_type = 'Codable'
+            end
           else
             inner_name = inner['name']
 
-            output_type = inner_name
+            output_type =  $namespace + '.' + inner_name
             cap_output_type = 'Codable'
           end
         else
@@ -502,7 +518,12 @@ $resource_configs.each do |key, info|
           puts "Unable to get resource: #{resource_key}"
           next
         else
-          output_relation_resource_name = get_resource_output_name resource
+          resource_name = get_resource_output_name resource
+          if resource_name == 'Resource'
+            output_relation_resource_name = resource_name
+          else
+            output_relation_resource_name = $namespace + '.' + resource_name
+          end
         end
 
         if is_collection
@@ -524,9 +545,11 @@ $resource_configs.each do |key, info|
   end
 
   close_block 0
+  close_block 0
 
-  output_file_path = $output_resources_directory + '/' + output_resource_name + '.swift'
-  output_file = File.open(output_file_path, 'w')
+  output_file_path = $output_resources_directory + '/' + $namespace + output_resource_name + '.swift'
+  FileUtils.makedirs($output_resources_directory)
+  output_file = File.open(output_file_path, 'w+')
   output_file.write($output_string)
   output_file.close
 
@@ -540,6 +563,7 @@ break_line
 add_line 'import Foundation'
 add_line 'import DLJSONAPI'
 break_line
+add_line "extension " + $namespace + " {"
 add_line 'enum AllResources {'
 indent_break 1
 
@@ -562,9 +586,23 @@ add_indented_line 2, line: '}'
 add_indented_line 1, line: '}'
 add_indented_line 1, line: '// swiftlint:enable function_body_length'
 close_block 0
+close_block 0
 
-output_file_path = $output_root_path + '/AllResources.swift'
-output_file = File.open(output_file_path, 'w')
+output_file_path = $output_root_path + '/' + $namespace + 'AllResources.swift'
+FileUtils.makedirs($output_root_path)
+output_file = File.open(output_file_path, 'w+')
+output_file.write($output_string)
+output_file.close
+
+## Generate Namespace enum
+
+$output_string = "// Auto-generated code. Do not edit.\n"
+break_line
+add_line 'public enum ' + $namespace + ' { }'
+
+output_file_path = $output_root_path + '/' + $namespace + '.swift'
+FileUtils.makedirs($output_root_path)
+output_file = File.open(output_file_path, 'w+')
 output_file.write($output_string)
 output_file.close
 
@@ -590,7 +628,7 @@ def generate_extension(data, extension_name, extend_base: Bool, default_case: St
     $extension_output_part = if extend_base
                                "extension Resource {\n"
                              else
-                               "extension #{output_base_resource_name} {\n"
+                               "extension #{$namespace}.#{output_base_resource_name} {\n"
                              end
     $extension_output_part += indent_break 1
     $extension_output_part += add_indented_line 1, line: "public var #{output_base_resource_enum_property_name}: #{output_base_resource_enum_name} {"
@@ -617,9 +655,17 @@ def generate_extension(data, extension_name, extend_base: Bool, default_case: St
 
       output_resource_case_name = get_uncapitalized resource_name
 
-      $enum_output_part += add_indented_line 1, line: "case #{output_resource_case_name}(_ resource: #{output_resource_name})"
+      if output_resource_name == 'Resource'
+        $enum_output_part += add_indented_line 1, line: "case #{output_resource_case_name}(_ resource: #{output_resource_name})"
+      else
+        $enum_output_part += add_indented_line 1, line: "case #{output_resource_case_name}(_ resource: #{$namespace}.#{output_resource_name})"
+      end
 
-      $extension_output_part += add_line "if let resource = self as? #{output_resource_name} {"
+      if output_resource_name == 'Resource'
+        $extension_output_part += add_line "if let resource = self as? #{output_resource_name} {"
+      else
+        $extension_output_part += add_line "if let resource = self as? #{$namespace}.#{output_resource_name} {"
+      end
       $extension_output_part += add_indented_line 3, line: "return .#{output_resource_case_name}(resource)"
       $extension_output_part += "#{get_indention 2}} else "
 
@@ -628,7 +674,7 @@ def generate_extension(data, extension_name, extend_base: Bool, default_case: St
       $snippet_output_part += indent_break 2
     end
 
-    $enum_output_part += add_indented_line 1, line: "case #{default_case}(_ resource: #{output_base_resource_name})"
+    $enum_output_part += add_indented_line 1, line: "case #{default_case}(_ resource: #{$namespace}.#{output_base_resource_name})"
     $enum_output_part += close_block 0
 
     $extension_output_part += add_line '{'
@@ -653,8 +699,9 @@ def generate_extension(data, extension_name, extend_base: Bool, default_case: St
     final_output += break_line
     final_output += $snippet_output_part
 
-    output_file_path = $output_extensions_directory + '/' + output_base_resource_name + '+' + extension_name + '.swift'
-    output_file = File.open(output_file_path, 'w')
+    output_file_path = $output_extensions_directory + '/' + $namespace + output_base_resource_name + '+' + extension_name + '.swift'
+    FileUtils.makedirs($output_extensions_directory)
+    output_file = File.open(output_file_path, 'w+')
     output_file.write(final_output)
     output_file.close
   end
@@ -697,6 +744,7 @@ $inner_configs.each do |name, info|
 
   $inner_declaration_output += add_line "// MARK: - #{output_inner_name}"
   $inner_declaration_output += break_line
+  $inner_declaration_output += add_line "extension " + $namespace + " {"
   $inner_declaration_output += add_line "public struct #{output_inner_name}: Decodable {"
   $inner_declaration_output += indent_break 1
 
@@ -759,8 +807,20 @@ $inner_configs.each do |name, info|
         if output_type.nil?
           inner = get_inner type
           if inner.nil?
-            puts "Unknown attribute type: '#{type}'"
-            next
+
+            resource = get_resource_by_name type
+
+            if resource.nil?
+              puts "Unknown attribute type: '#{type}'"
+              next
+            else
+              resource_name = get_resource_output_name resource
+              if resource == 'Resource'
+                output_type = resource_name
+              else
+                output_type = $namespace + '.' + resource_name
+              end
+            end
           else
             output_type = inner['name']
             decode_output_type = output_type
@@ -775,6 +835,8 @@ $inner_configs.each do |name, info|
             decode_func = 'decodeDecimalString'
             decode_func += 's' if is_collection
             decode_func += '(key'
+          elsif output_type == '[String: Any]'
+            decode_func = "decodeDictionary(#{output_type}.self, forKey"
           else
             decode_output_type = output_type
             decode_output_type = "[#{output_type}]" if is_collection
@@ -802,9 +864,11 @@ $inner_configs.each do |name, info|
   add_line $attributes_properties_output
   add_line $init_output
   close_block 0
+  close_block 0
 
-  output_file_path = $output_inner_directory + '/' + output_inner_name + '.swift'
-  output_file = File.open(output_file_path, 'w')
+  output_file_path = $output_inner_directory + '/' + $namespace + output_inner_name + '.swift'
+  FileUtils.makedirs($output_inner_directory)
+  output_file = File.open(output_file_path, 'w+')
   output_file.write($output_string)
   output_file.close
 end
