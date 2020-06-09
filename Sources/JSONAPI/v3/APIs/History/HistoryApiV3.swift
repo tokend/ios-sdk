@@ -34,7 +34,7 @@ public class HistoryApiV3: JSONAPI.BaseApi {
         include: [String]? = nil,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
-        completion: @escaping (_ result: RequestCollectionResult<ParticipantEffectResource>) -> Void
+        completion: @escaping (_ result: RequestCollectionResult<Horizon.ParticipantsEffectResource>) -> Void
         ) -> Cancelable {
         
         var cancelable = self.network.getEmptyCancelable()
@@ -52,7 +52,7 @@ public class HistoryApiV3: JSONAPI.BaseApi {
                 onRequestBuilt?(request)
                 
                 cancelable.cancelable = self?.requestCollection(
-                    ParticipantEffectResource.self,
+                    Horizon.ParticipantsEffectResource.self,
                     request: request,
                     completion: completion
                 )
@@ -75,7 +75,7 @@ public class HistoryApiV3: JSONAPI.BaseApi {
         include: [String]? = nil,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
-        completion: @escaping (_ result: RequestCollectionResult<ParticipantEffectResource>) -> Void
+        completion: @escaping (_ result: RequestCollectionResult<Horizon.ParticipantsEffectResource>) -> Void
         ) -> Cancelable {
         
         var cancelable = self.network.getEmptyCancelable()
@@ -93,7 +93,7 @@ public class HistoryApiV3: JSONAPI.BaseApi {
                 onRequestBuilt?(request)
                 
                 cancelable.cancelable = self?.requestCollection(
-                    ParticipantEffectResource.self,
+                    Horizon.ParticipantsEffectResource.self,
                     request: request,
                     completion: completion
                 )

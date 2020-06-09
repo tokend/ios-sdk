@@ -62,9 +62,9 @@ extension Reactive where Base: OffersApiV3 {
         other: RequestQueryParameters?,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil
-        ) -> Single<Document<[OfferResource]>> {
+        ) -> Single<Document<[Horizon.OfferResource]>> {
         
-        return Single<Document<[OfferResource]>>.create(subscribe: { (event) in
+        return Single<Document<[Horizon.OfferResource]>>.create(subscribe: { (event) in
             let cancelable = self.base.requestOffers(
                 parameters: parameters,
                 other: other,
@@ -89,10 +89,10 @@ extension Reactive where Base: OffersApiV3 {
     
     public func requestOffer(
         offerId: String,
-        completion: @escaping (_ result: RequestSingleResult<OfferResource>) -> Void
-        ) -> Single<Document<OfferResource>> {
+        completion: @escaping (_ result: RequestSingleResult<Horizon.OfferResource>) -> Void
+        ) -> Single<Document<Horizon.OfferResource>> {
         
-        return Single<Document<OfferResource>>.create(subscribe: { (event) in
+        return Single<Document<Horizon.OfferResource>>.create(subscribe: { (event) in
             let cancelable = self.base.requestOffer(
                 offerId: offerId,
                 completion: { (result) in

@@ -31,7 +31,7 @@ public class AssetsApiV3: JSONAPI.BaseApi {
     public func requestAssets(
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
-        completion: @escaping (_ result: RequestCollectionResult<AssetResource>) -> Void
+        completion: @escaping (_ result: RequestCollectionResult<Horizon.AssetResource>) -> Void
         ) -> Cancelable {
         
         let request = self.requestBuilder.buildAssetsRequest(pagination: pagination)
@@ -39,7 +39,7 @@ public class AssetsApiV3: JSONAPI.BaseApi {
         onRequestBuilt?(request)
         
         let cancelable = self.requestCollection(
-            AssetResource.self,
+            Horizon.AssetResource.self,
             request: request,
             completion: completion
         )
@@ -57,13 +57,13 @@ public class AssetsApiV3: JSONAPI.BaseApi {
     @discardableResult
     public func requestAssetById(
         assetId: String,
-        completion: @escaping (_ result: RequestSingleResult<AssetResource>) -> Void
+        completion: @escaping (_ result: RequestSingleResult<Horizon.AssetResource>) -> Void
         ) -> Cancelable {
         
         let request = self.requestBuilder.buildAssetByIdRequest(assetId: assetId)
         
         let cancelable = self.requestSingle(
-            AssetResource.self,
+            Horizon.AssetResource.self,
             request: request,
             completion: completion
         )

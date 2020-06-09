@@ -40,9 +40,9 @@ extension Reactive where Base: HistoryApiV3 {
         include: [String]? = nil,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil
-        ) -> Single<Document<[ParticipantEffectResource]>> {
+        ) -> Single<Document<[Horizon.ParticipantsEffectResource]>> {
         
-        return Single<Document<[ParticipantEffectResource]>>.create(subscribe: { (event) in
+        return Single<Document<[Horizon.ParticipantsEffectResource]>>.create(subscribe: { (event) in
             let cancelable = self.base.requestHistory(
                 filters: filters,
                 include: include,

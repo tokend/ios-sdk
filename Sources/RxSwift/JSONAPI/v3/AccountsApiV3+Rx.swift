@@ -61,9 +61,9 @@ extension Reactive where Base: AccountsApiV3 {
         accountId: String,
         include: [String]?,
         pagination: RequestPagination
-        ) -> Single<Document<AccountResource>> {
+        ) -> Single<Document<Horizon.AccountResource>> {
         
-        return Single<Document<AccountResource>>.create(subscribe: { (event) in
+        return Single<Document<Horizon.AccountResource>>.create(subscribe: { (event) in
             let cancelable = self.base.requestAccount(
                 accountId: accountId,
                 include: include,
@@ -85,8 +85,8 @@ extension Reactive where Base: AccountsApiV3 {
         })
     }
     
-    public func requestSigners(accountId: String) -> Single<Document<[SignerResource]>> {
-        return Single<Document<[SignerResource]>>.create(subscribe: { (event) in
+    public func requestSigners(accountId: String) -> Single<Document<[Horizon.SignerResource]>> {
+        return Single<Document<[Horizon.SignerResource]>>.create(subscribe: { (event) in
             let cancelable = self.base.requestSigners(
                 accountId: accountId,
                 completion: { (result) in

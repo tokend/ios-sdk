@@ -54,7 +54,11 @@ public class APIv3 {
     // MARK: - Public
     
     public static func registerResources() {
-        AllResources.registerAllResources()
+        Cards.AllResources.registerAllResources()
+        Friends.AllResources.registerAllResources()
+        Horizon.AllResources.registerAllResources()
+        Invoices.AllResources.registerAllResources()
+        Recpayments.AllResources.registerAllResources()
     }
     
     // MARK: - Private

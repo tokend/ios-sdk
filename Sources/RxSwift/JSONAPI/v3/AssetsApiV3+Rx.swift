@@ -32,9 +32,9 @@ extension Reactive where Base: AssetsApiV3 {
     public func requestAssets(
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil
-        ) -> Single<Document<[AssetResource]>> {
+        ) -> Single<Document<[Horizon.AssetResource]>> {
         
-        return Single<Document<[AssetResource]>>.create(subscribe: { (event) in
+        return Single<Document<[Horizon.AssetResource]>>.create(subscribe: { (event) in
             let cancelable = self.base.requestAssets(
                 pagination: pagination,
                 onRequestBuilt: onRequestBuilt,
@@ -55,8 +55,8 @@ extension Reactive where Base: AssetsApiV3 {
         })
     }
     
-    public func requestAssetById(assetId: String) -> Single<Document<AssetResource>> {
-        return Single<Document<AssetResource>>.create(subscribe: { (event) in
+    public func requestAssetById(assetId: String) -> Single<Document<Horizon.AssetResource>> {
+        return Single<Document<Horizon.AssetResource>>.create(subscribe: { (event) in
             let cancelable = self.base.requestAssetById(
                 assetId: assetId,
                 completion: { (result) in

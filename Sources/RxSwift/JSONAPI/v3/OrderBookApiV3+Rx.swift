@@ -38,9 +38,9 @@ extension Reactive where Base: OrderBookApiV3 {
         orderBookId: String,
         maxEntries: Int,
         include: [String]? = nil
-        ) -> Single<Document<OrderBookResource>> {
+        ) -> Single<Document<Horizon.OrderBookResource>> {
         
-        return Single<Document<OrderBookResource>>.create(subscribe: { (event) in
+        return Single<Document<Horizon.OrderBookResource>>.create(subscribe: { (event) in
             let cancelable = self.base.requestOffers(
                 baseAsset: baseAsset,
                 quoteAsset: quoteAsset,

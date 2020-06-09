@@ -17,7 +17,7 @@ public class AccountsApiV3: JSONAPI.BaseApi {
     // MARK: - Public
     
     /// Model that will be fetched in `completion` block of ` AccountsApiV3.requestAccount(...)`
-    public enum RequestAccountResult<AccountResourceType: AccountResource> {
+    public enum RequestAccountResult<AccountResourceType: Horizon.AccountResource> {
         
         /// Errors that are possible to be fetched.
         public enum RequestError: Swift.Error, LocalizedError {
@@ -63,7 +63,7 @@ public class AccountsApiV3: JSONAPI.BaseApi {
         accountId: String,
         include: [String]?,
         pagination: RequestPagination?,
-        completion: @escaping (_ result: RequestSingleResult<AccountResource>) -> Void
+        completion: @escaping (_ result: RequestSingleResult<Horizon.AccountResource>) -> Void
         ) -> Cancelable {
         
         var cancelable = self.network.getEmptyCancelable()
@@ -79,7 +79,7 @@ public class AccountsApiV3: JSONAPI.BaseApi {
                 }
                 
                 cancelable.cancelable = self?.requestSingle(
-                    AccountResource.self,
+                    Horizon.AccountResource.self,
                     request: request,
                     completion: { (result) in
                         switch result {
@@ -106,7 +106,7 @@ public class AccountsApiV3: JSONAPI.BaseApi {
     @discardableResult
     public func requestSigners(
         accountId: String,
-        completion: @escaping (_ result: RequestCollectionResult<SignerResource>) -> Void
+        completion: @escaping (_ result: RequestCollectionResult<Horizon.SignerResource>) -> Void
         ) -> Cancelable {
         
         var cancelable = self.network.getEmptyCancelable()
@@ -121,7 +121,7 @@ public class AccountsApiV3: JSONAPI.BaseApi {
                 }
                 
                 cancelable.cancelable = self?.requestCollection(
-                    SignerResource.self,
+                    Horizon.SignerResource.self,
                     request: request,
                     completion: { (result) in
                         switch result {
@@ -152,7 +152,7 @@ public class AccountsApiV3: JSONAPI.BaseApi {
         include: [String]? = nil,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
-        completion: @escaping (_ result: RequestCollectionResult<ReviewableRequestResource>) -> Void
+        completion: @escaping (_ result: RequestCollectionResult<Horizon.ReviewableRequestResource>) -> Void
         ) -> Cancelable {
         
         var cancelable = self.network.getEmptyCancelable()
@@ -170,7 +170,7 @@ public class AccountsApiV3: JSONAPI.BaseApi {
                 onRequestBuilt?(request)
                 
                 cancelable.cancelable = self?.requestCollection(
-                    ReviewableRequestResource.self,
+                    Horizon.ReviewableRequestResource.self,
                     request: request,
                     completion: completion
                 )
@@ -193,7 +193,7 @@ public class AccountsApiV3: JSONAPI.BaseApi {
         requestId: String,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
-        completion: @escaping (_ result: RequestSingleResult<ReviewableRequestResource>) -> Void
+        completion: @escaping (_ result: RequestSingleResult<Horizon.ReviewableRequestResource>) -> Void
         ) -> Cancelable {
         
         var cancelable = self.network.getEmptyCancelable()
@@ -209,7 +209,7 @@ public class AccountsApiV3: JSONAPI.BaseApi {
                 }
                 
                 cancelable.cancelable = self.requestSingle(
-                    ReviewableRequestResource.self,
+                    Horizon.ReviewableRequestResource.self,
                     request: request,
                     completion: completion
                 )
@@ -231,7 +231,7 @@ public class AccountsApiV3: JSONAPI.BaseApi {
         accountId: String,
         convertationAsset: String,
         include: [String]?,
-        completion: @escaping (_ result: RequestSingleResult<ConvertedBalancesCollectionResource>) -> Void
+        completion: @escaping (_ result: RequestSingleResult<Horizon.ConvertedBalancesCollectionResource>) -> Void
         ) -> Cancelable {
         
         var cancelable = self.network.getEmptyCancelable()
@@ -247,7 +247,7 @@ public class AccountsApiV3: JSONAPI.BaseApi {
                 }
                 
                 cancelable.cancelable = self.requestSingle(
-                    ConvertedBalancesCollectionResource.self,
+                    Horizon.ConvertedBalancesCollectionResource.self,
                     request: request,
                     completion: completion
                 )

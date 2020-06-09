@@ -9,7 +9,7 @@ public enum ReviewableRequestState: Int32 {
     case unknown = -1
 }
 
-extension ReviewableRequestResource {
+extension Horizon.ReviewableRequestResource {
     
     public var stateValue: ReviewableRequestState {
         return ReviewableRequestState(rawValue: self.stateI) ?? .unknown

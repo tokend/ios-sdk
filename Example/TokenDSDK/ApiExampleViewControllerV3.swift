@@ -393,7 +393,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         })
     }
     
-    private var loadAllVotesController: LoadAllResourcesController<VoteResource>?
+    private var loadAllVotesController: LoadAllResourcesController<Horizon.VoteResource>?
     func requestVotes() {
         let strategy = IndexedPaginationStrategy(
             index: nil,
@@ -401,7 +401,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             order: .descending
         )
         let pagination = RequestPagination( .strategy(strategy))
-        self.loadAllVotesController = LoadAllResourcesController<VoteResource>(
+        self.loadAllVotesController = LoadAllResourcesController<Horizon.VoteResource>(
             requestPagination: pagination
         )
         
@@ -433,7 +433,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         })
     }
     
-    private var loadAllAssetsController: LoadAllResourcesController<AssetResource>?
+    private var loadAllAssetsController: LoadAllResourcesController<Horizon.AssetResource>?
     func requestAssetsV3() {
         let paginationStrategy = IndexedPaginationStrategy(index: nil, limit: 2, order: .ascending)
         self.loadAllAssetsController = LoadAllResourcesController(
@@ -504,7 +504,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     
     func requestHistory(
         balance: String,
-        completion: @escaping (_ doc: Document<[ParticipantEffectResource]>) -> Void
+        completion: @escaping (_ doc: Document<[Horizon.ParticipantsEffectResource]>) -> Void
         ) {
         
         let filters = HistoryRequestFiltersV3.with(
@@ -531,7 +531,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     
     func requestMovements(
         account: String,
-        completion: @escaping (_ doc: Document<[ParticipantEffectResource]>) -> Void
+        completion: @escaping (_ doc: Document<[Horizon.ParticipantsEffectResource]>) -> Void
         ) {
         
         let filters = MovementsRequestFilterV3.with(
@@ -587,7 +587,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
                     print("First page loaded: \(String(describing: document.data))")
                     
                     self.tokenDApi.historyApi.loadPageForLinks(
-                        ParticipantEffectResource.self,
+                        Horizon.ParticipantsEffectResource.self,
                         links: links,
                         page: .next,
                         previousRequest: prevRequest!,

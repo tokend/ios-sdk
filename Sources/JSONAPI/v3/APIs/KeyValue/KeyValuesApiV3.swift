@@ -30,13 +30,13 @@ public class KeyValuesApiV3: JSONAPI.BaseApi {
     @discardableResult
     public func requestKeyValueEntries(
         pagination: RequestPagination,
-        completion: @escaping (_ result: RequestCollectionResult<KeyValueEntryResource>) -> Void
+        completion: @escaping (_ result: RequestCollectionResult<Horizon.KeyValueEntryResource>) -> Void
         ) -> Cancelable {
         
         let request = self.requestBuilder.buildKeyValueEntriesRequest(pagination: pagination)
         
         let cancelable = self.requestCollection(
-            KeyValueEntryResource.self,
+            Horizon.KeyValueEntryResource.self,
             request: request,
             completion: completion
         )
@@ -54,13 +54,13 @@ public class KeyValuesApiV3: JSONAPI.BaseApi {
     @discardableResult
     public func requestKeyValue(
         key: String,
-        completion: @escaping (_ result: RequestSingleResult<KeyValueEntryResource>) -> Void
+        completion: @escaping (_ result: RequestSingleResult<Horizon.KeyValueEntryResource>) -> Void
         ) -> Cancelable {
         
         let request = self.requestBuilder.buildKeyValueRequest(key: key)
         
         let cancelable = self.requestSingle(
-            KeyValueEntryResource.self,
+            Horizon.KeyValueEntryResource.self,
             request: request,
             completion: completion
         )

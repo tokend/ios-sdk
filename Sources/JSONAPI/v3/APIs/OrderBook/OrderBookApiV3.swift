@@ -36,7 +36,7 @@ public class OrderBookApiV3: JSONAPI.BaseApi {
         orderBookId: String = "0",
         maxEntries: Int,
         include: [String]? = nil,
-        completion: @escaping (_ result: RequestSingleResult<OrderBookResource>) -> Void
+        completion: @escaping (_ result: RequestSingleResult<Horizon.OrderBookResource>) -> Void
         ) -> Cancelable {
         
         let request = self.requestBuilder.buildOffersRequest(
@@ -48,7 +48,7 @@ public class OrderBookApiV3: JSONAPI.BaseApi {
         )
         
         let cancelable = self.requestSingle(
-            OrderBookResource.self,
+            Horizon.OrderBookResource.self,
             request: request,
             completion: completion
         )

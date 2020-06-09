@@ -34,8 +34,8 @@ extension Reactive where Base: SalesRequestBuilderV3 {
 
 extension Reactive where Base: SalesApiV3 {
     
-    public func getSale(saleId: String) -> Single<Document<SaleResource>> {
-        return Single<Document<SaleResource>>.create(subscribe: { (event) in
+    public func getSale(saleId: String) -> Single<Document<Horizon.SaleResource>> {
+        return Single<Document<Horizon.SaleResource>>.create(subscribe: { (event) in
             let cancelable = self.base.getSale(
                 saleId: saleId,
                 completion: { (result) in
@@ -59,9 +59,9 @@ extension Reactive where Base: SalesApiV3 {
         filters: SalesRequestFiltersV3,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil
-        ) -> Single<Document<[SaleResource]>> {
+        ) -> Single<Document<[Horizon.SaleResource]>> {
         
-        return Single<Document<[SaleResource]>>.create(subscribe: { (event) in
+        return Single<Document<[Horizon.SaleResource]>>.create(subscribe: { (event) in
             let cancelable = self.base.getSales(
                 filters: filters,
                 pagination: pagination,

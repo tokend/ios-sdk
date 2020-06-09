@@ -52,9 +52,9 @@ extension Reactive where Base: AssetPairsApiV3 {
         include: [String]? = nil,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil
-        ) -> Single<Document<[AssetPairResource]>> {
+        ) -> Single<Document<[Horizon.AssetPairResource]>> {
         
-        return Single<Document<[AssetPairResource]>>.create(subscribe: { (event) in
+        return Single<Document<[Horizon.AssetPairResource]>>.create(subscribe: { (event) in
             let cancelable = self.base.requestAssetPairs(
                 filters: filters,
                 include: include,
@@ -80,9 +80,9 @@ extension Reactive where Base: AssetPairsApiV3 {
     public func requestAssetPair(
         baseAsset: String,
         qupteAsset: String
-        ) -> Single<Document<AssetPairResource>> {
+        ) -> Single<Document<Horizon.AssetPairResource>> {
         
-        return Single<Document<AssetPairResource>>.create(subscribe: { (event) in
+        return Single<Document<Horizon.AssetPairResource>>.create(subscribe: { (event) in
             let cancelable = self.base.requestAssetPair(
                 baseAsset: baseAsset,
                 qupteAsset: qupteAsset,
