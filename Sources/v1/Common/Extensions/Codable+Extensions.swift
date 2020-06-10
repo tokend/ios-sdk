@@ -57,6 +57,20 @@ public extension Encodable {
     public func encode() throws -> Data {
         return try JSONCoders.snakeCaseEncoder.encode(self)
     }
+
+    enum DictionaryEncodingError: Error {
+        case cannotCast
+    }
+
+    public func documentDictionary() throws -> [String: Any] {
+        let encodedRequest = try encode(),
+        let object = try JSONSerialization.jsonObject(with: encodedRequest, options: []),
+
+        guard let dictionary = object as? [String: Any] else {
+            throw DictionaryEncodingError.cannotCast
+        }
+        return dictionary
+    }
 }
 
 public struct JSONCodingKeys: CodingKey {
