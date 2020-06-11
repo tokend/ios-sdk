@@ -47,6 +47,10 @@ public extension Decodable {
     }
 }
 
+enum DictionaryEncodingError: Error {
+    case cannotCast
+}
+
 public extension Encodable {
     
     /// Encodes this value into the given encoder.
@@ -58,13 +62,9 @@ public extension Encodable {
         return try JSONCoders.snakeCaseEncoder.encode(self)
     }
 
-    enum DictionaryEncodingError: Error {
-        case cannotCast
-    }
-
     public func documentDictionary() throws -> [String: Any] {
-        let encodedRequest = try encode(),
-        let object = try JSONSerialization.jsonObject(with: encodedRequest, options: []),
+        let encodedRequest = try encode()
+        let object = try JSONSerialization.jsonObject(with: encodedRequest, options: [])
 
         guard let dictionary = object as? [String: Any] else {
             throw DictionaryEncodingError.cannotCast

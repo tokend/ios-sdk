@@ -11,6 +11,7 @@ public class FriendsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
 
     // MARK: - Public
 
+    /// Builds request to fetch friends
     public func buildFriendsRequest(
         accountId: String,
         include: [String]?,
@@ -35,6 +36,7 @@ public class FriendsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
         )
     }
 
+    /// Builds request to post friends
     public func buildFriendMultipleRequest(
         accountId: String,
         bodyParameters: [String: Any],
@@ -56,6 +58,7 @@ public class FriendsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
         )
     }
 
+    /// Builds request to fetch recent payments
     public func buildRecentPaymentsRequest(
         accountId: String,
         filters: FriendsRequestsFilters,
@@ -83,6 +86,7 @@ public class FriendsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
         )
     }
 
+    /// Builds request to save recent payment
     public func buildSavePaymentRequest(
         accountId: String,
         bodyParameters: [String: Any],
