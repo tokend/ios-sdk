@@ -39,16 +39,7 @@ extension RecordPaymentRequest.Data.Relationships {
 
     struct Account: Encodable {
 
-        let data: Data
-    }
-}
-
-extension RecordPaymentRequest.Data.Relationships.Account {
-
-    struct Data: Encodable {
-
-        let id: String
-        let type: String = "accounts"
+        let data: AccountsResource
     }
 }
 

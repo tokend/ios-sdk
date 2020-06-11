@@ -22,6 +22,87 @@ public class CardsApi: JSONAPI.BaseApi {
 
     // MARK: - Public
 
+    /// Creates card for given account.
+    /// - Parameters:
+    ///   - cardNumber: Number of the card to create.
+    ///   - accountId: Account id create card for.
+    ///   - balanceIds: Balance ids for the card.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `RequestEmptyResult`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func requestAddCard(
+        cardNumber: CardNumber,
+        accountId: String,
+        balanceIds: [String],
+        completion: @escaping (_ result: RequestEmptyResult) -> Void
+    ) -> Cancelable {
+
+        var cancelable = self.network.getEmptyCancelable()
+
+        let request: AddCardRequest = .init(
+            data: .init(
+                attributes: .init(
+                    cardNumber: cardNumber,
+                    details: .init()
+                ),
+                relationships: .init(
+                    owner: .init(
+                        data: .init(
+                            id: accountId
+                        )
+                    ),
+                    balances: .init(
+                        data: balanceIds.map { .init(id: $0) }
+                        ),
+                    securityDetails: .init(
+                        data: .init()
+                    )
+                )
+            ),
+            included: [
+                .init(
+                    relationships: .init(
+                        card: .init(
+                            data: .init(
+                                id: cardNumber
+                            )
+                        )
+                    )
+                )
+            ]
+        )
+
+        guard let encodedRequest = try? request.documentDictionary() else {
+            completion(.failure(JSONAPIError.failedToBuildRequest))
+            return cancelable
+        }
+
+        self.requestBuilder.buildCreateCardRequest(
+            bodyParameters: encodedRequest,
+            completion: { [weak self] (request) in
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+
+                cancelable.cancelable = self?.requestEmpty(
+                    request: request,
+                    completion: { (result) in
+                        switch result {
+
+                        case .failure(let error):
+                            completion(.failure(error))
+
+                        case .success:
+                            completion(.success)
+                        }
+                })
+        })
+
+        return cancelable
+    }
+
     /// Returns the list of cards.
     /// If filter by owner (filter[owner]) is provided, the owner's signature is also valid.
     /// The result of request will be fetched in `completion` block
@@ -37,7 +118,7 @@ public class CardsApi: JSONAPI.BaseApi {
         filters: CardsRequestsFilters,
         include: [String]?,
         pagination: RequestPagination,
-        completion: @escaping (_ result: RequestCollectionResult<Cards.CardBalanceResource>) -> Void
+        completion: @escaping (_ result: RequestCollectionResult<Cards.CardResource>) -> Void
     ) -> Cancelable {
 
         var cancelable = self.network.getEmptyCancelable()
@@ -53,7 +134,7 @@ public class CardsApi: JSONAPI.BaseApi {
                 }
 
                 cancelable.cancelable = self?.requestCollection(
-                    Cards.CardBalanceResource.self,
+                    Cards.CardResource.self,
                     request: request,
                     completion: { (result) in
                         switch result {
@@ -108,6 +189,48 @@ public class CardsApi: JSONAPI.BaseApi {
                         }
                 })
         }
+
+        return cancelable
+    }
+
+    /// Returns public cards for account ids.
+    /// - Parameters:
+    ///   - accountIds: Account ids to request cards for.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `RequestCollectionResult<Cards.CardResource>`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func requestPublicCards(
+        accountIds: [String],
+        completion: @escaping (_ result: RequestCollectionResult<Cards.CardResource>) -> Void
+    ) -> Cancelable {
+
+        var cancelable = self.network.getEmptyCancelable()
+
+        let body: PublicCardListTempView = .init(
+            data: .init(
+                relationships: .init(
+                    owners: .init(
+                        data: accountIds.map { .init(id: $0) }
+                    )
+                )
+            )
+        )
+
+        guard let encodedBody = try? body.documentDictionary() else {
+            completion(.failure(JSONAPIError.failedToBuildRequest))
+            return cancelable
+        }
+
+        let request = self.requestBuilder.buildPublicCardsRequest(
+            bodyParameters: encodedBody
+        )
+
+        cancelable.cancelable = self.requestCollection(
+            Cards.CardResource.self,
+            request: request,
+            completion: completion
+        )
 
         return cancelable
     }
