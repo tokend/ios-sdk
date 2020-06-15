@@ -87,16 +87,18 @@ public class CardsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
 
     /// Builds request to fetch public cards
     public func buildPublicCardsRequest(
-        bodyParameters: [String: Any]
+        bodyParameters: [String: Any],
+        include: [String]?
     ) -> JSONAPI.RequestModel {
 
         let path = /self.integrations/self.cards/self.publicCards
 
         return self.buildRequest(
-            .simpleBody(
+            .init(
                 path: path,
                 method: .post,
-                bodyParameters: bodyParameters
+                bodyParameters: bodyParameters,
+                include: include
             )
         )
     }

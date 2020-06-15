@@ -196,12 +196,14 @@ public class CardsApi: JSONAPI.BaseApi {
     /// Returns public cards for account ids.
     /// - Parameters:
     ///   - accountIds: Account ids to request cards for.
+    ///   - include: Resource of include.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `RequestCollectionResult<Cards.CardResource>`
     /// - Returns: `Cancelable`
     @discardableResult
     public func requestPublicCards(
         accountIds: [String],
+        include: [String]?,
         completion: @escaping (_ result: RequestCollectionResult<Cards.CardResource>) -> Void
     ) -> Cancelable {
 
@@ -223,7 +225,8 @@ public class CardsApi: JSONAPI.BaseApi {
         }
 
         let request = self.requestBuilder.buildPublicCardsRequest(
-            bodyParameters: encodedBody
+            bodyParameters: encodedBody,
+            include: include
         )
 
         cancelable.cancelable = self.requestCollection(
