@@ -295,9 +295,13 @@ public class IntegrationsApiV3: JSONAPI.BaseApi {
         let request: ManyUsersRequest = .init(
             data: .init(
                 relationships: .init(
-                    users: userAccountIds.map {
-                        .init(id: $0)
-                    }
+                    users: .init(
+                        data: userAccountIds.map {
+                            .init(
+                                id: $0
+                            )
+                        }
+                    )
                 )
             )
         )

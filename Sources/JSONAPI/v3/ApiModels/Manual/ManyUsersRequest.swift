@@ -19,14 +19,22 @@ extension ManyUsersRequest.Data {
 
     struct Relationships: Encodable {
 
-        let users: [User]
+        let users: Users
     }
 }
 
 extension ManyUsersRequest.Data.Relationships {
 
-    struct User: Encodable {
+    struct Users: Encodable {
 
+        let data: [Data]
+    }
+}
+
+extension ManyUsersRequest.Data.Relationships.Users {
+
+    struct Data: Encodable {
+        
         let id: String
     }
 }
