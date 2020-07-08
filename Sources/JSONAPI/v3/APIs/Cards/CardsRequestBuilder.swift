@@ -102,4 +102,26 @@ public class CardsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
             )
         )
     }
+
+    /// Builds request to update card by its number
+    public func buildUpdateCardRequest(
+        by cardNumber: CardNumber,
+        bodyParameters: [String: Any],
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+
+        let path = /self.integrations/self.cards/cardNumber
+
+        self.buildRequest(
+            .init(
+                path: path,
+                method: .patch,
+                bodyParameters: bodyParameters
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
 }

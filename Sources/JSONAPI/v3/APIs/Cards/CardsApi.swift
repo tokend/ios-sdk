@@ -237,4 +237,108 @@ public class CardsApi: JSONAPI.BaseApi {
 
         return cancelable
     }
+
+    /// Model that will be fetched in `completion` block of ` CardsApi.requestUpdateCard(...)`
+    public enum RequestCardUpdateResult {
+
+        /// Errors that are possible to be fetched.
+        public enum RequestError: Swift.Error, LocalizedError {
+
+            /// Balance from bind_balances already exists for this card
+            case balanceAlreadyExists
+
+            case other(Error)
+
+            // MARK: - Swift.Error
+
+            public var errorDescription: String? {
+                switch self {
+
+                case .balanceAlreadyExists:
+                    return "Balance already exists for this card"
+
+                case .other(let error):
+                    return error.localizedDescription
+                }
+            }
+        }
+
+        case success
+
+        case failure(RequestError)
+    }
+    /// Allows to update card info.
+    /// - Parameters:
+    ///   - cardNumber: Number of card to fetch.
+    ///   - bindBalanceIds: Balances to bind to the card.
+    ///   - unbindBalanceIds: Balances to unbind from the card.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `RequestCardUpdateResult`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func requestUpdateCard(
+        by cardNumber: CardNumber,
+        bindBalanceIds: [String],
+        unbindBalanceIds: [String],
+        completion: @escaping (_ result: RequestCardUpdateResult) -> Void
+    ) -> Cancelable {
+
+        var cancelable = self.network.getEmptyCancelable()
+
+        let body: UpdateCardRequest = .init(
+            data: .init(
+                attributes: .init(),
+                relationships: .init(
+                    bindBalances: .init(
+                        data: bindBalanceIds.map { (balance) in
+                            .init(
+                                id: balance
+                            )
+                        }
+                    ),
+                    unbindBalances: .init(
+                        data: unbindBalanceIds.map { (balance) in
+                            .init(
+                                id: balance
+                            )
+                        }
+                    )
+                )
+            )
+        )
+
+        guard let encodedBody = try? body.documentDictionary() else {
+            completion(.failure(.other(JSONAPIError.failedToBuildRequest)))
+            return cancelable
+        }
+
+        self.requestBuilder.buildUpdateCardRequest(
+            by: cardNumber,
+            bodyParameters: encodedBody,
+            completion: { [weak self] (request) in
+                guard let request = request else {
+                    completion(.failure(.other(JSONAPIError.failedToSignRequest)))
+                    return
+                }
+
+                cancelable.cancelable = self?.requestEmpty(
+                    request: request,
+                    completion: { (result) in
+                        switch result {
+
+                        case .failure(let error):
+                            if error.contains(status: "409") {
+                                completion(.failure(.balanceAlreadyExists))
+                            } else {
+                                completion(.failure(.other(error)))
+                            }
+
+                        case .success:
+                            completion(.success)
+                        }
+                })
+        })
+
+        return cancelable
+    }
 }
