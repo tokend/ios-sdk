@@ -29,7 +29,15 @@ extension AddCardRequest.Data {
 
 extension AddCardRequest.Data.Attributes {
 
-    struct Details: Encodable { }
+    struct Details: Encodable {
+
+        let name: String
+        let isPhysical: Bool
+        let expirationYear: Int
+        let expirationMonth: Int
+        let designName: String
+        let isActivated: Bool
+    }
 }
 
 extension AddCardRequest.Data {

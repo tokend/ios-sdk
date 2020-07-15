@@ -33,6 +33,11 @@ public class CardsApi: JSONAPI.BaseApi {
     @discardableResult
     public func requestAddCard(
         cardNumber: CardNumber,
+        name: String,
+        isPhysical: Bool,
+        expirationYear: Int,
+        expirationMonth: Int,
+        designName: String,
         accountId: String,
         balanceIds: [String],
         completion: @escaping (_ result: RequestEmptyResult) -> Void
@@ -44,7 +49,14 @@ public class CardsApi: JSONAPI.BaseApi {
             data: .init(
                 attributes: .init(
                     cardNumber: cardNumber,
-                    details: .init()
+                    details: .init(
+                        name: name,
+                        isPhysical: isPhysical,
+                        expirationYear: expirationYear,
+                        expirationMonth: expirationMonth,
+                        designName: designName,
+                        isActivated: true
+                    )
                 ),
                 relationships: .init(
                     owner: .init(
