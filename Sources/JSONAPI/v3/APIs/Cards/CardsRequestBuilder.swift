@@ -35,6 +35,26 @@ public class CardsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
         )
     }
 
+    /// Builds request to delete card
+    public func buildDeleteCardRequest(
+        cardNumber: CardNumber,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+
+        let path = /self.integrations/self.cards/cardNumber
+
+        self.buildRequest(
+            .init(
+                path: path,
+                method: .delete
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+
     /// Builds request to fetch cards
     public func buildCardsRequest(
         filters: CardsRequestsFilters,

@@ -115,6 +115,46 @@ public class CardsApi: JSONAPI.BaseApi {
         return cancelable
     }
 
+    /// Removes card with given card number.
+    /// - Parameters:
+    ///   - cardNumber: Number of card to remove.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `RequestEmptyResult`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func requestDeleteCard(
+        cardNumber: CardNumber,
+        completion: @escaping (_ result: RequestEmptyResult) -> Void
+    ) -> Cancelable {
+
+        var cancelable = self.network.getEmptyCancelable()
+
+        self.requestBuilder.buildDeleteCardRequest(
+            cardNumber: cardNumber,
+            completion: { [weak self] (request) in
+
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+
+                cancelable.cancelable = self?.requestEmpty(
+                    request: request,
+                    completion: { (result) in
+                        switch result {
+
+                        case .failure(let error):
+                            completion(.failure(error))
+
+                        case .success:
+                            completion(.success)
+                        }
+                })
+        })
+
+        return cancelable
+    }
+
     /// Returns the list of cards.
     /// If filter by owner (filter[owner]) is provided, the owner's signature is also valid.
     /// The result of request will be fetched in `completion` block
