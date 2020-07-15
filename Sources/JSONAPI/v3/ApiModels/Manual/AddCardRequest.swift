@@ -35,7 +35,7 @@ extension AddCardRequest.Data.Attributes {
         let isPhysical: Bool
         let expirationYear: Int
         let expirationMonth: Int
-        let designName: String
+        let design: String
         let isActivated: Bool
     }
 }

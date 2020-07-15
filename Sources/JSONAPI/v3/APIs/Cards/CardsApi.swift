@@ -54,7 +54,7 @@ public class CardsApi: JSONAPI.BaseApi {
                         isPhysical: isPhysical,
                         expirationYear: expirationYear,
                         expirationMonth: expirationMonth,
-                        designName: designName,
+                        design: designName,
                         isActivated: true
                     )
                 ),
