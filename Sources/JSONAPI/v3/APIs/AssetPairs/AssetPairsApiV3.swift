@@ -33,7 +33,7 @@ public class AssetPairsApiV3: JSONAPI.BaseApi {
         include: [String]? = nil,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
-        completion: @escaping (_ result: RequestCollectionResult<AssetPairResource>) -> Void
+        completion: @escaping (_ result: RequestCollectionResult<Horizon.AssetPairResource>) -> Void
         ) -> Cancelable {
         
         let request = self.requestBuilder.buildAssetPairsRequest(
@@ -45,7 +45,7 @@ public class AssetPairsApiV3: JSONAPI.BaseApi {
         onRequestBuilt?(request)
         
         let cancelable = self.requestCollection(
-            AssetPairResource.self,
+            Horizon.AssetPairResource.self,
             request: request,
             completion: completion
         )
@@ -65,7 +65,7 @@ public class AssetPairsApiV3: JSONAPI.BaseApi {
     public func requestAssetPair(
         baseAsset: String,
         qupteAsset: String,
-        completion: @escaping (_ result: RequestSingleResult<AssetPairResource>) -> Void
+        completion: @escaping (_ result: RequestSingleResult<Horizon.AssetPairResource>) -> Void
         ) -> Cancelable {
         
         let request = self.requestBuilder.buildAssetPairRequest(
@@ -74,7 +74,7 @@ public class AssetPairsApiV3: JSONAPI.BaseApi {
         )
         
         let cancelable = self.requestSingle(
-            AssetPairResource.self,
+            Horizon.AssetPairResource.self,
             request: request,
             completion: completion
         )

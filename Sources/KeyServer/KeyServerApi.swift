@@ -255,6 +255,31 @@ public class KeyServerApi {
         })
         return cancellable
     }
+
+    /// Method sends request to get wallet data from api and decypher private key.
+    /// The result of request will be fetched in `completion` block as `KeyServerApi.LoginRequestResult`
+    /// - Parameters:
+    ///   - email: Email of associated wallet.
+    ///   - password: Password to decypher private key.
+    ///   - walletKDF: Wallet key derivation function params.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `KeyServerApi.LoginRequestResult`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func loginWith(
+        email: String,
+        password: String,
+        walletKDF: WalletKDFParams,
+        completion: @escaping (_ result: LoginRequestResult) -> Void
+    ) -> Cancelable {
+
+        return continueLoginForKDF(
+            email: email,
+            password: password,
+            walletKDF: walletKDF,
+            completion: completion
+        )
+    }
     
     // MARK: System Info
     

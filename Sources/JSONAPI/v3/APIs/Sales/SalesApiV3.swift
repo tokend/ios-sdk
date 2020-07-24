@@ -29,7 +29,7 @@ public class SalesApiV3: JSONAPI.BaseApi {
     @discardableResult
     public func getSale(
         saleId: String,
-        completion: @escaping ((_ result: RequestSingleResult<SaleResource>) -> Void)
+        completion: @escaping ((_ result: RequestSingleResult<Horizon.SaleResource>) -> Void)
         ) -> Cancelable {
         
         let request = self.requestBuilder.buildGetSalesRequest(
@@ -37,7 +37,7 @@ public class SalesApiV3: JSONAPI.BaseApi {
         )
         
         return self.requestSingle(
-            SaleResource.self,
+            Horizon.SaleResource.self,
             request: request,
             completion: completion
         )
@@ -56,7 +56,7 @@ public class SalesApiV3: JSONAPI.BaseApi {
         filters: SalesRequestFiltersV3,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
-        completion: @escaping ((_ result: RequestCollectionResult<SaleResource>) -> Void)
+        completion: @escaping ((_ result: RequestCollectionResult<Horizon.SaleResource>) -> Void)
         ) -> Cancelable {
         
         let request = self.requestBuilder.buildGetSalesRequest(
@@ -67,7 +67,7 @@ public class SalesApiV3: JSONAPI.BaseApi {
         onRequestBuilt?(request)
         
         return self.requestCollection(
-            SaleResource.self,
+            Horizon.SaleResource.self,
             request: request,
             completion: completion
         )

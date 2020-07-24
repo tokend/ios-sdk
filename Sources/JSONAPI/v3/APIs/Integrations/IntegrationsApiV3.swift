@@ -234,5 +234,107 @@ public class IntegrationsApiV3: JSONAPI.BaseApi {
         
         return cancelable
     }
-    
+
+    /// Method sends user request.
+    /// The result of request will be fetched in `completion` block
+    /// - Parameters:
+    ///   - userAccountId: User's account id.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `RequestSingleResult<UserInfoResource>`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func sendUserRequest(
+        userAccountId: String,
+        completion: @escaping (_ result: RequestSingleResult<UserInfoResource>) -> Void
+    ) -> Cancelable {
+
+        var cancelable = self.network.getEmptyCancelable()
+
+        self.requestBuilder.buildUserRequest(
+            userAccountId: userAccountId,
+            completion: { [weak self] (request) in
+
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+
+                cancelable.cancelable = self?.requestSingle(
+                    UserInfoResource.self,
+                    request: request,
+                    completion: { (result) in
+                        switch result {
+
+                        case .failure(let error):
+                            completion(.failure(error))
+
+                        case .success(let document):
+                            completion(.success(document))
+                        }
+                })
+        })
+
+        return cancelable
+    }
+
+    /// Method sends many users request.
+    /// The result of request will be fetched in `completion` block
+    /// - Parameters:
+    ///   - userAccountIds: users' account identifiers.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `RequestCollectionResult<UserInfoResource>`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func sendManyUsersRequest(
+        userAccountIds: [String],
+        completion: @escaping (_ result: RequestCollectionResult<UserInfoResource>) -> Void
+    ) -> Cancelable {
+
+        var cancelable = self.network.getEmptyCancelable()
+
+        let request: ManyUsersRequest = .init(
+            data: .init(
+                relationships: .init(
+                    users: .init(
+                        data: userAccountIds.map {
+                            .init(
+                                id: $0
+                            )
+                        }
+                    )
+                )
+            )
+        )
+
+        guard let encodedRequest = try? request.documentDictionary() else {
+            completion(.failure(JSONAPIError.failedToBuildRequest))
+            return cancelable
+        }
+
+        self.requestBuilder.buildManyUsersRequest(
+            bodyParameters: encodedRequest,
+            completion: { [weak self] (request) in
+
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+
+                cancelable.cancelable = self?.requestCollection(
+                    UserInfoResource.self,
+                    request: request,
+                    completion: { (result) in
+                        switch result {
+
+                        case .failure(let error):
+                            completion(.failure(error))
+
+                        case .success(let document):
+                            completion(.success(document))
+                        }
+                })
+        })
+
+        return cancelable
+    }
 }

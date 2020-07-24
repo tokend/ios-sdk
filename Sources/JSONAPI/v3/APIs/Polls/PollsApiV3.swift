@@ -29,7 +29,7 @@ public class PollsApiV3: JSONAPI.BaseApi {
         filters: PollsRequestFiltersV3,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
-        completion: @escaping(_ result: RequestCollectionResult<PollResource>) -> Void
+        completion: @escaping(_ result: RequestCollectionResult<Horizon.PollResource>) -> Void
         ) -> Cancelable {
         
         var cancellable = self.network.getEmptyCancelable()
@@ -40,7 +40,7 @@ public class PollsApiV3: JSONAPI.BaseApi {
         )
         onRequestBuilt?(request)
         cancellable.cancelable = self.requestCollection(
-            PollResource.self,
+            Horizon.PollResource.self,
             request: request,
             completion: completion
         )
@@ -55,7 +55,7 @@ public class PollsApiV3: JSONAPI.BaseApi {
     /// - Returns: `Cancelable`
     public func requestPollById(
         pollId: String,
-        completion: @escaping(_ result: RequestSingleResult<PollResource>) -> Void
+        completion: @escaping(_ result: RequestSingleResult<Horizon.PollResource>) -> Void
         ) -> Cancelable {
         
         var cancellable = self.network.getEmptyCancelable()
@@ -68,7 +68,7 @@ public class PollsApiV3: JSONAPI.BaseApi {
                     return
                 }
                 cancellable.cancelable = self?.requestSingle(
-                    PollResource.self,
+                    Horizon.PollResource.self,
                     request: request,
                     completion: completion
                 )
@@ -87,7 +87,7 @@ public class PollsApiV3: JSONAPI.BaseApi {
         pollId: String,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
-        completion: @escaping(_ result: RequestCollectionResult<VoteResource>) -> Void
+        completion: @escaping(_ result: RequestCollectionResult<Horizon.VoteResource>) -> Void
         ) -> Cancelable {
         
         var cancellable = self.network.getEmptyCancelable()
@@ -102,7 +102,7 @@ public class PollsApiV3: JSONAPI.BaseApi {
                 }
                 onRequestBuilt?(request)
                 cancellable.cancelable = self?.requestCollection(
-                    VoteResource.self,
+                    Horizon.VoteResource.self,
                     request: request,
                     completion: completion
                 )
@@ -123,7 +123,7 @@ public class PollsApiV3: JSONAPI.BaseApi {
         voterAccountId: String,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
-        completion: @escaping(_ result: RequestCollectionResult<VoteResource>) -> Void
+        completion: @escaping(_ result: RequestCollectionResult<Horizon.VoteResource>) -> Void
         ) -> Cancelable {
         
         var cancellable = self.network.getEmptyCancelable()
@@ -139,7 +139,7 @@ public class PollsApiV3: JSONAPI.BaseApi {
                 }
                 onRequestBuilt?(request)
                 cancellable.cancelable = self?.requestCollection(
-                    VoteResource.self,
+                    Horizon.VoteResource.self,
                     request: request,
                     completion: completion
                 )
@@ -158,7 +158,7 @@ public class PollsApiV3: JSONAPI.BaseApi {
         voterAccountId: String,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
-        completion: @escaping(_ result: RequestCollectionResult<VoteResource>) -> Void
+        completion: @escaping(_ result: RequestCollectionResult<Horizon.VoteResource>) -> Void
         ) -> Cancelable {
         
         var cancellable = self.network.getEmptyCancelable()
@@ -173,7 +173,7 @@ public class PollsApiV3: JSONAPI.BaseApi {
                 }
                 onRequestBuilt?(request)
                 cancellable.cancelable = self?.requestCollection(
-                    VoteResource.self,
+                    Horizon.VoteResource.self,
                     request: request,
                     completion: completion
                 )

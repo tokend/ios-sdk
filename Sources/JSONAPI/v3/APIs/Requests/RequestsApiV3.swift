@@ -34,7 +34,7 @@ public class RequestsApiV3: JSONAPI.BaseApi {
         include: [String]? = nil,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
-        completion: @escaping (_ result: RequestCollectionResult<ReviewableRequestResource>) -> Void
+        completion: @escaping (_ result: RequestCollectionResult<Horizon.ReviewableRequestResource>) -> Void
         ) -> Cancelable {
         
         var cancelable = self.network.getEmptyCancelable()
@@ -52,7 +52,7 @@ public class RequestsApiV3: JSONAPI.BaseApi {
                 onRequestBuilt?(request)
                 
                 cancelable.cancelable = self?.requestCollection(
-                    ReviewableRequestResource.self,
+                    Horizon.ReviewableRequestResource.self,
                     request: request,
                     completion: completion
                 )

@@ -208,7 +208,7 @@ public class UpdatePasswordRequestBuilder {
             accountId: walletData.accountId,
             completion: { [weak self] (result) in
                 
-                let signers: [SignerResource]
+                let signers: [Horizon.SignerResource]
                 
                 switch result {
                     
@@ -258,7 +258,7 @@ public class UpdatePasswordRequestBuilder {
         networkInfo: NetworkInfoModel,
         walletKDF: WalletKDFParams,
         walletData: WalletDataModel,
-        signers: [SignerResource],
+        signers: [Horizon.SignerResource],
         completion: @escaping (Result) -> Void
         ) {
         
@@ -384,7 +384,7 @@ public class UpdatePasswordRequestBuilder {
             accountId: originalAccountId,
             completion: { [weak self] (result) in
                 
-                let signers: [SignerResource]
+                let signers: [Horizon.SignerResource]
                 
                 switch result {
                     
@@ -437,7 +437,7 @@ public class UpdatePasswordRequestBuilder {
         walletKDF: WalletKDFParams,
         walletId: String,
         originalAccountId: String,
-        signers: [SignerResource],
+        signers: [Horizon.SignerResource],
         completion: @escaping (Result) -> Void
         ) {
         
@@ -480,7 +480,7 @@ public class UpdatePasswordRequestBuilder {
         kdf: KDFParams,
         signingKeyPair: ECDSA.KeyData,
         requestSigner: JSONAPI.RequestSignerProtocol,
-        accountSigners: [SignerResource],
+        accountSigners: [Horizon.SignerResource],
         defaultRoleId: UInt64,
         newPassword: String,
         newKeyPair: ECDSA.KeyData,

@@ -134,4 +134,51 @@ public class IntegrationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
             completion: completion
         )
     }
+
+    /// Builds request to get user
+    /// - Parameters:
+    ///   - userAccountId: User's account id.
+    ///   - completion: Returns `RequestModel` or `nil`.
+    public func buildUserRequest(
+        userAccountId: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+
+        let path = self.integrations/self.dns/self.clients/userAccountId
+
+        self.buildRequest(
+            .simple(
+                path: path,
+                method: .get
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+
+    /// Builds request to get many users
+    /// - Parameters:
+    ///   - bodyParameters: Body of request.
+    ///   - completion: Returns `RequestModel` or `nil`.
+    public func buildManyUsersRequest(
+        bodyParameters: [String: Any],
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+
+        let path = self.integrations/self.dns/self.clients
+
+        self.buildRequest(
+            .simpleBody(
+                path: path,
+                method: .post,
+                bodyParameters: bodyParameters
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
 }

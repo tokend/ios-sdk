@@ -34,7 +34,7 @@ public class AtomicSwapApiV3: JSONAPI.BaseApi {
         include: [String]? = nil,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
-        completion: @escaping (_ result: RequestCollectionResult<AtomicSwapAskResource>) -> Void
+        completion: @escaping (_ result: RequestCollectionResult<Horizon.AtomicSwapAskResource>) -> Void
         ) -> Cancelable {
         
         var cancelable = self.network.getEmptyCancelable()
@@ -52,7 +52,7 @@ public class AtomicSwapApiV3: JSONAPI.BaseApi {
                 onRequestBuilt?(request)
                 
                 cancelable.cancelable = self?.requestCollection(
-                    AtomicSwapAskResource.self,
+                    Horizon.AtomicSwapAskResource.self,
                     request: request,
                     completion: completion
                 )

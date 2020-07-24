@@ -33,6 +33,9 @@ public class APIv3 {
     public private(set) lazy var atomicSwapApi: AtomicSwapApiV3 = { return self.create(AtomicSwapApiV3.self) }()
     public private(set) lazy var requetsApi: RequestsApiV3 = { return self.create(RequestsApiV3.self) }()
     public private(set) lazy var integrationsApi: IntegrationsApiV3 = { return self.create(IntegrationsApiV3.self) }()
+    public private(set) lazy var cardsApi: CardsApi = { return self.create(CardsApi.self) }()
+    public private(set) lazy var friendsApi: FriendsApi = { return self.create(FriendsApi.self) }()
+    public private(set) lazy var transactionsApi: TransactionsApiV3 = { return self.create(TransactionsApiV3.self) }()
     
     // MARK: -
     
@@ -54,7 +57,11 @@ public class APIv3 {
     // MARK: - Public
     
     public static func registerResources() {
-        AllResources.registerAllResources()
+        Cards.AllResources.registerAllResources()
+        Friends.AllResources.registerAllResources()
+        Horizon.AllResources.registerAllResources()
+        Invoices.AllResources.registerAllResources()
+        Recpayments.AllResources.registerAllResources()
     }
     
     // MARK: - Private

@@ -35,7 +35,7 @@ public class OffersApiV3: JSONAPI.BaseApi {
         other: RequestQueryParameters?,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
-        completion: @escaping (_ result: RequestCollectionResult<OfferResource>) -> Void
+        completion: @escaping (_ result: RequestCollectionResult<Horizon.OfferResource>) -> Void
         ) -> Cancelable {
         
         var cancelable = self.network.getEmptyCancelable()
@@ -53,7 +53,7 @@ public class OffersApiV3: JSONAPI.BaseApi {
                 onRequestBuilt?(request)
                 
                 cancelable.cancelable = self?.requestCollection(
-                    OfferResource.self,
+                    Horizon.OfferResource.self,
                     request: request,
                     completion: completion
                 )
@@ -72,7 +72,7 @@ public class OffersApiV3: JSONAPI.BaseApi {
     @discardableResult
     public func requestOffer(
         offerId: String,
-        completion: @escaping (_ result: RequestSingleResult<OfferResource>) -> Void
+        completion: @escaping (_ result: RequestSingleResult<Horizon.OfferResource>) -> Void
         ) -> Cancelable {
         
         var cancelable = self.network.getEmptyCancelable()
@@ -86,7 +86,7 @@ public class OffersApiV3: JSONAPI.BaseApi {
                 }
                 
                 cancelable.cancelable = self?.requestSingle(
-                    OfferResource.self,
+                    Horizon.OfferResource.self,
                     request: request,
                     completion: completion
                 )

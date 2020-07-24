@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '10.0'
 
-  s.ios.dependency 'TokenDWallet', '>= 3.0.1'
+  s.ios.dependency 'TokenDWallet', '3.1.0'
 
   v1_source_files = 'Sources/Common/**/*.swift',
                     'Sources/v1/API/**/*.swift',
@@ -39,8 +39,8 @@ Pod::Spec.new do |s|
 
   s.subspec 'AlamofireNetwork' do |ss|
     ss.source_files = v1_alamofire_files
-    ss.dependency 'Alamofire'
-    ss.dependency 'AlamofireNetworkActivityLogger'
+    ss.dependency 'Alamofire', '4.8.2'
+    ss.dependency 'AlamofireNetworkActivityLogger', '2.4'
   end
 
   s.subspec 'JSONAPI' do |ss|
@@ -50,8 +50,8 @@ Pod::Spec.new do |s|
 
   s.subspec 'AlamofireNetworkJSONAPI' do |ss|
     ss.source_files = jsonapi_v3_alamofire_files
-    ss.dependency 'Alamofire'
-    ss.dependency 'AlamofireNetworkActivityLogger'
+    ss.dependency 'Alamofire', '4.8.2'
+    ss.dependency 'AlamofireNetworkActivityLogger', '2.4'
   end
 
   s.subspec 'RxJSONAPI' do |ss|

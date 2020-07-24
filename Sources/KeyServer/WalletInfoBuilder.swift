@@ -323,7 +323,7 @@ public struct WalletInfoBuilder {
         kdf: KDFParams,
         signingKeyPair: ECDSA.KeyData,
         sourceAccountIdData: Data,
-        accountSigners: [SignerResource],
+        accountSigners: [Horizon.SignerResource],
         defaultRoleId: UInt64,
         originalAccountId: String,
         networkInfo: NetworkInfoModel,
@@ -399,7 +399,7 @@ public struct WalletInfoBuilder {
     static public func addSigner(
         newKeyPair: ECDSA.KeyData,
         oldKeyPair: ECDSA.KeyData,
-        signers: [SignerResource],
+        signers: [Horizon.SignerResource],
         defaultRoleId: UInt64
         ) -> [OperationTypealias] {
         
@@ -476,7 +476,7 @@ public struct WalletInfoBuilder {
         newKeyPair: ECDSA.KeyData,
         oldKeyPair: ECDSA.KeyData,
         originalAccountId: String,
-        signers: [SignerResource]
+        signers: [Horizon.SignerResource]
         ) -> [OperationTypealias] {
         
         let newKeyPairAccountId = Base32Check.encode(version: .accountIdEd25519, data: newKeyPair.getPublicKeyData())
