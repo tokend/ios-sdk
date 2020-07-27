@@ -20,6 +20,35 @@ public class RecurringPaymentsApiV3: JSONAPI.BaseApi {
 
     // MARK: - Public
 
+    /// Returns system info.
+    /// - Parameters:
+    ///  - completion: Block that will be called when the result will be received.
+    ///  - result: Member of `Recpayments.ScheduledPaymentRecordResource`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func requestSystemInfo(
+        completion: @escaping (_ result: RequestSingleResult<Recpayments.InfoResource>) -> Void
+    ) -> Cancelable {
+
+        let requestModel = self.requestBuilder.buildSystemInfoRequest()
+
+        return self.requestSingle(
+            Recpayments.InfoResource.self,
+            request: requestModel,
+            completion: { (result) in
+
+                switch result {
+
+                case .failure(let error):
+                    completion(.failure(error))
+
+                case .success(let document):
+                    completion(.success(document))
+                }
+        })
+    }
+
+
     public enum SchedulePaymentDestination {
 
         /// Destination card to send payment. If provided - `balanceId` MUST be binded to the card.
@@ -38,6 +67,7 @@ public class RecurringPaymentsApiV3: JSONAPI.BaseApi {
     ///   - recurrenceRule: RFC5545-formatted string that describes recurrent rule.
     ///   - sendImmediately: Indicates whether the service should send payment immediately.
     ///   - subject: Subject of the recurring payment.
+    ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `Recpayments.ScheduledPaymentRecordResource`
     /// - Returns: `Cancelable`
     @discardableResult
