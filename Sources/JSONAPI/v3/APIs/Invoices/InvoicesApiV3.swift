@@ -51,20 +51,28 @@ public class InvoicesApiV3: JSONAPI.BaseApi {
                 ),
                 relationships: .init(
                     requestor: .init(
-                        id: requestorAccountId,
-                        type: "accounts"
+                        data: .init(
+                            id: requestorAccountId,
+                            type: "accounts"
+                        )
                     ),
                     target: .init(
-                        id: targetAccountId,
-                        type: "accounts"
+                        data: .init(
+                            id: targetAccountId,
+                            type: "accounts"
+                        )
                     ),
                     asset: .init(
-                        id: assetCode,
-                        type: "assets"
+                        data: .init(
+                            id: assetCode,
+                            type: "assets"
+                        )
                     ),
                     destinationCard: .init(
-                        id: destinationCardNumber,
-                        type: "cards"
+                        data: .init(
+                            id: destinationCardNumber,
+                            type: "cards"
+                        )
                     )
                 )
             )

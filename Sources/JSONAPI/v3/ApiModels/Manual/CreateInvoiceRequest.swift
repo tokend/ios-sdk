@@ -30,14 +30,22 @@ extension CreateInvoiceRequest.Data {
 
     struct Relationships: Encodable {
 
-        let requestor: Data
-        let target: Data
-        let asset: Data
-        let destinationCard: Data
+        let requestor: Relation
+        let target: Relation
+        let asset: Relation
+        let destinationCard: Relation
     }
 }
 
 extension CreateInvoiceRequest.Data.Relationships {
+
+    struct Relation: Encodable {
+
+        let data: Data
+    }
+}
+
+extension CreateInvoiceRequest.Data.Relationships.Relation {
 
     struct Data: Encodable {
 
