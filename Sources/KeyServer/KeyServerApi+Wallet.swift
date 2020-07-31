@@ -99,7 +99,11 @@ extension KeyServerApi {
         public enum RequestWalletError: Swift.Error, LocalizedError {
             
             /// Wallet email is not verified.
+            @available(*, unavailable, renamed: "walletShouldBeVerified")
             case emailShouldBeVerified(walletId: String)
+
+            /// Wallet is not verified.
+            case walletShouldBeVerified(walletId: String)
             
             /// TFA failed.
             case tfaFailed
@@ -117,8 +121,9 @@ extension KeyServerApi {
             
             public var errorDescription: String? {
                 switch self {
-                case .emailShouldBeVerified:
-                    return "Email should be verified"
+                case .emailShouldBeVerified,
+                     .walletShouldBeVerified:
+                    return "Wallet should be verified"
                 case .tfaFailed:
                     return "TFA failed"
                 case .unknown(let errors):
@@ -296,7 +301,7 @@ extension KeyServerApi {
         var cancellable = self.network.getEmptyCancelable()
         
         if errors.contains(status: ApiError.Status.forbidden, code: ApiError.Code.verificationRequired) {
-            completion(.failure(.emailShouldBeVerified(walletId: walletId)))
+            completion(.failure(.walletShouldBeVerified(walletId: walletId)))
         } else {
             errors.checkTFARequired(
                 handler: self.tfaHandler,
