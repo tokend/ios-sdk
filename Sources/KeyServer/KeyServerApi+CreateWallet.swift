@@ -94,12 +94,17 @@ extension KeyServerApi {
     }
     
     // MARK: Verify email
+
+    @available(*, unavailable, renamed: "VerifyWalletResult")
+    public typealias VerifyEmailResult = VerifyWalletResult
     
-    /// Result model for `completion` block of `KeyServerApi.verifyEmail(...)`
-    public enum VerifyEmailResult {
-        
-        /// Errors that may occur for `KeyServerApi.verifyEmail(...)`.
-        public enum VerifyEmailError: Swift.Error, LocalizedError {
+    /// Result model for `completion` block of `KeyServerApi.verifyWallet(...)`
+    public enum VerifyWalletResult {
+
+        @available(*, unavailable, renamed: "VerifyWalletError")
+        public typealias VerifyEmailError = VerifyWalletError
+        /// Errors that may occur for `KeyServerApi.verifyWallet(...)`.
+        public enum VerifyWalletError: Swift.Error, LocalizedError {
             
             /// Failed to build request model.
             case failedToGenerateRequest(Swift.Error)
@@ -124,26 +129,39 @@ extension KeyServerApi {
         /// Case of successful response from api
         case success
         
-        /// Case of failed verify email operation with `VerifyEmailResult.VerifyEmailError` model
-        case failure(VerifyEmailError)
+        /// Case of failed verify email operation with `VerifyWalletResult.VerifyWalletError` model
+        case failure(VerifyWalletError)
     }
-    
+
+    @available(*, unavailable, renamed: "verifyWallet")
+    public func verifyEmail(
+        walletId: String,
+        token: String,
+        completion: @escaping (_ result: VerifyWalletResult) -> Void
+    ) {
+
+        verifyWallet(
+            walletId: walletId,
+            token: token,
+            completion: completion
+        )
+    }
     /// Method sends request to verify email.
-    /// The result of request will be fetched in `completion` block as `KeyServerApi.VerifyEmailResult`
+    /// The result of request will be fetched in `completion` block as `KeyServerApi.VerifyWalletResult`
     /// - Parameters:
     ///   - walletId: Wallet id.
     ///   - token: Verify token.
     ///   - completion: Block that will be called when the result will be received.
-    ///   - result: Member of `KeyServerApi.VerifyEmailResult`
-    public func verifyEmail(
+    ///   - result: Member of `KeyServerApi.VerifyWalletResult`
+    public func verifyWallet(
         walletId: String,
         token: String,
-        completion: @escaping (_ result: VerifyEmailResult) -> Void
+        completion: @escaping (_ result: VerifyWalletResult) -> Void
         ) {
         
-        let request: VerifyEmailRequest
+        let request: VerifyWalletRequest
         do {
-            request = try self.requestBuilder.buildVerifyEmailRequest(walletId: walletId, token: token)
+            request = try self.requestBuilder.buildVerifyWalletRequest(walletId: walletId, token: token)
         } catch let error {
             completion(.failure(.failedToGenerateRequest(error)))
             return

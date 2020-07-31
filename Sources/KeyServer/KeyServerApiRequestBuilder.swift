@@ -125,16 +125,28 @@ public class KeyServerApiRequestBuilder {
                 completion(request)
         })
     }
+
+    @available(*, unavailable, renamed: "buildVerifyWalletRequest")
+    public func buildVerifyEmailRequest(
+        walletId: String,
+        token: String
+    ) throws -> VerifyWalletRequest {
+
+        try buildVerifyWalletRequest(
+            walletId: walletId,
+            token: token
+        )
+    }
     
     /// Builds request to verify wallet email.
     /// - Parameters:
     ///   - walletId: Wallet id.
     ///   - token: Verification token.
-    /// - Returns: `VerifyEmailRequest` model.
-    public func buildVerifyEmailRequest(
+    /// - Returns: `VerifyWalletRequest` model.
+    public func buildVerifyWalletRequest(
         walletId: String,
         token: String
-        ) throws -> VerifyEmailRequest {
+        ) throws -> VerifyWalletRequest {
         
         let baseUrl = self.apiConfiguration.urlString
         let url = baseUrl.addPath("wallets/\(walletId)/verification")
@@ -144,7 +156,7 @@ public class KeyServerApiRequestBuilder {
         let verifyData = ApiDataRequest<EmailVerification, WalletInfoModel.Include>(data: verification)
         let verifyDataEncoded = try verifyData.encode()
         
-        let request = VerifyEmailRequest(
+        let request = VerifyWalletRequest(
             url: url,
             method: .put,
             verifyData: verifyDataEncoded
