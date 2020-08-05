@@ -1,3 +1,6 @@
 import Foundation
 
-public typealias ResendEmailRequest = RequestPlain
+@available(*, unavailable, renamed: "ResendVerificationCodeRequest")
+public typealias ResendEmailRequest = ResendVerificationCodeRequest
+
+public typealias ResendVerificationCodeRequest = RequestPlain

@@ -138,7 +138,7 @@ public class KeyServerApiRequestBuilder {
         )
     }
     
-    /// Builds request to verify wallet email.
+    /// Builds request to verify wallet.
     /// - Parameters:
     ///   - walletId: Wallet id.
     ///   - token: Verification token.
@@ -151,9 +151,9 @@ public class KeyServerApiRequestBuilder {
         let baseUrl = self.apiConfiguration.urlString
         let url = baseUrl.addPath("wallets/\(walletId)/verification")
         
-        let attributes = EmailVerification.Attributes(token: token)
-        let verification = EmailVerification(attributes: attributes)
-        let verifyData = ApiDataRequest<EmailVerification, WalletInfoModel.Include>(data: verification)
+        let attributes = WalletVerification.Attributes(token: token)
+        let verification = WalletVerification(attributes: attributes)
+        let verifyData = ApiDataRequest<WalletVerification, WalletInfoModel.Include>(data: verification)
         let verifyDataEncoded = try verifyData.encode()
         
         let request = VerifyWalletRequest(
@@ -164,19 +164,29 @@ public class KeyServerApiRequestBuilder {
         
         return request
     }
-    
-    /// Builds request to resend verification email.
-    /// - Parameters:
-    ///   - walletId: Wallet id.
-    /// - Returns: `ResendEmailRequest` model.
+
+    @available(*, unavailable, renamed: "buildResendVerificationCodeRequest")
     public func buildResendEmailRequest(
         walletId: String
-        ) -> ResendEmailRequest {
+    ) -> ResendVerificationCodeRequest {
+
+        return buildResendVerificationCodeRequest(
+            walletId: walletId
+        )
+    }
+    
+    /// Builds request to resend verification code.
+    /// - Parameters:
+    ///   - walletId: Wallet id.
+    /// - Returns: `ResendVerificationCodeRequest` model.
+    public func buildResendVerificationCodeRequest(
+        walletId: String
+        ) -> ResendVerificationCodeRequest {
         
         let baseUrl = self.apiConfiguration.urlString
         let url = baseUrl.addPath("wallets/\(walletId)/verification")
         
-        let request = ResendEmailRequest(
+        let request = ResendVerificationCodeRequest(
             url: url,
             method: .post
         )

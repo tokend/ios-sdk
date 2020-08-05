@@ -146,7 +146,7 @@ extension KeyServerApi {
             completion: completion
         )
     }
-    /// Method sends request to verify email.
+    /// Method sends request to verify wallet.
     /// The result of request will be fetched in `completion` block as `KeyServerApi.VerifyWalletResult`
     /// - Parameters:
     ///   - walletId: Wallet id.
@@ -185,9 +185,12 @@ extension KeyServerApi {
     }
     
     // MARK: Resend email
+
+    @available(*, unavailable, renamed: "ResendVerificationCodeResult")
+    public typealias ResendEmailResult = ResendVerificationCodeResult
     
-    /// Result model for `completion` block of `KeyServerApi.resendEmail(...)`
-    public enum ResendEmailResult {
+    /// Result model for `completion` block of `KeyServerApi.resendVerificationCode(...)`
+    public enum ResendVerificationCodeResult {
         
         /// Case of successful response from api
         case success
@@ -195,19 +198,33 @@ extension KeyServerApi {
         /// Case of failed response from api with `ApiErrors` model
         case failure(ApiErrors)
     }
+
+    @available(*, unavailable, renamed: "resendVerificationCode")
+    public func resendEmail(
+        walletId: String,
+        completion: @escaping (_ result: ResendVerificationCodeResult) -> Void
+    ) {
+
+        resendVerificationCode(
+            walletId: walletId,
+            completion: completion
+        )
+    }
     
-    /// Method sends request to resend verifivation email.
-    /// The result of request will be fetched in `completion` block as `KeyServerApi.ResendEmailResult`
+    /// Method sends request to resend verification code.
+    /// The result of request will be fetched in `completion` block as `KeyServerApi.ResendVerificationCodeResult`
     /// - Parameters:
     ///   - walletId: Wallet id.
     ///   - completion: Block that will be called when the result will be received.
-    ///   - result: Member of `KeyServerApi.ResendEmailResult`
-    public func resendEmail(
+    ///   - result: Member of `KeyServerApi.ResendVerificationCodeResult`
+    public func resendVerificationCode(
         walletId: String,
-        completion: @escaping (_ result: ResendEmailResult) -> Void
+        completion: @escaping (_ result: ResendVerificationCodeResult) -> Void
         ) {
         
-        let request = self.requestBuilder.buildResendEmailRequest(walletId: walletId)
+        let request = self.requestBuilder.buildResendVerificationCodeRequest(
+            walletId: walletId
+        )
         
         self.network.responseDataEmpty(
             url: request.url,
