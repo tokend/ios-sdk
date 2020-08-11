@@ -10,6 +10,7 @@ public struct WalletDetailsModel {
     public static let cipherNameKey = "cipherName"
     public static let modeNameKey = "modeName"
     public static let seedKey = "seed"
+    public static let seedsKey = "seeds"
     
     public static let supportedEncryptionAlgorithm = "aes"
     public static let supportedEncryptionMode = "gcm"
@@ -193,8 +194,9 @@ public struct WalletDetailsModel {
         guard let seedJson = (try? JSONSerialization.jsonObject(with: cipherTextData, options: [])) as? JSON else {
             throw DecryptKeyPairError.unableToDecodeSeedContainer
         }
-        
-        guard let masterSeedBase32Check = seedJson[self.seedKey] as? String else {
+
+        let masterSeedBase32CheckOptional = seedJson[self.seedKey] ?? seedJson[self.seedsKey]
+        guard let masterSeedBase32Check = masterSeedBase32CheckOptional as? String else {
             throw DecryptKeyPairError.noSecretSeedFound
         }
         
