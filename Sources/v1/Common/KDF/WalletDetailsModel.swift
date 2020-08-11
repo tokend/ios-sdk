@@ -196,9 +196,14 @@ public struct WalletDetailsModel {
         }
 
         let masterSeedBase32CheckOptional = seedJson[self.seedKey] ?? seedJson[self.seedsKey]
-        guard let masterSeedBase32CheckAny = masterSeedBase32CheckOptional,
-            let masterSeedBase32Check = masterSeedBase32CheckAny as? String else {
-                throw DecryptKeyPairError.noSecretSeedFound
+
+        let masterSeedBase32Check: String
+        if let masterSeed = masterSeedBase32CheckOptional as? String {
+            masterSeedBase32Check = masterSeed
+        } else if let masterSeed = (masterSeedBase32CheckOptional as? [String])?.first {
+            masterSeedBase32Check = masterSeed
+        } else {
+            throw DecryptKeyPairError.noSecretSeedFound
         }
         
         let masterSeed: Data
