@@ -22,6 +22,15 @@ public struct BlobResponse: Decodable {
     }
 }
 
+// MARK: - Private methods
+
+private extension BlobResponse {
+
+    func getValue<T>() throws -> T where T: Decodable {
+        return try T.decode(from: try self.attributes.getJSONData())
+    }
+}
+
 // MARK: - Attributes
 
 extension BlobResponse {
@@ -29,6 +38,18 @@ extension BlobResponse {
     public struct Attributes: Decodable {
         
         public let value: String
+
+        enum GetJSONDataError: Error {
+            case cannotGetJSON
+        }
+
+        func getJSONData() throws -> Data {
+            guard let data = self.value.data(using: String.Encoding.utf8) else {
+                throw GetJSONDataError.cannotGetJSON
+            }
+
+            return data
+        }
     }
 }
 
@@ -41,7 +62,11 @@ extension BlobResponse {
         case fundDocument(document: FundDocumentResponse)
         case fundOverview(markdown: String)
         case fundUpdate(update: FundUpdateResponse)
+
+        @available(*, deprecated, renamed: "kycData")
         case kycForm(form: KYCFormResponse)
+
+        case kycData(data: Data)
         case tokenMetrics(metrics: FundDocumentResponse)
         case unknown
     }
@@ -56,39 +81,29 @@ extension BlobResponse {
             return BlobContent.fundOverview(markdown: attributes.value)
             
         case .fundUpdate:
-            guard let data = self.attributes.value.data(using: String.Encoding.utf8) else {
-                return .unknown
-            }
-            
-            if let update = try? BlobContent.FundUpdateResponse.decode(from: data) {
+
+            if let update: BlobContent.FundUpdateResponse = try? getValue() {
                 return BlobContent.fundUpdate(update: update)
-            } else if let document = try? BlobContent.FundDocumentResponse.decode(from: data) {
+            } else if let document: BlobContent.FundDocumentResponse = try? getValue() {
                 return BlobContent.fundDocument(document: document)
-            } else {
-                return .unknown
             }
+
+            return .unknown
             
         case .kycForm:
-            guard let data = self.attributes.value.data(using: String.Encoding.utf8) else {
+            guard let data = try? self.attributes.getJSONData() else {
                 return .unknown
             }
-            
-            if let form = try? BlobContent.KYCFormResponse.decode(from: data) {
-                return BlobContent.kycForm(form: form)
-            } else {
-                return .unknown
-            }
+
+            return BlobContent.kycData(data: data)
             
         case .tokenMetrics:
-            guard let data = attributes.value.data(using: String.Encoding.utf8) else {
-                return .unknown
-            }
-            
-            if let metrics = try? BlobContent.FundDocumentResponse.decode(from: data) {
+
+            if let metrics: BlobContent.FundDocumentResponse = try? getValue() {
                 return BlobContent.tokenMetrics(metrics: metrics)
-            } else {
-                return .unknown
             }
+
+            return .unknown
             
         case .unknown:
             return .unknown
@@ -135,31 +150,35 @@ extension BlobResponse.BlobContent {
     }
 }
 
+extension BlobResponse.BlobContent {
+
+    public struct Attachment: Codable {
+
+        public let mimeType: String?
+        public let name: String?
+        public let key: String?
+
+        public init(
+            mimeType: String?,
+            name: String?,
+            key: String?
+        ) {
+
+            self.mimeType = mimeType
+            self.name = name
+            self.key = key
+        }
+    }
+}
+
 // MARK: - KYCFormResponse
 
 extension BlobResponse.BlobContent {
-    
+
+    @available(*, deprecated, message: "Use local project KYC form model")
     public struct KYCFormResponse: Codable {
         
         public struct Documents: Codable {
-            
-            public struct Attachment: Codable {
-                
-                public let mimeType: String?
-                public let name: String?
-                public let key: String?
-                
-                public init(
-                    mimeType: String?,
-                    name: String?,
-                    key: String?
-                    ) {
-                    
-                    self.mimeType = mimeType
-                    self.name = name
-                    self.key = key
-                }
-            }
             
             public let kycIdDocument: Attachment?
             public let kycSelfie: Attachment?
@@ -213,6 +232,10 @@ extension BlobResponse.BlobContent: CustomDebugStringConvertible {
             description.append(".fundUpdate: \(update)")
             
         case .kycForm(let form):
+            description.append(".kycForm: \(form)")
+
+        case .kycData(let data):
+            let form = String(data: data, encoding: String.Encoding.utf8) ?? ""
             description.append(".kycForm: \(form)")
             
         case .tokenMetrics(let metrics):
