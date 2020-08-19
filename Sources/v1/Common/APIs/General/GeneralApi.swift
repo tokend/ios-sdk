@@ -107,7 +107,11 @@ public class GeneralApi: BaseApi {
         case accountId(_ accountId: String)
         
         /// Filter is used when it is needed to fetch identities by email
+        @available(*, deprecated, renamed: "login")
         case email(_ email: String)
+
+        /// Filter is used when it is needed to fetch identities by login
+        case login(_ login: String)
         
         /// Filter is used when it is needed to fetch identities by phone number
         case phone(_ phone: String)
