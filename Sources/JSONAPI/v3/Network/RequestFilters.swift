@@ -109,6 +109,9 @@ extension Mirror {
             
         case let boolValue as Bool:
             filterValue = boolValue ? "1" : "0"
+
+        case let int32Array as [Int32]:
+            filterValue = int32Array.map { "\($0)" }.joined(separator: ",")
             
         case let stringValue as CustomStringConvertible:
             filterValue = "\(stringValue)"

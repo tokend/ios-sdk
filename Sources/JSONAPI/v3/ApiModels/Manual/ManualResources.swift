@@ -6,6 +6,7 @@ class ManualResources {
         BusinessResource.self,
         PaymentAccountResource.self,
         AtomicSwapBuyResource.self,
-        UserInfoResource.self
+        UserInfoResource.self,
+        InvitationsResource.self
     ]
 }

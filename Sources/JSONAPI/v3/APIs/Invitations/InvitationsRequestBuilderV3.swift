@@ -1,0 +1,65 @@
+import Foundation
+
+/// Class provides functionality that allows to build requests
+/// which are used to fetch invitations' data
+public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
+
+    // MARK: - Public properties
+
+    private var integrations: String { "integrations" }
+    private var invitations: String { "invitations" }
+    private var sorted: String { "sorted" }
+    private var sortKey: String { "sort" }
+    private static var sortFromValue: String { "from" }
+    private static var sortUpdatedAtValue: String { "updated_at" }
+
+    // MARK: - Public
+
+    public enum SortedInvitationsRequestSort {
+
+        case from(descending: Bool)
+        case updatedAt(descending: Bool)
+
+        var value: String {
+            switch self {
+
+            case .from(let descending):
+                return descending ? ["-", sortFromValue].joined() : sortFromValue
+
+            case .updatedAt(let descending):
+                return descending ? ["-", sortUpdatedAtValue].joined() : sortUpdatedAtValue
+            }
+        }
+    }
+
+    /// Builds request to fetch sorted invitations.
+    /// - Parameters:
+    ///   - saleId: Id of sale to be fetched.
+    /// - Returns: `RequestModel`.
+    public func buildSortedInvitationsRequest(
+        filters: InvitationsRequestFiltersV3,
+        sort: SortedInvitationsRequestSort,
+        include: [String]?,
+        pagination: RequestPagination,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+        ) {
+
+        let path = /self.integrations/self.invitations/self.sorted
+        var queryParameters = self.buildFilterQueryItems(filters.filterItems)
+        queryParameters["sort"] = sort.value
+
+        self.buildRequest(
+            JSONAPI.BaseRequestBuildModel.simpleQueryIncludePagination(
+                path: path,
+                method: .get,
+                queryParameters: queryParameters,
+                include: include,
+                pagination: pagination
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+}

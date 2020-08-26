@@ -38,6 +38,7 @@ public class APIv3 {
     public private(set) lazy var transactionsApi: TransactionsApiV3 = { return self.create(TransactionsApiV3.self) }()
     public private(set) lazy var recurringPaymentsApi: RecurringPaymentsApiV3 = { return create(RecurringPaymentsApiV3.self) }()
     public private(set) lazy var invoicesApi: InvoicesApiV3 = { return create(InvoicesApiV3.self) }()
+    public private(set) lazy var invitationsApi: InvitationsApiV3 = { return create(InvitationsApiV3.self) }()
     
     // MARK: -
     
