@@ -128,8 +128,8 @@ public extension InvitationsResource {
 
     struct StateStruct: Codable {
 
-        let value: Int32
-        let name: String
+        public let value: Int32
+        public let name: String
     }
 }
 
