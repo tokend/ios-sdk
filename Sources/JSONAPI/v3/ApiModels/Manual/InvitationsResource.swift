@@ -45,14 +45,14 @@ open class InvitationsResource: Resource {
         set { self.setStringOptionalValue(newValue, key: CodingKeys.reference) }
     }
 
-    open var state: Int? {
-        get { return self.intOptionalValue(key: CodingKeys.state) }
-        set { self.setIntOptionalValue(newValue, key: CodingKeys.state) }
+    open var state: StateStruct {
+        get { return self.codableOptionalValue(key: CodingKeys.state) ?? .init(value: 0, name: "") }
+        set { self.setCodableOptionalValue(newValue, key: CodingKeys.state) }
     }
 
-    open var finalState: Int? {
-        get { return self.intOptionalValue(key: CodingKeys.finalState) }
-        set { self.setIntOptionalValue(newValue, key: CodingKeys.finalState) }
+    open var finalState: StateStruct? {
+        get { return self.codableOptionalValue(key: CodingKeys.finalState) }
+        set { self.setCodableOptionalValue(newValue, key: CodingKeys.finalState) }
     }
 
     open var createdAt: String {
@@ -121,6 +121,15 @@ open class InvitationsResource: Resource {
 
     open var place: Resource? {
         return self.relationSingleOptionalValue(key: CodingKeys.place)
+    }
+}
+
+public extension InvitationsResource {
+
+    struct StateStruct: Codable {
+
+        let value: Int32
+        let name: String
     }
 }
 
