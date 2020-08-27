@@ -67,4 +67,37 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
 
         return cancelable
     }
+
+    public enum GetSignedInvitationRedeemAuthResult {
+        case success(auth: String)
+        case failure(Error)
+    }
+    /// Method builds signed header auth value for invitation redeem request.
+    /// - Parameters:
+    ///   - id: Invitation identifier.
+    ///   - completion: The block which is called when the result is ready.
+    ///   - result: The model of `GetSignedInvitationRedeemAuthResult`
+    public func getSignedInvitationRedeemAuth(
+        for id: String,
+        completion: @escaping ((_ result: GetSignedInvitationRedeemAuthResult) -> Void)
+    ) {
+
+        self.requestBuilder.buildSignedInvitationRedeemAuthRequest(
+            id: id,
+            completion: { (request) in
+
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+
+                guard let authHeader = request.headers?["Authorization"]
+                    else {
+                        completion(.failure(JSONAPIError.failedToSignRequest))
+                        return
+                }
+
+                completion(.success(auth: authHeader))
+        })
+    }
 }

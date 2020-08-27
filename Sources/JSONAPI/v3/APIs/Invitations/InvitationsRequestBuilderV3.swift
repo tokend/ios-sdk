@@ -10,6 +10,7 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     private var invitations: String { "invitations" }
     private var sorted: String { "sorted" }
     private var sortKey: String { "sort" }
+    private var redeem: String { "redeem" }
     private static var sortFromValue: String { "from" }
     private static var sortUpdatedAtValue: String { "updated_at" }
 
@@ -50,12 +51,31 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         queryParameters["sort"] = sort.value
 
         self.buildRequest(
-            JSONAPI.BaseRequestBuildModel.simpleQueryIncludePagination(
+            .simpleQueryIncludePagination(
                 path: path,
                 method: .get,
                 queryParameters: queryParameters,
                 include: include,
                 pagination: pagination
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+
+    public func buildSignedInvitationRedeemAuthRequest(
+        id: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+
+        let path = /self.integrations/self.invitations/id/self.redeem
+
+        self.buildRequest(
+            .simple(
+                path: path,
+                method: .patch
             ),
             shouldSign: true,
             sendDate: sendDate,
