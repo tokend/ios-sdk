@@ -30,4 +30,28 @@ public class BlobsRequestBuilder: BaseApiRequestBuilder {
             completion: completion
         )
     }
+
+    /// Builds request to post blob
+    /// - Parameters:
+    ///   - body: Blob data.
+    ///   - sendDate: Send time of request.
+    ///   - completion: Returns `PostBlobRequest` or nil.
+    public func buildPostBlobRequest(
+        body: Data,
+        sendDate: Date,
+        completion: @escaping (PostBlobRequest?) -> Void
+    ) {
+
+        let baseUrl = self.apiConfiguration.urlString
+        let url = baseUrl.addPath(self.blobs)
+
+        self.buildRequestDataSigned(
+            baseUrl: baseUrl,
+            url: url,
+            method: .post,
+            requestData: body,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
 }

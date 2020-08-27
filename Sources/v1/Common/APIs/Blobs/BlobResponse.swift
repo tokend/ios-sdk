@@ -95,7 +95,7 @@ extension BlobResponse {
                 return .unknown
             }
 
-            return BlobContent.kycData(data: data)
+            return .kycData(data: data)
             
         case .tokenMetrics:
 
