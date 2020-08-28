@@ -2,12 +2,21 @@ import Foundation
 
 public struct PostBlobModel: Encodable {
 
-    public let type: String
-    public let attributes: Attributes
-    public let relationships: Relationships
+    public let data: Data
 }
 
 public extension PostBlobModel {
+
+    struct Data: Encodable {
+
+
+        public let type: String
+        public let attributes: Attributes
+        public let relationships: Relationships
+    }
+}
+
+public extension PostBlobModel.Data {
 
     struct Attributes: Encodable {
 
@@ -15,7 +24,7 @@ public extension PostBlobModel {
     }
 }
 
-public extension PostBlobModel {
+public extension PostBlobModel.Data {
 
     struct Relationships: Encodable {
 
@@ -23,7 +32,7 @@ public extension PostBlobModel {
     }
 }
 
-public extension PostBlobModel.Relationships {
+public extension PostBlobModel.Data.Relationships {
 
     struct Owner: Encodable {
 
@@ -31,7 +40,7 @@ public extension PostBlobModel.Relationships {
     }
 }
 
-public extension PostBlobModel.Relationships.Owner {
+public extension PostBlobModel.Data.Relationships.Owner {
 
     struct Data: Encodable {
 

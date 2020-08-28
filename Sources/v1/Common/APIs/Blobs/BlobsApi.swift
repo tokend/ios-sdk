@@ -89,14 +89,16 @@ public class BlobsApi: BaseApi {
         var cancelable = self.network.getEmptyCancelable()
 
         let postBlob: PostBlobModel = .init(
-            type: type,
-            attributes: .init(
-                value: value
-            ),
-            relationships: .init(
-                owner: .init(
-                    data: .init(
-                        id: ownerAccountId
+            data: .init(
+                type: type,
+                attributes: .init(
+                    value: value
+                ),
+                relationships: .init(
+                    owner: .init(
+                        data: .init(
+                            id: ownerAccountId
+                        )
                     )
                 )
             )
