@@ -80,20 +80,35 @@ public class BlobsApi: BaseApi {
     }
     @discardableResult
     public func postBlob(
-        blob: UploadBlobModel,
+        type: String,
+        value: String,
+        ownerAccountId: String,
         completion: @escaping (PostBlobResult) -> Void
     ) -> Cancelable {
 
         var cancelable = self.network.getEmptyCancelable()
 
-        let requestJSON = blob.requestJSON()
-        guard let data = try? JSONSerialization.data(withJSONObject: requestJSON, options: []) else {
+        let postBlob: PostBlobModel = .init(
+            type: type,
+            attributes: .init(
+                value: value
+            ),
+            relationships: .init(
+                owner: .init(
+                    data: .init(
+                        id: ownerAccountId
+                    )
+                )
+            )
+        )
+
+        guard let encodedRequest = try? postBlob.encode() else {
             completion(.failure(.failedToSignRequest))
             return cancelable
         }
 
         self.requestBuilder.buildPostBlobRequest(
-            body: data,
+            body: encodedRequest,
             sendDate: Date(),
             completion: { [weak self] (request) in
                 guard let request = request else {
