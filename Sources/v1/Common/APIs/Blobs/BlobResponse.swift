@@ -157,6 +157,17 @@ extension BlobResponse.BlobContent {
         public let mimeType: String
         public let name: String
         public let key: String
+
+        public init(
+            mimeType: String,
+            name: String,
+            key: String
+        ) {
+
+            self.mimeType = mimeType
+            self.name = name
+            self.key = key
+        }
     }
 }
 
