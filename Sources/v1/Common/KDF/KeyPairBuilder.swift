@@ -7,20 +7,20 @@ public enum KeyPairBuilder {
     
     /// Method derives private key pair from keychain data and wallet KDF params.
     /// - Parameters:
-    ///   - email: Email of associated wallet.
+    ///   - login: Login of associated wallet.
     ///   - password: Password to decypher private key.
     ///   - keychainData: Keychain data from Key Server.
     ///   - walletKDF: Wallet KDF params.
     /// - Returns: `ECDSA.KeyData` private key.
     public static func getKeyPair(
-        forEmail email: String,
+        forLogin login: String,
         password: String,
         keychainData: Data,
         walletKDF: WalletKDFParams
         ) throws -> ECDSA.KeyData {
         
         let key = try TokenDKDF.deriveKey(
-            login: email,
+            login: login,
             password: password,
             salt: walletKDF.salt,
             masterKey: TokenDKDF.deriveKeyMasterKeyWalletKey,
@@ -40,18 +40,18 @@ public enum KeyPairBuilder {
     
     /// Method derives wallet id from wallet KDF params.
     /// - Parameters:
-    ///   - email: Email of associated wallet.
+    ///   - login: Login of associated wallet.
     ///   - password: Password to wallet.
     ///   - walletKDF: Wallet KDF params.
     /// - Returns: Wallet id in raw data.
     public static func deriveWalletId(
-        forEmail email: String,
+        forLogin login: String,
         password: String,
         walletKDF: WalletKDFParams
         ) throws -> Data {
         
         let walletId = try TokenDKDF.deriveKey(
-            login: email,
+            login: login,
             password: password,
             salt: walletKDF.salt,
             masterKey: TokenDKDF.deriveKeyMasterKeyWalletId,

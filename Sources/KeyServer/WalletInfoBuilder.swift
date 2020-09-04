@@ -57,7 +57,6 @@ public struct WalletInfoBuilder {
         public enum CreateError: Swift.Error, LocalizedError {
             
             case failedToCreatePasswordFactorDetails(Swift.Error)
-            case failedToCreateRecoveryDetails(Swift.Error)
             case failedToCreateWalletDetails(Swift.Error)
             
             // MARK: - Swift.Error
@@ -65,8 +64,6 @@ public struct WalletInfoBuilder {
             public var errorDescription: String? {
                 switch self {
                 case .failedToCreatePasswordFactorDetails(let error):
-                    return error.localizedDescription
-                case .failedToCreateRecoveryDetails(let error):
                     return error.localizedDescription
                 case .failedToCreateWalletDetails(let error):
                     return error.localizedDescription
@@ -84,7 +81,7 @@ public struct WalletInfoBuilder {
     /// Method to create wallet info model.
     /// The result of this method will be used for wallet create and update methods.
     /// - Parameters:
-    ///   - unchekedEmail: Email of associated wallet. Will be checked with `KDFParams.checkedEmail(...)`.
+    ///   - unchekedLogin: Login of associated wallet. Will be checked with `KDFParams.checkedLogin(...)`.
     ///   - password: Password to sign transaction envelope.
     ///   - kdfParams: KDF params.
     ///   - keychainParams: Key chain params model.
@@ -92,23 +89,23 @@ public struct WalletInfoBuilder {
     ///   - referrerAccountId: Referrer account id.
     /// - Returns: `WalletInfoBuilder.CreateResult` model.
     public static func createWalletInfo(
-        email unchekedEmail: String,
+        login unchekedLogin: String,
         password: String,
         kdfParams: KDFParams,
         keychainParams: KeychainParams,
-        defaultSignerRole: UInt64 = 1,
+        defaultSignerRole: UInt64,
         transaction: WalletInfoModel.WalletInfoData.Relationships.Transaction? = nil,
         referrerAccountId: String? = nil
         ) -> CreateResult {
         
         // wallet info
         let type = "wallet"
-        let email = kdfParams.checkedEmail(unchekedEmail)
+        let login = kdfParams.checkedLogin(unchekedLogin)
         
         let walletDetails: WalletDetailsModel
         do {
             walletDetails = try WalletDetailsModel.createWalletDetails(
-                login: email,
+                login: login,
                 password: password,
                 keyPair: keychainParams.newKeyPair,
                 kdfParams: kdfParams,
@@ -123,7 +120,7 @@ public struct WalletInfoBuilder {
         let passwordFactorDetails: WalletDetailsModel
         do {
             passwordFactorDetails = try WalletDetailsModel.createWalletDetails(
-                login: email,
+                login: login,
                 password: password,
                 keyPair: keychainParams.passwordFactorKeyPair,
                 kdfParams: kdfParams,
@@ -132,23 +129,6 @@ public struct WalletInfoBuilder {
             )
         } catch let error {
             return .failed(.failedToCreatePasswordFactorDetails(error))
-        }
-        
-        // recovery info
-        let recoverySeedData = keychainParams.recoveryKeyPair.getSeedData()
-        let recoverySeed = Base32Check.encode(version: .seedEd25519, data: recoverySeedData)
-        let recoveryDetails: WalletDetailsModel
-        do {
-            recoveryDetails = try WalletDetailsModel.createWalletDetails(
-                login: email,
-                password: recoverySeed,
-                keyPair: keychainParams.recoveryKeyPair,
-                kdfParams: kdfParams,
-                salt: keychainParams.recoveryKeyPairSalt,
-                IV: keychainParams.recoveryKeyPairIV
-            )
-        } catch let error {
-            return .failed(.failedToCreateRecoveryDetails(error))
         }
         
         // Registration Info
@@ -178,29 +158,24 @@ public struct WalletInfoBuilder {
         included.append(passwordFactorRelationship)
 
         // Signers
-        let accountId = Base32Check.encode(version: .accountIdEd25519, data: keychainParams.newKeyPair.getPublicKeyData())
+        let accountId = Base32Check.encode(
+            version: .accountIdEd25519,
+            data: keychainParams.newKeyPair.getPublicKeyData()
+        )
         let signers = [
-            WalletInfoModel.WalletInfoData.Relationships.Signer(
-                    id: recoveryDetails.accountIdBase32Check,
-                    type: "signer",
-                    attributes: WalletInfoModel.WalletInfoData.Relationships.Signer.Attributes(
-                            roleId: 1,
-                            weight: 1000,
-                            identity: 0)),
             WalletInfoModel.WalletInfoData.Relationships.Signer(
                     id: accountId,
                     type: "signer",
                     attributes: WalletInfoModel.WalletInfoData.Relationships.Signer.Attributes(
                             roleId: defaultSignerRole,
                             weight: 1000,
-                            identity: 0)),
+                            identity: 0))
         ]
 
         for signer in signers {
             included.append(signer)
         }
 
-        
         // Transaction
         var transactionAPIData: ApiDataRequest<Transaction, WalletInfoModel.Include>?
         
@@ -307,7 +282,7 @@ public struct WalletInfoBuilder {
     /// Method to create update password wallet info model.
     /// The result of this method will be used for wallet password update method.
     /// - Parameters:
-    ///   - email: Email associated with wallet.
+    ///   - login: Login associated with wallet.
     ///   - kdf: KDF params.
     ///   - signingKeyPair: Private key pair to sign transaction envelope.
     ///   - sourceAccountIdData: Source account id raw data.
@@ -319,7 +294,7 @@ public struct WalletInfoBuilder {
     ///   - sendDate: Request send date.
     /// - Returns: `WalletInfoBuilder.CreateUpdatePasswordResult` model.
     static public func createUpdatePasswordWalletInfo(
-        email: String,
+        login: String,
         kdf: KDFParams,
         signingKeyPair: ECDSA.KeyData,
         sourceAccountIdData: Data,
@@ -330,9 +305,9 @@ public struct WalletInfoBuilder {
         newPassword: String,
         keychainParams: KeychainParams,
         sendDate: Date
-        ) -> CreateUpdatePasswordResult {
+    ) -> CreateUpdatePasswordResult {
         
-        let checkedEmail = kdf.checkedEmail(email)
+        let checkedLogin = kdf.checkedLogin(login)
         
         var operations: [OperationTypealias] = []
         operations.append(contentsOf: self.addSigner(
@@ -373,10 +348,12 @@ public struct WalletInfoBuilder {
         )
         
         let createResult = WalletInfoBuilder.createWalletInfo(
-            email: checkedEmail,
+            login: checkedLogin,
             password: newPassword,
             kdfParams: kdf,
             keychainParams: keychainParams,
+            // TODO: - Set valid default signer
+            defaultSignerRole: 1,
             transaction: transaction
         )
         

@@ -34,19 +34,19 @@ public struct KDFParams {
         self.type = type
     }
     
-    /// Checks input email for satisfying KDF version.
+    /// Checks input login for satisfying KDF version.
     /// - Parameters:
-    ///   - email: Email string.
-    /// > Input `email` string may be transformed depending on KDF `id` value:
-    /// - **"1"**: Returns input email.
-    /// - **"2"**: Returns lowercased email.
-    /// - Returns: Checked email.
-    public func checkedEmail(_ email: String) -> String {
+    ///   - login: Login string.
+    /// > Input `login` string may be transformed depending on KDF `id` value:
+    /// - **"1"**: Returns input login.
+    /// - **"2"**: Returns lowercased login.
+    /// - Returns: Checked login.
+    public func checkedLogin(_ login: String) -> String {
         if self.id == "1" {
-            return email
+            return login
         } else if self.id == "2" {
-            return email.lowercased()
+            return login.lowercased()
         }
-        return email
+        return login
     }
 }

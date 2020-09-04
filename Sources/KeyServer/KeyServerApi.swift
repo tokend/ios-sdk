@@ -132,19 +132,19 @@ public class KeyServerApi {
     /// Method sends request to get wallet KDF params from api.
     /// The result of request will be fetched in `completion` block as `KeyServerApi.RequestWalletKDFResult`
     /// - Parameters:
-    ///   - email: Email of associated wallet.
+    ///   - login: Login of associated wallet.
     ///   - isRecovery: Indicates whether is recovery wallet data should be fetched. Default is **false**.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `KeyServerApi.RequestWalletKDFResult`
     /// - Returns: `Cancelable`
     @discardableResult
     public func requestWalletKDF(
-        email: String,
+        login: String,
         isRecovery: Bool = false,
         completion: @escaping (_ result: RequestWalletKDFResult) -> Void
         ) -> Cancelable {
         
-        let request = self.requestBuilder.buildGetWalletKDFRequest(email: email, isRecovery: isRecovery)
+        let request = self.requestBuilder.buildGetWalletKDFRequest(login: login, isRecovery: isRecovery)
         
         return self.network.responseObject(
             ApiDataResponse<GetWalletKDFResponse>.self,
@@ -225,25 +225,25 @@ public class KeyServerApi {
     /// Method sends request to get wallet data from api and decypher private key.
     /// The result of request will be fetched in `completion` block as `KeyServerApi.LoginRequestResult`
     /// - Parameters:
-    ///   - email: Email of associated wallet.
+    ///   - login: Login of associated wallet.
     ///   - password: Password to decypher private key.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `KeyServerApi.LoginRequestResult`
     /// - Returns: `Cancelable`
     @discardableResult
     public func loginWith(
-        email: String,
+        login: String,
         password: String,
         completion: @escaping (_ result: LoginRequestResult) -> Void
         ) -> Cancelable {
         
         var cancellable = self.network.getEmptyCancelable()
-        cancellable = self.requestWalletKDF(email: email, completion: { [weak self] result in
+        cancellable = self.requestWalletKDF(login: login, completion: { [weak self] result in
             switch result {
                 
             case .success(let walletKDF):
                 cancellable.cancelable = self?.continueLoginForKDF(
-                    email: email,
+                    login: login,
                     password: password,
                     walletKDF: walletKDF,
                     completion: completion
@@ -259,7 +259,7 @@ public class KeyServerApi {
     /// Method sends request to get wallet data from api and decypher private key.
     /// The result of request will be fetched in `completion` block as `KeyServerApi.LoginRequestResult`
     /// - Parameters:
-    ///   - email: Email of associated wallet.
+    ///   - login: Login of associated wallet.
     ///   - password: Password to decypher private key.
     ///   - walletKDF: Wallet key derivation function params.
     ///   - completion: Block that will be called when the result will be received.
@@ -267,14 +267,14 @@ public class KeyServerApi {
     /// - Returns: `Cancelable`
     @discardableResult
     public func loginWith(
-        email: String,
+        login: String,
         password: String,
         walletKDF: WalletKDFParams,
         completion: @escaping (_ result: LoginRequestResult) -> Void
     ) -> Cancelable {
 
         return continueLoginForKDF(
-            email: email,
+            login: login,
             password: password,
             walletKDF: walletKDF,
             completion: completion
@@ -360,17 +360,17 @@ public class KeyServerApi {
     
     @discardableResult
     private func continueLoginForKDF(
-        email: String,
+        login: String,
         password: String,
         walletKDF: WalletKDFParams,
         completion: @escaping (_ result: LoginRequestResult) -> Void
         ) -> Cancelable {
         
-        let email = walletKDF.kdfParams.checkedEmail(email)
+        let login = walletKDF.kdfParams.checkedLogin(login)
         
         guard
             let walletId = try? KeyPairBuilder.deriveWalletId(
-                forEmail: email,
+                forLogin: login,
                 password: password,
                 walletKDF: walletKDF
             ) else {
@@ -388,7 +388,7 @@ public class KeyServerApi {
                     
                 case .success(let walletData):
                     self?.continueLoginForWalletData(
-                        email: email,
+                        login: login,
                         password: password,
                         walletKDF: walletKDF,
                         walletData: walletData,
@@ -402,7 +402,7 @@ public class KeyServerApi {
     }
     
     private func continueLoginForWalletData(
-        email: String,
+        login: String,
         password: String,
         walletKDF: WalletKDFParams,
         walletData: WalletDataModel,
@@ -417,7 +417,7 @@ public class KeyServerApi {
         }
         
         guard let keyPair: ECDSA.KeyData = try? KeyPairBuilder.getKeyPair(
-            forEmail: email,
+            forLogin: login,
             password: password,
             keychainData: keychainData,
             walletKDF: walletKDF

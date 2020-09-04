@@ -196,11 +196,11 @@ public class KeyServerApiRequestBuilder {
     
     /// Builds request to fetch wallet KDF params.
     /// - Parameters:
-    ///   - email: Email associated with wallet.
+    ///   - login: Login associated with wallet.
     ///   - isRecovery: Flag to indicate whether is recovery keychain data is requested.
     /// - Returns: `GetWalletKDFRequest` model.
     public func buildGetWalletKDFRequest(
-        email: String,
+        login: String,
         isRecovery: Bool
         ) -> GetWalletKDFRequest {
         
@@ -208,7 +208,7 @@ public class KeyServerApiRequestBuilder {
         let url = baseUrl.addPath("wallets").addPath("kdf")
         
         var parameters = RequestParameters()
-        parameters["email"] = email
+        parameters["email"] = login
         if isRecovery {
             parameters["is_recovery"] = "true"
         }

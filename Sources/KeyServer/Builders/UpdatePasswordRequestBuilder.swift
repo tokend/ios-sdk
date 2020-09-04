@@ -17,7 +17,7 @@ public class UpdatePasswordRequestBuilder {
     // MARK: - Public
     
     public func buildChangePasswordRequest(
-        email: String,
+        login: String,
         oldPassword: String,
         newPassword: String,
         onSignRequest: @escaping JSONAPI.SignRequestBlock,
@@ -33,7 +33,7 @@ public class UpdatePasswordRequestBuilder {
         }
         
         cancelable.cancelable = self.keyServerApi.requestWalletKDF(
-            email: email,
+            login: login,
             completion: { [weak self] (result) in
                 switch result {
                     
@@ -42,7 +42,7 @@ public class UpdatePasswordRequestBuilder {
                     
                 case .success(let walletKDF):
                     cancelable.cancelable = self?.continueChangePassword(
-                        email: email,
+                        login: login,
                         oldPassword: oldPassword,
                         newPassword: newPassword,
                         newKeyPair: newKeyPair,
@@ -59,7 +59,7 @@ public class UpdatePasswordRequestBuilder {
     }
     
     public func buildRecoveryWalletRequest(
-        email: String,
+        login: String,
         recoverySeedBase32Check: String,
         newPassword: String,
         onSignRequest: @escaping JSONAPI.SignRequestBlock,
@@ -77,7 +77,7 @@ public class UpdatePasswordRequestBuilder {
         }
         
         cancelable = self.keyServerApi.requestWalletKDF(
-            email: email,
+            login: login,
             isRecovery: true,
             completion: { (result) in
                 switch result {
@@ -87,7 +87,7 @@ public class UpdatePasswordRequestBuilder {
                     
                 case .success(let walletKDF):
                     cancelable.cancelable = self.continueRecoverWalletForKDF(
-                        email: email,
+                        login: login,
                         newPassword: newPassword,
                         newKeyPair: newKeyPair,
                         passwordFactorKeyPair: passwordFactorKeyPair,
@@ -108,7 +108,7 @@ public class UpdatePasswordRequestBuilder {
     // MARK: - Change
     
     private func continueChangePassword(
-        email uncheckedEmail: String,
+        login uncheckedLogin: String,
         oldPassword: String,
         newPassword: String,
         newKeyPair: ECDSA.KeyData,
@@ -119,12 +119,12 @@ public class UpdatePasswordRequestBuilder {
         completion: @escaping (Result) -> Void
         ) -> Cancelable {
         
-        let email = walletKDF.kdfParams.checkedEmail(uncheckedEmail)
+        let login = walletKDF.kdfParams.checkedLogin(uncheckedLogin)
         
         let walletId: String
         do {
             let walletIdData = try KeyPairBuilder.deriveWalletId(
-                forEmail: email,
+                forLogin: login,
                 password: oldPassword,
                 walletKDF: walletKDF
             )
@@ -146,7 +146,7 @@ public class UpdatePasswordRequestBuilder {
                     
                 case .success(let walletData):
                     cancelable.cancelable = self?.continueChangePasswordForWalletData(
-                        checkedEmail: email,
+                        checkedLogin: login,
                         oldPassword: oldPassword,
                         newPassword: newPassword,
                         newKeyPair: newKeyPair,
@@ -164,7 +164,7 @@ public class UpdatePasswordRequestBuilder {
     }
     
     private func continueChangePasswordForWalletData(
-        checkedEmail: String,
+        checkedLogin: String,
         oldPassword: String,
         newPassword: String,
         newKeyPair: ECDSA.KeyData,
@@ -184,7 +184,7 @@ public class UpdatePasswordRequestBuilder {
         let signingKeyPair: ECDSA.KeyData
         do {
             signingKeyPair = try KeyPairBuilder.getKeyPair(
-                forEmail: checkedEmail,
+                forLogin: checkedLogin,
                 password: oldPassword,
                 keychainData: keychainData,
                 walletKDF: walletKDF
@@ -229,7 +229,7 @@ public class UpdatePasswordRequestBuilder {
                 }
                 
                 self?.continueChangePasswordForSigners(
-                    checkedEmail: checkedEmail,
+                    checkedLogin: checkedLogin,
                     newPassword: newPassword,
                     oldPassword: oldPassword,
                     newKeyPair: newKeyPair,
@@ -248,7 +248,7 @@ public class UpdatePasswordRequestBuilder {
     }
     
     private func continueChangePasswordForSigners(
-        checkedEmail: String,
+        checkedLogin: String,
         newPassword: String,
         oldPassword: String,
         newKeyPair: ECDSA.KeyData,
@@ -270,7 +270,7 @@ public class UpdatePasswordRequestBuilder {
                 
             case .success(let response):
                 self?.updatePasswordFor(
-                    email: checkedEmail,
+                    login: checkedLogin,
                     signingPassword: oldPassword,
                     walletId: walletData.walletId,
                     originalAccountId: walletData.accountId,
@@ -292,7 +292,7 @@ public class UpdatePasswordRequestBuilder {
     // MARK: - Recovery
     
     private func continueRecoverWalletForKDF(
-        email uncheckedEmail: String,
+        login uncheckedLogin: String,
         newPassword: String,
         newKeyPair: ECDSA.KeyData,
         passwordFactorKeyPair: ECDSA.KeyData,
@@ -303,11 +303,11 @@ public class UpdatePasswordRequestBuilder {
         completion: @escaping (Result) -> Void
         ) -> Cancelable {
         
-        let checkedEmail = walletKDF.kdfParams.checkedEmail(uncheckedEmail)
+        let checkedLogin = walletKDF.kdfParams.checkedLogin(uncheckedLogin)
         
         guard
             let walletId = try? KeyPairBuilder.deriveWalletId(
-                forEmail: checkedEmail,
+                forLogin: checkedLogin,
                 password: recoverySeed,
                 walletKDF: walletKDF
             ) else {
@@ -329,7 +329,7 @@ public class UpdatePasswordRequestBuilder {
                     
                 case .success(let walletData):
                     cancelable.cancelable = self?.continueRecoverWalletForWalletData(
-                        checkedEmail: checkedEmail,
+                        checkedLogin: checkedLogin,
                         newPassword: newPassword,
                         newKeyPair: newKeyPair,
                         passwordFactorKeyPair: passwordFactorKeyPair,
@@ -348,7 +348,7 @@ public class UpdatePasswordRequestBuilder {
     }
     
     private func continueRecoverWalletForWalletData(
-        checkedEmail: String,
+        checkedLogin: String,
         newPassword: String,
         newKeyPair: ECDSA.KeyData,
         passwordFactorKeyPair: ECDSA.KeyData,
@@ -405,7 +405,7 @@ public class UpdatePasswordRequestBuilder {
                     signers = fethedSigners
                     
                     self?.continueRecoverWalletForSigners(
-                        checkedEmail: checkedEmail,
+                        checkedLogin: checkedLogin,
                         newPassword: newPassword,
                         newKeyPair: newKeyPair,
                         passwordFactorKeyPair: passwordFactorKeyPair,
@@ -426,7 +426,7 @@ public class UpdatePasswordRequestBuilder {
     }
     
     private func continueRecoverWalletForSigners(
-        checkedEmail: String,
+        checkedLogin: String,
         newPassword: String,
         newKeyPair: ECDSA.KeyData,
         passwordFactorKeyPair: ECDSA.KeyData,
@@ -450,7 +450,7 @@ public class UpdatePasswordRequestBuilder {
                 
             case .success(let response):
                 self?.updatePasswordFor(
-                    email: checkedEmail,
+                    login: checkedLogin,
                     signingPassword: recoverySeed,
                     walletId: walletId,
                     originalAccountId: originalAccountId,
@@ -472,7 +472,7 @@ public class UpdatePasswordRequestBuilder {
     // MARK: - Update
     
     private func updatePasswordFor(
-        email: String,
+        login: String,
         signingPassword: String,
         walletId: String,
         originalAccountId: String,
@@ -507,7 +507,7 @@ public class UpdatePasswordRequestBuilder {
         
         let sendDate = Date()
         let result = WalletInfoBuilder.createUpdatePasswordWalletInfo(
-            email: email,
+            login: login,
             kdf: kdf,
             signingKeyPair: signingKeyPair,
             sourceAccountIdData: sourceAccountIdData,
@@ -532,7 +532,7 @@ public class UpdatePasswordRequestBuilder {
             )
             
             let components = Result.UpdatePasswordRequestComponents(
-                email: email,
+                email: login,
                 walletId: walletId,
                 walletInfo: walletInfo,
                 requestSigner: requestSigner,

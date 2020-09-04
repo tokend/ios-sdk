@@ -208,7 +208,7 @@ public struct TFAPasswordHandler {
         
         guard
             let keyPair = try? KeyPairBuilder.getKeyPair(
-                forEmail: email,
+                forLogin: email,
                 password: password,
                 keychainData: meta.keychainData,
                 walletKDF: walletKDF

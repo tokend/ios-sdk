@@ -44,7 +44,7 @@ public struct WalletDetailsModel {
     
     /// Method to create wallet details.
     /// - Parameters:
-    ///   - login: Email associated with wallet.
+    ///   - login: Login associated with wallet.
     ///   - password: Password to wallet.
     ///   - keyPair: Private key pair.
     ///   - kdfParams: KDF params.

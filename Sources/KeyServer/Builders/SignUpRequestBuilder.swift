@@ -9,15 +9,20 @@ public class SignUpRequestBuilder {
     
     // MARK: -
     
-    public init(keyServerApi: KeyServerApi) {
+    public init(
+        keyServerApi: KeyServerApi,
+        keyValueApi: KeyValuesApiV3
+    ) {
+
         self.keyServerApi = keyServerApi
     }
     
     // MARK: - Public
     
     public func buildSignUpRequest(
-        email: String,
+        login: String,
         password: String,
+        defaultSignerRole: UInt64,
         completion: @escaping (Result) -> Void
         ) {
         
@@ -36,11 +41,12 @@ public class SignUpRequestBuilder {
                 
             case .success(let kdfParams):
                 self?.finishRequestCreation(
-                    email: email,
+                    login: login,
                     password: password,
                     keyPair: masterKeyPair,
                     recoveryKeyPair: recoveryKeyPair,
                     passwordFactorKeyPair: passwordFactorKeyPair,
+                    defaultSignerRole: defaultSignerRole,
                     referrerAccountId: nil,
                     kdfParams: kdfParams,
                     completion: completion
@@ -52,11 +58,12 @@ public class SignUpRequestBuilder {
     // MARK: - Private
     
     private func finishRequestCreation(
-        email: String,
+        login: String,
         password: String,
         keyPair: ECDSA.KeyData,
         recoveryKeyPair: ECDSA.KeyData,
         passwordFactorKeyPair: ECDSA.KeyData,
+        defaultSignerRole: UInt64,
         referrerAccountId: String?,
         kdfParams: KDFParams,
         completion: @escaping (Result) -> Void
@@ -67,13 +74,13 @@ public class SignUpRequestBuilder {
             recoveryKeyPair: recoveryKeyPair,
             passwordFactorKeyPair: passwordFactorKeyPair
         )
-        
-        // TODO: Set default signer role from key value
+
         let createRegistrationInfoResult = WalletInfoBuilder.createWalletInfo(
-            email: email,
+            login: login,
             password: password,
             kdfParams: kdfParams,
             keychainParams: keychainParams,
+            defaultSignerRole: defaultSignerRole,
             transaction: nil,
             referrerAccountId: referrerAccountId
         )
@@ -90,7 +97,7 @@ public class SignUpRequestBuilder {
             )
             
             completion(.success(
-                email: email,
+                login: login,
                 recoveryKey: recoveryKeyPair,
                 walletInfo: walletInfo,
                 walletKDF: walletKDF
@@ -136,7 +143,7 @@ extension SignUpRequestBuilder {
         case failure(CreateWalletError)
         
         case success(
-            email: String,
+            login: String,
             recoveryKey: ECDSA.KeyData,
             walletInfo: WalletInfoModel,
             walletKDF: WalletKDFParams

@@ -29,7 +29,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             completion(nil)
             return
         }
-        
+
         let publicKey = Base32Check.encode(version: .accountIdEd25519, data: publicKeyData)
         completion(publicKey)
     }
@@ -96,7 +96,67 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     
     @objc func runTest() {
         self.addChild(self.vc)
-        self.setTelegram()
+//        self.tokenDApi.accountsApi.requestAccount(
+//            // id 17
+//            accountId: "GDGUMUW7RVCLW5UA7426SVQLGXBPHOFIX4GI55MIINAWHNGSTJ2SKJXP",
+//            include: [],
+//            pagination: nil,
+//            completion: { [weak self] (result) in
+//
+//                switch result {
+//
+//                case .failure(let error):
+//                    break
+//
+//                case .success(let document):
+//                    print(document)
+//                }
+//        })
+
+//        self.tokenDApi.keyValuesApi.requestKeyValueEntries(
+//            pagination: .init(.single(index: 0, limit: 100, order: .descending)),
+//            completion: { [weak self] (result) in
+//
+//                switch result {
+//
+//                case .failure:
+//                    break
+//
+//                case .success(let document):
+//                    print(document)
+//                }
+//        })
+
+        let filters = InvitationsRequestFiltersV3.with(.states([InvitationsResource.State.upcoming.rawValue]))
+            .addFilter(.guest(""))
+        self.tokenDApi.invitationsApi.getInvitations(
+            filters: filters,
+            sort: .updatedAt(descending: true),
+            include: [],
+            pagination: .init(.single(index: 0, limit: 100, order: .descending)),
+            completion: { [weak self] (result) in
+
+                switch result {
+
+                case .failure(let error):
+                    self?.showError(error)
+
+                case .success(let document):
+                    print(document)
+                }
+        })
+//        self.requestSystemInfo()
+//        self.requestRecurringPayment()
+//        self.requestRemoveCard()
+//        self.requestAddCard()
+//        self.requestUpdateCard()
+//        self.sendTransaction()
+//        self.requestUser()
+//        self.requestCards()
+//        self.requestCard()
+//        self.requestFriends()
+//        self.requestRecentPayments()
+//        self.requestAddCard()
     }
     
     // MARK: -
@@ -183,6 +243,23 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             }
         )
     }
+
+    func sendTransaction() {
+        self.tokenDApi.transactionsApi.requestSubmitTransaction(
+            envelope: "AAAAAEHCX5tmu0fXlkE9GLIOLO185ih5QI7V+PZ1mtb1tnzSYnlC9X/Rmn8AAAAAAAAAAAAAAABfCILaAAAAAAAAAAEAAAAAAAAAAQAAAAC2EsGJoLO2k8GqKqcWk3sevtAWt/fmb5gjXHppbHgjcAAAAAAAAAAAAAAADgAAAAEAAAAAQcJfm2a7R9eWQT0Ysg4s7XzmKHlAjtX49nWa1vW2fNIAAAAAAAAADwAAA+gAAAAAAAAAAnt9AAAAAAAAAAAAAAAAAAAAAAAB9bZ80gAAAECrpJFf4av3UMUkUREYK0cAcgJG/ewL1fQJEDVVADIAGO5jzJ2MnVk1NsHvpAKbYBMz9UQ/znr6gf+a5n9niK8D",
+            waitForIngest: false,
+            completion: { (result) in
+
+                switch result {
+
+                case .failure(let error):
+                    print(error)
+
+                case .success(let document):
+                    print(document)
+                }
+        })
+    }
     
     func sendFiatPayment() {
         self.vc.transactionsApi.sendFiatPayment(
@@ -265,6 +342,213 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
                     
                 case .success(let document):
                     print("account document: \(document)")
+                }
+        })
+    }
+
+    func requestCards() {
+        let filters = CardsRequestsFilters.with(.owner(Constants.userAccountId))
+        let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
+        self.tokenDApi.cardsApi.requestCards(
+            filters: filters,
+            include: ["balance"],
+            pagination: pagination,
+            completion: { [weak self] (result) in
+                switch result {
+
+                case .failure(let error):
+                    self?.showError(error)
+
+                case .success(let document):
+                    print("cards document: \(document)")
+                }
+        })
+    }
+
+    func requestCard() {
+        self.tokenDApi.cardsApi.requestCard(
+            cardNumber: "6635008740148757",
+            include: ["balance", "security_details"],
+            completion: { [weak self] (result) in
+                switch result {
+
+                case .failure(let error):
+                    self?.showError(error)
+
+                case .success(let document):
+                    print(document)
+                }
+        })
+    }
+
+    func requestUser() {
+        self.tokenDApi.integrationsApi.sendManyUsersRequest(
+            userAccountIds: ["GCNSSQMRQZNWNXXBBBFUVYSR5WPDD6R7MCUDR5W3UR4BYH4NNKJNFFNA"],
+            completion: { [weak self] (result) in
+                    switch result {
+
+                    case .failure(let error):
+                        self?.showError(error)
+
+                    case .success(let document):
+                        print(document)
+                    }
+            })
+    }
+
+    func requestAddCard() {
+//        self.tokenDApi.cardsApi.requestAddCard(
+//            cardNumber: "4242424242424242",
+//            accountId: Constants.userAccountId,
+//            balanceIds: [
+//                "balanceId1",
+//                "balanceId2"
+//            ],
+//            completion: { [weak self] (result) in
+//                switch result {
+//
+//                case .failure(let error):
+//                    self?.showError(error)
+//
+//                case .success:
+//                    print("add card success")
+//                }
+//        })
+    }
+
+    func requestSystemInfo() {
+        self.tokenDApi.recurringPaymentsApi.requestSystemInfo { [weak self] (result) in
+
+            switch result {
+
+            case .failure(let error):
+                self?.showError(error)
+
+            case .success(let document):
+                print(document.data)
+            }
+        }
+    }
+
+    func requestRecurringPayments() {
+        let filters = RecurringPaymentsRequestsFilters.with(.sourceAccount(Constants.userAccountId))
+        let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
+
+        self.tokenDApi.recurringPaymentsApi.requestScheduledPayments(
+            filters: filters,
+            include: ["description"],
+            pagination: pagination,
+            completion: { [weak self] (result) in
+
+                switch result {
+
+                case .failure(let error):
+                    self?.showError(error)
+
+                case .success(let document):
+                    print(document.data)
+                }
+        })
+    }
+
+    func requestRecurringPayment() {
+
+        self.tokenDApi.recurringPaymentsApi.requestDeleteScheduledPayment(
+            id: "7",
+            completion: { [weak self] (result) in
+
+                switch result {
+
+                case .failure(let error):
+                    self?.showError(error)
+
+                case .success:
+                    print("success")
+                }
+        })
+
+        self.tokenDApi.recurringPaymentsApi.requestScheduledPayment(
+            id: "7",
+            include: ["description"],
+            completion: { [weak self] (result) in
+
+                switch result {
+
+                case .failure(let error):
+                    self?.showError(error)
+
+                case .success(let document):
+                    print(document.data)
+                }
+        })
+    }
+
+    func requestRemoveCard() {
+        self.tokenDApi.cardsApi.requestDeleteCard(
+            cardNumber: "5359421088825421",
+            completion: { [weak self] (result) in
+                switch result {
+
+                case .failure(let error):
+                    self?.showError(error)
+
+                case .success:
+                    print("remove card success")
+                }
+        })
+    }
+
+    func requestUpdateCard() {
+        self.tokenDApi.cardsApi.requestUpdateCard(
+            by: "4242424242424242",
+            bindBalanceIds: [
+                "balanceId3",
+                "balanceId4"
+            ],
+            unbindBalanceIds: [],
+            completion: { [weak self] (result) in
+                switch result {
+
+                case .failure(let error):
+                    self?.showError(error)
+
+                case .success:
+                    print("update card success")
+                }
+        })
+    }
+
+    func requestFriends() {
+        self.tokenDApi.friendsApi.requestFriends(
+            accountId: Constants.userAccountId,
+            include: nil,
+            pagination: .init(.single(index: 0, limit: 20, order: .descending)),
+            completion: { [weak self] (result) in
+                switch result {
+
+                case .failure(let error):
+                    self?.showError(error)
+
+                case .success(let document):
+                    print("friends document: \(document)")
+                }
+        })
+    }
+
+    func requestRecentPayments() {
+        self.tokenDApi.friendsApi.requestRecentPayments(
+            accountId: Constants.userAccountId,
+            filters: .init(),
+            include: [],
+            pagination: .init(.single(index: 0, limit: 20, order: .descending)),
+            completion: { [weak self] (result) in
+                switch result {
+
+                case .failure(let error):
+                    self?.showError(error)
+
+                case .success(let document):
+                    print("recent payments: \(document)")
                 }
         })
     }

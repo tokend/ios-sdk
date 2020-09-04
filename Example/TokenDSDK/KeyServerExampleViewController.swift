@@ -366,7 +366,7 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
     
     func performLogin(onSuccess: @escaping (_ walletData: WalletDataModel) -> Void) {
         self.keyServerApi.loginWith(
-            email: Constants.userEmail,
+            login: Constants.userEmail,
             password: Constants.userPassword,
             completion: { [weak self] result in
                 switch result {
@@ -664,7 +664,7 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
         ) {
         
         self.keyServerApi.requestWalletKDF(
-            email: Constants.userEmail,
+            login: Constants.userEmail,
             completion: { result in
                 switch result {
                     
@@ -776,7 +776,7 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
         
         guard
             let keyPair = try? KeyPairBuilder.getKeyPair(
-                forEmail: email,
+                forLogin: email,
                 password: password,
                 keychainData: keychainData,
                 walletKDF: walletKDF

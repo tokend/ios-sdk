@@ -93,7 +93,7 @@ extension KeyServerApi {
         })
     }
     
-    // MARK: Verify email
+    // MARK: Verify wallet
 
     @available(*, unavailable, renamed: "VerifyWalletResult")
     public typealias VerifyEmailResult = VerifyWalletResult
@@ -109,7 +109,7 @@ extension KeyServerApi {
             /// Failed to build request model.
             case failedToGenerateRequest(Swift.Error)
             
-            /// Verify email request failed. Contains `ApiErrors`.
+            /// Verify wallet request failed. Contains `ApiErrors`.
             case verificationFailed(ApiErrors)
             
             // MARK: - Swift.Error
@@ -129,7 +129,7 @@ extension KeyServerApi {
         /// Case of successful response from api
         case success
         
-        /// Case of failed verify email operation with `VerifyWalletResult.VerifyWalletError` model
+        /// Case of failed verify wallet operation with `VerifyWalletResult.VerifyWalletError` model
         case failure(VerifyWalletError)
     }
 

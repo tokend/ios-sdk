@@ -154,12 +154,19 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     }
     
     @objc func runTest() {
-        guard let walletData = self.walletData,
-            let key = self.privateKey else {
-                print("ERRRROROROR")
-                return
-        }
-        self.sendTransaction(walletData: walletData, key: key)
+//        performLogin(
+//            onSuccess: { (model) in
+//                print(model)
+//        },
+//            onFailed: { _ in }
+//        )
+        requestAccountIdForEmail(Constants.userEmail)
+//        guard let walletData = self.walletData,
+//            let key = self.privateKey else {
+//                print("ERRRROROROR")
+//                return
+//        }
+//        self.sendTransaction(walletData: walletData, key: key)
     }
     
     // MARK: -
@@ -169,7 +176,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         onFailed: @escaping (_ error: KeyServerApi.LoginRequestResult.LoginError) -> Void
         ) {
         self.keyServerApi.loginWith(
-            email: Constants.userEmail,
+            login: Constants.userEmail,
             password: Constants.userPassword,
             completion: { [weak self] result in
                 switch result {
@@ -324,7 +331,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     
     func requestAccountIdForEmail(_ email: String) {
         self.tokenDApi.generalApi.requestIdentities(
-            filter: .email(email)) { [weak self] (result) in
+            filter: .login(email)) { [weak self] (result) in
             switch result {
             case .succeeded:
                 print("\(#function) - success")
@@ -989,7 +996,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         ) {
         
         self.keyServerApi.requestWalletKDF(
-            email: Constants.userEmail,
+            login: Constants.userEmail,
             completion: { result in
                 switch result {
                     
@@ -1101,7 +1108,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         
         guard
             let keyPair = try? KeyPairBuilder.getKeyPair(
-                forEmail: email,
+                forLogin: email,
                 password: password,
                 keychainData: keychainData,
                 walletKDF: walletKDF
