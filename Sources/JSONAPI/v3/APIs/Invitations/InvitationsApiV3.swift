@@ -100,4 +100,49 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
                 completion(.success(auth: authHeader))
         })
     }
+
+    /// Method sends request to fetch invitations history from api.
+    /// - Parameters:
+    ///   - filters: Request filters.
+    ///   - pagination: Pagination option.
+    ///   - completion: The block which is called when the result will be fetched
+    ///   - result: The model of `RequestCollectionResult<InvitationsHistoryResource>`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func getInvitationsHistory(
+        filters: InvitationsRequestFiltersV3,
+        include: [String]?,
+        pagination: RequestPagination,
+        completion: @escaping ((_ result: RequestCollectionResult<InvitationsHistoryResource>) -> Void)
+    ) -> Cancelable {
+
+        var cancelable = self.network.getEmptyCancelable()
+
+        self.requestBuilder.buildInvitationsHistoryRequest(
+            filters: filters,
+            include: include,
+            pagination: pagination,
+            completion: { [weak self] (request) in
+
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+
+                cancelable.cancelable = self?.requestCollection(
+                    InvitationsHistoryResource.self,
+                    request: request,
+                    completion: { (result) in
+                        switch result {
+                        case .failure(let error):
+                            completion(.failure(error))
+
+                        case .success(let document):
+                            completion(.success(document))
+                        }
+                })
+        })
+
+        return cancelable
+    }
 }
