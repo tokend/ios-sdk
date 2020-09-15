@@ -11,6 +11,9 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     private var sorted: String { "sorted" }
     private var sortKey: String { "sort" }
     private var redeem: String { "redeem" }
+    private var accept: String { "accept" }
+    private var cancel: String { "cancel" }
+    private var wait: String { "wait" }
     private static var sortFromValue: String { "from" }
     private static var sortUpdatedAtValue: String { "updated_at" }
 
@@ -57,6 +60,72 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
                 queryParameters: queryParameters,
                 include: include,
                 pagination: pagination
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+
+    /// Builds request to accept invitation.
+    /// - Parameters:
+    ///   - id: The invitation id.
+    public func buildAcceptInvitationRequest(
+        id: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+
+        let path = /self.integrations/self.invitations/id/self.accept
+
+        self.buildRequest(
+            .simple(
+                path: path,
+                method: .patch
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+
+    /// Builds request to cancel invitation.
+    /// - Parameters:
+    ///   - id: The invitation id.
+    public func buildCancelInvitationRequest(
+        id: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+
+        let path = /self.integrations/self.invitations/id/self.cancel
+
+        self.buildRequest(
+            .simple(
+                path: path,
+                method: .patch
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+
+    /// Builds request to wait invitation.
+    /// - Parameters:
+    ///   - id: The invitation id.
+    public func buildWaitInvitationRequest(
+        id: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+
+        let path = /self.integrations/self.invitations/id/self.wait
+
+        self.buildRequest(
+            .simple(
+                path: path,
+                method: .patch
             ),
             shouldSign: true,
             sendDate: sendDate,
