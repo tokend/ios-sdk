@@ -57,3 +57,26 @@ public extension InvitationsHistoryResource {
         public let name: String
     }
 }
+
+// MARK: -
+
+public extension InvitationsHistoryResource {
+
+    enum State: Int32 {
+
+        case create     = 0
+        case unpaid     = 1
+        case redeem     = 2
+        case accept     = 3
+        case cancel     = 4
+        case wait       = 5
+        case upcoming   = 6
+        case expired    = 7
+        case ended      = 8
+        case arrived    = 9
+        case postponed  = 10
+        case authorized = 11
+        case rejected   = 12
+        case exited     = 13
+    }
+}
