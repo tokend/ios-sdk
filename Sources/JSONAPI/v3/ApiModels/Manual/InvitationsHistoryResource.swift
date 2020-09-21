@@ -62,7 +62,7 @@ public extension InvitationsHistoryResource {
 
 public extension InvitationsHistoryResource {
 
-    enum State: Int32 {
+    enum EventType: Int32 {
 
         case create     = 0
         case unpaid     = 1
