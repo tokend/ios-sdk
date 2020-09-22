@@ -67,6 +67,82 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
 
         return cancelable
     }
+    
+    /// Method sends request to create a new invitation
+    /// - Parameters:
+    ///
+    ///     - completion: The block which is called when the result will be fetched
+    ///     - result: The model of `RequestEmptyResult`
+    /// - Returns: `Cancelable`
+    public func createInvitation(
+        hostId: String,
+        guestId: String,
+        placeId: String,
+        destination: String,
+        from: String,
+        to: String,
+        addressDetails: String?,
+        personalNote: String?,
+        completion: @escaping ((_ result: RequestEmptyResult) -> Void)
+    ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+        
+        let request: CreateInvitaionRequest = .init(
+            data: .init(
+                attributes: .init(
+                    details: .init(
+                        addressDetails: addressDetails,
+                        personalNote: personalNote
+                    ),
+                    from: from,
+                    to: to
+                ),
+                relationships: .init(
+                    host: .init(
+                        data: .init(id: hostId)
+                    ),
+                    guest: .init(
+                        data: .init(id: guestId)
+                    ),
+                    place: .init(
+                        data: .init(id: placeId)
+                    )
+                )
+            )
+        )
+        
+        guard let encodedRequest = try? request.documentDictionary() else {
+            completion(.failure(JSONAPIError.failedToBuildRequest))
+            return cancelable
+        }
+        
+        self.requestBuilder.buildCreateInvitationRequest(
+            bodyParameters: encodedRequest,
+            completion: { [weak self] (request) in
+                
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self?.requestEmpty(
+                    request: request,
+                    completion: { (result) in
+                        
+                        switch result {
+                            
+                        case .success:
+                            completion(.success)
+                            
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                })
+            })
+        
+        return cancelable
+    }
 
     /// Method sends request to accept invitation.
     /// - Parameters:
@@ -219,5 +295,67 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
 
                 completion(.success(auth: authHeader))
         })
+    }
+}
+
+struct CreateInvitaionRequest: Encodable {
+    
+    let data: Data
+}
+
+extension CreateInvitaionRequest {
+    
+    struct Data: Encodable {
+        
+//        let id: String
+//        let type: String = "invitations"
+        let attributes: Attributes
+        let relationships: Relationships
+    }
+}
+
+extension CreateInvitaionRequest {
+    
+    struct Attributes: Encodable {
+        
+        let details: Details
+//        let reference: String
+//        let state: State
+        let from: String
+        let to: String
+//        let holdsAllowed: Int
+//        let holdsLeft: Int
+//        let waitUntil: String
+    }
+    
+    struct Details: Encodable {
+        
+        let addressDetails: String?
+        let personalNote: String?
+    }
+    
+    struct State: Encodable {
+        let value: Int
+        let name: String
+    }
+}
+
+extension CreateInvitaionRequest {
+    
+    struct Relationships: Encodable {
+        
+        let host: RelationshipsData
+        let guest: RelationshipsData
+        let place: RelationshipsData
+    }
+    
+    struct RelationshipsData: Encodable {
+        
+        let data: RelationshipsDataId
+    }
+    
+    struct RelationshipsDataId: Encodable {
+        
+        let id: String
     }
 }

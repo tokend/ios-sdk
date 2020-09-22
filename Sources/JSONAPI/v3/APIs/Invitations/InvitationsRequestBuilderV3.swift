@@ -35,6 +35,26 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
             }
         }
     }
+    
+    /// Builds request to create new invitation
+    public func buildCreateInvitationRequest(
+        bodyParameters: [String: Any],
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+        let path = /self.invitations // ?
+        
+        self.buildRequest(
+            .simpleBody(
+                path: path,
+                method: .post,
+                bodyParameters: bodyParameters
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
 
     /// Builds request to fetch sorted invitations.
     /// - Parameters:
