@@ -42,7 +42,7 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
-        let path = /self.invitations // ?
+        let path = /self.integrations/self.invitations
         
         self.buildRequest(
             .simpleBody(
