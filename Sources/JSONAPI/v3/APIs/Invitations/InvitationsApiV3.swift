@@ -78,13 +78,14 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
         hostId: String,
         guestId: String,
         placeId: String,
-        destination: String,
-        from: String,
-        to: String,
+        from: Date,
+        to: Date,
         addressDetails: String?,
         personalNote: String?,
         completion: @escaping ((_ result: RequestEmptyResult) -> Void)
     ) -> Cancelable {
+        
+        let dateFormatter = DateFormatters.iso8601DateFormatter
         
         var cancelable = self.network.getEmptyCancelable()
         
@@ -95,8 +96,8 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
                         addressDetails: addressDetails,
                         personalNote: personalNote
                     ),
-                    from: from,
-                    to: to
+                    from: dateFormatter.string(from: from),
+                    to: dateFormatter.string(from: to)
                 ),
                 relationships: .init(
                     host: .init(
