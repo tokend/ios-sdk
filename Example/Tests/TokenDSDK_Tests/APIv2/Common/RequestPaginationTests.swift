@@ -48,7 +48,7 @@ class RequestPaginationTests: XCTestCase {
         XCTAssert(currentPage.index == 6, "Wrong current page index (\(currentPage.index)). Expected (\(6))")
         XCTAssert(lastPage.index == 6, "Wrong last page index (\(lastPage.index)). Expected (\(6))")
         
-        guard strategy.toNextPage() == nil else {
+        guard strategy.nextPage == nil else {
             XCTAssert(false, "Next page should not occur after last page reached")
             return
         }

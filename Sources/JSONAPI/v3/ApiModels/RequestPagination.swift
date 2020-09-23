@@ -22,12 +22,27 @@ public class RequestPagination {
         
         switch self.option {
             
-        case .single(let index, let limit, let order):
+        case .single(let index, let limit, let order),
+             .indexedSingle(let index, let limit, let order):
             let page = IndexedPageModel(index: index, limit: limit, order: order)
             urlQueryItems = page.urlQueryItems()
+
+        case .cursorSingle(let cursor, let limit, let order):
+            let page = CursorPageModel(cursor: cursor, limit: limit, order: order)
+            urlQueryItems = page.urlQueryItems()
             
-        case .strategy(let strategy):
+        case .strategy(let strategy),
+             .indexedStrategy(let strategy):
             let page: IndexedPageModel
+            if let nextPage = strategy.nextPage {
+                page = nextPage
+            } else {
+                page = strategy.firstPage
+            }
+            urlQueryItems = page.urlQueryItems()
+
+        case .cursorStrategy(let strategy):
+            let page: CursorPageModel
             if let nextPage = strategy.nextPage {
                 page = nextPage
             } else {
@@ -37,14 +52,6 @@ public class RequestPagination {
         }
         
         return urlQueryItems
-    }
-    
-    /// Points on current loaded page.
-    public var currentPointerIndex: Int {
-        switch self.option {
-        case .single(let index, _, _): return index
-        case .strategy(let strategy): return strategy.currentPage?.index ?? strategy.firstPage.index
-        }
     }
     
     /// Resets pagination strategy pointer.
@@ -65,13 +72,28 @@ public class RequestPagination {
     ///   - resultsCount: Results count of previous response.
     /// - Returns: `bool` indicating whether next page available or not.
     public func hasNextPage(resultsCount: Int = .max) -> Bool {
+
+        return !isLastPage(resultsCount: resultsCount)
+    }
+
+    /// Checks wheter current page is last page based on `resultsCount` of previous response.
+    /// - Parameters:
+    ///   - resultsCount: Results count of previous response.
+    /// - Returns: `bool` indicating whether current page is last page available.
+    public func isLastPage(resultsCount: Int = .max) -> Bool {
         switch self.option {
-            
-        case .single:
-            return false
-            
-        case .strategy(let strategy):
-            return strategy.nextPage != nil
+
+        case .single,
+             .indexedSingle,
+             .cursorSingle:
+            return true
+
+        case .strategy(let strategy),
+             .indexedStrategy(let strategy):
+            return strategy.nextPage == nil || resultsCount < strategy.limit || strategy.limit == 0
+
+        case .cursorStrategy(let strategy):
+            return strategy.nextPage == nil || resultsCount < strategy.limit || strategy.limit == 0
         }
     }
     
@@ -87,28 +109,49 @@ public class RequestPagination {
         let adjustedOption: Option
         switch self.option {
             
-        case .single:
+        case .single,
+             .indexedSingle,
+             .cursorSingle:
             adjustedOption = self.option
             
-        case.strategy(let strategy):
+        case .strategy(let strategy),
+             .indexedStrategy(let strategy):
             let isLastPage = resultsCount < strategy.limit
             
             if let links = links, let updated = IndexedPaginationStrategy(links: links) {
                 strategy.currentPage = updated.currentPage
+                strategy.nextPage = updated.nextPage
+                strategy.prevPage = updated.prevPage
+                strategy.firstPage = updated.firstPage
                 strategy.lastPage = updated.lastPage
             } else {
-                if strategy.currentPage != nil {
-                    _ = strategy.toNextPage()
-                } else {
-                    strategy.currentPage = strategy.firstPage
-                }
+                strategy.currentPage = strategy.firstPage
             }
             
             if isLastPage {
                 strategy.lastPageReached()
             }
             
-            adjustedOption = .strategy(strategy)
+            adjustedOption = .indexedStrategy(strategy)
+
+        case .cursorStrategy(let strategy):
+            let isLastPage = resultsCount < strategy.limit
+
+            if let links = links, let updated = CursorPaginationStrategy(links: links) {
+                strategy.currentPage = updated.currentPage
+                strategy.nextPage = updated.nextPage
+                strategy.prevPage = updated.prevPage
+                strategy.firstPage = updated.firstPage
+                strategy.lastPage = updated.lastPage
+            } else {
+                strategy.currentPage = strategy.firstPage
+            }
+
+            if isLastPage {
+                strategy.lastPageReached()
+            }
+
+            adjustedOption = .cursorStrategy(strategy)
         }
         self.option = adjustedOption
     }
@@ -118,12 +161,29 @@ extension RequestPagination {
     
     /// Request pagination options.
     public enum Option {
-        
+
         /// Option for single page request.
+        @available(*, deprecated, renamed: "indexedSingle")
         case single(index: Int, limit: Int, order: PaginationOrder)
-        
+
+        /// Option for single page request.
+        case indexedSingle(index: Int, limit: Int, order: PaginationOrder)
+
+        /// Option for single page request.
+        case cursorSingle(cursor: String, limit: Int, order: PaginationOrder)
+
         /// Option with strategy provided.
         /// Strategy reference should be updated in `request...` func according to response.
+        @available(*, deprecated, renamed: "indexedStrategy")
         case strategy(_ strategy: IndexedPaginationStrategy)
+
+        /// Option with strategy provided.
+        /// Strategy reference should be updated in `request...` func according to response.
+        case indexedStrategy(_ strategy: IndexedPaginationStrategy)
+
+        /// Option with strategy provided.
+        /// Strategy reference should be updated in `request...` func according to response.
+        case cursorStrategy(_ strategy: CursorPaginationStrategy)
     }
+
 }
