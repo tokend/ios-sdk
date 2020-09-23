@@ -14,6 +14,7 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     private var accept: String { "accept" }
     private var cancel: String { "cancel" }
     private var wait: String { "wait" }
+    private var history: String { "history" }
     private static var sortFromValue: String { "from" }
     private static var sortUpdatedAtValue: String { "updated_at" }
 
@@ -145,6 +146,31 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
             .simple(
                 path: path,
                 method: .patch
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+
+    public func buildInvitationsHistoryRequest(
+        filters: InvitationsRequestFiltersV3,
+        include: [String]?,
+        pagination: RequestPagination,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+
+        let path = /self.integrations/self.invitations/self.history
+        let queryParameters = self.buildFilterQueryItems(filters.filterItems)
+
+        self.buildRequest(
+            .simpleQueryIncludePagination(
+                path: path,
+                method: .get,
+                queryParameters: queryParameters,
+                include: include,
+                pagination: pagination
             ),
             shouldSign: true,
             sendDate: sendDate,

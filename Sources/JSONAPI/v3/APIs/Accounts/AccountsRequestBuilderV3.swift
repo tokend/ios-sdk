@@ -31,7 +31,7 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         let path = /self.v3/self.accounts/accountId
         
         let pagination = pagination ?? RequestPagination(
-            .single(index: 0, limit: 1, order: .ascending)
+            .indexedSingle(index: 0, limit: 1, order: .ascending)
         )
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simpleQueryIncludePagination(
