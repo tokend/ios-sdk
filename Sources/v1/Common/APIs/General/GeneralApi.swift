@@ -152,41 +152,17 @@ public class GeneralApi: BaseApi {
         })
     }
     
-    public struct AddIdentityRequestBody: Encodable {
-        public let data: Data
-        
-        public struct Data: Encodable {
-            public let attributes: Attributes
-            
-            public struct Attributes: Encodable {
-                let phoneNumber: String
-            }
-        }
-        
-        public init(phoneNumber: String) {
-            self.data = Data(attributes: Data.Attributes(phoneNumber: phoneNumber))
-        }
-        
-        public func toJSON() -> [String: Any]? {
-            guard let jsonData = try? JSONEncoder().encode(self),
-                let json = try? JSONSerialization.jsonObject(
-                    with: jsonData,
-                    options: .allowFragments
-                    ) as? [String: Any] else {
-                        
-                        return nil
-            }
-            
-            return json
-        }
-    }
-    
-    
+    /// Model that will be fetched in `completion` block of `GeneralApi.addIdentity(...)`
     public enum RequestAddIdentityResult {
         case success(identity: AccountIdentityResponse)
         case failure(error: Error)
     }
     
+    /// Method sends request to create new identity using phone number.
+    /// The result of request will be fetched in `completion` block as `GeneralApi.RequestAddIdentityResult`
+    /// - Parameters:
+    ///   - phoneNumber: New identity's phone number
+    ///   - completion: Block that will be called when the result will be received.
     public func addIdentity(
         withPhoneNumber phoneNumber: String,
         completion: @escaping ((RequestAddIdentityResult) -> Void)

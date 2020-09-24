@@ -70,9 +70,15 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
     
     /// Method sends request to create a new invitation
     /// - Parameters:
-    ///
+    ///     - hostId: Host user accountId
+    ///     - guestId: Guest user accountId
+    ///     - placeId: Place asset identifier
+    ///     - from: Date when pass becomes active
+    ///     - to: Date when pass stops being active
+    ///     - addressDetails: Note which gives extra explanation for both guest and host about their meeting place
+    ///     - personalNote: Note which is seen only for host user
     ///     - completion: The block which is called when the result will be fetched
-    ///     - result: The model of `RequestEmptyResult`
+    ///     - result: The model of `RequestSingleResult`
     /// - Returns: `Cancelable`
     public func createInvitation(
         hostId: String,
@@ -89,7 +95,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
         
         var cancelable = self.network.getEmptyCancelable()
         
-        let request: CreateInvitaionRequest = .init(
+        let request: CreateInvitationRequest = .init(
             data: .init(
                 attributes: .init(
                     details: .init(
@@ -298,67 +304,5 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
 
                 completion(.success(auth: authHeader))
         })
-    }
-}
-
-struct CreateInvitaionRequest: Encodable {
-    
-    let data: Data
-}
-
-extension CreateInvitaionRequest {
-    
-    struct Data: Encodable {
-        
-//        let id: String
-//        let type: String = "invitations"
-        let attributes: Attributes
-        let relationships: Relationships
-    }
-}
-
-extension CreateInvitaionRequest {
-    
-    struct Attributes: Encodable {
-        
-        let details: Details
-//        let reference: String
-//        let state: State
-        let from: String
-        let to: String
-//        let holdsAllowed: Int
-//        let holdsLeft: Int
-//        let waitUntil: String
-    }
-    
-    struct Details: Encodable {
-        
-        let addressDetails: String?
-        let personalNote: String?
-    }
-    
-    struct State: Encodable {
-        let value: Int
-        let name: String
-    }
-}
-
-extension CreateInvitaionRequest {
-    
-    struct Relationships: Encodable {
-        
-        let host: RelationshipsData
-        let guest: RelationshipsData
-        let place: RelationshipsData
-    }
-    
-    struct RelationshipsData: Encodable {
-        
-        let data: RelationshipsDataId
-    }
-    
-    struct RelationshipsDataId: Encodable {
-        
-        let id: String
     }
 }
