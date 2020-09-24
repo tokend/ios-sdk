@@ -82,7 +82,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
         to: Date,
         addressDetails: String?,
         personalNote: String?,
-        completion: @escaping ((_ result: RequestEmptyResult) -> Void)
+        completion: @escaping ((_ result: RequestSingleResult<InvitationsResource>) -> Void)
     ) -> Cancelable {
         
         let dateFormatter = DateFormatters.iso8601DateFormatter
@@ -127,19 +127,21 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
                     return
                 }
                 
-                cancelable.cancelable = self?.requestEmpty(
+                cancelable.cancelable = self?.requestSingle(
+                    InvitationsResource.self,
                     request: request,
                     completion: { (result) in
                         
                         switch result {
-                            
-                        case .success:
-                            completion(.success)
-                            
+                        
+                        case .success(let document):
+                            print(document)
+                            completion(.success(document))
                         case .failure(let error):
                             completion(.failure(error))
                         }
-                })
+                    }
+                )
             })
         
         return cancelable
