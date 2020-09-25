@@ -80,6 +80,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
     ///     - completion: The block which is called when the result will be fetched
     ///     - result: The model of `RequestSingleResult`
     /// - Returns: `Cancelable`
+    @discardableResult
     public func createInvitation(
         hostId: String,
         guestId: String,
