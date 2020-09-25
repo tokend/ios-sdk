@@ -24,16 +24,14 @@ extension CreateInvitationRequest {
         let from: String
         let to: String
     }
+}
+
+extension CreateInvitationRequest.Attributes {
     
     struct Details: Encodable {
         
         let addressDetails: String?
         let personalNote: String?
-    }
-    
-    struct State: Encodable {
-        let value: Int
-        let name: String
     }
 }
 
@@ -41,17 +39,31 @@ extension CreateInvitationRequest {
     
     struct Relationships: Encodable {
         
-        let host: RelationshipsData
-        let guest: RelationshipsData
-        let place: RelationshipsData
+        let host: User
+        let guest: User
+        let place: Place
     }
+}
+
+extension CreateInvitationRequest.Relationships {
     
-    struct RelationshipsData: Encodable {
+    struct User: Encodable {
         
-        let data: RelationshipsDataId
+        let data: Data
     }
+}
+
+extension CreateInvitationRequest.Relationships {
     
-    struct RelationshipsDataId: Encodable {
+    struct Place: Encodable {
+        
+        let data: Data
+    }
+}
+
+extension CreateInvitationRequest.Relationships {
+    
+    struct Data: Encodable {
         
         let id: String
     }

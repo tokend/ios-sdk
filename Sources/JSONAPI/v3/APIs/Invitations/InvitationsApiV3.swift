@@ -141,8 +141,8 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
                         switch result {
                         
                         case .success(let document):
-                            print(document)
                             completion(.success(document))
+                            
                         case .failure(let error):
                             completion(.failure(error))
                         }
