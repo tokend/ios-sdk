@@ -207,16 +207,18 @@ public struct TFAPasswordHandler {
         )
         
         guard
-            let keyPair = try? KeyPairBuilder.getKeyPair(
+            let keyPairs = try? KeyPairBuilder.getKeyPairs(
                 forLogin: email,
                 password: password,
                 keychainData: meta.keychainData,
                 walletKDF: walletKDF
-            ) else {
+            ),
+            let keyPair = keyPairs.first
+            else {
                 completion(.failure(InitiatePasswordTFAError.keyPairDerivationFailed))
                 return
         }
-        
+
         guard let data = meta.token.data(using: .utf8) else {
             completion(.failure(InitiatePasswordTFAError.tokenEncodingFailed))
             return

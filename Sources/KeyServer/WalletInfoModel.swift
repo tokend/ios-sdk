@@ -78,6 +78,7 @@ public struct WalletInfoModel: Encodable {
                     public let roleId: UInt64
                     public let weight: UInt64
                     public let identity: UInt64
+                    public let details: String
                 }
 
                 public enum SignerIncludeKeys: CodingKey {

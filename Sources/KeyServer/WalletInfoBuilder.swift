@@ -164,12 +164,15 @@ public struct WalletInfoBuilder {
         )
         let signers = [
             WalletInfoModel.WalletInfoData.Relationships.Signer(
-                    id: accountId,
-                    type: "signer",
-                    attributes: WalletInfoModel.WalletInfoData.Relationships.Signer.Attributes(
-                            roleId: defaultSignerRole,
-                            weight: 1000,
-                            identity: 0))
+                id: accountId,
+                type: "signer",
+                attributes: WalletInfoModel.WalletInfoData.Relationships.Signer.Attributes(
+                    roleId: defaultSignerRole,
+                    weight: 1000,
+                    identity: 0,
+                    details: "{}"
+                )
+            )
         ]
 
         for signer in signers {

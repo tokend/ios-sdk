@@ -2,37 +2,39 @@ import Foundation
 import DLCryptoKit
 import TokenDWallet
 
-@available(*, deprecated, renamed: "WalletDetailsModelV2")
 /// Wallet details model that contains keychain data.
-public struct WalletDetailsModel {
-    
+public struct WalletDetailsModelV2 {
+
     public static let IVKey = "IV"
     public static let cipherTextKey = "cipherText"
     public static let cipherNameKey = "cipherName"
     public static let modeNameKey = "modeName"
     public static let seedKey = "seed"
     public static let seedsKey = "seeds"
-    
+
     public static let supportedEncryptionAlgorithm = "aes"
     public static let supportedEncryptionMode = "gcm"
-    
+
     public let walletIdHex: String
     public let accountIdBase32Check: String
     public let login: String
     public let saltBase64: String
     public let keychainDataBase64: String
-    
+
     /// Errors that may occur for `WalletDetailsModel.createWalletDetails(...)`.
     public enum CreateWalletDetailsError: Swift.Error, LocalizedError {
-        
+
+        case failedToGetMainKeyPair
         case failedToDeriveKey
         case failedToDeriveWalletId
         case failedToEncryptSeed
-        
+
         // MARK: - Swift.Error
-        
+
         public var errorDescription: String? {
             switch self {
+            case .failedToGetMainKeyPair:
+                return "Failed to get main key"
             case .failedToDeriveKey:
                 return "Failed to derive key"
             case .failedToDeriveWalletId:
@@ -42,12 +44,12 @@ public struct WalletDetailsModel {
             }
         }
     }
-    
+
     /// Method to create wallet details.
     /// - Parameters:
     ///   - login: Login associated with wallet.
     ///   - password: Password to wallet.
-    ///   - keyPair: Private key pair.
+    ///   - keyPairs: Private key pairs.
     ///   - kdfParams: KDF params.
     ///   - salt: Encryption salt.
     ///   - IV: Encryption init vecto.
@@ -55,17 +57,20 @@ public struct WalletDetailsModel {
     public static func createWalletDetails(
         login: String,
         password: String,
-        keyPair: ECDSA.KeyData,
+        keyPairs: [ECDSA.KeyData],
         kdfParams: KDFParams,
         salt: Data, // 128 bits
         IV: Data // 96 bits
-        ) throws -> WalletDetailsModel {
-        
-        let masterSeed = Base32Check.encode(version: .seedEd25519, data: keyPair.getSeedData())
-        
-        let publicKey = keyPair.getPublicKeyData()
+        ) throws -> WalletDetailsModelV2 {
+
+        let masterSeeds = keyPairs.map { Base32Check.encode(version: .seedEd25519, data: $0.getSeedData()) }
+
+        guard let publicKey = keyPairs.first?.getPublicKeyData()
+            else {
+                throw CreateWalletDetailsError.failedToGetMainKeyPair
+        }
         let accountId = Base32Check.encode(version: .accountIdEd25519, data: publicKey)
-        
+
         let walletId: Data
         do {
             walletId = try TokenDKDF.deriveKey(
@@ -81,7 +86,7 @@ public struct WalletDetailsModel {
         } catch {
             throw CreateWalletDetailsError.failedToDeriveWalletId
         }
-        
+
         let derivedKey: Data
         do {
             derivedKey = try TokenDKDF.deriveKey(
@@ -97,27 +102,27 @@ public struct WalletDetailsModel {
         } catch {
             throw CreateWalletDetailsError.failedToDeriveKey
         }
-        
+
         let keychainData = try self.makeKeychainData(
-            masterSeedBase32Check: masterSeed,
+            masterSeedBase32Checks: masterSeeds,
             keyData: derivedKey,
             IV: IV
         )
-        
-        let walletInfo = WalletDetailsModel(
+
+        let walletInfo = WalletDetailsModelV2(
             walletIdHex: walletId.hexadecimal(),
             accountIdBase32Check: accountId,
             login: login,
             saltBase64: salt.base64EncodedString(),
             keychainDataBase64: keychainData.base64EncodedString()
         )
-        
+
         return walletInfo
     }
-    
+
     /// Errors that may occur for `WalletDetailsModel.decryptKeyPairFrom(...)`.
     public enum DecryptKeyPairError: Swift.Error, LocalizedError {
-        
+
         case keySeedInitFailed(Swift.Error)
         case keychainDataMalformed
         case noSecretSeedFound
@@ -126,9 +131,9 @@ public struct WalletDetailsModel {
         case unableToDecodeSeedContainer
         case unableToDecryptCipherText
         case unsupportedEncryption(String)
-        
+
         // MARK: - Swift.Error
-        
+
         public var errorDescription: String? {
             switch self {
             case .keySeedInitFailed(let error):
@@ -150,7 +155,7 @@ public struct WalletDetailsModel {
             }
         }
     }
-    
+
     /// Method to decypher private key pair from given keychain data and cypher key.
     /// - Note: Current implementation assumes that private key data was encrypted
     /// using `AES256` algorithm in `GCM` mode.
@@ -158,11 +163,11 @@ public struct WalletDetailsModel {
     ///   - keychainData: Wallet keychain data fetched from Key server.
     ///   - keyData: Raw key data for symmetrical decryption.
     /// - Returns: `ECDSA.KeyData` private key.
-    public static func decryptKeyPairFrom(keychainData: Data, keyData: Data) throws -> ECDSA.KeyData {
+    public static func decryptKeyPairsFrom(keychainData: Data, keyData: Data) throws -> [ECDSA.KeyData] {
         guard let json = (try? JSONSerialization.jsonObject(with: keychainData, options: [])) as? JSON else {
             throw DecryptKeyPairError.unableToDecodeEnvelope
         }
-        
+
         guard
             let ivBase64 = json[self.IVKey] as? String,
             let iv = ivBase64.dataFromBase64,
@@ -173,14 +178,14 @@ public struct WalletDetailsModel {
             else {
                 throw DecryptKeyPairError.keychainDataMalformed
         }
-        
+
         guard
             cipherName == self.supportedEncryptionAlgorithm,
             modeName == self.supportedEncryptionMode
             else {
                 throw DecryptKeyPairError.unsupportedEncryption("\(cipherName) \(modeName)")
         }
-        
+
         let cipherTextData: Data
         do {
             cipherTextData = try AES256.aes256gcmDecrypt(
@@ -191,53 +196,57 @@ public struct WalletDetailsModel {
         } catch {
             throw DecryptKeyPairError.unableToDecryptCipherText
         }
-        
+
         guard let seedJson = (try? JSONSerialization.jsonObject(with: cipherTextData, options: [])) as? JSON else {
             throw DecryptKeyPairError.unableToDecodeSeedContainer
         }
 
         let masterSeedBase32CheckOptional = seedJson[self.seedKey] ?? seedJson[self.seedsKey]
 
-        let masterSeedBase32Check: String
+        let masterSeedBase32Checks: [String]
         if let masterSeed = masterSeedBase32CheckOptional as? String {
-            masterSeedBase32Check = masterSeed
-        } else if let masterSeed = (masterSeedBase32CheckOptional as? [String])?.first {
-            masterSeedBase32Check = masterSeed
+            masterSeedBase32Checks = [masterSeed]
+        } else if let masterSeeds = masterSeedBase32CheckOptional as? [String] {
+            masterSeedBase32Checks = masterSeeds
         } else {
             throw DecryptKeyPairError.noSecretSeedFound
         }
-        
-        let masterSeed: Data
+
+        let masterSeeds: [Data]
         do {
-            masterSeed = try Base32Check.decodeCheck(
-                expectedVersion: .seedEd25519,
-                encoded: masterSeedBase32Check
-            )
+            masterSeeds = try masterSeedBase32Checks.map { (masterSeedBase32Check) in
+                try Base32Check.decodeCheck(
+                    expectedVersion: .seedEd25519,
+                    encoded: masterSeedBase32Check
+                )
+            }
         } catch let error {
             throw DecryptKeyPairError.unableToDecodeSeed(error)
         }
-        
+
         do {
-            let keyPair = try ECDSA.KeyData(seed: masterSeed)
-            return keyPair
+            let keyPairs = try masterSeeds.map({ (masterSeed) in
+                try ECDSA.KeyData(seed: masterSeed)
+            })
+            return keyPairs
         } catch let error {
             throw DecryptKeyPairError.keySeedInitFailed(error)
         }
     }
-    
+
     // MARK: - Private
-    
+
     private static func makeKeychainData(
-        masterSeedBase32Check: String,
+        masterSeedBase32Checks: [String],
         keyData: Data,
         IV: Data
         ) throws -> Data {
-        
+
         let ivBase64 = IV.base64EncodedString()
-        
-        let cipherText = "{\"\(self.seedKey)\":\"\(masterSeedBase32Check)\"}"
+
+        let cipherText = "{\"\(self.seedsKey)\":[\(masterSeedBase32Checks.map { "\"\($0)\"" }.joined(separator: ","))]}"
         let cipherTextData = Data(cipherText.utf8)
-        
+
         let encryptedCipherText: Data
         do {
             encryptedCipherText = try AES256.aes256gcmEncrypt(
@@ -249,7 +258,7 @@ public struct WalletDetailsModel {
             throw CreateWalletDetailsError.failedToEncryptSeed
         }
         let encryptedCipherTextBase64 = encryptedCipherText.base64EncodedString()
-        
+
         var envelopeString = "{"
         envelopeString.append("\"\(self.modeNameKey)\":\"\(self.supportedEncryptionMode)\"")
         envelopeString.append(",")
@@ -259,9 +268,9 @@ public struct WalletDetailsModel {
         envelopeString.append(",")
         envelopeString.append("\"\(self.IVKey)\":\"\(ivBase64)\"")
         envelopeString.append("}")
-        
+
         let envelopData = Data(envelopeString.utf8)
-        
+
         return envelopData
     }
 }
