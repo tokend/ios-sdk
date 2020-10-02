@@ -67,6 +67,92 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
 
         return cancelable
     }
+    
+    /// Method sends request to create a new invitation
+    /// - Parameters:
+    ///     - hostId: Host user accountId
+    ///     - guestId: Guest user accountId
+    ///     - placeId: Place asset identifier
+    ///     - from: Date when pass becomes active
+    ///     - to: Date when pass stops being active
+    ///     - addressDetails: Note which gives extra explanation for both guest and host about their meeting place
+    ///     - personalNote: Note which is seen only for host user
+    ///     - completion: The block which is called when the result will be fetched
+    ///     - result: The model of `RequestSingleResult`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func createInvitation(
+        hostId: String,
+        guestId: String,
+        placeId: String,
+        from: Date,
+        to: Date,
+        addressDetails: String?,
+        personalNote: String?,
+        completion: @escaping ((_ result: RequestSingleResult<InvitationsResource>) -> Void)
+    ) -> Cancelable {
+        
+        let dateFormatter = DateFormatters.iso8601DateFormatter
+        
+        var cancelable = self.network.getEmptyCancelable()
+        
+        let request: CreateInvitationRequest = .init(
+            data: .init(
+                attributes: .init(
+                    details: .init(
+                        addressDetails: addressDetails,
+                        personalNote: personalNote
+                    ),
+                    from: dateFormatter.string(from: from),
+                    to: dateFormatter.string(from: to)
+                ),
+                relationships: .init(
+                    host: .init(
+                        data: .init(id: hostId)
+                    ),
+                    guest: .init(
+                        data: .init(id: guestId)
+                    ),
+                    place: .init(
+                        data: .init(id: placeId)
+                    )
+                )
+            )
+        )
+        
+        guard let encodedRequest = try? request.documentDictionary() else {
+            completion(.failure(JSONAPIError.failedToBuildRequest))
+            return cancelable
+        }
+        
+        self.requestBuilder.buildCreateInvitationRequest(
+            bodyParameters: encodedRequest,
+            completion: { [weak self] (request) in
+                
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self?.requestSingle(
+                    InvitationsResource.self,
+                    request: request,
+                    completion: { (result) in
+                        
+                        switch result {
+                        
+                        case .success(let document):
+                            completion(.success(document))
+                            
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    }
+                )
+            })
+        
+        return cancelable
+    }
 
     /// Method sends request to accept invitation.
     /// - Parameters:
@@ -263,6 +349,46 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
                 })
         })
 
+        return cancelable
+    }
+    
+    /// Method requests system info
+    /// - Parameters:
+    ///   - completion: The block which is called when the result is ready.
+    ///   - result: The model of `SystemInfoResource`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func getSystemInfo(
+        completion: @escaping (Result<Document<SystemInfoResource>, Error>) -> Void
+    ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildSystemInfoRequest(
+            completion: { (request) in
+                
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self.requestSingle(
+                    SystemInfoResource.self,
+                    request: request,
+                    completion: { (result) in
+                        
+                        switch result {
+                        
+                        case .success(let data):
+                            completion(.success(data))
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    }
+                )
+            }
+        )
+        
         return cancelable
     }
 }

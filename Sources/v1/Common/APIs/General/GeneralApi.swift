@@ -1,4 +1,5 @@
 import Foundation
+import DLJSONAPI
 
 /// Class provides functionality that allows to fetch data which is necessary
 /// for other requests building
@@ -149,6 +150,52 @@ public class GeneralApi: BaseApi {
                     completion(.succeeded(identities: object.data))
                 }
         })
+    }
+    
+    /// Model that will be fetched in `completion` block of `GeneralApi.addIdentity(...)`
+    public enum RequestAddIdentityResult {
+        case success(identity: AccountIdentityResponse)
+        case failure(error: Error)
+    }
+    
+    /// Method sends request to create new identity using phone number.
+    /// The result of request will be fetched in `completion` block as `GeneralApi.RequestAddIdentityResult`
+    /// - Parameters:
+    ///   - phoneNumber: New identity's phone number
+    ///   - completion: Block that will be called when the result will be received.
+    public func addIdentity(
+        withPhoneNumber phoneNumber: String,
+        completion: @escaping ((RequestAddIdentityResult) -> Void)
+    ) {
+        
+        let body: AddIdentityRequestBody = .init(phoneNumber: phoneNumber)
+        
+        guard let encodedRequest = try? body.documentDictionary() else {
+            completion(.failure(error: JSONAPIError.failedToBuildRequest))
+            return
+        }
+        
+        let request = self.requestBuilder
+            .buildAddIdentityRequest(
+                bodyParameters: encodedRequest
+            )
+        
+        self.network.responseObject(
+            ApiDataResponse<AccountIdentityResponse>.self,
+            url: request.url,
+            method: request.method,
+            parameters: request.parameters,
+            encoding: request.parametersEncoding,
+            completion: { (result) in
+                
+                switch result {
+                
+                case .success(object: let object):
+                    completion(.success(identity: object.data))
+                case .failure(errors: let errors):
+                    completion(.failure(error: errors))
+                }
+            })
     }
     
     /// Model that will be fetched in `completion` block of `GeneralApi.requestSetPhone(...)`

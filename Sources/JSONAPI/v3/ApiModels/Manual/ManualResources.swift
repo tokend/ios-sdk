@@ -8,6 +8,7 @@ class ManualResources {
         AtomicSwapBuyResource.self,
         UserInfoResource.self,
         InvitationsResource.self,
-        InvitationsHistoryResource.self
+        InvitationsHistoryResource.self,
+        SystemInfoResource.self
     ]
 }

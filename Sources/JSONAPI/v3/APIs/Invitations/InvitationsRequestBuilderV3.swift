@@ -8,6 +8,7 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
 
     private var integrations: String { "integrations" }
     private var invitations: String { "invitations" }
+    private var info: String { "info" }
     private var sorted: String { "sorted" }
     private var sortKey: String { "sort" }
     private var redeem: String { "redeem" }
@@ -35,6 +36,26 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
                 return descending ? ["-", sortUpdatedAtValue].joined() : sortUpdatedAtValue
             }
         }
+    }
+    
+    /// Builds request to create new invitation
+    public func buildCreateInvitationRequest(
+        bodyParameters: [String: Any],
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+        let path = /self.integrations/self.invitations
+        
+        self.buildRequest(
+            .simpleBody(
+                path: path,
+                method: .post,
+                bodyParameters: bodyParameters
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
     }
 
     /// Builds request to fetch sorted invitations.
@@ -171,6 +192,24 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
                 queryParameters: queryParameters,
                 include: include,
                 pagination: pagination
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+    
+    public func buildSystemInfoRequest(
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+        
+        let path = /self.integrations/self.invitations/self.info
+        
+        self.buildRequest(
+            .simple(
+                path: path,
+                method: .get
             ),
             shouldSign: true,
             sendDate: sendDate,

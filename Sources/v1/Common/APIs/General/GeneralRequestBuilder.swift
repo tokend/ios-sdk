@@ -69,6 +69,30 @@ public class GeneralRequestBuilder: BaseApiRequestBuilder {
         return request
     }
     
+    public struct AddIdentityRequest {
+        public let url: String
+        public let method: RequestMethod
+        public let parameters: RequestParameters
+        public let parametersEncoding: RequestParametersEncoding
+    }
+    
+    public func buildAddIdentityRequest(
+        bodyParameters: [String: Any]
+    ) -> AddIdentityRequest {
+        
+        let baseUrl = self.apiConfiguration.urlString
+        let path = baseUrl.addPath(self.identities)
+        
+        let request = AddIdentityRequest(
+            url: path,
+            method: .post,
+            parameters: bodyParameters,
+            parametersEncoding: .json
+        )
+        
+        return request
+    }
+    
     /// Builds request to set phone identity.
     /// - Parameters:
     ///   - accountId: Account's identifier.
