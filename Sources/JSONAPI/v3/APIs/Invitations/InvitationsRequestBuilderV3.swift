@@ -8,6 +8,7 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
 
     private var integrations: String { "integrations" }
     private var invitations: String { "invitations" }
+    private var info: String { "info" }
     private var sorted: String { "sorted" }
     private var sortKey: String { "sort" }
     private var redeem: String { "redeem" }
@@ -165,6 +166,24 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
             .simple(
                 path: path,
                 method: .patch
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+    
+    public func buildSystemInfoRequest(
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+        
+        let path = /self.integrations/self.invitations/self.info
+        
+        self.buildRequest(
+            .simple(
+                path: path,
+                method: .get
             ),
             shouldSign: true,
             sendDate: sendDate,

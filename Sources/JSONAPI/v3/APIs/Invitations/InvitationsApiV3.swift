@@ -306,4 +306,44 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
                 completion(.success(auth: authHeader))
         })
     }
+    
+    /// Method requests system info
+    /// - Parameters:
+    ///   - completion: The block which is called when the result is ready.
+    ///   - result: The model of `SystemInfoResource`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func getSystemInfo(
+        completion: @escaping (Result<Document<SystemInfoResource>, Error>) -> Void
+    ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildSystemInfoRequest(
+            completion: { (request) in
+                
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self.requestSingle(
+                    SystemInfoResource.self,
+                    request: request,
+                    completion: { (result) in
+                        
+                        switch result {
+                        
+                        case .success(let data):
+                            completion(.success(data))
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    }
+                )
+            }
+        )
+        
+        return cancelable
+    }
 }
