@@ -177,4 +177,29 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
             completion: completion
         )
     }
+
+    public func buildInvitationsRequest(
+        filters: InvitationsRequestFiltersV3,
+        include: [String]?,
+        pagination: RequestPagination,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+        ) {
+
+        let path = /self.integrations/self.invitations
+        let queryParameters = self.buildFilterQueryItems(filters.filterItems)
+
+        self.buildRequest(
+            .simpleQueryIncludePagination(
+                path: path,
+                method: .get,
+                queryParameters: queryParameters,
+                include: include,
+                pagination: pagination
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
 }

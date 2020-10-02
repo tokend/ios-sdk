@@ -265,4 +265,49 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
 
         return cancelable
     }
+
+    /// Method sends request to fetch invitations from api.
+    /// - Parameters:
+    ///   - filters: Request filters.
+    ///   - pagination: Pagination option.
+    ///   - completion: The block which is called when the result will be fetched
+    ///   - result: The model of `RequestCollectionResult<InvitationsResource>`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func getMyInvitations(
+        filters: InvitationsRequestFiltersV3,
+        include: [String]?,
+        pagination: RequestPagination,
+        completion: @escaping ((_ result: RequestCollectionResult<InvitationsResource>) -> Void)
+    ) -> Cancelable {
+
+        var cancelable = self.network.getEmptyCancelable()
+
+        self.requestBuilder.buildInvitationsRequest(
+            filters: filters,
+            include: include,
+            pagination: pagination,
+            completion: { [weak self] (request) in
+
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+
+                cancelable.cancelable = self?.requestCollection(
+                    InvitationsResource.self,
+                    request: request,
+                    completion: { (result) in
+                        switch result {
+                        case .failure(let error):
+                            completion(.failure(error))
+
+                        case .success(let document):
+                            completion(.success(document))
+                        }
+                })
+        })
+
+        return cancelable
+    }
 }
