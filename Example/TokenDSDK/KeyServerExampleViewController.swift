@@ -613,7 +613,7 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
                 )
                 
             case .code(_, let inputCallback):
-                inputCallback(text)
+                inputCallback(text, { })
             }
             }, cancel: {
                 cancel()
@@ -659,7 +659,7 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
     private func processInput(
         password: String,
         tokenSignData: ApiCallbacks.TokenSignData,
-        inputCallback: @escaping (_ signedToken: String) -> Void,
+        inputCallback: @escaping (_ signedToken: String, _ completion: @escaping () -> Void) -> Void,
         cancel: @escaping () -> Void
         ) {
         
@@ -690,7 +690,7 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
                             cancel()
                             return
                     }
-                    inputCallback(signedToken)
+                    inputCallback(signedToken, { })
                 }
         })
     }

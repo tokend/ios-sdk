@@ -885,7 +885,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                     actionTitle: "Open Bot",
                     url: url,
                     completion: { (text) in
-                        inputCallback(text)
+                        inputCallback(text, { })
                 },
                     cancel: cancel
                 )
@@ -905,7 +905,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                 )
                 
             case .code(_, let inputCallback):
-                inputCallback(text)
+                inputCallback(text, { })
             }
             }, cancel: {
                 cancel()
@@ -991,7 +991,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     func processInput(
         password: String,
         tokenSignData: ApiCallbacks.TokenSignData,
-        inputCallback: @escaping (_ signedToken: String) -> Void,
+        inputCallback: @escaping (_ signedToken: String, _ completion: @escaping () -> Void) -> Void,
         cancel: @escaping () -> Void
         ) {
         
@@ -1022,7 +1022,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                             cancel()
                             return
                     }
-                    inputCallback(signedToken)
+                    inputCallback(signedToken, { })
                 }
         })
     }
