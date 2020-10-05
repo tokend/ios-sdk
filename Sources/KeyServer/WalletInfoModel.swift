@@ -75,10 +75,33 @@ public struct WalletInfoModel: Encodable {
 
                 public struct Attributes: Encodable {
 
+                    public init(roleId: UInt64, weight: UInt64, identity: UInt64, details: String) {
+                        self.roleId = roleId
+                        self.weight = weight
+                        self.identity = identity
+                        self.details = details
+                    }
+
                     public let roleId: UInt64
                     public let weight: UInt64
                     public let identity: UInt64
                     public let details: String
+
+                    public enum AttributesIncludeKeys: CodingKey {
+                        case roleId
+                        case weight
+                        case identity
+                        case details
+                    }
+
+                    public func encode(to encoder: Encoder) throws {
+                        var container = encoder.container(keyedBy: AttributesIncludeKeys.self)
+
+                        try? container.encode(self.roleId, forKey: .roleId)
+                        try? container.encode(self.weight, forKey: .weight)
+                        try? container.encode(self.identity, forKey: .identity)
+                        try? container.encode(self.details, forKey: .details)
+                    }
                 }
 
                 public enum SignerIncludeKeys: CodingKey {
