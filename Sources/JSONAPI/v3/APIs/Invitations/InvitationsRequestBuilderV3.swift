@@ -112,6 +112,28 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         )
     }
 
+    /// Builds request to delete invitation.
+    /// - Parameters:
+    ///   - id: The invitation id.
+    public func buildDeleteInvitationRequest(
+        id: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+
+        let path = /self.integrations/self.invitations/id
+
+        self.buildRequest(
+            .simple(
+                path: path,
+                method: .delete
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+
     /// Builds request to wait invitation.
     /// - Parameters:
     ///   - id: The invitation id.

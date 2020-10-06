@@ -148,6 +148,46 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
         return cancelable
     }
 
+    /// Method sends request to delete invitation.
+    /// - Parameters:
+    ///   - id: The invitation id.
+    ///   - completion: The block which is called when the result will be fetched
+    ///   - result: The model of `RequestEmptyResult`
+    /// - Returns: `Cancelable`
+    public func deleteInvitation(
+        id: String,
+        completion: @escaping ((_ result: RequestEmptyResult) -> Void)
+    ) -> Cancelable {
+
+        var cancelable = self.network.getEmptyCancelable()
+
+        self.requestBuilder.buildDeleteInvitationRequest(
+            id: id,
+            completion: { [weak self] (request) in
+
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+
+                cancelable.cancelable = self?.requestEmpty(
+                    request: request,
+                    completion: { (result) in
+
+                        switch result {
+
+                        case .success:
+                            completion(.success)
+
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                })
+        })
+
+        return cancelable
+    }
+
     /// Method sends request to wait invitation.
     /// - Parameters:
     ///   - id: The invitation id.
