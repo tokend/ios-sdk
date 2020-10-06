@@ -5,9 +5,8 @@ import DLCryptoKit
 /// Allows to build wallet info models as well as update account signers.
 public struct WalletInfoBuilderV2 {
 
-    public typealias Referrer = WalletInfoModel.WalletInfoData.Relationships.Referrer
-    public typealias Transaction = WalletInfoModel.WalletInfoData.Relationships.Transaction
-    public typealias Factor = WalletInfoModel.WalletInfoData.Relationships.Factor
+    public typealias Transaction = WalletInfoModelV2.WalletInfoData.Relationships.Transaction
+    public typealias Factor = WalletInfoModelV2.WalletInfoData.Relationships.Factor
 
     // MARK: - Public
 
@@ -34,20 +33,18 @@ public struct WalletInfoBuilderV2 {
     ///   - unchekedLogin: Login of associated wallet. Will be checked with `KDFParams.checkedLogin(...)`.
     ///   - password: Password to sign transaction envelope.
     ///   - kdfParams: KDF params.
-    ///   - keychainParams: Key chain params model.
+    ///   - keys: Key pairs.
+    ///   - signers: Signers to include.
     ///   - transaction: Any transaction that should be send along with wallet info.
-    ///   - referrerAccountId: Referrer account id.
     /// - Returns: `WalletInfoBuilder.CreateResult` model.
     public static func createWalletInfo(
         login unchekedLogin: String,
         password: String,
         kdfParams: KDFParams,
         keys: [ECDSA.KeyData],
-        signers: [WalletInfoModel.WalletInfoData.Relationships.Signer],
-        defaultSignerRole: UInt64,
-        transaction: WalletInfoModel.WalletInfoData.Relationships.Transaction? = nil,
-        referrerAccountId: String? = nil
-    ) -> Result<WalletInfoModel, Swift.Error> {
+        signers: [WalletInfoModelV2.WalletInfoData.Relationships.Signer],
+        transaction: WalletInfoModelV2.WalletInfoData.Relationships.Transaction? = nil
+    ) -> Result<WalletInfoModelV2, Swift.Error> {
 
         // wallet info
         let type = "wallet"
@@ -96,10 +93,10 @@ public struct WalletInfoBuilderV2 {
 
         // Relationships
 
-        var included: [WalletInfoModel.Include] = []
+        var included: [WalletInfoModelV2.Include] = []
 
         // KDF
-        let kdfRelationship = WalletInfoModel.WalletInfoData.Relationships.KDF(
+        let kdfRelationship = WalletInfoModelV2.WalletInfoData.Relationships.KDF(
             id: kdfParams.id,
             type: kdfParams.type
         )
@@ -124,24 +121,14 @@ public struct WalletInfoBuilderV2 {
         }
 
         // Transaction
-        var transactionAPIData: ApiDataRequest<Transaction, WalletInfoModel.Include>?
+        var transactionAPIData: ApiDataRequest<Transaction, WalletInfoModelV2.Include>?
 
         if let transaction = transaction {
             transactionAPIData = ApiDataRequest(data: transaction)
             included.append(transaction)
         }
-        var referrerAPIData: ApiDataRequest<Referrer, WalletInfoModel.Include>?
-        if let refAccountId = referrerAccountId {
-            let referrerData = WalletInfoModel.WalletInfoData.Relationships.Referrer(
-                id: refAccountId,
-                type: "referrer"
-            )
-            referrerAPIData = ApiDataRequest(data: referrerData)
-            included.append(referrerData)
-        }
 
-        let relationships = WalletInfoModel.WalletInfoData.Relationships(
-            referrer: referrerAPIData,
+        let relationships = WalletInfoModelV2.WalletInfoData.Relationships(
             transaction: transactionAPIData,
             kdf: ApiDataRequest(data: kdfRelationship),
             signers: ApiDataRequest(data: signers),
@@ -149,21 +136,21 @@ public struct WalletInfoBuilderV2 {
         )
 
         // "data"
-        let relationshipsAttributes = WalletInfoModel.WalletInfoData.Attributes(
+        let relationshipsAttributes = WalletInfoModelV2.WalletInfoData.Attributes(
             accountId: walletDetails.accountIdBase32Check,
             email: walletDetails.login,
             salt: walletDetails.saltBase64,
             keychainData: walletDetails.keychainDataBase64
         )
 
-        let walletInfoData = WalletInfoModel.WalletInfoData.init(
+        let walletInfoData = WalletInfoModelV2.WalletInfoData.init(
             type: type,
             id: walletDetails.walletIdHex,
             attributes: relationshipsAttributes,
             relationships: relationships
         )
 
-        let walletInfo = WalletInfoModel(
+        let walletInfo = WalletInfoModelV2(
             data: walletInfoData,
             included: included
         )
@@ -197,21 +184,17 @@ public struct WalletInfoBuilderV2 {
     /// Errors that may occur for `WalletInfoBuilderV2.createChangePasswordWalletInfo(...)`.
     public enum CreateChangePasswordWalletInfoError: Swift.Error, LocalizedError {
 
-        case cannotCreateTransactionEnvelope
         case walletInfoBuilder(Swift.Error)
 
         // MARK: - Swift.Error
 
         public var errorDescription: String? {
             switch self {
-            case .cannotCreateTransactionEnvelope:
-                return "Cannot create transaction envelope"
             case .walletInfoBuilder(let error):
                 return error.localizedDescription
             }
         }
     }
-
     /// Method to create change password wallet info model.
     /// The result of this method will be used for wallet password change method.
     /// - Parameters:
@@ -226,19 +209,18 @@ public struct WalletInfoBuilderV2 {
         newPassword: String,
         kdf: KDFParams,
         keys: [ECDSA.KeyData],
-        signers: [WalletInfoModel.WalletInfoData.Relationships.Signer],
-        defaultSignerRole: UInt64,
+        signers: [WalletInfoModelV2.WalletInfoData.Relationships.Signer],
         signedTransaction: TransactionModel
-    ) -> Result<WalletInfoModel, Swift.Error> {
+    ) -> Result<WalletInfoModelV2, Swift.Error> {
 
         let checkedLogin = kdf.checkedLogin(login)
 
         let envelopeBase64String = signedTransaction.getEnvelope().toXdrBase64String()
 
-        let attributes = WalletInfoModel.WalletInfoData.Relationships.Transaction.Attributes(
+        let attributes = WalletInfoModelV2.WalletInfoData.Relationships.Transaction.Attributes(
             envelope: envelopeBase64String
         )
-        let transaction = WalletInfoModel.WalletInfoData.Relationships.Transaction(
+        let transaction = WalletInfoModelV2.WalletInfoData.Relationships.Transaction(
             id: "uniqueTransaction",
             type: "transaction",
             attributes: attributes
@@ -250,7 +232,6 @@ public struct WalletInfoBuilderV2 {
             kdfParams: kdf,
             keys: keys,
             signers: signers,
-            defaultSignerRole: defaultSignerRole,
             transaction: transaction
         )
 
@@ -262,5 +243,142 @@ public struct WalletInfoBuilderV2 {
         case .success(let walletInfo):
             return .success(walletInfo)
         }
+    }
+
+    /// Errors that may occur for `WalletInfoBuilderV2.createChangePasswordWalletInfo(...)`.
+    public enum CreateRecoveryWalletInfoError: Swift.Error, LocalizedError {
+
+        case noSignerKey
+
+        // MARK: - Swift.Error
+
+        public var errorDescription: String? {
+            switch self {
+            case .noSignerKey:
+
+                return "There should be at least one key"
+            }
+        }
+    }
+    public static func createRecoveryWalletInfo(
+        login unchekedLogin: String,
+        password: String,
+        kdfParams: KDFParams,
+        keys: [ECDSA.KeyData]
+    ) -> Result<WalletInfoModelV2, Swift.Error> {
+
+        // wallet info
+        let type = "recovery-wallet"
+        let login = kdfParams.checkedLogin(unchekedLogin)
+
+        let walletDetails: WalletDetailsModelV2
+        let newKeyPairSalt: Data = Common.Random.generateRandom(length: 16)
+        let newKeyPairIV: Data = Common.Random.generateRandom(length: 12)
+        do {
+            walletDetails = try WalletDetailsModelV2.createWalletDetails(
+                login: login,
+                password: password,
+                keyPairs: keys,
+                kdfParams: kdfParams,
+                salt: newKeyPairSalt,
+                IV: newKeyPairIV
+            )
+        } catch let error {
+            return .failure(CreateWalletInfoError.failedToCreateWalletDetails(error))
+        }
+
+        // password factor info
+        let passwordFactorKeyPair: ECDSA.KeyData
+        do {
+            passwordFactorKeyPair = try .init()
+        } catch {
+            return .failure(error)
+        }
+        let passwordFactorKeyPairSalt: Data = Common.Random.generateRandom(length: 16)
+        let passwordFactorKeyPairIV: Data = Common.Random.generateRandom(length: 12)
+        let passwordFactorDetails: WalletDetailsModelV2
+        do {
+            passwordFactorDetails = try WalletDetailsModelV2.createWalletDetails(
+                login: login,
+                password: password,
+                keyPairs: [passwordFactorKeyPair],
+                kdfParams: kdfParams,
+                salt: passwordFactorKeyPairSalt,
+                IV: passwordFactorKeyPairIV
+            )
+        } catch let error {
+            return .failure(CreateWalletInfoError.failedToCreatePasswordFactorDetails(error))
+        }
+
+        // Registration Info
+
+        // Relationships
+
+        var included: [WalletInfoModelV2.Include] = []
+
+        // KDF
+        let kdfRelationship = WalletInfoModelV2.WalletInfoData.Relationships.KDF(
+            id: kdfParams.id,
+            type: kdfParams.type
+        )
+
+        included.append(kdfRelationship)
+
+        // Password
+
+        let passwordFactorRelationship = WalletInfoBuilderV2.getFactor(
+            accountId: passwordFactorDetails.accountIdBase32Check,
+            keychainData: passwordFactorDetails.keychainDataBase64,
+            salt: passwordFactorDetails.saltBase64,
+            id: passwordFactorDetails.walletIdHex,
+            type: "password"
+        )
+
+        included.append(passwordFactorRelationship)
+
+        // Signers
+
+        guard let signerKey = keys.first
+            else {
+                return .failure(CreateRecoveryWalletInfoError.noSignerKey)
+        }
+
+        let signer: WalletInfoModelV2.WalletInfoData.Relationships.Signer = .defaultSigner(
+            with: Base32Check.encode(
+                version: .accountIdEd25519,
+                data: signerKey.getPublicKeyData()
+            ),
+            roleId: 0
+        )
+        included.append(signer)
+
+        let relationships = WalletInfoModelV2.WalletInfoData.Relationships(
+            transaction: nil,
+            kdf: ApiDataRequest(data: kdfRelationship),
+            signers: ApiDataRequest(data: [signer]),
+            factor: ApiDataRequest(data: passwordFactorRelationship)
+        )
+
+        // "data"
+        let relationshipsAttributes = WalletInfoModelV2.WalletInfoData.Attributes(
+            accountId: walletDetails.accountIdBase32Check,
+            email: walletDetails.login,
+            salt: walletDetails.saltBase64,
+            keychainData: walletDetails.keychainDataBase64
+        )
+
+        let walletInfoData = WalletInfoModelV2.WalletInfoData.init(
+            type: type,
+            id: walletDetails.walletIdHex,
+            attributes: relationshipsAttributes,
+            relationships: relationships
+        )
+
+        let walletInfo = WalletInfoModelV2(
+            data: walletInfoData,
+            included: included
+        )
+
+        return .success(walletInfo)
     }
 }

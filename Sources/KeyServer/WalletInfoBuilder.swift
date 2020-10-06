@@ -3,6 +3,7 @@ import TokenDWallet
 import DLCryptoKit
 
 /// Allows to build wallet info models as well as update account signers.
+@available(*, deprecated, renamed: "WalletInfoBuilderV2")
 public struct WalletInfoBuilder {
     
     public typealias Referrer = WalletInfoModel.WalletInfoData.Relationships.Referrer
