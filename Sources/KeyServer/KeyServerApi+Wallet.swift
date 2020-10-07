@@ -95,7 +95,7 @@ extension KeyServerApi {
         walletId: String,
         signingPassword: String,
         walletKDF: WalletKDFParams,
-        walletInfo: RecoveryWalletInfoModelV2,
+        walletInfo: WalletInfoModelV2,
         requestSigner: JSONAPI.RequestSignerProtocol,
         completion: @escaping (_ result: UpdatePasswordResult) -> Void
         ) -> Cancelable {

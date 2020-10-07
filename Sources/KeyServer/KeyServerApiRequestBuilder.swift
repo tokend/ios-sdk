@@ -164,7 +164,7 @@ public class KeyServerApiRequestBuilder {
     ///   - completion: Returns `UpdateWalletRequest` or nil.
     public func buildUpdateWalletV2Request(
         walletId: String,
-        walletInfo: RecoveryWalletInfoModelV2,
+        walletInfo: WalletInfoModelV2,
         requestSigner: JSONAPI.RequestSignerProtocol,
         sendDate: Date = Date(),
         completion: @escaping (UpdateWalletRequest?) -> Void
@@ -175,7 +175,7 @@ public class KeyServerApiRequestBuilder {
         let url = baseUrl/path
         let method: RequestMethod = .put
 
-        let walletData = ApiDataRequest<RecoveryWalletInfoModelV2.WalletInfoData, WalletInfoModelV2.Include>(
+        let walletData = ApiDataRequest<WalletInfoModelV2.WalletInfoData, WalletInfoModelV2.Include>(
             data: walletInfo.data,
             included: walletInfo.included
         )

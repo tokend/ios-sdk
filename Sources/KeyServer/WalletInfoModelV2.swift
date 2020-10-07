@@ -25,7 +25,8 @@ public struct WalletInfoModelV2: Encodable {
 
             public let transaction: ApiDataRequest<Transaction, Include>?
             public let kdf: ApiDataRequest<KDF, Include>
-            public let signers: ApiDataRequest<[Signer], Include>
+            public let signers: ApiDataRequest<[Signer], Include>?
+            public let signer: ApiDataRequest<Signer, Include>?
             public let factor: ApiDataRequest<Factor, Include>
 
             public class Transaction: Include {
@@ -233,7 +234,12 @@ extension WalletInfoModelV2.WalletInfoData.Relationships: CustomDebugStringConve
             fields.append("transaction: \(transaction.data.debugDescription)")
         }
         fields.append("kdf: \(self.kdf.data.debugDescription)")
-        fields.append("signers: \(self.signers.data.debugDescription)")
+        if let signers = self.signers {
+            fields.append("signers: \(signers.data.debugDescription)")
+        }
+        if let signer = self.signer {
+            fields.append("signers: \(signer.data.debugDescription)")
+        }
         fields.append("factor: \(self.factor.data.debugDescription)")
 
         let description = DebugFormattedDescription(fields)
