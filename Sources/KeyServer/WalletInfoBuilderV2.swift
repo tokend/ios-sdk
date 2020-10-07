@@ -265,7 +265,7 @@ public struct WalletInfoBuilderV2 {
         password: String,
         kdfParams: KDFParams,
         keys: [ECDSA.KeyData]
-    ) -> Result<WalletInfoModelV2, Swift.Error> {
+    ) -> Result<RecoveryWalletInfoModelV2, Swift.Error> {
 
         // wallet info
         let type = "recovery-wallet"
@@ -352,29 +352,29 @@ public struct WalletInfoBuilderV2 {
         )
         included.append(signer)
 
-        let relationships = WalletInfoModelV2.WalletInfoData.Relationships(
+        let relationships = RecoveryWalletInfoModelV2.WalletInfoData.Relationships(
             transaction: nil,
             kdf: ApiDataRequest(data: kdfRelationship),
-            signers: ApiDataRequest(data: [signer]),
+            signer: ApiDataRequest(data: signer),
             factor: ApiDataRequest(data: passwordFactorRelationship)
         )
 
         // "data"
-        let relationshipsAttributes = WalletInfoModelV2.WalletInfoData.Attributes(
+        let relationshipsAttributes = RecoveryWalletInfoModelV2.WalletInfoData.Attributes(
             accountId: walletDetails.accountIdBase32Check,
             email: walletDetails.login,
             salt: walletDetails.saltBase64,
             keychainData: walletDetails.keychainDataBase64
         )
 
-        let walletInfoData = WalletInfoModelV2.WalletInfoData.init(
+        let walletInfoData = RecoveryWalletInfoModelV2.WalletInfoData.init(
             type: type,
             id: walletDetails.walletIdHex,
             attributes: relationshipsAttributes,
             relationships: relationships
         )
 
-        let walletInfo = WalletInfoModelV2(
+        let walletInfo = RecoveryWalletInfoModelV2(
             data: walletInfoData,
             included: included
         )
