@@ -2,6 +2,7 @@ import Foundation
 import TokenDWallet
 import DLCryptoKit
 
+@available(*, deprecated, message: "Use project-specific update password flow")
 public class UpdatePasswordRequestBuilder {
     
     // MARK: - Private properties
@@ -183,12 +184,17 @@ public class UpdatePasswordRequestBuilder {
         
         let signingKeyPair: ECDSA.KeyData
         do {
-            signingKeyPair = try KeyPairBuilder.getKeyPair(
+            if let keyPair = try KeyPairBuilder.getKeyPairs(
                 forLogin: checkedLogin,
                 password: oldPassword,
                 keychainData: keychainData,
                 walletKDF: walletKDF
-            )
+            ).first {
+                signingKeyPair = keyPair
+            } else {
+                completion(.failure(.cannotDeriveOldKeyFrom(nil)))
+                return self.keyServerApi.network.getEmptyCancelable()
+            }
         } catch let error {
             completion(.failure(.cannotDeriveOldKeyFrom(error)))
             return self.keyServerApi.network.getEmptyCancelable()
@@ -554,7 +560,7 @@ extension UpdatePasswordRequestBuilder {
             
             case cannotDecodeOriginalAccountIdData
             case cannotDeriveEncodedWalletId
-            case cannotDeriveOldKeyFrom(Swift.Error)
+            case cannotDeriveOldKeyFrom(Swift.Error?)
             case cannotDeriveRecoveryKeyFromSeed(Swift.Error)
             case corruptedKeychainData
             case emptySignersDocument
@@ -580,7 +586,7 @@ extension UpdatePasswordRequestBuilder {
                     return "Cannot derive encoded wallet id"
                     
                 case .cannotDeriveOldKeyFrom(let error):
-                    return error.localizedDescription
+                    return error?.localizedDescription
                     
                 case .cannotDeriveRecoveryKeyFromSeed(let error):
                     return error.localizedDescription

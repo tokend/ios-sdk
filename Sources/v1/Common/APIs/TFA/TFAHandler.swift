@@ -62,14 +62,16 @@ public class TFAHandler: TFAHandlerProtocol {
         switch meta.factorTypeBase {
             
         case .codeBased(let metaModel):
-            input = .code(type: metaModel.factorType, inputCallback: { [weak self] code in
+            input = .code(type: metaModel.factorType, inputCallback: { [weak self] (code, completionClosure) in
                 self?.submitTFAFactor(
                     walletId: metaModel.walletId,
                     token: metaModel.token,
                     signedToken: code,
                     factorId: metaModel.factorId,
-                    completion: completion
-                )
+                    completion: { (result) in
+                        completionClosure()
+                        completion(result)
+                })
             })
             
         case .passwordBased(let metaModel):
@@ -81,14 +83,16 @@ public class TFAHandler: TFAHandlerProtocol {
                 factorId: metaModel.factorId
             )
             
-            input = .password(tokenSignData: tokenSignData, inputCallback: { [weak self] signedToken in
+            input = .password(tokenSignData: tokenSignData, inputCallback: { [weak self] (signedToken, completionClosure) in
                 self?.submitTFAFactor(
                     walletId: tokenSignData.walletId,
                     token: tokenSignData.token,
                     signedToken: signedToken,
                     factorId: tokenSignData.factorId,
-                    completion: completion
-                )
+                    completion: { (result) in
+                        completionClosure()
+                        completion(result)
+                })
             })
         }
         
@@ -207,16 +211,18 @@ public struct TFAPasswordHandler {
         )
         
         guard
-            let keyPair = try? KeyPairBuilder.getKeyPair(
+            let keyPairs = try? KeyPairBuilder.getKeyPairs(
                 forLogin: email,
                 password: password,
                 keychainData: meta.keychainData,
                 walletKDF: walletKDF
-            ) else {
+            ),
+            let keyPair = keyPairs.first
+            else {
                 completion(.failure(InitiatePasswordTFAError.keyPairDerivationFailed))
                 return
         }
-        
+
         guard let data = meta.token.data(using: .utf8) else {
             completion(.failure(InitiatePasswordTFAError.tokenEncodingFailed))
             return

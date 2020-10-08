@@ -216,7 +216,7 @@ public class KeyServerApi {
         }
         
         /// Case of successful response from api with `WalletDataModel` and `ECDSA.KeyData` models
-        case success(walletData: WalletDataModel, keyPair: ECDSA.KeyData)
+        case success(walletData: WalletDataModel, keyPairs: [ECDSA.KeyData])
         
         /// Case of failed response from api with `KeyServerApi.LoginRequestResult.LoginError` model
         case failure(LoginError)
@@ -416,7 +416,7 @@ public class KeyServerApi {
                 return
         }
         
-        guard let keyPair: ECDSA.KeyData = try? KeyPairBuilder.getKeyPair(
+        guard let keyPairs: [ECDSA.KeyData] = try? KeyPairBuilder.getKeyPairs(
             forLogin: login,
             password: password,
             keychainData: keychainData,
@@ -426,6 +426,6 @@ public class KeyServerApi {
                 return
         }
         
-        completion(.success(walletData: walletData, keyPair: keyPair))
+        completion(.success(walletData: walletData, keyPairs: keyPairs))
     }
 }

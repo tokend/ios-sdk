@@ -29,7 +29,7 @@ extension ApiCallbacks {
     }
     
     public enum TFAInput {
-        case password(tokenSignData: TokenSignData, inputCallback: (_ signedToken: String) -> Void)
-        case code(type: TFAMetaResponse.CodeBasedType, inputCallback: (_ code: String) -> Void)
+        case password(tokenSignData: TokenSignData, inputCallback: (_ signedToken: String, _ completion: @escaping () -> Void) -> Void)
+        case code(type: TFAMetaResponse.CodeBasedType, inputCallback: (_ code: String, _ completion: @escaping () -> Void) -> Void)
     }
 }

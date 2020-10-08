@@ -44,7 +44,8 @@ extension KeyServerApi {
         /// private `ECDSA.KeyData` and recovery `ECDSA.KeyData` models
         case success(WalletInfoResponse)
     }
-    
+
+    @available(*, deprecated, renamed: "createWalletV2")
     /// Method sends request to create wallet and register it within Key Server.
     /// The result of request will be fetched in `completion` block as `KeyServerApi.CreateWalletRequestResult`
     /// - Parameters:
@@ -87,6 +88,54 @@ extension KeyServerApi {
                         completion(.failure(.createFailed(errors)))
                     }
                     
+                case .success(let response):
+                    completion(.success(response.data))
+                }
+        })
+    }
+
+    /// Method sends request to create wallet and register it within Key Server.
+    /// The result of request will be fetched in `completion` block as `KeyServerApi.CreateWalletRequestResult`
+    /// - Parameters:
+    ///   - email: Email of associated wallet.
+    ///   - password: Password to cypher private key.
+    ///   - keyPair: Wallet key pair. If not provided will generate random.
+    ///   - recoveryKeyPair: Wallet recovery key pair. If not provided will generate random.
+    ///   - passwordFactorKeyPair: Password tfa factor key pair. If not provided will generate random.
+    ///   - referrerAccountId: Referrer account id.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `KeyServerApi.LoginRequestResult`
+    public func createWalletV2(
+        walletInfo: WalletInfoModelV2,
+        completion: @escaping (_ result: CreateWalletRequestResult) -> Void
+        ) {
+
+        let request: CreateWalletRequest
+        do {
+            request = try self.requestBuilder.buildCreateWalletV2Request(
+                walletInfo: walletInfo
+            )
+        } catch let error {
+            completion(.failure(.failedToGenerateRequest(error)))
+            return
+        }
+
+        self.network.responseDataObject(
+            ApiDataResponse<WalletInfoResponse>.self,
+            url: request.url,
+            method: request.method,
+            bodyData: request.registrationInfoData,
+            completion: { (result) in
+
+                switch result {
+
+                case .failure(let errors):
+                    if errors.contains(status: ApiError.Status.conflict) {
+                        completion(.failure(.emailAlreadyTaken))
+                    } else {
+                        completion(.failure(.createFailed(errors)))
+                    }
+
                 case .success(let response):
                     completion(.success(response.data))
                 }

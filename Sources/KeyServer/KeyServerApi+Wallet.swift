@@ -54,7 +54,7 @@ extension KeyServerApi {
         /// with `WalletInfoModel`, `WalletDataModel` and new private `ECDSA.KeyData` models
         case succeeded(WalletInfoResponse)
     }
-    
+    @available(*, deprecated, renamed: "performUpdatePasswordV2Request")
     public func performUpdatePasswordRequest(
         email: String,
         walletId: String,
@@ -87,6 +87,41 @@ extension KeyServerApi {
                 )
         })
         
+        return cancelable
+    }
+
+    public func performUpdatePasswordV2Request(
+        email: String,
+        walletId: String,
+        signingPassword: String,
+        walletKDF: WalletKDFParams,
+        walletInfo: WalletInfoModelV2,
+        requestSigner: JSONAPI.RequestSignerProtocol,
+        completion: @escaping (_ result: UpdatePasswordResult) -> Void
+        ) -> Cancelable {
+
+        var cancelable = self.network.getEmptyCancelable()
+
+        self.requestBuilder.buildUpdateWalletV2Request(
+            walletId: walletId,
+            walletInfo: walletInfo,
+            requestSigner: requestSigner,
+            completion: { [weak self] (request) in
+                guard let request = request else {
+                    completion(.failed(.failedToGenerateRequest(ApiErrors.failedToSignRequest)))
+                    return
+                }
+
+                cancelable.cancelable = self?.performUpdatePasswordRequest(
+                    request,
+                    email: email,
+                    signingPassword: signingPassword,
+                    walletKDF: walletKDF,
+                    initiateTFA: true,
+                    completion: completion
+                )
+        })
+
         return cancelable
     }
     

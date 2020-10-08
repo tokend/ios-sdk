@@ -4,21 +4,21 @@ import TokenDWallet
 
 /// Allows to derive private key pair and wallet id from keychain data and wallet KDF params.
 public enum KeyPairBuilder {
-    
-    /// Method derives private key pair from keychain data and wallet KDF params.
+
+    /// Method derives private key pairs from keychain data and wallet KDF params.
     /// - Parameters:
     ///   - login: Login of associated wallet.
     ///   - password: Password to decypher private key.
     ///   - keychainData: Keychain data from Key Server.
     ///   - walletKDF: Wallet KDF params.
-    /// - Returns: `ECDSA.KeyData` private key.
-    public static func getKeyPair(
+    /// - Returns: `ECDSA.KeyData` private keys.
+    public static func getKeyPairs(
         forLogin login: String,
         password: String,
         keychainData: Data,
         walletKDF: WalletKDFParams
-        ) throws -> ECDSA.KeyData {
-        
+        ) throws -> [ECDSA.KeyData] {
+
         let key = try TokenDKDF.deriveKey(
             login: login,
             password: password,
@@ -29,13 +29,13 @@ public enum KeyPairBuilder {
             p: walletKDF.kdfParams.p,
             keyLength: Int(walletKDF.kdfParams.bits / 8)
         )
-        
-        let keyPair = try WalletDetailsModel.decryptKeyPairFrom(
+
+        let keyPairs = try WalletDetailsModelV2.decryptKeyPairsFrom(
             keychainData: keychainData,
             keyData: key
         )
-        
-        return keyPair
+
+        return keyPairs
     }
     
     /// Method derives wallet id from wallet KDF params.

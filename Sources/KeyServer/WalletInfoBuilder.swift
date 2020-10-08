@@ -3,6 +3,7 @@ import TokenDWallet
 import DLCryptoKit
 
 /// Allows to build wallet info models as well as update account signers.
+@available(*, deprecated, renamed: "WalletInfoBuilderV2")
 public struct WalletInfoBuilder {
     
     public typealias Referrer = WalletInfoModel.WalletInfoData.Relationships.Referrer
@@ -164,12 +165,15 @@ public struct WalletInfoBuilder {
         )
         let signers = [
             WalletInfoModel.WalletInfoData.Relationships.Signer(
-                    id: accountId,
-                    type: "signer",
-                    attributes: WalletInfoModel.WalletInfoData.Relationships.Signer.Attributes(
-                            roleId: defaultSignerRole,
-                            weight: 1000,
-                            identity: 0))
+                id: accountId,
+                type: "signer",
+                attributes: WalletInfoModel.WalletInfoData.Relationships.Signer.Attributes(
+                    roleId: defaultSignerRole,
+                    weight: 1000,
+                    identity: 0,
+                    details: "{}"
+                )
+            )
         ]
 
         for signer in signers {

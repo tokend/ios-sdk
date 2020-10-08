@@ -370,15 +370,19 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
             password: Constants.userPassword,
             completion: { [weak self] result in
                 switch result {
-                    
-                case .success(let walletData, let keyPair):
+
+                case .success(let walletData, let keyPairs):
+                    guard let keyPair = keyPairs.first
+                        else {
+                            return
+                    }
                     let seed = Base32Check.encode(version: .seedEd25519, data: keyPair.getSeedData())
                     print("Login key seed: \(seed)")
                     self?.privateKey = keyPair
                     self?.walletData = walletData
-                    
+
                     onSuccess(walletData)
-                    
+
                 case .failure(let error):
                     self?.showError(title: "Login", error)
                 }
@@ -613,7 +617,7 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
                 )
                 
             case .code(_, let inputCallback):
-                inputCallback(text)
+                inputCallback(text, { })
             }
             }, cancel: {
                 cancel()
@@ -659,7 +663,7 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
     private func processInput(
         password: String,
         tokenSignData: ApiCallbacks.TokenSignData,
-        inputCallback: @escaping (_ signedToken: String) -> Void,
+        inputCallback: @escaping (_ signedToken: String, _ completion: @escaping () -> Void) -> Void,
         cancel: @escaping () -> Void
         ) {
         
@@ -690,7 +694,7 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
                             cancel()
                             return
                     }
-                    inputCallback(signedToken)
+                    inputCallback(signedToken, { })
                 }
         })
     }
@@ -773,28 +777,29 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
         factorId: Int,
         walletKDF: WalletKDFParams
         ) -> String? {
-        
+
+        return nil
         guard
-            let keyPair = try? KeyPairBuilder.getKeyPair(
+            let keyPair = try? KeyPairBuilder.getKeyPairs(
                 forLogin: email,
                 password: password,
                 keychainData: keychainData,
                 walletKDF: walletKDF
-            ) else {
+            ).first else {
                 print("Unable to get keychainData or create key pair")
                 return nil
         }
-        
+
         guard let data = token.data(using: .utf8) else {
             print("Unable to encode token to data")
             return nil
         }
-        
+
         guard let signedToken = try? ECDSA.signED25519(data: data, keyData: keyPair).base64EncodedString() else {
             print("Unable to sign token data")
             return nil
         }
-        
+
         return signedToken
     }
     
