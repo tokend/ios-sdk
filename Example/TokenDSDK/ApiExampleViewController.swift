@@ -175,24 +175,28 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         onSuccess: @escaping (_ walletData: WalletDataModel) -> Void,
         onFailed: @escaping (_ error: KeyServerApi.LoginRequestResult.LoginError) -> Void
         ) {
-//        self.keyServerApi.loginWith(
-//            login: Constants.userEmail,
-//            password: Constants.userPassword,
-//            completion: { [weak self] result in
-//                switch result {
-//
-//                case .success(let walletData, let keyPair):
-//                    let seed = Base32Check.encode(version: .seedEd25519, data: keyPair.getSeedData())
-//                    print("Login key seed: \(seed)")
-//                    self?.privateKey = keyPair
-//                    self?.walletData = walletData
-//
-//                    onSuccess(walletData)
-//
-//                case .failure(let error):
-//                    onFailed(error)
-//                }
-//        })
+        self.keyServerApi.loginWith(
+            login: Constants.userEmail,
+            password: Constants.userPassword,
+            completion: { [weak self] result in
+                switch result {
+
+                case .success(let walletData, let keyPairs):
+                    guard let keyPair = keyPairs.first
+                        else {
+                            return
+                    }
+                    let seed = Base32Check.encode(version: .seedEd25519, data: keyPair.getSeedData())
+                    print("Login key seed: \(seed)")
+                    self?.privateKey = keyPair
+                    self?.walletData = walletData
+
+                    onSuccess(walletData)
+
+                case .failure(let error):
+                    onFailed(error)
+                }
+        })
     }
     
     func requestDefaultSignerRoleId() {
@@ -1107,28 +1111,28 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         ) -> String? {
 
         return nil
-//        guard
-//            let keyPair = try? KeyPairBuilder.getKeyPair(
-//                forLogin: email,
-//                password: password,
-//                keychainData: keychainData,
-//                walletKDF: walletKDF
-//            ) else {
-//                print("Unable to get keychainData or create key pair")
-//                return nil
-//        }
-//
-//        guard let data = token.data(using: .utf8) else {
-//            print("Unable to encode token to data")
-//            return nil
-//        }
-//
-//        guard let signedToken = try? ECDSA.signED25519(data: data, keyData: keyPair).base64EncodedString() else {
-//            print("Unable to sign token data")
-//            return nil
-//        }
-//
-//        return signedToken
+        guard
+            let keyPair = try? KeyPairBuilder.getKeyPairs(
+                forLogin: email,
+                password: password,
+                keychainData: keychainData,
+                walletKDF: walletKDF
+            ).first else {
+                print("Unable to get keychainData or create key pair")
+                return nil
+        }
+
+        guard let data = token.data(using: .utf8) else {
+            print("Unable to encode token to data")
+            return nil
+        }
+
+        guard let signedToken = try? ECDSA.signED25519(data: data, keyData: keyPair).base64EncodedString() else {
+            print("Unable to sign token data")
+            return nil
+        }
+
+        return signedToken
     }
     
     func requestDefaultKDF(completion: @escaping (KeyServerApi.RequestDefaultKDFResult) -> Void) {
