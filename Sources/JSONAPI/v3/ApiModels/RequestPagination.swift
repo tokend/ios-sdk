@@ -60,10 +60,10 @@ public class RequestPagination {
         switch self.option {
             
         case .strategy(let strategy),
-             .cursorStrategy(let strategy):
+             .indexedStrategy(let strategy):
             _ = strategy.toStartPage()
 
-        case .indexedStrategy(let strategy):
+        case .cursorStrategy(let strategy):
             _ = strategy.toStartPage()
 
         case .cursorSingle,
