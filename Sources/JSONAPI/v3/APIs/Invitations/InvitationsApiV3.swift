@@ -28,7 +28,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
     ///   - result: The model of `RequestCollectionResult<InvitationsResource>`
     /// - Returns: `Cancelable`
     @discardableResult
-    public func getInvitations(
+    public func getSortedInvitations(
         filters: InvitationsRequestFiltersV3,
         sort: InvitationsRequestBuilderV3.SortedInvitationsRequestSort,
         include: [String]?,
@@ -74,6 +74,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
     ///   - completion: The block which is called when the result will be fetched
     ///   - result: The model of `RequestEmptyResult`
     /// - Returns: `Cancelable`
+    @discardableResult
     public func acceptInvitation(
         id: String,
         completion: @escaping ((_ result: RequestEmptyResult) -> Void)
@@ -114,6 +115,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
     ///   - completion: The block which is called when the result will be fetched
     ///   - result: The model of `RequestEmptyResult`
     /// - Returns: `Cancelable`
+    @discardableResult
     public func cancelInvitation(
         id: String,
         completion: @escaping ((_ result: RequestEmptyResult) -> Void)
@@ -154,6 +156,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
     ///   - completion: The block which is called when the result will be fetched
     ///   - result: The model of `RequestEmptyResult`
     /// - Returns: `Cancelable`
+    @discardableResult
     public func deleteInvitation(
         id: String,
         completion: @escaping ((_ result: RequestEmptyResult) -> Void)
@@ -194,6 +197,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
     ///   - completion: The block which is called when the result will be fetched
     ///   - result: The model of `RequestEmptyResult`
     /// - Returns: `Cancelable`
+    @discardableResult
     public func waitInvitation(
         id: String,
         completion: @escaping ((_ result: RequestEmptyResult) -> Void)
@@ -314,7 +318,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
     ///   - result: The model of `RequestCollectionResult<InvitationsResource>`
     /// - Returns: `Cancelable`
     @discardableResult
-    public func getMyInvitations(
+    public func getInvitations(
         filters: InvitationsRequestFiltersV3,
         include: [String]?,
         pagination: RequestPagination,

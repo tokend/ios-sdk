@@ -129,11 +129,11 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
 
         let filters = InvitationsRequestFiltersV3.with(.states([InvitationsResource.State.upcoming.rawValue]))
             .addFilter(.guest(""))
-        self.tokenDApi.invitationsApi.getInvitations(
+        self.tokenDApi.invitationsApi.getSortedInvitations(
             filters: filters,
             sort: .updatedAt(descending: true),
             include: [],
-            pagination: .init(.single(index: 0, limit: 100, order: .descending)),
+            pagination: .init(.indexedSingle(index: 0, limit: 100, order: .descending)),
             completion: { [weak self] (result) in
 
                 switch result {
