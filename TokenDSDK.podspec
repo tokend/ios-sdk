@@ -45,7 +45,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'JSONAPI' do |ss|
     ss.source_files = jsonapi_v3_source_files
-    ss.dependency 'DLJSONAPI', '>= 1.0.6'
+    ss.dependency 'DLJSONAPI', '>= 1.0.7'
   end
 
   s.subspec 'AlamofireNetworkJSONAPI' do |ss|

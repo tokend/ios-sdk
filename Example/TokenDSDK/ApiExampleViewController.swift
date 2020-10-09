@@ -1112,12 +1112,12 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
 
         return nil
         guard
-            let keyPair = try? KeyPairBuilder.getKeyPairs(
+            let keyPair = (try? KeyPairBuilder.getKeyPairs(
                 forLogin: email,
                 password: password,
                 keychainData: keychainData,
                 walletKDF: walletKDF
-            ).first else {
+            ))?.first else {
                 print("Unable to get keychainData or create key pair")
                 return nil
         }

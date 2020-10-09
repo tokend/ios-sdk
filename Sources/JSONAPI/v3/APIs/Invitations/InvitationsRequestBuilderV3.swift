@@ -133,6 +133,28 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         )
     }
 
+    /// Builds request to delete invitation.
+    /// - Parameters:
+    ///   - id: The invitation id.
+    public func buildDeleteInvitationRequest(
+        id: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+
+        let path = /self.integrations/self.invitations/id
+
+        self.buildRequest(
+            .simple(
+                path: path,
+                method: .delete
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+
     /// Builds request to wait invitation.
     /// - Parameters:
     ///   - id: The invitation id.
@@ -210,6 +232,31 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
             .simple(
                 path: path,
                 method: .get
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+
+    public func buildInvitationsRequest(
+        filters: InvitationsRequestFiltersV3,
+        include: [String]?,
+        pagination: RequestPagination,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+        ) {
+
+        let path = /self.integrations/self.invitations
+        let queryParameters = self.buildFilterQueryItems(filters.filterItems)
+
+        self.buildRequest(
+            .simpleQueryIncludePagination(
+                path: path,
+                method: .get,
+                queryParameters: queryParameters,
+                include: include,
+                pagination: pagination
             ),
             shouldSign: true,
             sendDate: sendDate,

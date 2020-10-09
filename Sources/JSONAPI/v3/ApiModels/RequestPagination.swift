@@ -59,11 +59,17 @@ public class RequestPagination {
     public func resetToFirstPage() {
         switch self.option {
             
-        case .strategy(let strategy):
+        case .strategy(let strategy),
+             .indexedStrategy(let strategy):
             _ = strategy.toStartPage()
-            
-        default:
-            return
+
+        case .cursorStrategy(let strategy):
+            _ = strategy.toStartPage()
+
+        case .cursorSingle,
+             .indexedSingle,
+             .single:
+            break
         }
     }
     
