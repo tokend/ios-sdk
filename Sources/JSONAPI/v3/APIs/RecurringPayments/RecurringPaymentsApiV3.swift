@@ -48,7 +48,6 @@ public class RecurringPaymentsApiV3: JSONAPI.BaseApi {
         })
     }
 
-
     public enum SchedulePaymentDestination {
 
         /// Destination card to send payment. If provided - `balanceId` MUST be binded to the card.

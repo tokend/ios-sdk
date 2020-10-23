@@ -60,19 +60,21 @@ public class TFAHandler: TFAHandlerProtocol {
         
         let input: ApiCallbacks.TFAInput
         switch meta.factorTypeBase {
-            
+
         case .codeBased(let metaModel):
-            input = .code(type: metaModel.factorType, inputCallback: { [weak self] (code, completionClosure) in
-                self?.submitTFAFactor(
-                    walletId: metaModel.walletId,
-                    token: metaModel.token,
-                    signedToken: code,
-                    factorId: metaModel.factorId,
-                    completion: { (result) in
-                        completionClosure()
-                        completion(result)
+            input = .code(
+                type: metaModel.factorType,
+                inputCallback: { [weak self] (code, completionClosure) in
+                    self?.submitTFAFactor(
+                        walletId: metaModel.walletId,
+                        token: metaModel.token,
+                        signedToken: code,
+                        factorId: metaModel.factorId,
+                        completion: { (result) in
+                            completionClosure()
+                            completion(result)
+                        })
                 })
-            })
             
         case .passwordBased(let metaModel):
             let tokenSignData = ApiCallbacks.TokenSignData(
@@ -83,17 +85,19 @@ public class TFAHandler: TFAHandlerProtocol {
                 factorId: metaModel.factorId
             )
             
-            input = .password(tokenSignData: tokenSignData, inputCallback: { [weak self] (signedToken, completionClosure) in
-                self?.submitTFAFactor(
-                    walletId: tokenSignData.walletId,
-                    token: tokenSignData.token,
-                    signedToken: signedToken,
-                    factorId: tokenSignData.factorId,
-                    completion: { (result) in
-                        completionClosure()
-                        completion(result)
+            input = .password(
+                tokenSignData: tokenSignData,
+                inputCallback: { [weak self] (signedToken, completionClosure) in
+                    self?.submitTFAFactor(
+                        walletId: tokenSignData.walletId,
+                        token: tokenSignData.token,
+                        signedToken: signedToken,
+                        factorId: tokenSignData.factorId,
+                        completion: { (result) in
+                            completionClosure()
+                            completion(result)
+                        })
                 })
-            })
         }
         
         self.callbacks.onTFARequired(input, {
@@ -146,7 +150,7 @@ public class TFAHandler: TFAHandlerProtocol {
         )
         let tfa = TFAVerifyRequest(attributes: attributes)
         
-        guard let tfaData = try? ApiDataRequest<TFAVerifyRequest, WalletInfoModel.Include>(
+        guard let tfaData = try? ApiDataRequest<TFAVerifyRequest, WalletInfoModelV2.Include>(
             data: tfa
             ).encode() else {
                 completion(.failure(VerifyError.requestEncodingFailed))
@@ -197,8 +201,9 @@ public struct TFAPasswordHandler {
             }
         }
     }
+
     public func initiatePasswordTFA(
-        email: String,
+        login: String,
         password: String,
         meta: TFAPasswordMetaModel,
         kdfParams: KDFParams,
@@ -212,7 +217,7 @@ public struct TFAPasswordHandler {
         
         guard
             let keyPairs = try? KeyPairBuilder.getKeyPairs(
-                forLogin: email,
+                forLogin: login,
                 password: password,
                 keychainData: meta.keychainData,
                 walletKDF: walletKDF

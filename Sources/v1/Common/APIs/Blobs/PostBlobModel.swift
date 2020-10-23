@@ -9,7 +9,6 @@ public extension PostBlobModel {
 
     struct Data: Encodable {
 
-
         public let type: String
         public let attributes: Attributes
         public let relationships: Relationships

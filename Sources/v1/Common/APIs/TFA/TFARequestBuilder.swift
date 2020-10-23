@@ -55,7 +55,7 @@ public class TFARequestBuilder: BaseApiRequestBuilder {
             .addPath(walletId)
             .addPath(self.factorsPath)
         
-        let requestData = ApiDataRequest<TFACreateFactorModel, WalletInfoModel.Include>(data: model)
+        let requestData = ApiDataRequest<TFACreateFactorModel, WalletInfoModelV2.Include>(data: model)
         guard let requestDataEncoded = try? requestData.encode() else {
             completion(nil)
             return
@@ -92,7 +92,7 @@ public class TFARequestBuilder: BaseApiRequestBuilder {
             .addPath(self.factorsPath)
             .addPath(factorId)
         
-        let requestData = ApiDataRequest<TFAUpdateFactorModel, WalletInfoModel.Include>(data: model)
+        let requestData = ApiDataRequest<TFAUpdateFactorModel, WalletInfoModelV2.Include>(data: model)
         guard let requestDataEncoded = try? requestData.encode() else {
             completion(nil)
             return

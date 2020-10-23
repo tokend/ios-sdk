@@ -348,7 +348,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
 
     func requestCards() {
         let filters = CardsRequestsFilters.with(.owner(Constants.userAccountId))
-        let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
+        let pagination = RequestPagination(.indexedSingle(index: 0, limit: 20, order: .descending))
         self.tokenDApi.cardsApi.requestCards(
             filters: filters,
             include: ["balance"],
@@ -432,7 +432,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
 
     func requestRecurringPayments() {
         let filters = RecurringPaymentsRequestsFilters.with(.sourceAccount(Constants.userAccountId))
-        let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
+        let pagination = RequestPagination(.indexedSingle(index: 0, limit: 20, order: .descending))
 
         self.tokenDApi.recurringPaymentsApi.requestScheduledPayments(
             filters: filters,
@@ -522,7 +522,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         self.tokenDApi.friendsApi.requestFriends(
             accountId: Constants.userAccountId,
             include: nil,
-            pagination: .init(.single(index: 0, limit: 20, order: .descending)),
+            pagination: .init(.indexedSingle(index: 0, limit: 20, order: .descending)),
             completion: { [weak self] (result) in
                 switch result {
 
@@ -540,7 +540,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             accountId: Constants.userAccountId,
             filters: .init(),
             include: [],
-            pagination: .init(.single(index: 0, limit: 20, order: .descending)),
+            pagination: .init(.indexedSingle(index: 0, limit: 20, order: .descending)),
             completion: { [weak self] (result) in
                 switch result {
 
@@ -556,7 +556,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     func requestAtomicSwapAsks() {
         let filters = AtomicSwapFiltersV3.with(.baseAsset("82745DB9210D4AD4"))
         
-        let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
+        let pagination = RequestPagination(.indexedSingle(index: 0, limit: 20, order: .descending))
         self.tokenDApi.atomicSwapApi
             .requestAtomicSwapAsks(
                 filters: filters,
@@ -583,7 +583,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     func requestRequests() {
         let filters = RequestsFiltersV3.with(.requestor(Constants.userAccountId))
         
-        let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
+        let pagination = RequestPagination(.indexedSingle(index: 0, limit: 20, order: .descending))
         self.tokenDApi.requetsApi
             .requestRequests(
                 filters: filters,
@@ -610,7 +610,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     func requestAccountRequests() {
         let accountId = Constants.userAccountId
         let requestId = "131"
-        let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
+        let pagination = RequestPagination(.indexedSingle(index: 0, limit: 20, order: .descending))
         
         self.tokenDApi.accountsApi.requestAccountRequest(
             accountId: accountId,
@@ -654,7 +654,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         let filter = PollsRequestFiltersV3.with(
             .owner("GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB")
         )
-        let single = RequestPagination.Option.single(
+        let single = RequestPagination.Option.indexedSingle(
             index: 0,
             limit: 10,
             order: .descending
@@ -684,7 +684,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             limit: 1,
             order: .descending
         )
-        let pagination = RequestPagination( .strategy(strategy))
+        let pagination = RequestPagination( .indexedStrategy(strategy))
         self.loadAllVotesController = LoadAllResourcesController<Horizon.VoteResource>(
             requestPagination: pagination
         )
@@ -721,7 +721,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     func requestAssetsV3() {
         let paginationStrategy = IndexedPaginationStrategy(index: nil, limit: 2, order: .ascending)
         self.loadAllAssetsController = LoadAllResourcesController(
-            requestPagination: RequestPagination(.strategy(paginationStrategy))
+            requestPagination: RequestPagination(.indexedStrategy(paginationStrategy))
         )
         
         self.loadAllAssetsController?.loadResources(
@@ -795,7 +795,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             .balance(balance)
         )
         
-        let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
+        let pagination = RequestPagination(.indexedSingle(index: 0, limit: 20, order: .descending))
         
         self.tokenDApi.historyApi.requestHistory(
             filters: filters,
@@ -822,7 +822,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             .account(account)
         )
         
-        let pagination = RequestPagination(.single(index: 0, limit: 20, order: .descending))
+        let pagination = RequestPagination(.indexedSingle(index: 0, limit: 20, order: .descending))
         
         self.tokenDApi.historyApi.requestMovements(
             filters: filters,
@@ -845,7 +845,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             .balance(balance)
         )
         
-        let pagination = RequestPagination(.single(index: 0, limit: 3, order: .descending))
+        let pagination = RequestPagination(.indexedSingle(index: 0, limit: 3, order: .descending))
         
         var prevRequest: JSONAPI.RequestModel?
         
@@ -970,7 +970,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             .addFilter(.maxSoftCap(1000000.0))
             .addFilter(.maxEndTime(Date.distantFuture))
         
-        let pagination = RequestPagination(.single(index: 0, limit: 10, order: .ascending))
+        let pagination = RequestPagination(.indexedSingle(index: 0, limit: 10, order: .ascending))
         
         self.tokenDApi.salesApi.getSales(
             filters: filters,
@@ -991,7 +991,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         let pagination = IndexedPaginationStrategy(index: nil, limit: 100, order: .ascending)
         
         self.tokenDApi.keyValuesApi.requestKeyValueEntries(
-            pagination: RequestPagination(.strategy(pagination)),
+            pagination: RequestPagination(.indexedStrategy(pagination)),
             completion: { (result) in
                 switch result {
                     
@@ -1125,7 +1125,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     
     func requestChangeRoleRequests() {
         let filters = ChangeRoleRequestsFiltersV3.with(.requestor(self.vc.accountId))
-        let pagination = RequestPagination(.strategy(IndexedPaginationStrategy(
+        let pagination = RequestPagination(.indexedStrategy(IndexedPaginationStrategy(
             index: 0,
             limit: 10,
             order: .descending))

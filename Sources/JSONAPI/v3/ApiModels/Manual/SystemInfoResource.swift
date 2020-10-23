@@ -18,4 +18,3 @@ open class SystemInfoResource: Resource {
         return self.relationSingleOptionalValue(key: CodingKeys.accountId)
     }
 }
-

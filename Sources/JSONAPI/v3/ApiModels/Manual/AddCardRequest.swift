@@ -93,7 +93,6 @@ extension AddCardRequest {
     }
 }
 
-
 extension AddCardRequest.Included {
 
     struct Relationships: Encodable {

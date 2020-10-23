@@ -14,17 +14,17 @@ class AssetsRequestBuilderV3Tests: BaseJSONAPIRequestBuilderTests {
             expectedUrl: String
             )] = [
                 (
-                    pagination: .single(index: 0, limit: 10, order: .ascending),
+                    pagination: .indexedSingle(index: 0, limit: 10, order: .ascending),
                     description: "page model",
                     expectedUrl: "/v3/assets?page[number]=0&page[limit]=10&page[order]=asc"
                 ),
                 (
-                    pagination: .single(index: 1, limit: 20, order: .descending),
+                    pagination: .indexedSingle(index: 1, limit: 20, order: .descending),
                     description: "page model",
                     expectedUrl: "/v3/assets?page[number]=1&page[limit]=20&page[order]=desc"
                 ),
                 (
-                    pagination: .strategy(IndexedPaginationStrategy(index: nil, limit: 30, order: .ascending)),
+                    pagination: .indexedStrategy(IndexedPaginationStrategy(index: nil, limit: 30, order: .ascending)),
                     description: "page model",
                     expectedUrl: "/v3/assets?page[number]=0&page[limit]=30&page[order]=asc"
                 )

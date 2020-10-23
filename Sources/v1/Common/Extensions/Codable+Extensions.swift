@@ -32,7 +32,7 @@ public extension Decodable {
     ///   - from: Source data to be decoded
     ///   - decoder: Object that decodes data from `Data` to `Decodable`
     /// - Returns: `Decodable`
-    public static func decode(from jsonData: Data, decoder: JSONDecoder? = nil) throws -> Self {
+    static func decode(from jsonData: Data, decoder: JSONDecoder? = nil) throws -> Self {
         return try (decoder ?? JSONCoders.snakeCaseDecoder).decode(Self.self, from: jsonData)
     }
     
@@ -41,7 +41,7 @@ public extension Decodable {
     ///   - from: Source data to be decoded
     ///   - decoder: Object that decodes data from `JSON` to `Decodable`
     /// - Returns: `Decodable`
-    public static func decode(from json: JSON, decoder: JSONDecoder? = nil) throws -> Self {
+    static func decode(from json: JSON, decoder: JSONDecoder? = nil) throws -> Self {
         let jsonData = try JSONSerialization.data(withJSONObject: json, options: [])
         return try self.decode(from: jsonData, decoder: decoder)
     }
@@ -58,11 +58,11 @@ public extension Encodable {
     ///This method throws an error if any values are invalid for the given
     /// encoder's format.
     /// - Returns: `Data`
-    public func encode() throws -> Data {
+    func encode() throws -> Data {
         return try JSONCoders.snakeCaseEncoder.encode(self)
     }
 
-    public func documentDictionary() throws -> [String: Any] {
+    func documentDictionary() throws -> [String: Any] {
         let encodedRequest = try encode()
         let object = try JSONSerialization.jsonObject(with: encodedRequest, options: [])
 

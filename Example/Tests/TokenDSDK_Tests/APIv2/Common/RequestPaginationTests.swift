@@ -15,7 +15,7 @@ class RequestPaginationTests: XCTestCase {
     func testPaginationAdjustment() {
         let strategy = IndexedPaginationStrategy(index: 1, limit: 15, order: .descending)
         
-        let pagination = RequestPagination(.strategy(strategy))
+        let pagination = RequestPagination(.indexedStrategy(strategy))
         
         pagination.adjustPagination(resultsCount: 15, links: nil)
         
@@ -32,7 +32,7 @@ class RequestPaginationTests: XCTestCase {
     func testPaginationAdjustmentLastReached() {
         let strategy = IndexedPaginationStrategy(index: 5, limit: 15, order: .descending)
         
-        let pagination = RequestPagination(.strategy(strategy))
+        let pagination = RequestPagination(.indexedStrategy(strategy))
         
         pagination.adjustPagination(resultsCount: 14, links: nil)
         
@@ -77,7 +77,7 @@ class RequestPaginationTests: XCTestCase {
             return
         }
         
-        let pagination = RequestPagination(.strategy(strategy))
+        let pagination = RequestPagination(.indexedStrategy(strategy))
         
         pagination.adjustPagination(resultsCount: 15, links: document.links)
         
