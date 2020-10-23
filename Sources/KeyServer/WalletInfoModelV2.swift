@@ -16,9 +16,17 @@ public struct WalletInfoModelV2: Encodable {
         public struct Attributes: Encodable {
 
             public let accountId: String
-            public let email: String?
+            public let login: String?
             public let salt: String
             public let keychainData: String
+
+            public enum CodingKeys: String, CodingKey {
+                case accountId
+                // Backend legacy
+                case login = "email"
+                case salt
+                case keychainData
+            }
         }
 
         public struct Relationships: Encodable {
@@ -214,7 +222,7 @@ extension WalletInfoModelV2.WalletInfoData.Attributes: CustomDebugStringConverti
         var fields: [String] = []
 
         fields.append("accountId: \(self.accountId)")
-        if let email = self.email {
+        if let email = self.login {
             fields.append("email: \(email)")
         }
         fields.append(DebugFormatted(base64EncodedData: self.salt, title: "salt", clipOriginal: false))

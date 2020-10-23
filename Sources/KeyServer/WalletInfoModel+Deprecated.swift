@@ -17,9 +17,18 @@ public struct WalletInfoModel: Encodable {
         public struct Attributes: Encodable {
             
             public let accountId: String
-            public let email: String?
+            public let login: String?
+            public var email: String? { login }
             public let salt: String
             public let keychainData: String
+
+            public enum CodingKeys: String, CodingKey {
+                case accountId
+                // Backend legacy
+                case login = "email"
+                case salt
+                case keychainData
+            }
         }
         
         public struct Relationships: Encodable {
@@ -178,6 +187,7 @@ public struct WalletInfoModel: Encodable {
     }
 }
 
+@available(*, deprecated, renamed: "WalletInfoModelV2")
 extension WalletInfoModel: CustomDebugStringConvertible {
     
     public var debugDescription: String {
@@ -194,13 +204,14 @@ extension WalletInfoModel: CustomDebugStringConvertible {
     }
 }
 
+@available(*, deprecated, renamed: "WalletInfoModelV2")
 extension WalletInfoModel.WalletInfoData.Attributes: CustomDebugStringConvertible {
     
     public var debugDescription: String {
         var fields: [String] = []
         
         fields.append("accountId: \(self.accountId)")
-        if let email = self.email {
+        if let email = self.login {
             fields.append("email: \(email)")
         }
         fields.append(DebugFormatted(base64EncodedData: self.salt, title: "salt", clipOriginal: false))
@@ -212,6 +223,7 @@ extension WalletInfoModel.WalletInfoData.Attributes: CustomDebugStringConvertibl
     }
 }
 
+@available(*, deprecated, renamed: "WalletInfoModelV2")
 extension WalletInfoModel.WalletInfoData.Relationships: CustomDebugStringConvertible {
     
     public var debugDescription: String {
@@ -232,6 +244,7 @@ extension WalletInfoModel.WalletInfoData.Relationships: CustomDebugStringConvert
     }
 }
 
+@available(*, deprecated, renamed: "WalletInfoModelV2")
 extension WalletInfoModel.WalletInfoData.Relationships.KDF: CustomDebugStringConvertible {
     
     public var debugDescription: String {
@@ -246,6 +259,7 @@ extension WalletInfoModel.WalletInfoData.Relationships.KDF: CustomDebugStringCon
     }
 }
 
+@available(*, deprecated, renamed: "WalletInfoModelV2")
 extension WalletInfoModel.WalletInfoData.Relationships.Factor: CustomDebugStringConvertible {
     
     public var debugDescription: String {
@@ -261,6 +275,7 @@ extension WalletInfoModel.WalletInfoData.Relationships.Factor: CustomDebugString
     }
 }
 
+@available(*, deprecated, renamed: "WalletInfoModelV2")
 extension WalletInfoModel.WalletInfoData.Relationships.Factor.Attributes: CustomDebugStringConvertible {
     
     public var debugDescription: String {
@@ -276,6 +291,7 @@ extension WalletInfoModel.WalletInfoData.Relationships.Factor.Attributes: Custom
     }
 }
 
+@available(*, deprecated, renamed: "WalletInfoModelV2")
 extension WalletInfoModel.WalletInfoData.Relationships.Signer: CustomDebugStringConvertible {
 
     public var debugDescription: String {
@@ -291,6 +307,7 @@ extension WalletInfoModel.WalletInfoData.Relationships.Signer: CustomDebugString
     }
 }
 
+@available(*, deprecated, renamed: "WalletInfoModelV2")
 extension WalletInfoModel.WalletInfoData.Relationships.Signer.Attributes: CustomDebugStringConvertible {
 
     public var debugDescription: String {
@@ -306,6 +323,7 @@ extension WalletInfoModel.WalletInfoData.Relationships.Signer.Attributes: Custom
     }
 }
 
+@available(*, deprecated, renamed: "WalletInfoModelV2")
 extension WalletInfoModel.WalletInfoData.Relationships.Referrer: CustomDebugStringConvertible {
     
     public var debugDescription: String {
@@ -320,6 +338,7 @@ extension WalletInfoModel.WalletInfoData.Relationships.Referrer: CustomDebugStri
     }
 }
 
+@available(*, deprecated, renamed: "WalletInfoModelV2")
 extension WalletInfoModel.WalletInfoData.Relationships.Transaction: CustomDebugStringConvertible {
     
     public var debugDescription: String {
@@ -333,6 +352,7 @@ extension WalletInfoModel.WalletInfoData.Relationships.Transaction: CustomDebugS
     }
 }
 
+@available(*, deprecated, renamed: "WalletInfoModelV2")
 extension WalletInfoModel.WalletInfoData.Relationships.Transaction.Attributes: CustomDebugStringConvertible {
     
     public var debugDescription: String {

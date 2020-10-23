@@ -104,8 +104,10 @@ public class KeyServerApi {
         /// Errors that may occur for `KeyServerApi.requestWalletKDF(...)`
         public enum RequestError: Swift.Error, LocalizedError {
             
-            /// KDF params not found for given email.
+            /// KDF params not found for given login.
+            @available(*, deprecated, renamed: "loginNotFound")
             case emailNotFound
+            case loginNotFound
             
             /// Unrecognized error. Contains `ApiErrors`
             case unknown(ApiErrors)
@@ -114,8 +116,9 @@ public class KeyServerApi {
             
             public var errorDescription: String? {
                 switch self {
-                case .emailNotFound:
-                    return "KDF for email not found"
+                case .emailNotFound,
+                     .loginNotFound:
+                    return "KDF for login not found"
                 case .unknown(let errors):
                     return errors.localizedDescription
                 }
@@ -157,7 +160,7 @@ public class KeyServerApi {
                     
                 case .success(let walletKDFResponse):
                     guard let walletKDF = WalletKDFParams.fromResponse(walletKDFResponse.data) else {
-                        completion(.failure(.emailNotFound))
+                        completion(.failure(.loginNotFound))
                         return
                     }
                     completion(.success(walletKDF: walletKDF))
@@ -165,7 +168,7 @@ public class KeyServerApi {
                 case .failure(let errors):
                     let requestError: RequestWalletKDFResult.RequestError
                     if errors.contains(status: ApiError.Status.notFound) {
-                        requestError = .emailNotFound
+                        requestError = .loginNotFound
                     } else {
                         requestError = .unknown(errors)
                     }

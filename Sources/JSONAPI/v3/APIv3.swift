@@ -20,25 +20,25 @@ public class APIv3 {
         )
     }()
     
-    public private(set) lazy var accountsApi: AccountsApiV3 = { return self.create(AccountsApiV3.self) }()
-    public private(set) lazy var assetPairsApi: AssetPairsApiV3 = { return self.create(AssetPairsApiV3.self) }()
-    public private(set) lazy var assetsApi: AssetsApiV3 = { return self.create(AssetsApiV3.self) }()
-    public private(set) lazy var balancesApi: BalancesApiV3 = { return self.create(BalancesApiV3.self) }()
-    public private(set) lazy var historyApi: HistoryApiV3 = { return self.create(HistoryApiV3.self) }()
-    public private(set) lazy var keyValuesApi: KeyValuesApiV3 = { return self.create(KeyValuesApiV3.self) }()
-    public private(set) lazy var offersApi: OffersApiV3 = { return self.create(OffersApiV3.self) }()
-    public private(set) lazy var orderBookApi: OrderBookApiV3 = { return self.create(OrderBookApiV3.self) }()
-    public private(set) lazy var salesApi: SalesApiV3 = { return self.create(SalesApiV3.self) }()
-    public private(set) lazy var pollsApi: PollsApiV3 = { return self.create(PollsApiV3.self) }()
-    public private(set) lazy var atomicSwapApi: AtomicSwapApiV3 = { return self.create(AtomicSwapApiV3.self) }()
-    public private(set) lazy var requetsApi: RequestsApiV3 = { return self.create(RequestsApiV3.self) }()
-    public private(set) lazy var integrationsApi: IntegrationsApiV3 = { return self.create(IntegrationsApiV3.self) }()
-    public private(set) lazy var cardsApi: CardsApi = { return self.create(CardsApi.self) }()
-    public private(set) lazy var friendsApi: FriendsApi = { return self.create(FriendsApi.self) }()
-    public private(set) lazy var transactionsApi: TransactionsApiV3 = { return self.create(TransactionsApiV3.self) }()
-    public private(set) lazy var recurringPaymentsApi: RecurringPaymentsApiV3 = { return create(RecurringPaymentsApiV3.self) }()
-    public private(set) lazy var invoicesApi: InvoicesApiV3 = { return create(InvoicesApiV3.self) }()
-    public private(set) lazy var invitationsApi: InvitationsApiV3 = { return create(InvitationsApiV3.self) }()
+    public private(set) lazy var accountsApi: AccountsApiV3 = { return self.create() }()
+    public private(set) lazy var assetPairsApi: AssetPairsApiV3 = { return self.create() }()
+    public private(set) lazy var assetsApi: AssetsApiV3 = { return self.create() }()
+    public private(set) lazy var balancesApi: BalancesApiV3 = { return self.create() }()
+    public private(set) lazy var historyApi: HistoryApiV3 = { return self.create() }()
+    public private(set) lazy var keyValuesApi: KeyValuesApiV3 = { return self.create() }()
+    public private(set) lazy var offersApi: OffersApiV3 = { return self.create() }()
+    public private(set) lazy var orderBookApi: OrderBookApiV3 = { return self.create() }()
+    public private(set) lazy var salesApi: SalesApiV3 = { return self.create() }()
+    public private(set) lazy var pollsApi: PollsApiV3 = { return self.create() }()
+    public private(set) lazy var atomicSwapApi: AtomicSwapApiV3 = { return self.create() }()
+    public private(set) lazy var requetsApi: RequestsApiV3 = { return self.create() }()
+    public private(set) lazy var integrationsApi: IntegrationsApiV3 = { return self.create() }()
+    public private(set) lazy var cardsApi: CardsApi = { return self.create() }()
+    public private(set) lazy var friendsApi: FriendsApi = { return self.create() }()
+    public private(set) lazy var transactionsApi: TransactionsApiV3 = { return self.create() }()
+    public private(set) lazy var recurringPaymentsApi: RecurringPaymentsApiV3 = { return create() }()
+    public private(set) lazy var invoicesApi: InvoicesApiV3 = { return create() }()
+    public private(set) lazy var invitationsApi: InvitationsApiV3 = { return create() }()
     
     // MARK: -
     
@@ -68,9 +68,9 @@ public class APIv3 {
     }
     
     // MARK: - Private
-    
-    private func create<ApiType: JSONAPI.BaseApi>(_ type: ApiType.Type) -> ApiType {
-        let api = type.init(apiStack: self.baseApiStack)
+
+    private func create<ApiType: JSONAPI.BaseApi>() -> ApiType {
+        let api = ApiType.init(apiStack: self.baseApiStack)
         return api
     }
 }

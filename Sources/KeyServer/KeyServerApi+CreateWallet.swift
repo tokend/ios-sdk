@@ -17,8 +17,10 @@ extension KeyServerApi {
             /// General create wallet error. Contains `ApiErrors` model.
             case createFailed(ApiErrors)
 
-            /// Occurs if wallet with given email already exists.
+            /// Occurs if wallet with given login already exists.
+            @available(*, deprecated, renamed: "loginAlreadyTaken")
             case emailAlreadyTaken
+            case loginAlreadyTaken
 
             /// Failed to build request model.
             case failedToGenerateRequest(Swift.Error)
@@ -29,8 +31,9 @@ extension KeyServerApi {
                 switch self {
                 case .createFailed(let errors):
                     return errors.localizedDescription
-                case .emailAlreadyTaken:
-                    return "Email already taken"
+                case .emailAlreadyTaken,
+                     .loginAlreadyTaken:
+                    return "Login already taken"
                 case .failedToGenerateRequest(let error):
                     return error.localizedDescription
                 }
@@ -45,66 +48,12 @@ extension KeyServerApi {
         case success(WalletInfoResponse)
     }
 
-    @available(*, deprecated, renamed: "createWalletV2")
     /// Method sends request to create wallet and register it within Key Server.
     /// The result of request will be fetched in `completion` block as `KeyServerApi.CreateWalletRequestResult`
     /// - Parameters:
-    ///   - email: Email of associated wallet.
-    ///   - password: Password to cypher private key.
-    ///   - keyPair: Wallet key pair. If not provided will generate random.
-    ///   - recoveryKeyPair: Wallet recovery key pair. If not provided will generate random.
-    ///   - passwordFactorKeyPair: Password tfa factor key pair. If not provided will generate random.
-    ///   - referrerAccountId: Referrer account id.
+    ///   - walletInfo: Wallet info.
     ///   - completion: Block that will be called when the result will be received.
-    ///   - result: Member of `KeyServerApi.LoginRequestResult`
-    public func createWallet(
-        walletInfo: WalletInfoModel,
-        completion: @escaping (_ result: CreateWalletRequestResult) -> Void
-        ) {
-        
-        let request: CreateWalletRequest
-        do {
-            request = try self.requestBuilder.buildCreateWalletRequest(
-                walletInfo: walletInfo
-            )
-        } catch let error {
-            completion(.failure(.failedToGenerateRequest(error)))
-            return
-        }
-        
-        self.network.responseDataObject(
-            ApiDataResponse<WalletInfoResponse>.self,
-            url: request.url,
-            method: request.method,
-            bodyData: request.registrationInfoData,
-            completion: { (result) in
-                
-                switch result {
-                    
-                case .failure(let errors):
-                    if errors.contains(status: ApiError.Status.conflict) {
-                        completion(.failure(.emailAlreadyTaken))
-                    } else {
-                        completion(.failure(.createFailed(errors)))
-                    }
-                    
-                case .success(let response):
-                    completion(.success(response.data))
-                }
-        })
-    }
-
-    /// Method sends request to create wallet and register it within Key Server.
-    /// The result of request will be fetched in `completion` block as `KeyServerApi.CreateWalletRequestResult`
-    /// - Parameters:
-    ///   - email: Email of associated wallet.
-    ///   - password: Password to cypher private key.
-    ///   - keyPair: Wallet key pair. If not provided will generate random.
-    ///   - recoveryKeyPair: Wallet recovery key pair. If not provided will generate random.
-    ///   - passwordFactorKeyPair: Password tfa factor key pair. If not provided will generate random.
-    ///   - referrerAccountId: Referrer account id.
-    ///   - completion: Block that will be called when the result will be received.
-    ///   - result: Member of `KeyServerApi.LoginRequestResult`
+    ///   - result: Member of `CreateWalletRequestResult`
     public func createWalletV2(
         walletInfo: WalletInfoModelV2,
         completion: @escaping (_ result: CreateWalletRequestResult) -> Void
@@ -131,7 +80,7 @@ extension KeyServerApi {
 
                 case .failure(let errors):
                     if errors.contains(status: ApiError.Status.conflict) {
-                        completion(.failure(.emailAlreadyTaken))
+                        completion(.failure(.loginAlreadyTaken))
                     } else {
                         completion(.failure(.createFailed(errors)))
                     }
@@ -143,15 +92,10 @@ extension KeyServerApi {
     }
     
     // MARK: Verify wallet
-
-    @available(*, unavailable, renamed: "VerifyWalletResult")
-    public typealias VerifyEmailResult = VerifyWalletResult
     
     /// Result model for `completion` block of `KeyServerApi.verifyWallet(...)`
     public enum VerifyWalletResult {
 
-        @available(*, unavailable, renamed: "VerifyWalletError")
-        public typealias VerifyEmailError = VerifyWalletError
         /// Errors that may occur for `KeyServerApi.verifyWallet(...)`.
         public enum VerifyWalletError: Swift.Error, LocalizedError {
             
@@ -181,20 +125,6 @@ extension KeyServerApi {
         /// Case of failed verify wallet operation with `VerifyWalletResult.VerifyWalletError` model
         case failure(VerifyWalletError)
     }
-
-    @available(*, unavailable, renamed: "verifyWallet")
-    public func verifyEmail(
-        walletId: String,
-        token: String,
-        completion: @escaping (_ result: VerifyWalletResult) -> Void
-    ) {
-
-        verifyWallet(
-            walletId: walletId,
-            token: token,
-            completion: completion
-        )
-    }
     /// Method sends request to verify wallet.
     /// The result of request will be fetched in `completion` block as `KeyServerApi.VerifyWalletResult`
     /// - Parameters:
@@ -210,7 +140,7 @@ extension KeyServerApi {
         
         let request: VerifyWalletRequest
         do {
-            request = try self.requestBuilder.buildVerifyWalletRequest(walletId: walletId, token: token)
+            request = try self.requestBuilder.buildVerifyWalletV2Request(walletId: walletId, token: token)
         } catch let error {
             completion(.failure(.failedToGenerateRequest(error)))
             return
@@ -233,10 +163,7 @@ extension KeyServerApi {
         })
     }
     
-    // MARK: Resend email
-
-    @available(*, unavailable, renamed: "ResendVerificationCodeResult")
-    public typealias ResendEmailResult = ResendVerificationCodeResult
+    // MARK: Resend verification code
     
     /// Result model for `completion` block of `KeyServerApi.resendVerificationCode(...)`
     public enum ResendVerificationCodeResult {
@@ -247,19 +174,6 @@ extension KeyServerApi {
         /// Case of failed response from api with `ApiErrors` model
         case failure(ApiErrors)
     }
-
-    @available(*, unavailable, renamed: "resendVerificationCode")
-    public func resendEmail(
-        walletId: String,
-        completion: @escaping (_ result: ResendVerificationCodeResult) -> Void
-    ) {
-
-        resendVerificationCode(
-            walletId: walletId,
-            completion: completion
-        )
-    }
-    
     /// Method sends request to resend verification code.
     /// The result of request will be fetched in `completion` block as `KeyServerApi.ResendVerificationCodeResult`
     /// - Parameters:

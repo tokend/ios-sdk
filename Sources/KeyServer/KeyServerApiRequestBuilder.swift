@@ -40,34 +40,6 @@ public class KeyServerApiRequestBuilder {
         return request
     }
 
-    @available(*, deprecated, renamed: "buildCreateWalletV2Request")
-    /// Builds request to fetch wallet KDF params from api.
-    /// - Parameters:
-    ///   - walletInfo: Wallet info model.
-    /// - Returns: `CreateWalletRequest` model.
-    public func buildCreateWalletRequest(
-        walletInfo: WalletInfoModel
-        ) throws -> CreateWalletRequest {
-        
-        let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath("wallets")
-        
-        let registrationInfoData = ApiDataRequest<WalletInfoModel.WalletInfoData, WalletInfoModel.Include>(
-            data: walletInfo.data,
-            included: walletInfo.included
-        )
-        let registrationInfoDataEncoded = try registrationInfoData.encode()
-        
-        let request = CreateWalletRequest(
-            url: url,
-            method: .post,
-            parametersEncoding: .json,
-            registrationInfoData: registrationInfoDataEncoded
-        )
-        
-        return request
-    }
-
     /// Builds request to fetch wallet KDF params from api.
     /// - Parameters:
     ///   - walletInfo: Wallet info model.
@@ -93,66 +65,6 @@ public class KeyServerApiRequestBuilder {
         )
 
         return request
-    }
-
-    @available(*, deprecated, renamed: "buildUpdateWalletV2Request")
-    /// Builds request to update wallet. Used to update password.
-    /// - Parameters:
-    ///   - walletId: Wallet id.
-    ///   - walletInfo: Wallet info model.
-    ///   - requestSigner: Entity that signs request.
-    ///   - sendDate: Request send date.
-    ///   - completion: Returns `UpdateWalletRequest` or nil.
-    public func buildUpdateWalletRequest(
-        walletId: String,
-        walletInfo: WalletInfoModel,
-        requestSigner: JSONAPI.RequestSignerProtocol,
-        sendDate: Date = Date(),
-        completion: @escaping (UpdateWalletRequest?) -> Void
-        ) {
-        
-        let baseUrl = self.apiConfiguration.urlString
-        let path = /"wallets"/walletId
-        let url = baseUrl/path
-        let method: RequestMethod = .put
-        
-        let walletData = ApiDataRequest<WalletInfoModel.WalletInfoData, WalletInfoModel.Include>(
-            data: walletInfo.data,
-            included: walletInfo.included
-        )
-        guard let walletInfoDataEncoded = try? walletData.encode() else {
-            completion(nil)
-            return
-        }
-        
-        let requestSignModel = JSONAPI.RequestSignParametersModel(
-            baseUrl: baseUrl,
-            path: path,
-            method: method,
-            queryItems: [],
-            bodyParameters: nil,
-            headers: nil,
-            sendDate: sendDate,
-            network: self.network
-        )
-        
-        requestSigner.sign(
-            request: requestSignModel,
-            completion: { (signedHeaders) in
-                guard let signedHeaders = signedHeaders else {
-                    completion(nil)
-                    return
-                }
-                
-                let request = UpdateWalletRequest(
-                    url: url,
-                    method: method,
-                    parametersEncoding: .json,
-                    registrationInfoData: walletInfoDataEncoded,
-                    signedHeaders: signedHeaders
-                )
-                completion(request)
-        })
     }
 
     /// Builds request to update wallet. Used to update password.
@@ -214,46 +126,6 @@ public class KeyServerApiRequestBuilder {
         })
     }
 
-    @available(*, unavailable, renamed: "buildVerifyWalletRequest")
-    public func buildVerifyEmailRequest(
-        walletId: String,
-        token: String
-    ) throws -> VerifyWalletRequest {
-
-        try buildVerifyWalletRequest(
-            walletId: walletId,
-            token: token
-        )
-    }
-
-    @available(*, deprecated, renamed: "buildVerifyWalletV2Request")
-    /// Builds request to verify wallet.
-    /// - Parameters:
-    ///   - walletId: Wallet id.
-    ///   - token: Verification token.
-    /// - Returns: `VerifyWalletRequest` model.
-    public func buildVerifyWalletRequest(
-        walletId: String,
-        token: String
-        ) throws -> VerifyWalletRequest {
-        
-        let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath("wallets/\(walletId)/verification")
-        
-        let attributes = WalletVerification.Attributes(token: token)
-        let verification = WalletVerification(attributes: attributes)
-        let verifyData = ApiDataRequest<WalletVerification, WalletInfoModel.Include>(data: verification)
-        let verifyDataEncoded = try verifyData.encode()
-        
-        let request = VerifyWalletRequest(
-            url: url,
-            method: .put,
-            verifyData: verifyDataEncoded
-        )
-        
-        return request
-    }
-
     /// Builds request to verify wallet.
     /// - Parameters:
     ///   - walletId: Wallet id.
@@ -279,16 +151,6 @@ public class KeyServerApiRequestBuilder {
         )
 
         return request
-    }
-
-    @available(*, unavailable, renamed: "buildResendVerificationCodeRequest")
-    public func buildResendEmailRequest(
-        walletId: String
-    ) -> ResendVerificationCodeRequest {
-
-        return buildResendVerificationCodeRequest(
-            walletId: walletId
-        )
     }
     
     /// Builds request to resend verification code.

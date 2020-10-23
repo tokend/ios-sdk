@@ -208,7 +208,7 @@ public struct WalletInfoBuilder {
         // "data"
         let relationshipsAttributes = WalletInfoModel.WalletInfoData.Attributes(
             accountId: walletDetails.accountIdBase32Check,
-            email: walletDetails.login,
+            login: walletDetails.login,
             salt: walletDetails.saltBase64,
             keychainData: walletDetails.keychainDataBase64
         )
@@ -416,12 +416,12 @@ public struct WalletInfoBuilder {
                 weight: currSigner.weight,
                 identity: currSigner.identity,
                 details: details,
-                ext: .emptyVersion()
+                ext: .emptyVersion
             )
             
             let operation = ManageSignerOp(
                 data: ManageSignerOp.ManageSignerOpData.create(updateSignerData),
-                ext: .emptyVersion()
+                ext: .emptyVersion
             )
             operations.append(operation)
         }
@@ -433,12 +433,12 @@ public struct WalletInfoBuilder {
                 weight: 1000,
                 identity: 0,
                 details: "{}",
-                ext: .emptyVersion()
+                ext: .emptyVersion
             )
             
             let operation = ManageSignerOp(
                 data: ManageSignerOp.ManageSignerOpData.create(updateSignerData),
-                ext: .emptyVersion()
+                ext: .emptyVersion
             )
             operations.append(operation)
         }
@@ -494,12 +494,12 @@ public struct WalletInfoBuilder {
             
             let removingSignerData = RemoveSignerData(
                 publicKey: signerAccountId,
-                ext: .emptyVersion()
+                ext: .emptyVersion
             )
             
             let removeSignerOp = ManageSignerOp(
                 data: .remove(removingSignerData),
-                ext: .emptyVersion()
+                ext: .emptyVersion
             )
             operations.append(removeSignerOp)
         }

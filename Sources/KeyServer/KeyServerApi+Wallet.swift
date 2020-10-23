@@ -54,44 +54,8 @@ extension KeyServerApi {
         /// with `WalletInfoModel`, `WalletDataModel` and new private `ECDSA.KeyData` models
         case succeeded(WalletInfoResponse)
     }
-    @available(*, deprecated, renamed: "performUpdatePasswordV2Request")
-    public func performUpdatePasswordRequest(
-        email: String,
-        walletId: String,
-        signingPassword: String,
-        walletKDF: WalletKDFParams,
-        walletInfo: WalletInfoModel,
-        requestSigner: JSONAPI.RequestSignerProtocol,
-        completion: @escaping (_ result: UpdatePasswordResult) -> Void
-        ) -> Cancelable {
-        
-        var cancelable = self.network.getEmptyCancelable()
-        
-        self.requestBuilder.buildUpdateWalletRequest(
-            walletId: walletId,
-            walletInfo: walletInfo,
-            requestSigner: requestSigner,
-            completion: { [weak self] (request) in
-                guard let request = request else {
-                    completion(.failed(.failedToGenerateRequest(ApiErrors.failedToSignRequest)))
-                    return
-                }
-                
-                cancelable.cancelable = self?.performUpdatePasswordRequest(
-                    request,
-                    email: email,
-                    signingPassword: signingPassword,
-                    walletKDF: walletKDF,
-                    initiateTFA: true,
-                    completion: completion
-                )
-        })
-        
-        return cancelable
-    }
-
     public func performUpdatePasswordV2Request(
-        email: String,
+        login: String,
         walletId: String,
         signingPassword: String,
         walletKDF: WalletKDFParams,
@@ -114,7 +78,7 @@ extension KeyServerApi {
 
                 cancelable.cancelable = self?.performUpdatePasswordRequest(
                     request,
-                    email: email,
+                    login: login,
                     signingPassword: signingPassword,
                     walletKDF: walletKDF,
                     initiateTFA: true,
@@ -132,12 +96,10 @@ extension KeyServerApi {
         
         /// Errors that may occur for `KeyServerApi.requestWallet(...)`.
         public enum RequestWalletError: Swift.Error, LocalizedError {
-            
-            /// Wallet email is not verified.
-            @available(*, unavailable, renamed: "walletShouldBeVerified")
-            case emailShouldBeVerified(walletId: String)
 
             /// Wallet is not verified.
+            @available(*, unavailable, renamed: "walletShouldBeVerified")
+            case emailShouldBeVerified(walletId: String)
             case walletShouldBeVerified(walletId: String)
             
             /// TFA failed.
@@ -145,9 +107,6 @@ extension KeyServerApi {
             
             /// Unrecognized error. Contains `ApiErrors` model.
             case unknown(ApiErrors)
-            
-            /// No existing wallet with given email is found.
-            case wrongEmail
             
             /// Input password is wrong.
             case wrongPassword
@@ -163,8 +122,6 @@ extension KeyServerApi {
                     return "TFA failed"
                 case .unknown(let errors):
                     return errors.localizedDescription
-                case .wrongEmail:
-                    return "Wrong email"
                 case .wrongPassword:
                     return "Wrong password"
                 }
@@ -372,9 +329,9 @@ extension KeyServerApi {
         return cancellable
     }
     
-    private func performUpdatePasswordRequest(
+    internal func performUpdatePasswordRequest(
         _ request: UpdateWalletRequest,
-        email: String,
+        login: String,
         signingPassword: String,
         walletKDF: WalletKDFParams,
         initiateTFA: Bool,
@@ -407,7 +364,7 @@ extension KeyServerApi {
                                 case .success:
                                     cancelable.cancelable = self?.performUpdatePasswordRequest(
                                         request,
-                                        email: email,
+                                        login: login,
                                         signingPassword: signingPassword,
                                         walletKDF: walletKDF,
                                         initiateTFA: false,
@@ -435,7 +392,7 @@ extension KeyServerApi {
                                 
                             case .passwordBased(let metaModel):
                                 TFAPasswordHandler(tfaHandler: strongSelf.tfaHandler).initiatePasswordTFA(
-                                    email: email,
+                                    login: login,
                                     password: signingPassword,
                                     meta: metaModel,
                                     kdfParams: walletKDF.kdfParams,

@@ -1,6 +1,7 @@
 import Foundation
 import DLCryptoKit
 
+@available(*, deprecated, message: "Use project-specific sign up flow")
 public class SignUpRequestBuilder {
     
     // MARK: - Private properties
@@ -107,6 +108,7 @@ public class SignUpRequestBuilder {
     }
 }
 
+@available(*, deprecated, message: "Use project-specific sign up flow")
 extension SignUpRequestBuilder {
     
     public enum Result {

@@ -1,8 +1,8 @@
 import Foundation
 
 public struct WalletDataModel {
-    
-    public let email: String
+
+    public let login: String
     public let accountId: String
     public let walletId: String
     public let type: String
@@ -11,9 +11,9 @@ public struct WalletDataModel {
     public let verified: Bool
     
     // MARK: -
-    
+
     public init(
-        email: String,
+        login: String,
         accountId: String,
         walletId: String,
         type: String,
@@ -21,8 +21,8 @@ public struct WalletDataModel {
         walletKDF: WalletKDFParams,
         verified: Bool
         ) {
-        
-        self.email = email
+
+        self.login = login
         self.accountId = accountId
         self.walletId = walletId
         self.type = type

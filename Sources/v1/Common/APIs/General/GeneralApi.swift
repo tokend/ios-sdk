@@ -106,12 +106,10 @@ public class GeneralApi: BaseApi {
         
         /// Filter is used when it is needed to fetch identities by accountId
         case accountId(_ accountId: String)
-        
-        /// Filter is used when it is needed to fetch identities by email
-        @available(*, deprecated, renamed: "login")
-        case email(_ email: String)
 
         /// Filter is used when it is needed to fetch identities by login
+        @available(*, deprecated, renamed: "login")
+        case email(_ email: String)
         case login(_ login: String)
         
         /// Filter is used when it is needed to fetch identities by phone number
@@ -121,7 +119,7 @@ public class GeneralApi: BaseApi {
         case telegram(_ telegram: String)
     }
     
-    /// Method sends request to get identities via email or accountId.
+    /// Method sends request to get identities via login or accountId.
     /// The result of request will be fetched in `completion` block as `GeneralApi.RequestIdentitiesResult`
     /// - Parameters:
     ///   - filter: Filter which will be used to fetch identities.
@@ -278,13 +276,13 @@ public class GeneralApi: BaseApi {
         case succeeded
     }
     
-    /// Method sends request to set phone for account with given accountId.
-    /// The result of request will be fetched in `completion` block as `GeneralApi.SetPhoneRequestResult`
+    /// Method sends request to set telegram for account with given accountId.
+    /// The result of request will be fetched in `completion` block as `GeneralApi.SetTelegramRequestResult`
     /// - Parameters:
     ///   - accountId: Account id of account for which it is necessary to set phone.
-    ///   - phone: Model that contains phone to be set.
+    ///   - telegram: Model that contains telegram to be set.
     ///   - completion: Block that will be called when the result will be received.
-    ///   - result: Member of `GeneralApi.SetPhoneRequestResult`
+    ///   - result: Member of `GeneralApi.SetTelegramRequestResult`
     public func requestSetTelegram(
         accountId: String,
         telegram: SetTelegramRequestBody,

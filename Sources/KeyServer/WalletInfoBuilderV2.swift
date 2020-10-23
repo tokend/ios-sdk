@@ -139,7 +139,7 @@ public struct WalletInfoBuilderV2 {
         // "data"
         let relationshipsAttributes = WalletInfoModelV2.WalletInfoData.Attributes(
             accountId: walletDetails.accountIdBase32Check,
-            email: walletDetails.login,
+            login: walletDetails.login,
             salt: walletDetails.saltBase64,
             keychainData: walletDetails.keychainDataBase64
         )
@@ -364,7 +364,7 @@ public struct WalletInfoBuilderV2 {
         // "data"
         let relationshipsAttributes = WalletInfoModelV2.WalletInfoData.Attributes(
             accountId: walletDetails.accountIdBase32Check,
-            email: walletDetails.login,
+            login: walletDetails.login,
             salt: walletDetails.saltBase64,
             keychainData: walletDetails.keychainDataBase64
         )

@@ -50,7 +50,7 @@ public class GeneralRequestBuilder: BaseApiRequestBuilder {
             ]
         case .phone(let phone):
             parameters = [
-                "filter[phone]": phone
+                "filter[email]": phone
             ]
             
         case .telegram(let username):
@@ -121,7 +121,7 @@ public class GeneralRequestBuilder: BaseApiRequestBuilder {
         return request
     }
     
-    /// Builds request to set phone identity.
+    /// Builds request to set telegram identity.
     /// - Parameters:
     ///   - accountId: Account's identifier.
     ///   - body: Model of `SetTelegramRequestBody` type

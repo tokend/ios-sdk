@@ -10,13 +10,14 @@ public struct WalletDataResponse: Decodable {
     public struct Attributes: Decodable {
         
         public let accountId: String
-        public let email: String
+        public let login: String
         public let keychainData: String
         public let verified: Bool
         
         public enum CodingKeys: String, CodingKey {
             case accountId
-            case email
+            // Backend legacy
+            case login = "email"
             case keychainData
             case verified
         }
@@ -27,7 +28,7 @@ extension WalletDataModel {
     
     public static func fromResponse(_ response: WalletDataResponse, walletKDF: WalletKDFParams) -> WalletDataModel {
         return WalletDataModel(
-            email: response.attributes.email,
+            login: response.attributes.login,
             accountId: response.attributes.accountId,
             walletId: response.id,
             type: response.type,

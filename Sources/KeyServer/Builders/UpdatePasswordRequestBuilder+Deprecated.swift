@@ -550,6 +550,7 @@ public class UpdatePasswordRequestBuilder {
     }
 }
 
+@available(*, deprecated, message: "Use project-specific update password flow")
 extension UpdatePasswordRequestBuilder {
     
     public enum Result {

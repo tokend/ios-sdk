@@ -171,8 +171,6 @@ extension RequestPagination {
         /// Option for single page request.
         @available(*, deprecated, renamed: "indexedSingle")
         case single(index: Int, limit: Int, order: PaginationOrder)
-
-        /// Option for single page request.
         case indexedSingle(index: Int, limit: Int, order: PaginationOrder)
 
         /// Option for single page request.
@@ -182,9 +180,6 @@ extension RequestPagination {
         /// Strategy reference should be updated in `request...` func according to response.
         @available(*, deprecated, renamed: "indexedStrategy")
         case strategy(_ strategy: IndexedPaginationStrategy)
-
-        /// Option with strategy provided.
-        /// Strategy reference should be updated in `request...` func according to response.
         case indexedStrategy(_ strategy: IndexedPaginationStrategy)
 
         /// Option with strategy provided.
