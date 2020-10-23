@@ -11,7 +11,7 @@ public class DocumentsApi: BaseApi {
     
     // MARK: -
     
-    public override init(apiStack: BaseApiStack) {
+    public required init(apiStack: BaseApiStack) {
         self.requestBuilder = DocumentsRequestBuilder(
             builderStack: BaseApiRequestBuilderStack.fromApiStack(apiStack)
         )

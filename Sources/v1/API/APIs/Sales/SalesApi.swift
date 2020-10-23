@@ -9,7 +9,7 @@ public class SalesApi: BaseApi {
     
     // MARK: -
     
-    public override init(apiStack: BaseApiStack) {
+    public required init(apiStack: BaseApiStack) {
         self.requestBuilder = SalesRequestBuilder(
             builderStack: BaseApiRequestBuilderStack.fromApiStack(apiStack)
         )

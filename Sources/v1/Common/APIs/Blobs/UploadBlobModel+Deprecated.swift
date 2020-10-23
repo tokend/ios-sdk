@@ -1,5 +1,6 @@
 import Foundation
 
+@available(*, deprecated, message: "Use BlobsAPI")
 public struct UploadBlobModel {
     
     // MARK: - Public properties

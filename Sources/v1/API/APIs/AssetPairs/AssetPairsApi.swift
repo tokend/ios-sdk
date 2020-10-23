@@ -9,7 +9,7 @@ public class AssetPairsApi: BaseApi {
     
     // MARK: -
     
-    public override init(apiStack: BaseApiStack) {
+    public required init(apiStack: BaseApiStack) {
         self.requestBuilder = AssetPairsRequestBuilder(
             builderStack: BaseApiRequestBuilderStack.fromApiStack(apiStack)
         )

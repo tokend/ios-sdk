@@ -35,7 +35,7 @@ public class BaseApi {
     public let requestSigner: RequestSignerProtocol
     public let tfaHandler: TFAHandler
     
-    public init(apiStack: BaseApiStack) {
+    public required init(apiStack: BaseApiStack) {
         self.apiConfiguration = apiStack.apiConfiguration
         self.network = NetworkFacade(network: apiStack.network)
         self.requestSigner = apiStack.requestSigner

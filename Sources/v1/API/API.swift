@@ -21,17 +21,17 @@ public class API {
         )
     }()
     
-    public private(set) lazy var accountsApi: AccountsApi         = { return self.createAccountsApi() }()
-    public private(set) lazy var documentsApi: DocumentsApi       = { return self.createDocumentsApi() }()
-    public private(set) lazy var assetPairsApi: AssetPairsApi     = { return self.createAssetPairsApi() }()
-    public private(set) lazy var assetsApi: AssetsApi             = { return self.createAssetsApi() }()
-    public private(set) lazy var balancesApi: BalancesApi         = { return self.createBalancesApi() }()
-    public private(set) lazy var blobsApi: BlobsApi               = { return self.createBlobsApi() }()
-    public private(set) lazy var chartsApi: ChartsApi             = { return self.createChartsApi() }()
-    public private(set) lazy var generalApi: GeneralApi           = { return self.createGeneralApi() }()
-    public private(set) lazy var offersApi: OffersApi             = { return self.createOffersApi() }()
-    public private(set) lazy var orderBookApi: OrderBookApi       = { return self.createOrderBookApi() }()
-    public private(set) lazy var salesApi: SalesApi               = { return self.createSalesApi() }()
+    public private(set) lazy var accountsApi: AccountsApi         = { return self.create() }()
+    public private(set) lazy var documentsApi: DocumentsApi       = { return self.create() }()
+    public private(set) lazy var assetPairsApi: AssetPairsApi     = { return self.create() }()
+    public private(set) lazy var assetsApi: AssetsApi             = { return self.create() }()
+    public private(set) lazy var balancesApi: BalancesApi         = { return self.create() }()
+    public private(set) lazy var blobsApi: BlobsApi               = { return self.create() }()
+    public private(set) lazy var chartsApi: ChartsApi             = { return self.create() }()
+    public private(set) lazy var generalApi: GeneralApi           = { return self.create() }()
+    public private(set) lazy var offersApi: OffersApi             = { return self.create() }()
+    public private(set) lazy var orderBookApi: OrderBookApi       = { return self.create() }()
+    public private(set) lazy var salesApi: SalesApi               = { return self.create() }()
     public private(set) lazy var tfaApi: TFAApi                   = { return self.createTFAApi() }()
     public private(set) lazy var tfaVerifyApi: TFAVerifyApi       = { return self.createTFAVerifyApi() }()
     public private(set) lazy var transactionsApi: TransactionsApi = { return self.createTransactionsApi() }()
@@ -52,59 +52,9 @@ public class API {
     }
     
     // MARK: - Private
-    
-    private func createAccountsApi() -> AccountsApi {
-        let api = AccountsApi(apiStack: self.baseApiStack)
-        return api
-    }
-    
-    private func createDocumentsApi() -> DocumentsApi {
-        let api = DocumentsApi(apiStack: self.baseApiStack)
-        return api
-    }
-    
-    private func createAssetPairsApi() -> AssetPairsApi {
-        let api = AssetPairsApi(apiStack: self.baseApiStack)
-        return api
-    }
-    
-    private func createAssetsApi() -> AssetsApi {
-        let api = AssetsApi(apiStack: self.baseApiStack)
-        return api
-    }
-    
-    private func createBalancesApi() -> BalancesApi {
-        let api = BalancesApi(apiStack: self.baseApiStack)
-        return api
-    }
-    
-    private func createBlobsApi() -> BlobsApi {
-        let api = BlobsApi(apiStack: self.baseApiStack)
-        return api
-    }
-    
-    private func createChartsApi() -> ChartsApi {
-        let api = ChartsApi(apiStack: self.baseApiStack)
-        return api
-    }
-    
-    private func createGeneralApi() -> GeneralApi {
-        let api = GeneralApi(apiStack: self.baseApiStack)
-        return api
-    }
-    
-    private func createOffersApi() -> OffersApi {
-        let api = OffersApi(apiStack: self.baseApiStack)
-        return api
-    }
-    
-    private func createOrderBookApi() -> OrderBookApi {
-        let api = OrderBookApi(apiStack: self.baseApiStack)
-        return api
-    }
-    
-    private func createSalesApi() -> SalesApi {
-        let api = SalesApi(apiStack: self.baseApiStack)
+
+    private func create<ApiType: BaseApi>() -> ApiType {
+        let api = ApiType.init(apiStack: self.baseApiStack)
         return api
     }
     

@@ -9,7 +9,7 @@ public class BalancesApi: BaseApi {
     
     // MARK: -
     
-    public override init(apiStack: BaseApiStack) {
+    public required init(apiStack: BaseApiStack) {
         self.requestBuilder = BalancesRequestBuilder(
             builderStack: BaseApiRequestBuilderStack.fromApiStack(apiStack)
         )

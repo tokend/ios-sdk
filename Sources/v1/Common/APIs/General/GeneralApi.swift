@@ -13,7 +13,7 @@ public class GeneralApi: BaseApi {
     
     let requestBuilder: GeneralRequestBuilder
     
-    public override init(apiStack: BaseApiStack) {
+    public required init(apiStack: BaseApiStack) {
         self.requestBuilder = GeneralRequestBuilder(
             builderStack: BaseApiRequestBuilderStack.fromApiStack(apiStack)
         )
