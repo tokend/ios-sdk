@@ -127,7 +127,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
 //                }
 //        })
 
-        let filters = InvitationsRequestFiltersV3.with(.states([InvitationsResource.State.upcoming.rawValue]))
+        let filters = InvitationsRequestFiltersV3.with(.states([1]))
             .addFilter(.guest(""))
         self.tokenDApi.invitationsApi.getSortedInvitations(
             filters: filters,

@@ -33,7 +33,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
         sort: InvitationsRequestBuilderV3.SortedInvitationsRequestSort,
         include: [String]?,
         pagination: RequestPagination,
-        completion: @escaping ((_ result: RequestCollectionResult<InvitationsResource>) -> Void)
+        completion: @escaping ((_ result: RequestCollectionResult<Invitations.InvitationResource>) -> Void)
         ) -> Cancelable {
 
         var cancelable = self.network.getEmptyCancelable()
@@ -51,7 +51,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
                 }
 
                 cancelable.cancelable = self?.requestCollection(
-                    InvitationsResource.self,
+                    Invitations.InvitationResource.self,
                     request: request,
                     completion: { (result) in
                         switch result {
@@ -89,7 +89,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
         to: Date,
         addressDetails: String?,
         personalNote: String?,
-        completion: @escaping ((_ result: RequestSingleResult<InvitationsResource>) -> Void)
+        completion: @escaping ((_ result: RequestSingleResult<Invitations.InvitationResource>) -> Void)
     ) -> Cancelable {
         
         let dateFormatter = DateFormatters.iso8601DateFormatter
@@ -135,7 +135,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
                 }
                 
                 cancelable.cancelable = self?.requestSingle(
-                    InvitationsResource.self,
+                    Invitations.InvitationResource.self,
                     request: request,
                     completion: { (result) in
                         
@@ -363,7 +363,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
         filters: InvitationsRequestFiltersV3,
         include: [String]?,
         pagination: RequestPagination,
-        completion: @escaping ((_ result: RequestCollectionResult<InvitationsHistoryResource>) -> Void)
+        completion: @escaping ((_ result: RequestCollectionResult<Invitations.EventResource>) -> Void)
     ) -> Cancelable {
 
         var cancelable = self.network.getEmptyCancelable()
@@ -380,7 +380,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
                 }
 
                 cancelable.cancelable = self?.requestCollection(
-                    InvitationsHistoryResource.self,
+                    Invitations.EventResource.self,
                     request: request,
                     completion: { (result) in
                         switch result {
@@ -448,7 +448,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
         filters: InvitationsRequestFiltersV3,
         include: [String]?,
         pagination: RequestPagination,
-        completion: @escaping ((_ result: RequestCollectionResult<InvitationsResource>) -> Void)
+        completion: @escaping ((_ result: RequestCollectionResult<Invitations.InvitationResource>) -> Void)
     ) -> Cancelable {
 
         var cancelable = self.network.getEmptyCancelable()
@@ -465,7 +465,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
                 }
 
                 cancelable.cancelable = self?.requestCollection(
-                    InvitationsResource.self,
+                    Invitations.InvitationResource.self,
                     request: request,
                     completion: { (result) in
                         switch result {
