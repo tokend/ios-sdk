@@ -18,7 +18,7 @@ extension Reactive where Base: BaseApiJSONAPI {
                     event(.success(document))
                 })),
                 onFailed: { (error) in
-                    event(.error(error))
+                    event(.failure(error))
             })
             
             return Disposables.create {
@@ -39,7 +39,7 @@ extension Reactive where Base: BaseApiJSONAPI {
                     event(.success(document))
                 })),
                 onFailed: { (error) in
-                    event(.error(error))
+                    event(.failure(error))
             })
             
             return Disposables.create {
@@ -72,7 +72,7 @@ extension Reactive where Base: BaseApiJSONAPI {
                     switch result {
                         
                     case .failure(let error):
-                        event(.error(error))
+                        event(.failure(error))
                         
                     case .success(let document):
                         event(.success(document))

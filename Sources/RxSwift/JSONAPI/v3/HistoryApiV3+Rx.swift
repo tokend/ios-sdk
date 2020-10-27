@@ -21,7 +21,7 @@ extension Reactive where Base: HistoryRequestBuilderV3 {
                 sendDate: sendDate,
                 completion: { (request) in
                     guard let request = request else {
-                        event(.error(JSONAPIError.failedToSignRequest))
+                        event(.failure(JSONAPIError.failedToSignRequest))
                         return
                     }
                     
@@ -52,7 +52,7 @@ extension Reactive where Base: HistoryApiV3 {
                     switch result {
                         
                     case .failure(let error):
-                        event(.error(error))
+                        event(.failure(error))
                         
                     case .success(let document):
                         event(.success(document))

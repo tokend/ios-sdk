@@ -41,7 +41,7 @@ public class AlamofireNetworkJSONAPI {
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = headers
         
-        self.sessionManager = Alamofire.SessionManager(configuration: configuration)
+        self.sessionManager = .init(configuration: configuration)
         
         self.resourcePool = resourcePool
         self.userAgent = userAgent

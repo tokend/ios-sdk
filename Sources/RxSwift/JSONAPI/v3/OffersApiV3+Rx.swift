@@ -21,7 +21,7 @@ extension Reactive where Base: OffersRequestBuilderV3 {
                 sendDate: sendDate,
                 completion: { (request) in
                     guard let request = request else {
-                        event(.error(JSONAPIError.failedToSignRequest))
+                        event(.failure(JSONAPIError.failedToSignRequest))
                         return
                     }
                     
@@ -43,7 +43,7 @@ extension Reactive where Base: OffersRequestBuilderV3 {
                 sendDate: sendDate,
                 completion: { (request) in
                     guard let request = request else {
-                        event(.error(JSONAPIError.failedToSignRequest))
+                        event(.failure(JSONAPIError.failedToSignRequest))
                         return
                     }
                     
@@ -74,7 +74,7 @@ extension Reactive where Base: OffersApiV3 {
                     switch result {
                         
                     case .failure(let error):
-                        event(.error(error))
+                        event(.failure(error))
                         
                     case .success(let document):
                         event(.success(document))
@@ -99,7 +99,7 @@ extension Reactive where Base: OffersApiV3 {
                     switch result {
                         
                     case .failure(let error):
-                        event(.error(error))
+                        event(.failure(error))
                         
                     case .success(let document):
                         event(.success(document))

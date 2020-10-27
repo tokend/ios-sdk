@@ -64,7 +64,7 @@ extension Reactive where Base: AssetPairsApiV3 {
                     switch result {
                         
                     case .failure(let error):
-                        event(.error(error))
+                        event(.failure(error))
                         
                     case .success(let document):
                         event(.success(document))
@@ -90,7 +90,7 @@ extension Reactive where Base: AssetPairsApiV3 {
                     switch result {
                         
                     case .failure(let error):
-                        event(.error(error))
+                        event(.failure(error))
                         
                     case .success(let document):
                         event(.success(document))

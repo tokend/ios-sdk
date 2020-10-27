@@ -21,7 +21,7 @@ extension Reactive where Base: AccountsRequestBuilderV3 {
                 sendDate: sendDate,
                 completion: { (request) in
                     guard let request = request else {
-                        event(.error(JSONAPIError.failedToSignRequest))
+                        event(.failure(JSONAPIError.failedToSignRequest))
                         return
                     }
                     
@@ -43,7 +43,7 @@ extension Reactive where Base: AccountsRequestBuilderV3 {
                 sendDate: sendDate,
                 completion: { (request) in
                     guard let request = request else {
-                        event(.error(JSONAPIError.failedToSignRequest))
+                        event(.failure(JSONAPIError.failedToSignRequest))
                         return
                     }
                     
@@ -72,7 +72,7 @@ extension Reactive where Base: AccountsApiV3 {
                     switch result {
                         
                     case .failure(let error):
-                        event(.error(error))
+                        event(.failure(error))
                         
                     case .success(let document):
                         event(.success(document))
@@ -93,7 +93,7 @@ extension Reactive where Base: AccountsApiV3 {
                     switch result {
                         
                     case .failure(let error):
-                        event(.error(error))
+                        event(.failure(error))
                         
                     case .success(let document):
                         event(.success(document))

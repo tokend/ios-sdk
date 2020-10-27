@@ -39,8 +39,8 @@ Pod::Spec.new do |s|
 
   s.subspec 'AlamofireNetwork' do |ss|
     ss.source_files = v1_alamofire_files
-    ss.dependency 'Alamofire', '4.8.2'
-    ss.dependency 'AlamofireNetworkActivityLogger', '2.4'
+    ss.dependency 'Alamofire', '4.8.0'
+    ss.dependency 'AlamofireNetworkActivityLogger', '2.4.0'
   end
 
   s.subspec 'JSONAPI' do |ss|
@@ -50,14 +50,14 @@ Pod::Spec.new do |s|
 
   s.subspec 'AlamofireNetworkJSONAPI' do |ss|
     ss.source_files = jsonapi_v3_alamofire_files
-    ss.dependency 'Alamofire', '4.8.2'
-    ss.dependency 'AlamofireNetworkActivityLogger', '2.4'
+    ss.dependency 'Alamofire', '4.8.0'
+    ss.dependency 'AlamofireNetworkActivityLogger', '2.4.0'
   end
 
   s.subspec 'RxJSONAPI' do |ss|
     ss.source_files = rx_jsonapi_v3_source_files
-    ss.dependency 'RxSwift', '~> 4.0'
-    ss.dependency 'RxCocoa', '~> 4.0'
+    ss.dependency 'RxSwift', '~> 6.0.0-rc.1'
+    ss.dependency 'RxCocoa', '~> 6.0.0-rc.1'
   end
 
   s.subspec 'KeyServer' do |ss|
