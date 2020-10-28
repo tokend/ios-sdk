@@ -65,6 +65,7 @@ public class APIv3 {
         Horizon.AllResources.registerAllResources()
         Invoices.AllResources.registerAllResources()
         Recpayments.AllResources.registerAllResources()
+        Invitations.AllResources.registerAllResources()
     }
     
     // MARK: - Private
