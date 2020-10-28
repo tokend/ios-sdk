@@ -12,8 +12,8 @@ def main_pods
   pod 'TokenDSDK/AlamofireNetworkJSONAPI', path: '../'
   pod 'TokenDSDK/RxJSONAPI', path: '../'
 
-  pod 'SnapKit', '~> 4.2.0'
-  pod 'Alamofire', '4.8.0'
+  pod 'SnapKit', '5.0.1'
+  pod 'Alamofire', '5.3.0'
   pod 'RxCocoa', '6.0.0-rc.1'
   pod 'RxSwift', '6.0.0-rc.1'
 end

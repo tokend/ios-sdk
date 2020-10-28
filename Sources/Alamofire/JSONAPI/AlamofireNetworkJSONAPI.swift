@@ -1,7 +1,6 @@
 import Foundation
 import DLJSONAPI
 import Alamofire
-import AlamofireNetworkActivityLogger
 
 /// Class implements sending requests to api and getting responses
 public class AlamofireNetworkJSONAPI {
@@ -19,7 +18,7 @@ public class AlamofireNetworkJSONAPI {
         set { NetworkActivityLogger.shared.level = newValue }
     }
     
-    public let sessionManager: SessionManager
+    public let sessionManager: Session
     
     public var jsonDecoder: JSONDecoder = JSONDecoder()
     
@@ -31,15 +30,15 @@ public class AlamofireNetworkJSONAPI {
         onUnathorizedRequest: @escaping (_ error: Error) -> Void
         ) {
         
-        var headers = Alamofire.SessionManager.defaultHTTPHeaders
-        headers["Content-Type"] = "application/vnd.api+json"
-        headers["Accept"] = "application/vnd.api+json"
+        var headers = HTTPHeaders.default
+        headers.update(name: "Content-Type", value: "application/vnd.api+json")
+        headers.update(name: "Accept", value: "application/vnd.api+json")
         if let userAgent = userAgent {
-            headers["User-Agent"] = userAgent
+            headers.update(name: "User-Agent", value: userAgent)
         }
         
         let configuration = URLSessionConfiguration.default
-        configuration.httpAdditionalHeaders = headers
+        configuration.headers = headers
         
         self.sessionManager = .init(configuration: configuration)
         
@@ -63,7 +62,7 @@ public class AlamofireNetworkJSONAPI {
     
     private func checkForResponseTypeError(
         resultError: Error,
-        dataResponse: DataResponse<Data>,
+        dataResponse: AFDataResponse<Data>,
         data: Data
         ) -> Error {
         
@@ -164,7 +163,7 @@ extension JSONAPI.AlamofireNetwork: JSONAPI.NetworkProtocol {
         compositeRequest?.httpBody = bodyEncoded.httpBody
         
         headers?.forEach({ (header) in
-            compositeRequest?.addValue(header.value, forHTTPHeaderField: header.key)
+            compositeRequest?.addValue(header.value, forHTTPHeaderField: header.name)
         })
         
         return compositeRequest!

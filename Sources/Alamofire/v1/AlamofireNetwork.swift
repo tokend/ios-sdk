@@ -1,6 +1,5 @@
 import Foundation
 import Alamofire
-import AlamofireNetworkActivityLogger
 
 /// Class implements sending requests to api and getting responses
 public class AlamofireNetwork {
@@ -85,7 +84,7 @@ public class AlamofireNetwork {
         }
         urlRequest.httpBody = bodyData
         
-        let request = Alamofire
+        let request = AF
             .request(urlRequest)
             .validate()
         
@@ -235,7 +234,7 @@ extension AlamofireNetwork: NetworkProtocol {
         completion: @escaping (_ result: ResponseObjectResult<T>) -> Void
         ) -> Cancelable {
         
-        let request = Alamofire
+        let request = AF
             .request(
                 url,
                 method: method.method,
@@ -269,7 +268,7 @@ extension AlamofireNetwork: NetworkProtocol {
         completion: @escaping (_ result: ResponseJSONResult) -> Void
         ) -> Cancelable {
         
-        let request = Alamofire
+        let request = AF
             .request(
                 url,
                 method: method.method,
@@ -407,7 +406,7 @@ extension AlamofireNetwork: NetworkProtocol {
         
         let cancelable = AlamofireCancelable(request: nil)
         
-        Alamofire.upload(
+        AF.upload(
             multipartFormData: { (multipartFormData) in
                 formData.forEach({ (key, value) in
                     guard let valueData = "\(value)".data(using: .utf8) else {
@@ -436,28 +435,21 @@ extension AlamofireNetwork: NetworkProtocol {
                         mimeType: meta.mimeType
                     )
                 }
-        },
-            to: url,
-            encodingCompletion: { (encodingResult) in
-                switch encodingResult {
-                    
-                case .failure(let error):
-                    completion(.failure(error: error))
-                    
-                case .success(let request, _, _):
-                    cancelable.request = request
-                    
-                    request.responseData(completionHandler: { (response) in
-                        if let error = response.error {
-                            completion(.failure(error: error))
-                            return
-                        }
-                        
-                        completion(.success)
-                    })
-                }
-                
-        })
+            },
+            to: url
+        )
+        .validate()
+        .responseData { (response) in
+
+            switch response.result {
+
+            case .failure(let error):
+                completion(.failure(error: error))
+
+            case .success:
+                completion(.success)
+            }
+        }
         
         return cancelable
     }

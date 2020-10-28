@@ -1,4 +1,5 @@
 import Foundation
+import Alamofire
 
 /// Models of HTTP request methods
 public enum RequestMethod: String {
@@ -17,7 +18,7 @@ public enum RequestParametersEncoding {
     case json
 }
 
-public typealias RequestHeaders = [String: String]
+public typealias RequestHeaders = Alamofire.HTTPHeaders
 
 public typealias RequestParameters = [String: Any]
 
