@@ -393,4 +393,42 @@ public class CardsApi: JSONAPI.BaseApi {
 
         return cancelable
     }
+
+    /// Returns info.
+    /// - Parameters:
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `RequestSingleResult<Cards.InfoResource>`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func requestInfo(
+        completion: @escaping (_ result: RequestSingleResult<Cards.InfoResource>) -> Void
+    ) -> Cancelable {
+
+        var cancelable = self.network.getEmptyCancelable()
+
+        self.requestBuilder.buildInfoRequest(
+            completion: { [weak self] (request) in
+
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+
+                cancelable.cancelable = self?.requestSingle(
+                    Cards.InfoResource.self,
+                    request: request,
+                    completion: { (result) in
+                        switch result {
+
+                        case .failure(let error):
+                            completion(.failure(error))
+
+                        case .success(let document):
+                            completion(.success(document))
+                        }
+                    })
+            })
+
+        return cancelable
+    }
 }

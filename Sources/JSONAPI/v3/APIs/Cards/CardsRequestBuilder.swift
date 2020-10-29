@@ -9,6 +9,7 @@ public class CardsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
     private let integrations: String = "integrations"
     private let cards: String = "cards"
     private let publicCards: String = "public"
+    private let info: String = "info"
 
     // MARK: - Public properties
 
@@ -138,6 +139,24 @@ public class CardsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
                 path: path,
                 method: .patch,
                 bodyParameters: bodyParameters
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+
+    public func buildInfoRequest(
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+
+        let path = /self.integrations/self.cards/self.info
+
+        self.buildRequest(
+            .init(
+                path: path,
+                method: .get
             ),
             shouldSign: true,
             sendDate: sendDate,

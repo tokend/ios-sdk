@@ -11,9 +11,11 @@ enum AllResources {
         let allResources: [Resource.Type] = [
             PublicCardListTempViewResource.self,
             UpdateCardResource.self,
+            TransactionResource.self,
             CreateCardResource.self,
             CardSecurityDetailsResource.self,
             CardBalanceResource.self,
+            InfoResource.self,
             CardResource.self
         ]
         
