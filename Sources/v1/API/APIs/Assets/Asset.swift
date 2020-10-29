@@ -67,6 +67,7 @@ extension Asset {
         public let logo: Logo?
         public let name: String?
         public let terms: Term?
+        public let description: String?
     }
 }
 
@@ -136,6 +137,7 @@ extension Asset.Details {
         case logo
         case name
         case terms
+        case description
     }
     
     public init(from decoder: Decoder) throws {
@@ -159,5 +161,6 @@ extension Asset.Details {
         self.logo = try container.decodeIfPresent(Logo.self, forKey: .logo)
         self.name = try container.decodeIfPresent(String.self, forKey: .name)
         self.terms = try container.decodeIfPresent(Term.self, forKey: .terms)
+        self.description = try container.decodeIfPresent(String.self, forKey: .description)
     }
 }
