@@ -19,6 +19,7 @@ open class AccountResource: Resource {
         case balances
         case externalSystemIds
         case fees
+        case kycData
         case limits
         case referrer
         case role
@@ -43,6 +44,10 @@ open class AccountResource: Resource {
     open var fees: [FeeResource]? {
         return self.relationCollectionOptionalValue(key: CodingKeys.fees)
     }
+
+    open var kycData: AccountKYCResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.kycData)
+    }
     
     open var limits: [LimitResource]? {
         return self.relationCollectionOptionalValue(key: CodingKeys.limits)
@@ -56,4 +61,23 @@ open class AccountResource: Resource {
         return self.relationSingleOptionalValue(key: CodingKeys.role)
     }
     
+}
+
+open class AccountKYCResource: Resource {
+
+    open override class var resourceType: String {
+        return "account-kyc"
+    }
+
+    public enum CodingKeys: String, CodingKey {
+        // attributes
+        case kycData
+    }
+
+    // MARK: Attributes
+
+    open var kycData: [String: Any] {
+        return self.dictionaryOptionalValue(key: CodingKeys.kycData) ?? [:]
+    }
+
 }

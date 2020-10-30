@@ -71,6 +71,7 @@ enum AllResources {
             VoteResource.self,
             OpManageLimitsDetailsResource.self,
             AccountResource.self,
+            AccountKYCResource.self,
             OpUpdateSignerRuleDetailsResource.self,
             OpCancelAtomicSwapBidDetailsResource.self,
             EffectBalanceChangeResource.self,
