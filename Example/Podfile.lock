@@ -13,25 +13,25 @@ PODS:
     - RxSwift (= 6.0.0-rc.1)
   - RxSwift (6.0.0-rc.1)
   - SnapKit (5.0.1)
-  - TokenDSDK (3.2.0-rc.4):
-    - TokenDSDK/API (= 3.2.0-rc.4)
-    - TokenDSDK/JSONAPI (= 3.2.0-rc.4)
-    - TokenDSDK/KeyServer (= 3.2.0-rc.4)
+  - TokenDSDK (3.2.0-rc.5):
+    - TokenDSDK/API (= 3.2.0-rc.5)
+    - TokenDSDK/JSONAPI (= 3.2.0-rc.5)
+    - TokenDSDK/KeyServer (= 3.2.0-rc.5)
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/AlamofireNetwork (3.2.0-rc.4):
+  - TokenDSDK/AlamofireNetwork (3.2.0-rc.5):
     - Alamofire (= 5.3.0)
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/AlamofireNetworkJSONAPI (3.2.0-rc.4):
+  - TokenDSDK/AlamofireNetworkJSONAPI (3.2.0-rc.5):
     - Alamofire (= 5.3.0)
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/API (3.2.0-rc.4):
+  - TokenDSDK/API (3.2.0-rc.5):
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/JSONAPI (3.2.0-rc.4):
+  - TokenDSDK/JSONAPI (3.2.0-rc.5):
     - DLJSONAPI (>= 1.0.7)
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/KeyServer (3.2.0-rc.4):
+  - TokenDSDK/KeyServer (3.2.0-rc.5):
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/RxJSONAPI (3.2.0-rc.4):
+  - TokenDSDK/RxJSONAPI (3.2.0-rc.5):
     - RxCocoa (~> 6.0.0-rc.1)
     - RxSwift (~> 6.0.0-rc.1)
     - TokenDWallet (= 3.1.1)
@@ -74,7 +74,7 @@ SPEC CHECKSUMS:
   RxRelay: 56abad6d32f73567858506d08735fdb341935b9a
   RxSwift: dae1a32c48148897494b9e2a6b00a68b40694236
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  TokenDSDK: 35409ab58287a12fe79115bed7e39fb3d2b700c7
+  TokenDSDK: db18883e31412dad982b8f3bf102517aa66e721f
   TokenDWallet: d13f6dfd420e9258ff4734e2d52e57bcdfc60eb3
 
 PODFILE CHECKSUM: db217e18c7fbcb567afca9cfa5250613ae04d900

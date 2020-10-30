@@ -164,12 +164,21 @@ extension Resource {
         guard let dateString = self.value(forKey: key) as? String else {
             return nil
         }
-        
-        guard let date = dateFormatter.date(from: dateString) else {
-            return nil
+
+        if let date = dateFormatter.date(from: dateString) {
+            return date
+        }
+        print("cannot parse date \(dateString) with format \(String(describing: dateFormatter.dateFormat))")
+
+        if let date = DateFormatters.iso8601DateFormatter.date(from: dateString) {
+            return date
+        }
+
+        if let date = DateFormatters.rfc3339DateFormatter.date(from: dateString) {
+            return date
         }
         
-        return date
+        return nil
     }
     
     public func setDateOptionalValue(
