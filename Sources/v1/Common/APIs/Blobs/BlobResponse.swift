@@ -162,15 +162,15 @@ extension BlobResponse.BlobContent {
             }
             
             public let kycIdDocument: Attachment?
-            public let kycSelfie: Attachment?
+            public let kycAvatar: Attachment?
             
             public init(
                 kycIdDocument: Attachment?,
-                kycSelfie: Attachment?
+                kycAvatar: Attachment?
                 ) {
                 
                 self.kycIdDocument = kycIdDocument
-                self.kycSelfie = kycSelfie
+                self.kycAvatar = kycAvatar
             }
         }
         

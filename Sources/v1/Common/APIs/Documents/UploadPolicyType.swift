@@ -36,7 +36,7 @@ extension UploadPolicy {
         /// kyc_poa. Private.
         public static let kycPoa: String = "kyc_poa"
         /// kyc_selfie. Private.
-        public static let kycSelfie: String = "kyc_selfie"
+        public static let kycAvatar: String = "kyc_avatar"
         /// general_private. Private.
         public static let generalPrivate: String = "general_private"
     }
