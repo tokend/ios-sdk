@@ -3,7 +3,7 @@ import Foundation
 /// Wallet info model. Used wallet creation and update operations.
 public struct WalletInfoModelV2: Encodable {
 
-    public let data: WalletInfoData
+    public var data: WalletInfoData
     public let included: [Include]
 
     public struct WalletInfoData: Encodable {
@@ -11,7 +11,7 @@ public struct WalletInfoModelV2: Encodable {
         public let id: String
 
         public let attributes: Attributes
-        public let relationships: Relationships
+        public var relationships: Relationships
 
         public struct Attributes: Encodable {
 
@@ -31,11 +31,79 @@ public struct WalletInfoModelV2: Encodable {
 
         public struct Relationships: Encodable {
 
-            public let transaction: ApiDataRequest<Transaction, Include>?
-            public let kdf: ApiDataRequest<KDF, Include>
-            public let signers: ApiDataRequest<[Signer], Include>?
-            public let signer: ApiDataRequest<Signer, Include>?
-            public let factor: ApiDataRequest<Factor, Include>
+            public var mutableJSON: [CodingKeys: Encodable]
+
+            public enum CodingKeys: RawRepresentable, Hashable {
+                public typealias RawValue = String
+
+                case transaction
+                case kdf
+                case signers
+                case signer
+                case factor
+                case custom(key: RawValue)
+
+                public init?(rawValue: String) {
+                    if Self.factor.rawValue == rawValue { self = .factor }
+                    if Self.kdf.rawValue == rawValue { self = .kdf }
+                    if Self.signer.rawValue == rawValue { self = .signer }
+                    if Self.signers.rawValue == rawValue { self = .signers }
+                    if Self.transaction.rawValue == rawValue { self = .signers }
+                    self = .custom(key: rawValue)
+                }
+
+                public var rawValue: RawValue {
+
+                    switch self {
+                    case .factor: return "factor"
+                    case .kdf: return "kdf"
+                    case .signer: return "signer"
+                    case .signers: return "signers"
+                    case .transaction: return "transaction"
+                    case .custom(let key): return key
+                    }
+                }
+            }
+
+            init(
+                transaction: ApiDataRequest<Transaction, Include>?,
+                kdf: ApiDataRequest<KDF, Include>,
+                signers: ApiDataRequest<[Signer], Include>?,
+                signer: ApiDataRequest<Signer, Include>?,
+                factor: ApiDataRequest<Factor, Include>
+            ) {
+
+                self.mutableJSON = [
+                    .transaction: transaction,
+                    .kdf: kdf,
+                    .signers: signers,
+                    .signer: signer,
+                    .factor: factor
+                ]
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                struct AnyEncodable: Encodable {
+
+                    let value: Encodable
+                    init(value: Encodable) {
+                        self.value = value
+                    }
+
+                    func encode(to encoder: Encoder) throws {
+                        try value.encode(to: encoder)
+                    }
+                }
+
+                let anyMutableJSON = mutableJSON
+                    .reduce(into: [CodingKeys.RawValue: Encodable]()) { (result, tuple) in
+                        result[tuple.key.rawValue] = tuple.value
+                    }
+                    .mapValues({ AnyEncodable(value: $0) })
+                try container.encode(anyMutableJSON)
+            }
 
             public class Transaction: Include {
 
@@ -238,17 +306,9 @@ extension WalletInfoModelV2.WalletInfoData.Relationships: CustomDebugStringConve
 
     public var debugDescription: String {
         var fields: [String] = []
-        if let transaction = self.transaction {
-            fields.append("transaction: \(transaction.data.debugDescription)")
+        mutableJSON.forEach { (tuple) in
+            fields.append("\(tuple.key): \(tuple.value)")
         }
-        fields.append("kdf: \(self.kdf.data.debugDescription)")
-        if let signers = self.signers {
-            fields.append("signers: \(signers.data.debugDescription)")
-        }
-        if let signer = self.signer {
-            fields.append("signers: \(signer.data.debugDescription)")
-        }
-        fields.append("factor: \(self.factor.data.debugDescription)")
 
         let description = DebugFormattedDescription(fields)
 
