@@ -41,6 +41,7 @@ public struct WalletInfoBuilderV2 {
         login unchekedLogin: String,
         password: String,
         kdfParams: KDFParams,
+        salt: Data = Common.Random.generateRandom(length: 16),
         keys: [ECDSA.KeyData],
         signers: [WalletInfoModelV2.WalletInfoData.Relationships.Signer],
         transaction: WalletInfoModelV2.WalletInfoData.Relationships.Transaction? = nil
@@ -51,7 +52,7 @@ public struct WalletInfoBuilderV2 {
         let login = kdfParams.checkedLogin(unchekedLogin)
 
         let walletDetails: WalletDetailsModelV2
-        let newKeyPairSalt: Data = Common.Random.generateRandom(length: 16)
+        let newKeyPairSalt: Data = salt
         let newKeyPairIV: Data = Common.Random.generateRandom(length: 12)
         do {
             walletDetails = try WalletDetailsModelV2.createWalletDetails(
