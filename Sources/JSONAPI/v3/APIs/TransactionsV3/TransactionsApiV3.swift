@@ -26,7 +26,7 @@ public class TransactionsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestSingleResult<Horizon.TransactionResource>) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         let request: SubmitTransactionRequest = .init(
             tx: envelope,

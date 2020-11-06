@@ -25,7 +25,7 @@ public class UpdatePasswordRequestBuilder {
         networkInfo: NetworkInfoModel,
         completion: @escaping (Result) -> Void) -> Cancelable {
         
-        var cancelable = self.keyServerApi.network.getEmptyCancelable()
+        let cancelable = self.keyServerApi.network.getEmptyCancelable()
         
         guard let newKeyPair = try? ECDSA.KeyData(),
             let passwordFactorKeyPair = try? ECDSA.KeyData() else {
@@ -135,7 +135,7 @@ public class UpdatePasswordRequestBuilder {
             return self.keyServerApi.network.getEmptyCancelable()
         }
         
-        var cancelable = self.keyServerApi.network.getEmptyCancelable()
+        let cancelable = self.keyServerApi.network.getEmptyCancelable()
         cancelable.cancelable = self.keyServerApi.requestWallet(
             walletId: walletId,
             walletKDF: walletKDF,
@@ -209,7 +209,7 @@ public class UpdatePasswordRequestBuilder {
             requestSigner: requestSigner
         )
         
-        var cancelable = self.keyServerApi.network.getEmptyCancelable()
+        let cancelable = self.keyServerApi.network.getEmptyCancelable()
         cancelable.cancelable = accountApiV3.requestSigners(
             accountId: walletData.accountId,
             completion: { [weak self] (result) in

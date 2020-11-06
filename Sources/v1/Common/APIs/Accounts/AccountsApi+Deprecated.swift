@@ -29,7 +29,7 @@ extension AccountsApi {
         completion: @escaping (_ result: GetBlobResult) -> Void
         ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildGetBlobRequest(
             accountId: accountId,
@@ -88,7 +88,7 @@ extension AccountsApi {
         completion: @escaping (_ result: UploadBlobResult) -> Void
         ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildUploadBlobRequest(
             accountId: accountId,

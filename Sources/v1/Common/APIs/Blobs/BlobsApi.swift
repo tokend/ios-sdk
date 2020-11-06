@@ -38,7 +38,7 @@ public class BlobsApi: BaseApi {
         completion: @escaping (_ result: GetBlobResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildGetBlobRequest(
             blobId: blobId,
@@ -86,7 +86,7 @@ public class BlobsApi: BaseApi {
         completion: @escaping (PostBlobResult) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         let postBlob: PostBlobModel = .init(
             data: .init(

@@ -37,7 +37,7 @@ public class HistoryApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestCollectionResult<Horizon.ParticipantsEffectResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildHistoryRequest(
             filters: filters,
@@ -78,7 +78,7 @@ public class HistoryApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestCollectionResult<Horizon.ParticipantsEffectResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildMovementsRequest(
             filters: filters,

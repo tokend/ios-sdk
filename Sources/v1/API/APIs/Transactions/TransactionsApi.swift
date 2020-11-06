@@ -46,7 +46,7 @@ public class TransactionsApi: BaseApi {
         completion: @escaping (_ result: RequestPaymentsResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildPaymentsRequest(
             accountId: accountId,
@@ -122,7 +122,7 @@ public class TransactionsApi: BaseApi {
         completion: @escaping (_ result: PaymentSendResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildSendPaymentRequest(
             envelope: envelope,
@@ -185,7 +185,7 @@ public class TransactionsApi: BaseApi {
         completion: @escaping (_ result: FiatPaymentSendResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildFiatSendPaymentRequest(
             envelope: envelope,
@@ -214,7 +214,7 @@ public class TransactionsApi: BaseApi {
         completion: @escaping (_ result: PaymentSendResult) -> Void
         ) -> Cancelable {
         
-        var cancellable = self.network.getEmptyCancelable()
+        let cancellable = self.network.getEmptyCancelable()
         
         cancellable.cancelable = self.network.responseObject(
             TransactionResponse.self,
@@ -267,7 +267,7 @@ public class TransactionsApi: BaseApi {
         completion: @escaping (_ result: FiatPaymentSendResult) -> Void
         ) -> Cancelable {
         
-        var cancellable = self.network.getEmptyCancelable()
+        let cancellable = self.network.getEmptyCancelable()
         
         cancellable.cancelable = self.network.responseObject(
             FiatPaymentResponse.self,

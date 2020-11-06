@@ -4,6 +4,31 @@ import DLCryptoKit
 
 extension KeyServerApi {
 
+    /// Method to create `AccountsApi` instance.
+    /// - Parameters:
+    ///   - signingKey: Private key pair to sign api requests.
+    /// - Returns: `AccountsApi` instance.
+    @available(*, deprecated)
+    public func createAccountsApiV3(
+        requestSigner: JSONAPI.RequestSignerProtocol
+        ) -> AccountsApiV3 {
+
+        let callbacksV3 = JSONAPI.ApiCallbacks(
+            onUnathorizedRequest: { _ in }
+        )
+
+        let accountsApiV3 = AccountsApiV3(
+            apiStack: JSONAPI.BaseApiStack(
+                apiConfiguration: self.apiConfiguration,
+                callbacks: callbacksV3,
+                network: self.networkV3.network,
+                requestSigner: requestSigner
+            )
+        )
+
+        return accountsApiV3
+    }
+    
     /// Method sends request to create wallet and register it within Key Server.
     /// The result of request will be fetched in `completion` block as `KeyServerApi.CreateWalletRequestResult`
     /// - Parameters:
@@ -56,10 +81,10 @@ extension KeyServerApi {
         walletKDF: WalletKDFParams,
         walletInfo: WalletInfoModel,
         requestSigner: JSONAPI.RequestSignerProtocol,
-        completion: @escaping (_ result: UpdatePasswordResult) -> Void
+        completion: @escaping (_ result: Result<WalletInfoResponse, Swift.Error>) -> Void
         ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildUpdateWalletRequest(
             walletId: walletId,
@@ -67,7 +92,7 @@ extension KeyServerApi {
             requestSigner: requestSigner,
             completion: { [weak self] (request) in
                 guard let request = request else {
-                    completion(.failed(.failedToGenerateRequest(ApiErrors.failedToSignRequest)))
+                    completion(.failure(ApiErrors.failedToSignRequest))
                     return
                 }
 
@@ -185,7 +210,7 @@ extension KeyServerApiRequestBuilder {
         ) throws -> CreateWalletRequest {
 
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath("wallets")
+        let url = baseUrl/walletsPath
 
         let registrationInfoData = ApiDataRequest<WalletInfoModel.WalletInfoData, WalletInfoModel.Include>(
             data: walletInfo.data,
@@ -220,7 +245,7 @@ extension KeyServerApiRequestBuilder {
         ) {
 
         let baseUrl = self.apiConfiguration.urlString
-        let path = /"wallets"/walletId
+        let path = /walletsPath/walletId
         let url = baseUrl/path
         let method: RequestMethod = .put
 

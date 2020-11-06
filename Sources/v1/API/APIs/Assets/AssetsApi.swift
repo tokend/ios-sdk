@@ -42,7 +42,7 @@ public class AssetsApi: BaseApi {
         completion: @escaping (_ result: RequestAssetsResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildAssetsRequest(
             sendDate: sendDate,

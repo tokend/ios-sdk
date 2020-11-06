@@ -1,6 +1,9 @@
 import Foundation
 
-public struct UpdateWalletRequest {
+@available(*, deprecated, renamed: "PutWalletRequest")
+public typealias UpdateWalletRequest = PutWalletRequest
+
+public struct PutWalletRequest {
     public let url: String
     public let method: RequestMethod
     public let parametersEncoding: RequestParametersEncoding

@@ -64,7 +64,7 @@ public class TFAApi {
         completion: @escaping (_ result: GetFactorsResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildGetFactorsRequest(
             walletId: walletId,
@@ -142,7 +142,7 @@ public class TFAApi {
         completion: @escaping (_ result: CreateFactorResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         let model = TFACreateFactorModel(type: type)
         
@@ -212,7 +212,7 @@ public class TFAApi {
         completion: @escaping (_ result: UpdateFactorResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         let attributes = TFAUpdateFactorModel.Attributes(priority: priority)
         let model = TFAUpdateFactorModel(attributes: attributes)
@@ -282,7 +282,7 @@ public class TFAApi {
         completion: @escaping (_ result: DeleteFactorResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildDeleteFactorRequest(
             walletId: walletId,
@@ -312,7 +312,7 @@ public class TFAApi {
         completion: @escaping (_ result: CreateFactorResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         cancelable.cancelable = self.network.responseDataObject(
             ApiDataResponse<TFACreateFactorResponse>.self,
@@ -368,7 +368,7 @@ public class TFAApi {
         completion: @escaping (_ result: UpdateFactorResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         cancelable.cancelable = self.network.responseDataEmpty(
             url: request.url,
@@ -419,7 +419,7 @@ public class TFAApi {
         completion: @escaping (_ result: DeleteFactorResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         cancelable.cancelable = self.network.responseDataEmpty(
             url: request.url,
