@@ -2,48 +2,31 @@ import Foundation
 
 public extension KeyServerApi {
 
-    /// Result model for `completion` block of `KeyServerApi.requestWallet(...)`
-    enum RequestWalletResult {
+    public enum GetWalletError: Swift.Error, LocalizedError {
 
-        /// Errors that may occur for `KeyServerApi.requestWallet(...)`.
-        public enum RequestWalletError: Swift.Error, LocalizedError {
+        case walletShouldBeVerified(walletId: String)
+        case tfaFailed
+        case unknown(ApiErrors)
+        case wrongPassword
 
-            /// Wallet is not verified.
-            @available(*, unavailable, renamed: "walletShouldBeVerified")
-            case emailShouldBeVerified(walletId: String)
-            case walletShouldBeVerified(walletId: String)
+        // MARK: - Swift.Error
 
-            /// TFA failed.
-            case tfaFailed
+        public var errorDescription: String? {
+            switch self {
 
-            /// Unrecognized error. Contains `ApiErrors` model.
-            case unknown(ApiErrors)
+            case .walletShouldBeVerified:
+                return "Wallet should be verified"
 
-            /// Input password is wrong.
-            case wrongPassword
+            case .tfaFailed:
+                return "TFA failed"
 
-            // MARK: - Swift.Error
+            case .unknown(let errors):
+                return errors.localizedDescription
 
-            public var errorDescription: String? {
-                switch self {
-                case .emailShouldBeVerified,
-                     .walletShouldBeVerified:
-                    return "Wallet should be verified"
-                case .tfaFailed:
-                    return "TFA failed"
-                case .unknown(let errors):
-                    return errors.localizedDescription
-                case .wrongPassword:
-                    return "Wrong password"
-                }
+            case .wrongPassword:
+                return "Wrong password"
             }
         }
-
-        /// Case of failed response from api with `RequestWalletResult.RequestWalletError` model
-        case failure(RequestWalletError)
-
-        /// Case of successful response from api with `WalletDataModel` model
-        case success(walletData: WalletDataModel)
     }
 
     /// Method sends request to get wallet data from api.
@@ -55,22 +38,27 @@ public extension KeyServerApi {
     ///   - result: Member of `KeyServerApi.RequestWalletResult`
     /// - Returns: `Cancelable`
     @discardableResult
-    func requestWallet(
+    func getWallet(
         walletId: String,
         walletKDF: WalletKDFParams,
-        completion: @escaping (_ result: RequestWalletResult) -> Void
+        completion: @escaping (_ result: Result<WalletDataModel, Swift.Error>) -> Void
         ) -> Cancelable {
 
         let request = self.requestBuilder.buildGetWalletRequest(walletId: walletId)
 
-        return self.requestWallet(
+        return self.performGetWalletRequest(
+            request,
             walletId: walletId,
             walletKDF: walletKDF,
-            request: request,
             initiateTFA: true,
             completion: completion
         )
     }
+}
+
+// MARK: - Private methods
+
+private extension KeyServerApi {
 
     /// Method sends request to get wallet data from api.
     /// The result of request will be fetched in `completion` block as `KeyServerApi.RequestWalletResult`
@@ -82,13 +70,12 @@ public extension KeyServerApi {
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `KeyServerApi.RequestWalletResult`
     /// - Returns: `Cancelable`
-    @discardableResult
-    func requestWallet(
+    func performGetWalletRequest(
+        _ request: GetWalletRequest,
         walletId: String,
         walletKDF: WalletKDFParams,
-        request: GetWalletRequest,
         initiateTFA: Bool,
-        completion: @escaping (_ result: RequestWalletResult) -> Void
+        completion: @escaping (_ result: Result<WalletDataModel, Swift.Error>) -> Void
         ) -> Cancelable {
 
         var cancellable = self.network.getEmptyCancelable()
@@ -101,38 +88,35 @@ public extension KeyServerApi {
 
                 case .success(let response):
                     let walletData = WalletDataModel.fromResponse(response.data, walletKDF: walletKDF)
-                    completion(.success(walletData: walletData))
+                    completion(.success(walletData))
 
                 case .failure(let errors):
-                    cancellable.cancelable = self?.onRequestWalletFailed(
+                    cancellable.cancelable = self?.onGetWalletFailed(
                         walletId: walletId,
                         walletKDF: walletKDF,
                         errors: errors,
                         request: request,
                         initiateTFA: initiateTFA,
                         completion: completion
-                        )
+                    )
                 }
         })
         return cancellable
     }
 
-    // MARK: - Private -
-
-    @discardableResult
-    private func onRequestWalletFailed(
+    func onGetWalletFailed(
         walletId: String,
         walletKDF: WalletKDFParams,
         errors: ApiErrors,
         request: GetWalletRequest,
         initiateTFA: Bool,
-        completion: @escaping (_ result: RequestWalletResult) -> Void
+        completion: @escaping (_ result: Result<WalletDataModel, Swift.Error>) -> Void
         ) -> Cancelable {
 
         let cancellable = self.network.getEmptyCancelable()
 
         if errors.contains(status: ApiError.Status.forbidden, code: ApiError.Code.verificationRequired) {
-            completion(.failure(.walletShouldBeVerified(walletId: walletId)))
+            completion(.failure(GetWalletError.walletShouldBeVerified(walletId: walletId)))
         } else {
             errors.checkTFARequired(
                 handler: self.tfaHandler,
@@ -141,20 +125,20 @@ public extension KeyServerApi {
                     switch tfaResult {
 
                     case .success:
-                        cancellable.cancelable = self?.requestWallet(
+                        cancellable.cancelable = self?.performGetWalletRequest(
+                            request,
                             walletId: walletId,
                             walletKDF: walletKDF,
-                            request: request,
                             initiateTFA: false,
                             completion: completion
                             )
 
                     case .failure, .canceled:
-                        completion(.failure(.tfaFailed))
+                        completion(.failure(GetWalletError.tfaFailed))
                     }
                 },
                 onNoTFA: {
-                    let requestError: RequestWalletResult.RequestWalletError
+                    let requestError: GetWalletError
                     if errors.contains(status: ApiError.Status.notFound) {
                         requestError = .wrongPassword
                     } else {

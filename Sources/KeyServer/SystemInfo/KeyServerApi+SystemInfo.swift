@@ -7,13 +7,14 @@ public extension KeyServerApi {
     /// - Parameters:
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `KeyServerApi.RequestSystemInfoResult`
+    @discardableResult
     func requestSystemInfo(
         completion: @escaping (_ result: Result<SystemInfo, ApiErrors>) -> Void
-        ) {
+        ) -> Cancelable {
 
-        let request = self.requestBuilder.buildRequestSystemInfoRequest()
+        let request = self.requestBuilder.buildSystemInfoRequest()
 
-        self.network.responseObject(
+        return self.network.responseObject(
             SystemInfo.self,
             url: request.url,
             method: request.method,

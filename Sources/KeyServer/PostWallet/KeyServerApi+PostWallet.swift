@@ -2,11 +2,15 @@ import Foundation
 
 public extension KeyServerApi {
 
-    func performPostWalletV2Request(
+    /// Used to change login
+    @discardableResult
+    func postWallet(
         walletId: String,
         walletInfo: WalletInfoModelV2,
         completion: @escaping (_ result: Result<WalletInfoResponse, Swift.Error>) -> Void
-    ) {
+    ) -> Cancelable {
+
+        let cancelable = self.network.getEmptyCancelable()
 
         let request: PostWalletRequest
         do {
@@ -16,10 +20,10 @@ public extension KeyServerApi {
             )
         } catch let error {
             completion(.failure(error))
-            return
+            return cancelable
         }
 
-        self.network.responseDataObject(
+        cancelable.cancelable = self.network.responseDataObject(
             ApiDataResponse<WalletInfoResponse>.self,
             url: request.url,
             method: request.method,
@@ -35,5 +39,7 @@ public extension KeyServerApi {
                     completion(.success(response.data))
                 }
         })
+
+        return cancelable
     }
 }

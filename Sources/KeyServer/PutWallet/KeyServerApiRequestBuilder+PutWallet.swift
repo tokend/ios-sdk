@@ -4,24 +4,6 @@ public extension KeyServerApiRequestBuilder {
 
     // MARK: - Public
 
-    @available(*, deprecated, renamed: "buildPutWalletRequest")
-    func buildUpdateWalletV2Request(
-        walletId: String,
-        walletInfo: WalletInfoModelV2,
-        requestSigner: JSONAPI.RequestSignerProtocol,
-        sendDate: Date = Date(),
-        completion: @escaping (UpdateWalletRequest?) -> Void
-        ) {
-
-        buildPutWalletRequest(
-            walletId: walletId,
-            walletInfo: walletInfo,
-            requestSigner: requestSigner,
-            sendDate: sendDate,
-            completion: completion
-        )
-    }
-
     /// Builds request to update wallet. Used to update password.
     /// - Parameters:
     ///   - walletId: Wallet id.
@@ -70,7 +52,7 @@ public extension KeyServerApiRequestBuilder {
                     return
                 }
 
-                let request = UpdateWalletRequest(
+                let request = PutWalletRequest(
                     url: url,
                     method: method,
                     parametersEncoding: .json,

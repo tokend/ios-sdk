@@ -4,7 +4,7 @@ public extension KeyServerApiRequestBuilder {
 
     /// Builds request to fetch system info from api.
     /// - Returns: `SystemInfoRequest` model.
-    func buildRequestSystemInfoRequest() -> SystemInfoRequest {
+    func buildSystemInfoRequest() -> SystemInfoRequest {
         let baseUrl = self.apiConfiguration.urlString
 
         let request = SystemInfoRequest(

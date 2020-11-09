@@ -2,7 +2,7 @@ import Foundation
 
 public extension KeyServerApi {
 
-    enum UpdatePasswordV2Error: Swift.Error, LocalizedError {
+    enum PutWalletError: Swift.Error, LocalizedError {
 
         case tfaFailed
         case unverifiedWallet
@@ -21,28 +21,8 @@ public extension KeyServerApi {
         }
     }
 
-    @available(*, deprecated, renamed: "putWallet")
-    func performUpdatePasswordV2Request(
-        login: String,
-        walletId: String,
-        signingPassword: String,
-        walletKDF: WalletKDFParams,
-        walletInfo: WalletInfoModelV2,
-        requestSigner: JSONAPI.RequestSignerProtocol,
-        completion: @escaping (_ result: Result<WalletInfoResponse, Swift.Error>) -> Void
-    ) -> Cancelable {
-
-        putWallet(
-            login: login,
-            walletId: walletId,
-            signingPassword: signingPassword,
-            walletKDF: walletKDF,
-            walletInfo: walletInfo,
-            requestSigner: requestSigner,
-            completion: completion
-        )
-    }
-
+    /// Used to change password
+    @discardableResult
     func putWallet(
         login: String,
         walletId: String,
@@ -55,7 +35,7 @@ public extension KeyServerApi {
 
         let cancelable = self.network.getEmptyCancelable()
 
-        self.requestBuilder.buildUpdateWalletV2Request(
+        self.requestBuilder.buildPutWalletRequest(
             walletId: walletId,
             walletInfo: walletInfo,
             requestSigner: requestSigner,
@@ -65,7 +45,7 @@ public extension KeyServerApi {
                     return
                 }
 
-                cancelable.cancelable = self?.performUpdatePasswordRequest(
+                cancelable.cancelable = self?.performPutWalletRequest(
                     request,
                     login: login,
                     signingPassword: signingPassword,
@@ -80,12 +60,12 @@ public extension KeyServerApi {
     }
 }
 
-// MARK: - Private
+// MARK: - Internal methods
 
 internal extension KeyServerApi {
 
-    func performUpdatePasswordRequest(
-        _ request: UpdateWalletRequest,
+    func performPutWalletRequest(
+        _ request: PutWalletRequest,
         login: String,
         signingPassword: String,
         walletKDF: WalletKDFParams,
@@ -105,87 +85,128 @@ internal extension KeyServerApi {
 
                 switch result {
 
+                case .success(let object):
+                    completion(.success(object.data))
+
                 case .failure(let errors):
-                    self?.handlePerformUpdatePasswordRequestFailure(
-                        errors: errors,
-                        cancelable: cancelable,
-                        request,
+                    cancelable.cancelable = self?.onPutWalletFailed(
                         login: login,
                         signingPassword: signingPassword,
                         walletKDF: walletKDF,
+                        errors: errors,
+                        request: request,
                         initiateTFA: initiateTFA,
                         completion: completion
                     )
-
-                case .success(let object):
-                    completion(.success(object.data))
                 }
             }
         )
 
         return cancelable
     }
+}
 
-    func handlePerformUpdatePasswordRequestFailure(
-        errors: ApiErrors,
-        cancelable: Cancelable,
-        _ request: UpdateWalletRequest,
+// MARK: - Private methods
+
+private extension KeyServerApi {
+
+    func onPutWalletFailed(
         login: String,
         signingPassword: String,
         walletKDF: WalletKDFParams,
+        errors: ApiErrors,
+        request: PutWalletRequest,
         initiateTFA: Bool,
         completion: @escaping (_ result: Result<WalletInfoResponse, Swift.Error>) -> Void
-    ) {
+    ) -> Cancelable {
 
-        if let error = errors.firstErrorWith(
-            status: ApiError.Status.forbidden,
-            code: ApiError.Code.tfaRequired
-        ),
-        let meta = error.tfaMeta {
+        let cancelable = self.network.getEmptyCancelable()
 
-            if initiateTFA {
-                let onHandleTFAResult: (TFAResult) -> Void = { [weak self] tfaResult in
-                    switch tfaResult {
+        let putWalletTfaHandler: PutWalletTFAHandler = .init(
+            defaultTFAHandler: tfaHandler,
+            login: login,
+            signingPassword: signingPassword,
+            walletKDF: walletKDF
+        )
 
-                    case .success:
-                        cancelable.cancelable = self?.performUpdatePasswordRequest(
-                            request,
-                            login: login,
-                            signingPassword: signingPassword,
-                            walletKDF: walletKDF,
-                            initiateTFA: false,
-                            completion: completion
-                        )
+        errors.checkTFARequired(
+            handler: putWalletTfaHandler,
+            initiateTFA: initiateTFA,
+            onCompletion: { [weak self] (tfaResult) in
+                switch tfaResult {
 
-                    case .failure, .canceled:
-                        completion(.failure(UpdatePasswordV2Error.tfaFailed))
-                    }
-                }
-
-                switch meta.factorTypeBase {
-
-                case .codeBased:
-                    tfaHandler.initiateTFA(
-                        meta: meta,
-                        completion: { tfaResult in
-                            onHandleTFAResult(tfaResult)
-                        })
-
-                case .passwordBased(let metaModel):
-                    TFAPasswordHandler(tfaHandler: tfaHandler).initiatePasswordTFA(
+                case .success:
+                    cancelable.cancelable = self?.performPutWalletRequest(
+                        request,
                         login: login,
-                        password: signingPassword,
-                        meta: metaModel,
-                        kdfParams: walletKDF.kdfParams,
-                        completion: { tfaResult in
-                            onHandleTFAResult(tfaResult)
-                        })
+                        signingPassword: signingPassword,
+                        walletKDF: walletKDF,
+                        initiateTFA: false,
+                        completion: completion
+                    )
+
+                case .failure, .canceled:
+                    completion(.failure(PutWalletError.tfaFailed))
                 }
-            } else {
-                completion(.failure(UpdatePasswordV2Error.tfaFailed))
+            },
+            onNoTFA: {
+                completion(.failure(errors))
             }
-        } else {
-            completion(.failure(errors))
+        )
+
+        return cancelable
+    }
+}
+
+// MARK: - PutWalletTFAHandler
+
+private extension KeyServerApi {
+
+    class PutWalletTFAHandler: TFAHandlerProtocol {
+
+        private let defaultTFAHandler: TFAHandler
+        private let login: String
+        private let signingPassword: String
+        private let walletKDF: WalletKDFParams
+
+        init(
+            defaultTFAHandler: TFAHandler,
+            login: String,
+            signingPassword: String,
+            walletKDF: WalletKDFParams
+        ) {
+
+            self.defaultTFAHandler = defaultTFAHandler
+            self.login = login
+            self.signingPassword = signingPassword
+            self.walletKDF = walletKDF
+        }
+
+        func initiateTFA(
+            meta: TFAMetaResponse,
+            completion: @escaping (TFAResult) -> Void
+        ) {
+
+            switch meta.factorTypeBase {
+
+            case .codeBased:
+                defaultTFAHandler.initiateTFA(
+                    meta: meta,
+                    completion: { (tfaResult) in
+
+                        completion(tfaResult)
+                    })
+
+            case .passwordBased(let metaModel):
+                TFAPasswordHandler(tfaHandler: defaultTFAHandler).initiatePasswordTFA(
+                    login: login,
+                    password: signingPassword,
+                    meta: metaModel,
+                    kdfParams: walletKDF.kdfParams,
+                    completion: { tfaResult in
+                        completion(tfaResult)
+                    })
+            }
         }
     }
 }

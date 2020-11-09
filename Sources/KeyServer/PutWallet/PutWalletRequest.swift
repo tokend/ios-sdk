@@ -1,8 +1,5 @@
 import Foundation
 
-@available(*, deprecated, renamed: "PutWalletRequest")
-public typealias UpdateWalletRequest = PutWalletRequest
-
 public struct PutWalletRequest {
     public let url: String
     public let method: RequestMethod

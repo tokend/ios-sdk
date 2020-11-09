@@ -2,14 +2,16 @@ import Foundation
 import TokenDWallet
 import DLCryptoKit
 
-extension KeyServerApi {
+// MARK: - KeyServerApi
+
+public extension KeyServerApi {
 
     /// Method to create `AccountsApi` instance.
     /// - Parameters:
     ///   - signingKey: Private key pair to sign api requests.
     /// - Returns: `AccountsApi` instance.
     @available(*, deprecated)
-    public func createAccountsApiV3(
+    func createAccountsApiV3(
         requestSigner: JSONAPI.RequestSignerProtocol
         ) -> AccountsApiV3 {
 
@@ -36,7 +38,7 @@ extension KeyServerApi {
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `KeyServerApi.LoginRequestResult`
     @available(*, deprecated, renamed: "createWalletV2")
-    public func createWallet(
+    func createWallet(
         walletInfo: WalletInfoModel,
         completion: @escaping (_ result: CreateWalletRequestResult) -> Void
         ) {
@@ -74,7 +76,7 @@ extension KeyServerApi {
     }
 
     @available(*, deprecated, renamed: "performUpdatePasswordV2Request")
-    public func performUpdatePasswordRequest(
+    func performUpdatePasswordRequest(
         email: String,
         walletId: String,
         signingPassword: String,
@@ -96,7 +98,7 @@ extension KeyServerApi {
                     return
                 }
 
-                cancelable.cancelable = self?.performUpdatePasswordRequest(
+                cancelable.cancelable = self?.performPutWalletRequest(
                     request,
                     login: email,
                     signingPassword: signingPassword,
@@ -110,10 +112,10 @@ extension KeyServerApi {
     }
 
     @available(*, unavailable, renamed: "VerifyWalletResult")
-    public typealias VerifyEmailResult = VerifyWalletResult
+    typealias VerifyEmailResult = VerifyWalletResult
 
     @available(*, unavailable, renamed: "verifyWallet")
-    public func verifyEmail(
+    func verifyEmail(
         walletId: String,
         token: String,
         completion: @escaping (_ result: VerifyEmailResult) -> Void
@@ -127,10 +129,10 @@ extension KeyServerApi {
     }
 
     @available(*, unavailable, renamed: "ResendVerificationCodeResult")
-    public typealias ResendEmailResult = ResendVerificationCodeResult
+    typealias ResendEmailResult = ResendVerificationCodeResult
 
     @available(*, unavailable, renamed: "resendVerificationCode")
-    public func resendEmail(
+    func resendEmail(
         walletId: String,
         completion: @escaping (_ result: ResendEmailResult) -> Void
     ) {
@@ -140,6 +142,183 @@ extension KeyServerApi {
             completion: completion
         )
     }
+
+    @available(*, deprecated, renamed: "PutWalletError")
+    typealias UpdatePasswordV2Error = PutWalletError
+
+    /// Result model for `completion` block of `KeyServerApi.updatePasswordFor(...)`
+    @available(*, deprecated, renamed: "PutWalletError")
+    enum UpdatePasswordResult {
+
+        /// Errors that may occur for `KeyServerApi.updatePasswordFor(...)`.
+        public enum UpdateError: Swift.Error, LocalizedError {
+            public typealias RequestError = Swift.Error & LocalizedError
+
+            /// Failed to build request model.
+            case failedToGenerateRequest(Swift.Error)
+
+            /// Api request failed.
+            case requestFailed(RequestError)
+
+            /// TFA failed.
+            case tfaFailed
+
+            /// Wallet is not verified.
+            case unverifiedWallet
+
+            case swiftError(Swift.Error)
+
+            // MARK: - Swift.Error
+
+            public var errorDescription: String? {
+                switch self {
+
+                case .failedToGenerateRequest(let error):
+                    return error.localizedDescription
+
+                case .requestFailed(let error):
+                    return error.localizedDescription
+
+                case .tfaFailed:
+                    return "TFA failed"
+
+                case .unverifiedWallet:
+                    return "Unverified wallet"
+
+                case .swiftError(let error):
+                    return error.localizedDescription
+                }
+            }
+        }
+
+        /// Case of failed update password operation with `UpdatePasswordResult.UpdateError` model
+        case failed(UpdateError)
+
+        /// Case of successful update password operation
+        /// with `WalletInfoModel`, `WalletDataModel` and new private `ECDSA.KeyData` models
+        case succeeded(WalletInfoResponse)
+    }
+
+    @available(*, deprecated, renamed: "putWallet")
+    func performUpdatePasswordV2Request(
+        login: String,
+        walletId: String,
+        signingPassword: String,
+        walletKDF: WalletKDFParams,
+        walletInfo: WalletInfoModelV2,
+        requestSigner: JSONAPI.RequestSignerProtocol,
+        completion: @escaping (_ result: UpdatePasswordResult) -> Void
+    ) -> Cancelable {
+
+        putWallet(
+            login: login,
+            walletId: walletId,
+            signingPassword: signingPassword,
+            walletKDF: walletKDF,
+            walletInfo: walletInfo,
+            requestSigner: requestSigner,
+            completion: { (result) in
+
+                switch result {
+
+                case .success(let response):
+                    completion(.succeeded(response))
+
+                case .failure(let error):
+                    completion(.failed(.swiftError(error)))
+                }
+            }
+        )
+    }
+
+    @available(*, deprecated, renamed: "postWallet")
+    func performPostWalletV2Request(
+        walletId: String,
+        walletInfo: WalletInfoModelV2,
+        completion: @escaping (_ result: Result<WalletInfoResponse, Swift.Error>) -> Void
+    ) {
+
+        postWallet(
+            walletId: walletId,
+            walletInfo: walletInfo,
+            completion: completion
+        )
+    }
+
+
+    /// Result model for `completion` block of `KeyServerApi.requestWallet(...)`
+    @available(*, deprecated)
+    enum RequestWalletResult {
+
+        /// Errors that may occur for `KeyServerApi.requestWallet(...)`.
+        public enum RequestWalletError: Swift.Error, LocalizedError {
+
+            /// Wallet is not verified.
+            @available(*, unavailable, renamed: "walletShouldBeVerified")
+            case emailShouldBeVerified(walletId: String)
+            case walletShouldBeVerified(walletId: String)
+
+            /// TFA failed.
+            case tfaFailed
+
+            /// Unrecognized error. Contains `ApiErrors` model.
+            case unknown(ApiErrors)
+
+            /// Input password is wrong.
+            case wrongPassword
+
+            case swiftError(Swift.Error)
+
+            // MARK: - Swift.Error
+
+            public var errorDescription: String? {
+                switch self {
+                case .emailShouldBeVerified,
+                     .walletShouldBeVerified:
+                    return "Wallet should be verified"
+                case .tfaFailed:
+                    return "TFA failed"
+                case .unknown(let errors):
+                    return errors.localizedDescription
+                case .wrongPassword:
+                    return "Wrong password"
+                case .swiftError(let error):
+                    return error.localizedDescription
+                }
+            }
+        }
+
+        /// Case of failed response from api with `RequestWalletResult.RequestWalletError` model
+        case failure(RequestWalletError)
+
+        /// Case of successful response from api with `WalletDataModel` model
+        case success(walletData: WalletDataModel)
+    }
+
+    @available(*, deprecated, renamed: "getWallet")
+    @discardableResult
+    func requestWallet(
+        walletId: String,
+        walletKDF: WalletKDFParams,
+        completion: @escaping (_ result: RequestWalletResult) -> Void
+        ) -> Cancelable {
+
+        getWallet(
+            walletId: walletId,
+            walletKDF: walletKDF,
+            completion: { (result) in
+
+                switch result {
+
+                case .success(let data):
+                    completion(.success(walletData: data))
+
+                case .failure(let error):
+                    completion(.failure(.swiftError(error)))
+                }
+            }
+        )
+    }
 }
 
 extension KeyServerApi.VerifyWalletResult {
@@ -147,6 +326,24 @@ extension KeyServerApi.VerifyWalletResult {
     @available(*, unavailable, renamed: "VerifyWalletError")
     public typealias VerifyEmailError = VerifyWalletError
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// MARK: - KeyServerApiRequestBuilder
 
 extension KeyServerApiRequestBuilder {
 
@@ -287,6 +484,24 @@ extension KeyServerApiRequestBuilder {
                 completion(request)
         })
     }
+
+    @available(*, deprecated, renamed: "buildPutWalletRequest")
+    func buildUpdateWalletV2Request(
+        walletId: String,
+        walletInfo: WalletInfoModelV2,
+        requestSigner: JSONAPI.RequestSignerProtocol,
+        sendDate: Date = Date(),
+        completion: @escaping (UpdateWalletRequest?) -> Void
+        ) {
+
+        buildPutWalletRequest(
+            walletId: walletId,
+            walletInfo: walletInfo,
+            requestSigner: requestSigner,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
 }
 
 @available(*, unavailable, renamed: "ResendVerificationCodeRequest")
@@ -297,3 +512,6 @@ public typealias VerifyEmailRequest = VerifyWalletRequest
 
 @available(*, unavailable, renamed: "WalletVerification")
 public typealias EmailVerification = WalletVerification
+
+@available(*, deprecated, renamed: "PutWalletRequest")
+public typealias UpdateWalletRequest = PutWalletRequest
