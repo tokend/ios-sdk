@@ -319,6 +319,171 @@ public extension KeyServerApi {
             }
         )
     }
+
+    /// Result model for `completion` block of `KeyServerApi.requestWalletKDF(...)`
+    @available(*, deprecated)
+    enum RequestWalletKDFResult {
+
+        /// Errors that may occur for `KeyServerApi.requestWalletKDF(...)`
+        public enum RequestError: Swift.Error, LocalizedError {
+
+            /// KDF params not found for given login.
+            @available(*, deprecated, renamed: "loginNotFound")
+            case emailNotFound
+            case loginNotFound
+
+            /// Unrecognized error. Contains `ApiErrors`
+            case unknown(ApiErrors)
+
+            case swiftError(Swift.Error)
+
+            // MARK: - Swift.Error
+
+            public var errorDescription: String? {
+                switch self {
+                case .emailNotFound,
+                     .loginNotFound:
+                    return "KDF for login not found"
+                case .unknown(let errors):
+                    return errors.localizedDescription
+
+                case .swiftError(let error):
+                    return error.localizedDescription
+                }
+            }
+        }
+
+        /// Case of successful response from api with `WalletKDFParams` model
+        case success(walletKDF: WalletKDFParams)
+
+        /// Case of failed response from api with `KeyServerApi.RequestWalletKDFResult.RequestError` model
+        case failure(RequestError)
+    }
+
+    /// Method sends request to get wallet KDF params from api.
+    /// The result of request will be fetched in `completion` block as `KeyServerApi.RequestWalletKDFResult`
+    /// - Parameters:
+    ///   - login: Login of associated wallet.
+    ///   - isRecovery: Indicates whether is recovery wallet data should be fetched. Default is **false**.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `KeyServerApi.RequestWalletKDFResult`
+    /// - Returns: `Cancelable`
+    @available(*, deprecated, renamed: "getWalletKDF")
+    @discardableResult
+    func requestWalletKDF(
+        login: String,
+        isRecovery: Bool = false,
+        completion: @escaping (_ result: RequestWalletKDFResult) -> Void
+        ) -> Cancelable {
+
+        getWalletKDF(
+            login: login,
+            isRecovery: isRecovery,
+            completion: { (result) in
+
+                switch result {
+
+                case .success(let kdf):
+                    completion(.success(walletKDF: kdf))
+
+                case .failure(let error):
+                    completion(.failure(.swiftError(error)))
+                }
+            }
+        )
+    }
+
+    /// Result model for `completion` block of `KeyServerApi.requestDefaultKDF(...)`
+    @available(*, deprecated)
+    enum RequestDefaultKDFResult {
+
+        /// Errors that may occur for `KeyServerApi.requestDefaultKDF(...)`
+        public enum RequestError: Swift.Error, LocalizedError {
+
+            /// Unrecognized error. Contains `ApiErrors`
+            case unknown(ApiErrors)
+
+            case swiftError(Swift.Error)
+
+            // MARK: - Swift.Error
+
+            public var errorDescription: String? {
+                switch self {
+                case .unknown(let errors):
+                    return errors.localizedDescription
+
+                case .swiftError(let error):
+                    return error.localizedDescription
+                }
+            }
+        }
+
+        /// Case of successful response from api with `KDFParams` model
+        case success(kdfParams: KDFParams)
+
+        /// Case of failed response from api with `KeyServerApi.RequestDefaultKDFResult.RequestError` model
+        case failure(RequestError)
+    }
+
+    /// Method sends request to get default KDF params from api.
+    /// The result of request will be fetched in `completion` block as `KeyServerApi.RequestDefaultKDFResult`
+    /// - Parameters:
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `KeyServerApi.RequestDefaultKDFResult`
+    @available(*, deprecated, renamed: "getDefaultKDFParams")
+    func requestDefaultKDF(
+        completion: @escaping (_ result: RequestDefaultKDFResult) -> Void
+        ) {
+
+        getDefaultKDFParams(
+            completion: { (result) in
+
+                switch result {
+
+                case .success(let kdf):
+                    completion(.success(kdfParams: kdf))
+
+                case .failure(let error):
+                    completion(.failure(.swiftError(error)))
+                }
+            }
+        )
+    }
+
+    /// Result model for `completion` block of `KeyServerApi.requestDefaultSignerRoleId(...)`
+    @available(*, deprecated)
+    enum RequestDefaultSignerRoleIdResult {
+
+        /// Case of failed response from api with `ApiErrors` model
+        case failure(Swift.Error)
+
+        /// Case of successful response from api with `DefaultSignerRoleIdResponse` model
+        case success(DefaultSignerRoleIdResponse)
+    }
+    /// Method sends request to get system info.
+    /// The result of request will be fetched in `completion` block as `KeyServerApi.DefaultSignerRoleIdResponse`
+    /// - Parameters:
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `KeyServerApi.DefaultSignerRoleIdResponse`
+    @available(*, deprecated, renamed: "getDefaultSignerRoleId")
+    func requestDefaultSignerRoleId(
+        completion: @escaping (_ result: RequestDefaultSignerRoleIdResult) -> Void
+        ) {
+
+        getDefaultSignerRoleId(
+            completion: { (result) in
+
+                switch result {
+
+                case .success(let response):
+                    completion(.success(response))
+
+                case .failure(let errors):
+                    completion(.failure(errors))
+                }
+            }
+        )
+    }
 }
 
 extension KeyServerApi.VerifyWalletResult {

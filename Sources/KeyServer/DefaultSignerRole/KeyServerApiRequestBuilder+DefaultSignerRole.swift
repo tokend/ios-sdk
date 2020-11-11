@@ -7,11 +7,13 @@ public extension KeyServerApiRequestBuilder {
 
     /// Builds request to fetch default signer role id.
     /// - Returns: `SystemInfoRequest` model.
-    func buildDefaultRoleIdRequest() -> DefaultRoleIdRequest {
-        let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl/self.keyValue/self.signerRoleDefault
+    func buildDefaultSignerRoleIdRequest(
+    ) -> DefaultSignerRoleIdRequest {
 
-        let request = DefaultRoleIdRequest(
+        let baseUrl = self.apiConfiguration.urlString
+        let url = baseUrl/keyValue/signerRoleDefault
+
+        let request = DefaultSignerRoleIdRequest(
             url: url,
             method: .get
         )

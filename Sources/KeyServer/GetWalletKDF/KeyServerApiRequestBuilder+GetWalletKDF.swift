@@ -22,7 +22,7 @@ public extension KeyServerApiRequestBuilder {
         var parameters = RequestParameters()
         parameters[emailParameterKey] = login
         if isRecovery {
-            parameters[isRecoveryParameterKey] = "true"
+            parameters[isRecoveryParameterKey] = true
         }
 
         let request = GetWalletKDFRequest(

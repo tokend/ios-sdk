@@ -18,7 +18,10 @@ public struct GetWalletKDFResponse: Decodable {
 
 extension WalletKDFParams {
     
-    public static func fromResponse(_ response: GetWalletKDFResponse) -> WalletKDFParams? {
+    public static func fromResponse(
+        _ response: GetWalletKDFResponse
+    ) -> WalletKDFParams? {
+
         guard let salt = response.attributes.salt.dataFromBase64 else {
             return nil
         }
@@ -32,7 +35,10 @@ extension WalletKDFParams {
 
 extension KDFParams {
     
-    public static func fromResponse(_ response: GetWalletKDFResponse) -> KDFParams {
+    public static func fromResponse(
+        _ response: GetWalletKDFResponse
+    ) -> KDFParams {
+
         return KDFParams(
             algorithm: response.attributes.algorithm,
             bits: response.attributes.bits,

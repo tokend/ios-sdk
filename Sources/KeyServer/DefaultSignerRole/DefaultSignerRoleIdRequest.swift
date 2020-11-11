@@ -1,3 +1,3 @@
 import Foundation
 
-public typealias DefaultRoleIdRequest = RequestPlain
+public typealias DefaultSignerRoleIdRequest = RequestPlain

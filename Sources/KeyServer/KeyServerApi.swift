@@ -62,6 +62,8 @@ public class KeyServerApi {
             
             /// Failed to fetch wallet KDF params from api.
             case walletKDFError(RequestWalletKDFResult.RequestError)
+
+            case swiftError(Swift.Error)
             
             // MARK: - Swift.Error
             
@@ -76,6 +78,8 @@ public class KeyServerApi {
                 case .requestWalletError(let error):
                     return error.localizedDescription
                 case .walletKDFError(let error):
+                    return error.localizedDescription
+                case .swiftError(let error):
                     return error.localizedDescription
                 }
             }
@@ -104,21 +108,23 @@ public class KeyServerApi {
         ) -> Cancelable {
         
         var cancellable = self.network.getEmptyCancelable()
-        cancellable = self.requestWalletKDF(login: login, completion: { [weak self] result in
-            switch result {
+        cancellable = self.requestWalletKDF(
+            login: login,
+            completion: { [weak self] (result) in
+                switch result {
                 
-            case .success(let walletKDF):
-                cancellable.cancelable = self?.continueLoginForKDF(
-                    login: login,
-                    password: password,
-                    walletKDF: walletKDF,
-                    completion: completion
+                case .success(let walletKDF):
+                    cancellable.cancelable = self?.continueLoginForKDF(
+                        login: login,
+                        password: password,
+                        walletKDF: walletKDF,
+                        completion: completion
                     )
-                
-            case .failure(let error):
-                completion(.failure(.walletKDFError(error)))
-            }
-        })
+
+                case .failure(let error):
+                    completion(.failure(.swiftError(error)))
+                }
+            })
         return cancellable
     }
 

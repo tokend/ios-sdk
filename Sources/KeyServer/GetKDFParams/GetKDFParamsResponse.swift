@@ -21,7 +21,10 @@ public struct GetKDFParamsResponse: Decodable {
 
 extension KDFParams {
     
-    public static func fromResponse(_ response: GetKDFParamsResponse) -> KDFParams {
+    public static func fromResponse(
+        _ response: GetKDFParamsResponse
+    ) -> KDFParams {
+
         return KDFParams(
             algorithm: response.attributes.algorithm,
             bits: response.attributes.bits,

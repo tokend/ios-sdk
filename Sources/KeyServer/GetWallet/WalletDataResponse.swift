@@ -26,7 +26,11 @@ public struct WalletDataResponse: Decodable {
 
 extension WalletDataModel {
     
-    public static func fromResponse(_ response: WalletDataResponse, walletKDF: WalletKDFParams) -> WalletDataModel {
+    public static func fromResponse(
+        _ response: WalletDataResponse,
+        walletKDF: WalletKDFParams
+    ) -> WalletDataModel {
+
         return WalletDataModel(
             login: response.attributes.login,
             accountId: response.attributes.accountId,

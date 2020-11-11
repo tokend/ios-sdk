@@ -2,11 +2,10 @@ import Foundation
 
 public extension KeyServerApi {
 
-    public enum GetWalletError: Swift.Error, LocalizedError {
+    enum GetWalletError: Swift.Error, LocalizedError {
 
         case walletShouldBeVerified(walletId: String)
         case tfaFailed
-        case unknown(ApiErrors)
         case wrongPassword
 
         // MARK: - Swift.Error
@@ -19,9 +18,6 @@ public extension KeyServerApi {
 
             case .tfaFailed:
                 return "TFA failed"
-
-            case .unknown(let errors):
-                return errors.localizedDescription
 
             case .wrongPassword:
                 return "Wrong password"
@@ -79,6 +75,7 @@ private extension KeyServerApi {
         ) -> Cancelable {
 
         var cancellable = self.network.getEmptyCancelable()
+
         cancellable = self.network.responseObject(
             ApiDataResponse<WalletDataResponse>.self,
             url: request.url,
@@ -101,6 +98,7 @@ private extension KeyServerApi {
                     )
                 }
         })
+
         return cancellable
     }
 
@@ -115,11 +113,14 @@ private extension KeyServerApi {
 
         let cancellable = self.network.getEmptyCancelable()
 
-        if errors.contains(status: ApiError.Status.forbidden, code: ApiError.Code.verificationRequired) {
+        if errors.contains(
+            status: ApiError.Status.forbidden,
+            code: ApiError.Code.verificationRequired
+        ) {
             completion(.failure(GetWalletError.walletShouldBeVerified(walletId: walletId)))
         } else {
             errors.checkTFARequired(
-                handler: self.tfaHandler,
+                handler: tfaHandler,
                 initiateTFA: initiateTFA,
                 onCompletion: { [weak self] (tfaResult) in
                     switch tfaResult {
@@ -131,18 +132,18 @@ private extension KeyServerApi {
                             walletKDF: walletKDF,
                             initiateTFA: false,
                             completion: completion
-                            )
+                        )
 
                     case .failure, .canceled:
                         completion(.failure(GetWalletError.tfaFailed))
                     }
                 },
                 onNoTFA: {
-                    let requestError: GetWalletError
+                    let requestError: Swift.Error
                     if errors.contains(status: ApiError.Status.notFound) {
-                        requestError = .wrongPassword
+                        requestError = GetWalletError.wrongPassword
                     } else {
-                        requestError = .unknown(errors)
+                        requestError = errors
                     }
 
                     completion(.failure(requestError))
