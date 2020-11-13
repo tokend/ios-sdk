@@ -2,6 +2,8 @@ import Foundation
 
 public extension KeyServerApiRequestBuilder {
 
+    private var verificationPath: String { "verification" }
+
     /// Builds request to verify wallet.
     /// - Parameters:
     ///   - walletId: Wallet id.
@@ -13,11 +15,16 @@ public extension KeyServerApiRequestBuilder {
         ) throws -> VerifyWalletRequest {
 
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath("wallets/\(walletId)/verification")
+        let url = baseUrl/walletsPath/walletId/verificationPath
 
-        let attributes = WalletVerification.Attributes(token: token)
-        let verification = WalletVerification(attributes: attributes)
-        let verifyData = ApiDataRequest<WalletVerification, WalletInfoModelV2.Include>(data: verification)
+        let verification: WalletVerification = .init(
+            attributes: .init(
+                token: token
+            )
+        )
+        let verifyData = ApiDataRequest<WalletVerification, WalletInfoModelV2.Include>(
+            data: verification
+        )
         let verifyDataEncoded = try verifyData.encode()
 
         let request = VerifyWalletRequest(
@@ -38,7 +45,7 @@ public extension KeyServerApiRequestBuilder {
         ) -> ResendVerificationCodeRequest {
 
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath("wallets/\(walletId)/verification")
+        let url = baseUrl/walletsPath/walletId/verificationPath
 
         let request = ResendVerificationCodeRequest(
             url: url,

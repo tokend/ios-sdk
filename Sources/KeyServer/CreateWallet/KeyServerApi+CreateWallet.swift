@@ -3,48 +3,20 @@ import TokenDWallet
 import DLCryptoKit
 
 public extension KeyServerApi {
-    
-    // MARK: - Public -
-    
-    // MARK: Create Wallet
-    
-    /// Result model for `completion` block of `KeyServerApi.createWallet(...)`
-    enum CreateWalletRequestResult {
-        
-        /// Errors that may occur for `KeyServerApi.createWallet(...)`.
-        public enum CreateWalletError: Swift.Error, LocalizedError {
-            
-            /// General create wallet error. Contains `ApiErrors` model.
-            case createFailed(ApiErrors)
 
-            /// Occurs if wallet with given login already exists.
-            @available(*, deprecated, renamed: "loginAlreadyTaken")
-            case emailAlreadyTaken
-            case loginAlreadyTaken
+    enum CreateWalletV2Error: Swift.Error, LocalizedError {
 
-            /// Failed to build request model.
-            case failedToGenerateRequest(Swift.Error)
+        case loginAlreadyTaken
 
-            // MARK: - Swift.Error
-            
-            public var errorDescription: String? {
-                switch self {
-                case .createFailed(let errors):
-                    return errors.localizedDescription
-                case .emailAlreadyTaken,
-                     .loginAlreadyTaken:
-                    return "Login already taken"
-                case .failedToGenerateRequest(let error):
-                    return error.localizedDescription
-                }
+        // MARK: - Swift.Error
+
+        public var errorDescription: String? {
+            switch self {
+
+            case .loginAlreadyTaken:
+                return "Login already taken"
             }
         }
-        
-        /// Case of failed create wallet operation with `CreateWalletRequestResult.CreateWalletError` model
-        case failure(CreateWalletError)
-        
-        /// Case of successful response from api
-        case success(WalletInfoResponse)
     }
 
     /// Method sends request to create wallet and register it within Key Server.
@@ -55,7 +27,7 @@ public extension KeyServerApi {
     ///   - result: Member of `CreateWalletRequestResult`
     func createWalletV2(
         walletInfo: WalletInfoModelV2,
-        completion: @escaping (_ result: CreateWalletRequestResult) -> Void
+        completion: @escaping (_ result: Result<WalletInfoResponse, Swift.Error>) -> Void
         ) {
 
         let request: CreateWalletRequest
@@ -64,7 +36,7 @@ public extension KeyServerApi {
                 walletInfo: walletInfo
             )
         } catch let error {
-            completion(.failure(.failedToGenerateRequest(error)))
+            completion(.failure(error))
             return
         }
 
@@ -79,9 +51,9 @@ public extension KeyServerApi {
 
                 case .failure(let errors):
                     if errors.contains(status: ApiError.Status.conflict) {
-                        completion(.failure(.loginAlreadyTaken))
+                        completion(.failure(CreateWalletV2Error.loginAlreadyTaken))
                     } else {
-                        completion(.failure(.createFailed(errors)))
+                        completion(.failure(errors))
                     }
 
                 case .success(let response):

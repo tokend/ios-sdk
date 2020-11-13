@@ -3,20 +3,15 @@ import TokenDWallet
 import DLCryptoKit
 
 extension KeyServerApi {
-    
-    // MARK: - Public -
-    
-    /// Result model for `completion` block of `KeyServerApi.requestWalletVerificationState(...)`
-    public enum RequestWalletVerificationStateResult {
-        
+
+    /// Result model for `completion` block of `KeyServerApi.getWalletVerificationState(...)`
+    public enum GetWalletVerificationStateResult {
+
         /// Case of unverified wallet status
         case unverified
-        
+
         /// Case of verified wallet status
         case verified
-        
-        // Case of requets failure
-        case failure(ApiErrors)
     }
     
     /// Method sends request to check wallet's verification status.
@@ -25,10 +20,10 @@ extension KeyServerApi {
     /// - Parameters:
     ///   - walletId: Wallet id.
     ///   - completion: Block that will be called when the result will be received.
-    ///   - result: Member of `KeyServerApi.RequestWalletVerificationStateResult`
-    public func requestWalletVerificationState(
+    ///   - result: Member of `Result<GetWalletVerificationStateResult, Swift.Error>`
+    public func getWalletVerificationState(
         walletId: String,
-        completion: @escaping (_ result: RequestWalletVerificationStateResult) -> Void
+        completion: @escaping (_ result: Result<GetWalletVerificationStateResult, Swift.Error>) -> Void
         ) {
         
         let request = self.requestBuilder.buildGetWalletRequest(walletId: walletId)
@@ -40,11 +35,11 @@ extension KeyServerApi {
                 switch result {
                     
                 case .success:
-                    completion(.verified)
+                    completion(.success(.verified))
                     
                 case .failure(let errors):
                     if errors.contains(status: ApiError.Status.forbidden) {
-                        completion(.unverified)
+                        completion(.success(.unverified))
                     } else {
                         completion(.failure(errors))
                     }

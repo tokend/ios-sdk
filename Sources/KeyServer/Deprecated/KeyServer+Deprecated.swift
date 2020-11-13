@@ -111,10 +111,10 @@ public extension KeyServerApi {
         return cancelable
     }
 
-    @available(*, unavailable, renamed: "VerifyWalletResult")
+    @available(*, deprecated, renamed: "VerifyWalletResult")
     typealias VerifyEmailResult = VerifyWalletResult
 
-    @available(*, unavailable, renamed: "verifyWallet")
+    @available(*, deprecated, renamed: "verifyWallet")
     func verifyEmail(
         walletId: String,
         token: String,
@@ -124,14 +124,24 @@ public extension KeyServerApi {
         verifyWallet(
             walletId: walletId,
             token: token,
-            completion: completion
+            completion: { (result) in
+
+                switch result {
+
+                case .success:
+                    completion(.success)
+
+                case .failure(let error):
+                    completion(.failure(.swiftError(error)))
+                }
+            }
         )
     }
 
-    @available(*, unavailable, renamed: "ResendVerificationCodeResult")
+    @available(*, deprecated, renamed: "ResendVerificationCodeResult")
     typealias ResendEmailResult = ResendVerificationCodeResult
 
-    @available(*, unavailable, renamed: "resendVerificationCode")
+    @available(*, deprecated, renamed: "resendVerificationCode")
     func resendEmail(
         walletId: String,
         completion: @escaping (_ result: ResendEmailResult) -> Void
@@ -139,7 +149,17 @@ public extension KeyServerApi {
 
         resendVerificationCode(
             walletId: walletId,
-            completion: completion
+            completion: { (result) in
+
+                switch result {
+
+                case .failure(let error):
+                    completion(.failure(error))
+
+                case .success:
+                    completion(.success)
+                }
+            }
         )
     }
 
@@ -244,7 +264,6 @@ public extension KeyServerApi {
             completion: completion
         )
     }
-
 
     /// Result model for `completion` block of `KeyServerApi.requestWallet(...)`
     @available(*, deprecated)
@@ -484,29 +503,207 @@ public extension KeyServerApi {
             }
         )
     }
+
+    /// Result model for `completion` block of `KeyServerApi.verifyWallet(...)`
+    @available(*, deprecated)
+    enum VerifyWalletResult {
+
+        /// Errors that may occur for `KeyServerApi.verifyWallet(...)`.
+        @available(*, deprecated)
+        public enum VerifyWalletError: Swift.Error, LocalizedError {
+
+            /// Failed to build request model.
+            case failedToGenerateRequest(Swift.Error)
+
+            /// Verify wallet request failed. Contains `ApiErrors`.
+            case verificationFailed(ApiErrors)
+
+            case swiftError(Swift.Error)
+
+            // MARK: - Swift.Error
+
+            public var errorDescription: String? {
+                switch self {
+
+                case .failedToGenerateRequest(let error):
+                    return error.localizedDescription
+
+                case .verificationFailed(let errors):
+                    return errors.localizedDescription
+
+                case .swiftError(let error):
+                    return error.localizedDescription
+                }
+            }
+        }
+
+        /// Case of successful response from api
+        case success
+
+        /// Case of failed verify wallet operation with `VerifyWalletResult.VerifyWalletError` model
+        case failure(VerifyWalletError)
+    }
+
+    /// Result model for `completion` block of `KeyServerApi.createWallet(...)`
+    @available(*, deprecated)
+    enum CreateWalletRequestResult {
+
+        /// Errors that may occur for `KeyServerApi.createWallet(...)`.
+        @available(*, deprecated)
+        public enum CreateWalletError: Swift.Error, LocalizedError {
+
+            /// General create wallet error. Contains `ApiErrors` model.
+            case createFailed(ApiErrors)
+
+            /// Occurs if wallet with given login already exists.
+            @available(*, deprecated, renamed: "loginAlreadyTaken")
+            case emailAlreadyTaken
+            case loginAlreadyTaken
+
+            /// Failed to build request model.
+            case failedToGenerateRequest(Swift.Error)
+
+            // MARK: - Swift.Error
+
+            public var errorDescription: String? {
+                switch self {
+                case .createFailed(let errors):
+                    return errors.localizedDescription
+                case .emailAlreadyTaken,
+                     .loginAlreadyTaken:
+                    return "Login already taken"
+                case .failedToGenerateRequest(let error):
+                    return error.localizedDescription
+                }
+            }
+        }
+
+        /// Case of failed create wallet operation with `CreateWalletRequestResult.CreateWalletError` model
+        case failure(CreateWalletError)
+
+        /// Case of successful response from api
+        case success(WalletInfoResponse)
+    }
+
+    /// Result model for `completion` block of `KeyServerApi.resendVerificationCode(...)`
+    @available(*, deprecated)
+    enum ResendVerificationCodeResult {
+
+        /// Case of successful response from api
+        case success
+
+        /// Case of failed response from api with `ApiErrors` model
+        case failure(Swift.Error)
+    }
+
+    @available(*, deprecated)
+    /// Result model for `completion` block of `KeyServerApi.requestWalletVerificationState(...)`
+    enum RequestWalletVerificationStateResult {
+
+        /// Case of unverified wallet status
+        case unverified
+
+        /// Case of verified wallet status
+        case verified
+
+        // Case of requets failure
+        case failure(Swift.Error)
+    }
+
+    /// Method sends request to check wallet's verification status.
+    /// The result of request will be fetched in `completion` block as
+    /// `KeyServerApi.RequestWalletVerificationStateResult`
+    /// - Parameters:
+    ///   - walletId: Wallet id.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `KeyServerApi.RequestWalletVerificationStateResult`
+    @available(*, deprecated, renamed: "getWalletVerificationState")
+    func requestWalletVerificationState(
+        walletId: String,
+        completion: @escaping (_ result: RequestWalletVerificationStateResult) -> Void
+        ) {
+
+        getWalletVerificationState(
+            walletId: walletId,
+            completion: { (result) in
+
+                switch result {
+
+                case .failure(let error):
+                    completion(.failure(error))
+
+                case .success(let state):
+                    switch state {
+
+                    case .unverified:
+                        completion(.unverified)
+
+                    case .verified:
+                        completion(.verified)
+                    }
+                }
+            }
+        )
+    }
+
+    /// Result model for `completion` block of `KeyServerApi.loginWith(...)`
+    @available(*, deprecated)
+    enum LoginRequestResult {
+
+        /// Errors that may occur for `KeyServerApi.loginWith(...)`
+        public enum LoginError: Swift.Error, LocalizedError {
+
+            /// Failed to decode keychain data from wallet data.
+            case cannotDecodeKeychainData
+
+            /// Failed to derive key pair from wallet data.
+            case cannotDeriveKeyPair
+
+            /// Failed to derive wallet id from wallet KDF params.
+            case cannotDeriveWalletId
+
+            /// Failed to fetch wallet data from api.
+            case requestWalletError(RequestWalletResult.RequestWalletError)
+
+            /// Failed to fetch wallet KDF params from api.
+            case walletKDFError(RequestWalletKDFResult.RequestError)
+
+            case swiftError(Swift.Error)
+
+            // MARK: - Swift.Error
+
+            public var errorDescription: String? {
+                switch self {
+                case .cannotDecodeKeychainData:
+                    return "Cannot decode keychain data"
+                case .cannotDeriveKeyPair:
+                    return "Cannot derive key pair"
+                case .cannotDeriveWalletId:
+                    return "Cannot derive wallet id"
+                case .requestWalletError(let error):
+                    return error.localizedDescription
+                case .walletKDFError(let error):
+                    return error.localizedDescription
+                case .swiftError(let error):
+                    return error.localizedDescription
+                }
+            }
+        }
+
+        /// Case of successful response from api with `WalletDataModel` and `ECDSA.KeyData` models
+        case success(walletData: WalletDataModel, keyPairs: [ECDSA.KeyData])
+
+        /// Case of failed response from api with `KeyServerApi.LoginRequestResult.LoginError` model
+        case failure(LoginError)
+    }
 }
 
+@available(*, deprecated)
 extension KeyServerApi.VerifyWalletResult {
 
     @available(*, unavailable, renamed: "VerifyWalletError")
     public typealias VerifyEmailError = VerifyWalletError
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // MARK: - KeyServerApiRequestBuilder
 
