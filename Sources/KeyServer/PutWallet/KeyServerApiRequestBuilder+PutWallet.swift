@@ -20,7 +20,7 @@ public extension KeyServerApiRequestBuilder {
         ) {
 
         let baseUrl = self.apiConfiguration.urlString
-        let path = self.apiConfiguration.urlString/walletsPath/walletId
+        let path = walletsPath/walletId
         let url = baseUrl/path
         let method: RequestMethod = .put
 
