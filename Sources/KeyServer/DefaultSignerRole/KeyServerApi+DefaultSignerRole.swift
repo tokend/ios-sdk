@@ -7,13 +7,14 @@ public extension KeyServerApi {
     /// - Parameters:
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `KeyServerApi.DefaultSignerRoleIdResponse`
+    @discardableResult
     func getDefaultSignerRoleId(
         completion: @escaping (_ result: Result<DefaultSignerRoleIdResponse, Swift.Error>) -> Void
-        ) {
+        ) -> Cancelable {
 
         let request = self.requestBuilder.buildDefaultSignerRoleIdRequest()
 
-        self.network.responseObject(
+        return self.network.responseObject(
             DefaultSignerRoleIdResponse.self,
             url: request.url,
             method: request.method,

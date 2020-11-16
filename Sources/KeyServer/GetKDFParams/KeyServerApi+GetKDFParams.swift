@@ -7,13 +7,14 @@ public extension KeyServerApi {
     /// - Parameters:
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `KeyServerApi.RequestDefaultKDFResult`
+    @discardableResult
     func getDefaultKDFParams(
         completion: @escaping (_ result: Result<KDFParams, Swift.Error>) -> Void
-        ) {
+        ) -> Cancelable {
 
         let request = self.requestBuilder.buildGetKDFParamsRequest()
 
-        self.network.responseObject(
+        return self.network.responseObject(
             ApiDataResponse<GetKDFParamsResponse>.self,
             url: request.url,
             method: request.method,

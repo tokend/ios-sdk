@@ -9,11 +9,14 @@ public extension KeyServerApi {
     ///   - token: Verify token.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `KeyServerApi.VerifyWalletResult`
+    @discardableResult
     func verifyWallet(
         walletId: String,
         token: String,
         completion: @escaping (_ result: Result<Void, Swift.Error>) -> Void
-        ) {
+        ) -> Cancelable {
+
+        let cancelable = self.network.getEmptyCancelable()
 
         let request: VerifyWalletRequest
         do {
@@ -23,10 +26,10 @@ public extension KeyServerApi {
             )
         } catch let error {
             completion(.failure(error))
-            return
+            return cancelable
         }
 
-        self.network.responseDataEmpty(
+        cancelable.cancelable = self.network.responseDataEmpty(
             url: request.url,
             method: request.method,
             bodyData: request.verifyData,
@@ -41,6 +44,8 @@ public extension KeyServerApi {
                     completion(.success(()))
                 }
         })
+
+        return cancelable
     }
 
     /// Method sends request to resend verification code.
@@ -49,16 +54,17 @@ public extension KeyServerApi {
     ///   - walletId: Wallet id.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `KeyServerApi.ResendVerificationCodeResult`
+    @discardableResult
     func resendVerificationCode(
         walletId: String,
         completion: @escaping (_ result: Result<Void, Swift.Error>) -> Void
-        ) {
+        ) -> Cancelable {
 
         let request = self.requestBuilder.buildResendVerificationCodeRequest(
             walletId: walletId
         )
 
-        self.network.responseDataEmpty(
+        return self.network.responseDataEmpty(
             url: request.url,
             method: request.method,
             completion: { (result) in

@@ -21,13 +21,14 @@ extension KeyServerApi {
     ///   - walletId: Wallet id.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `Result<GetWalletVerificationStateResult, Swift.Error>`
+    @discardableResult
     public func getWalletVerificationState(
         walletId: String,
         completion: @escaping (_ result: Result<GetWalletVerificationStateResult, Swift.Error>) -> Void
-        ) {
+        ) -> Cancelable {
         
         let request = self.requestBuilder.buildGetWalletRequest(walletId: walletId)
-        self.network.responseObject(
+        return self.network.responseObject(
             ApiDataResponse<WalletDataResponse>.self,
             url: request.url,
             method: request.method,
