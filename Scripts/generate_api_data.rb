@@ -2,9 +2,10 @@ require 'yaml'
 require 'json-schema'
 
 $namespace = ARGV[0]
+$specs_folder_name = ARGV[1] # Example 'horizon_specs'
 $output_root_path = '../Sources/JSONAPI/v3/ApiModels/Generated/' + $namespace
 root_path = '../../Regources/v2/yaml/'
-configs_root_path = root_path + 'horizon_specs'
+configs_root_path = root_path + $specs_folder_name
 
 $output_resources_directory = $output_root_path + '/Resources'
 $output_inner_directory = $output_root_path + '/Inner'

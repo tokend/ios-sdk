@@ -62,6 +62,37 @@ let keyServerApi = KeyServerApi(
 )
 ```
 
+## API Models Generating
+
+To generate API models you should have prepared `.yaml` files with these API models. Place them at **../Regources/v2/yaml/your\_svc\_specs** relatively to this SDK root folder. Also place **schema** folder from **Resources** to **Regources/v2/yaml**
+
+Resulting folders structure should look like this:
+
+```
+| Regources
+   | v2
+      | yaml
+         | cards_specs
+            | inner
+            | resources
+         | schema
+| iOS-SDK 
+```
+
+This setup you should perform only before first start, after you will only need to add\update `.yaml` files in `_specs` folders.
+
+Generation instruction:
+
+1. Go to **Scripts** folder;
+2. Run `ruby generate_api_data.rb <namespace_name> <specs_folder_name`;
+3. Repeat step 2 for every specs folder you have.
+
+> where:
+> 
+>  - `<namespace_name>` is the name for namespace `enum` that will be created for all generated API models.
+> 
+>  - `<specs_folder_name>` is the name of `_specs` folder with your `.yaml` files.  
+
 ## Documentation
 Visit our [Knowledge base](https://tokend.gitbook.io/knowledge-base/) and [API documentation](https://tokend.gitlab.io/docs) to get information on working with TokenD.
 
