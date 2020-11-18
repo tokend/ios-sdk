@@ -1,8 +1,51 @@
 require 'yaml'
 require 'json-schema'
+require 'getoptlong'
 
-$namespace = ARGV[0]
-$specs_folder_name = ARGV[1] # Example 'horizon_specs'
+opts = GetoptLong.new(
+  [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
+  [ '--namespace', '-n', GetoptLong::REQUIRED_ARGUMENT ],
+  [ '--folder-name', '-f', GetoptLong::REQUIRED_ARGUMENT ]
+)
+
+def putsHelp
+    puts <<-EOF
+generate_api_data.rb OPTION
+
+-h, --help:
+ show help
+
+--namespace name, -n name:
+ namespace name generate API data to
+
+--folder-name name, -f name:
+ specs folder name generate API data from
+
+    EOF
+end
+
+$namespace = nil
+$specs_folder_name = nil
+
+puts opts.error_message
+
+opts.each do |opt, arg|
+  case opt
+    when '--help'
+      putsHelp
+      exit
+    when '--namespace'
+      $namespace = arg
+    when '--folder-name'
+      $specs_folder_name = arg
+  end
+end
+
+if $namespace.nil? || $specs_folder_name.nil?
+    putsHelp
+    exit
+end
+
 $output_root_path = '../Sources/JSONAPI/v3/ApiModels/Generated/' + $namespace
 root_path = '../../Regources/v2/yaml/'
 configs_root_path = root_path + $specs_folder_name

@@ -84,7 +84,7 @@ This setup you should perform only before first start, after you will only need 
 Generation instruction:
 
 1. Go to **Scripts** folder;
-2. Run `ruby generate_api_data.rb <namespace_name> <specs_folder_name`;
+2. Run `ruby generate_api_data.rb -n <namespace_name> -f <specs_folder_name>`;
 3. Repeat step 2 for every specs folder you have.
 
 > where:
