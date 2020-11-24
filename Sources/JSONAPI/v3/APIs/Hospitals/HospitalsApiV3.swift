@@ -19,19 +19,35 @@ public class HospitalsApiV3: JSONAPI.BaseApi {
     @discardableResult
     public func requestHospital(
         hospitalId: String,
-        include: [String]?,
-        pagination: RequestPagination?,
         completion: @escaping (_ result: RequestSingleResult<MunaTestResults.AlphaResource>) -> Void
         ) -> Cancelable {
-                
-        let request = self.requestBuilder.buildHospitalRequest(
-            hospitalId: hospitalId
-        )
         
-        let cancelable = self.requestSingle(
-            MunaTestResults.AlphaResource.self,
-            request: request,
-            completion: completion
+        var cancelable = self.network.getEmptyCancelable()
+
+        self.requestBuilder.buildHospitalRequest(
+            hospitalId: hospitalId,
+            completion: { [weak self] (request) in
+                
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self?.requestSingle(
+                    MunaTestResults.AlphaResource.self,
+                    request: request,
+                    completion: { (result) in
+                        switch result {
+                        
+                        case .failure(let error):
+                            completion(.failure(error))
+                            
+                        case .success(let document):
+                            completion(.success(document))
+                        }
+                    }
+                )
+            }
         )
         
         return cancelable

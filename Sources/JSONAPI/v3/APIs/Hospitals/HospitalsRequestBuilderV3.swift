@@ -13,16 +13,21 @@ public class HospitalsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     private var personalData: String { "personal-data" }
     
     public func buildHospitalRequest(
-        hospitalId: String
-    ) -> JSONAPI.RequestModel {
+        hospitalId: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
         
         let path = /self.integrations/self.testResults/self.accounts/hospitalId/self.personalData
         
-        return self.buildRequest(
+        self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(
                 path: path,
                 method: .get
-            )
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
         )
     }
 }
