@@ -40,6 +40,7 @@ public class APIv3 {
     public private(set) lazy var invoicesApi: InvoicesApiV3 = { return create() }()
     public private(set) lazy var invitationsApi: InvitationsApiV3 = { return create() }()
     public private(set) lazy var testResultsApi: TestResultsApiV3 = { return create() }()
+    public private(set) lazy var hospitalsApi: HospitalsApiV3 = { return create() }()
     
     // MARK: -
     
