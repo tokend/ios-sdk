@@ -68,4 +68,53 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
         
         return cancelable
     }
+    
+    /// Method sends request to fetch verification history from api.
+    /// - Parameters:
+    ///   - filters: Request filters.
+    ///   - pagination: Pagination option.
+    ///   - completion: The block which is called when the result will be fetched
+    ///   - result: The model of `RequestCollectionResult<VerificationResource>`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func getVerificationHistory(
+        filters: TestResultsRequestFiltersV3,
+        include: [String]?,
+        pagination: RequestPagination,
+        completion: @escaping ((_ result: RequestCollectionResult<MunaTestResults.VerificationResource>) -> Void)
+    ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildTestResultsRequest(
+            filters: filters,
+            include: include,
+            pagination: pagination,
+            completion: { [weak self] (request) in
+                
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self?.requestCollection(
+                    MunaTestResults.VerificationResource.self,
+                    request: request,
+                    completion: { (result) in
+                        
+                        switch result {
+                        
+                        case .success(let document):
+                            completion(.success(document))
+                            
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    }
+                )
+            }
+        )
+        
+        return cancelable
+    }
 }

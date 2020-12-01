@@ -39,4 +39,30 @@ public class TestResultsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
             completion: completion
         )
     }
+    
+    public func buildVerificationHistoryRequest(
+        filters: TestResultsRequestFiltersV3,
+        include: [String]?,
+        pagination: RequestPagination,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+        
+        let path = /self.integrations/self.testResults/self.verifications
+        
+        let queryParameters = self.buildFilterQueryItems(filters.filterItems)
+        
+        self.buildRequest(
+            .simpleQueryIncludePagination(
+                path: path,
+                method: .get,
+                queryParameters: queryParameters,
+                include: include,
+                pagination: pagination
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
 }
