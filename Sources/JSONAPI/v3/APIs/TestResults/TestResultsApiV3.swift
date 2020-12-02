@@ -86,7 +86,7 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
         
         var cancelable = self.network.getEmptyCancelable()
         
-        self.requestBuilder.buildTestResultsRequest(
+        self.requestBuilder.buildVerificationHistoryRequest(
             filters: filters,
             include: include,
             pagination: pagination,
