@@ -69,6 +69,99 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
         return cancelable
     }
     
+    /// Method sends request to fetch account's personal data from api.
+    /// - Parameters:
+    ///   - accountId: Identifier of account for which personal data will be fetched.
+    ///   - completion: The block which is called when the result will be fetched.
+    ///   - result: The model of `RequestSingleResult<AlphaResource>`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func getPersonalData(
+        accountId: String,
+        completion: @escaping (_ result: RequestSingleResult<MunaTestResults.AlphaResource>) -> Void
+    ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+
+        self.requestBuilder.buildPersonalDataRequest(
+            accountId: accountId,
+            completion: { [weak self] (request) in
+                
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self?.requestSingle(
+                    MunaTestResults.AlphaResource.self,
+                    request: request,
+                    completion: { (result) in
+                        switch result {
+                        
+                        case .failure(let error):
+                            completion(.failure(error))
+                            
+                        case .success(let document):
+                            completion(.success(document))
+                        }
+                    }
+                )
+            }
+        )
+        
+        return cancelable
+    }
+    
+    /// Method sends request to fetch test types from api.
+    /// - Parameters:
+    ///   - filters: Request filters.
+    ///   - pagination: Pagination option.
+    ///   - completion: The block which is called when the result will be fetched.
+    ///   - result: The model of `RequestCollectionResult<TestTypeResource>`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func getTestTypes(
+        filters: TestResultsRequestFiltersV3,
+        include: [String]?,
+        pagination: RequestPagination,
+        completion: @escaping ((_ result: RequestCollectionResult<MunaTestResults.TestTypeResource>) -> Void)
+    ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildTestTypesRequest(
+            filters: filters,
+            include: include,
+            pagination: pagination,
+            completion: { [weak self] (request) in
+                
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self?.requestCollection(
+                    MunaTestResults.TestTypeResource.self,
+                    request: request,
+                    completion: { (result) in
+                        
+                        switch result {
+                        
+                        case .success(let document):
+                            completion(.success(document))
+                            
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    }
+                )
+            }
+        )
+        
+        return cancelable
+    }
+
+    
     /// Method sends request to fetch verification history from api.
     /// - Parameters:
     ///   - filters: Request filters.
@@ -109,49 +202,6 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
                             
                         case .failure(let error):
                             completion(.failure(error))
-                        }
-                    }
-                )
-            }
-        )
-        
-        return cancelable
-    }
-    
-    /// Method sends request to fetch account's personal data from api.
-    /// - Parameters:
-    ///   - accountId: Identifier of account for which personal data will be fetched.
-    ///   - completion: The block which is called when the result will be fetched.
-    ///   - result: The model of `RequestSingleResult<AlphaResource>`
-    /// - Returns: `Cancelable`
-    @discardableResult
-    public func getPersonalData(
-        accountId: String,
-        completion: @escaping (_ result: RequestSingleResult<MunaTestResults.AlphaResource>) -> Void
-    ) -> Cancelable {
-        
-        var cancelable = self.network.getEmptyCancelable()
-
-        self.requestBuilder.buildPersonalDataRequest(
-            accountId: accountId,
-            completion: { [weak self] (request) in
-                
-                guard let request = request else {
-                    completion(.failure(JSONAPIError.failedToSignRequest))
-                    return
-                }
-                
-                cancelable.cancelable = self?.requestSingle(
-                    MunaTestResults.AlphaResource.self,
-                    request: request,
-                    completion: { (result) in
-                        switch result {
-                        
-                        case .failure(let error):
-                            completion(.failure(error))
-                            
-                        case .success(let document):
-                            completion(.success(document))
                         }
                     }
                 )

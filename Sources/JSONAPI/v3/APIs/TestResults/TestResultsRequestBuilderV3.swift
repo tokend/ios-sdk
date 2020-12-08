@@ -40,6 +40,51 @@ public class TestResultsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         )
     }
     
+    public func buildPersonalDataRequest(
+        accountId: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+        
+        let path = /self.integrations/self.testResults/self.accounts/accountId/self.personalData
+        
+        self.buildRequest(
+            JSONAPI.BaseRequestBuildModel.simple(
+                path: path,
+                method: .get
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+    
+    public func buildTestTypesRequest(
+        filters: TestResultsRequestFiltersV3,
+        include: [String]?,
+        pagination: RequestPagination,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+        
+        let path = /self.integrations/self.testResults
+        
+        let queryParameters = self.buildFilterQueryItems(filters.filterItems)
+        
+        self.buildRequest(
+            .simpleQueryIncludePagination(
+                path: path,
+                method: .get,
+                queryParameters: queryParameters,
+                include: include,
+                pagination: pagination
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+    
     public func buildVerificationHistoryRequest(
         filters: TestResultsRequestFiltersV3,
         include: [String]?,
@@ -59,25 +104,6 @@ public class TestResultsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
                 queryParameters: queryParameters,
                 include: include,
                 pagination: pagination
-            ),
-            shouldSign: true,
-            sendDate: sendDate,
-            completion: completion
-        )
-    }
-    
-    public func buildPersonalDataRequest(
-        accountId: String,
-        sendDate: Date = Date(),
-        completion: @escaping (JSONAPI.RequestModel?) -> Void
-    ) {
-        
-        let path = /self.integrations/self.testResults/self.accounts/accountId/self.personalData
-        
-        self.buildRequest(
-            JSONAPI.BaseRequestBuildModel.simple(
-                path: path,
-                method: .get
             ),
             shouldSign: true,
             sendDate: sendDate,

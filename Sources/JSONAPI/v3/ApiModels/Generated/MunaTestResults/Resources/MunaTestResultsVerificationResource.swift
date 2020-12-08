@@ -19,6 +19,7 @@ open class VerificationResource: Resource {
         case location
         case participant
         case rejectReason
+        case testResultId
         
         // relations
         case creator
@@ -44,6 +45,10 @@ open class VerificationResource: Resource {
     
     open var rejectReason: String {
         return self.stringOptionalValue(key: CodingKeys.rejectReason) ?? ""
+    }
+    
+    open var testResultId: Int32 {
+        return self.int32OptionalValue(key: CodingKeys.testResultId) ?? 0
     }
     
     // MARK: Relations
