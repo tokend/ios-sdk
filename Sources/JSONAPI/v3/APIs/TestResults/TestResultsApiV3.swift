@@ -24,7 +24,7 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
     /// - Parameters:
     ///   - filters: Request filters.
     ///   - pagination: Pagination option.
-    ///   - completion: The block which is called when the result will be fetched
+    ///   - completion: The block which is called when the result will be fetched.
     ///   - result: The model of `RequestCollectionResult<TestResource>`
     /// - Returns: `Cancelable`
     @discardableResult
@@ -73,7 +73,7 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
     /// - Parameters:
     ///   - filters: Request filters.
     ///   - pagination: Pagination option.
-    ///   - completion: The block which is called when the result will be fetched
+    ///   - completion: The block which is called when the result will be fetched.
     ///   - result: The model of `RequestCollectionResult<VerificationResource>`
     /// - Returns: `Cancelable`
     @discardableResult
@@ -109,6 +109,49 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
                             
                         case .failure(let error):
                             completion(.failure(error))
+                        }
+                    }
+                )
+            }
+        )
+        
+        return cancelable
+    }
+    
+    /// Method sends request to fetch account's personal data from api.
+    /// - Parameters:
+    ///   - accountId: Identifier of account for which personal data will be fetched.
+    ///   - completion: The block which is called when the result will be fetched.
+    ///   - result: The model of `RequestSingleResult<AlphaResource>`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func getPersonalData(
+        accountId: String,
+        completion: @escaping (_ result: RequestSingleResult<MunaTestResults.AlphaResource>) -> Void
+    ) -> Cancelable {
+        
+        var cancelable = self.network.getEmptyCancelable()
+
+        self.requestBuilder.buildPersonalDataRequest(
+            accountId: accountId,
+            completion: { [weak self] (request) in
+                
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self?.requestSingle(
+                    MunaTestResults.AlphaResource.self,
+                    request: request,
+                    completion: { (result) in
+                        switch result {
+                        
+                        case .failure(let error):
+                            completion(.failure(error))
+                            
+                        case .success(let document):
+                            completion(.success(document))
                         }
                     }
                 )

@@ -65,4 +65,23 @@ public class TestResultsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
             completion: completion
         )
     }
+    
+    public func buildPersonalDataRequest(
+        accountId: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+        
+        let path = /self.integrations/self.testResults/self.accounts/accountId/self.personalData
+        
+        self.buildRequest(
+            JSONAPI.BaseRequestBuildModel.simple(
+                path: path,
+                method: .get
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
 }
