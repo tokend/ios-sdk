@@ -78,7 +78,7 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
     @discardableResult
     public func getPersonalData(
         accountId: String,
-        completion: @escaping (_ result: RequestSingleResult<MunaTestResults.AlphaResource>) -> Void
+        completion: @escaping (_ result: RequestSingleResult<MunaTestResults.Kyc_formResource>) -> Void
     ) -> Cancelable {
         
         var cancelable = self.network.getEmptyCancelable()
@@ -93,7 +93,7 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
                 }
                 
                 cancelable.cancelable = self?.requestSingle(
-                    MunaTestResults.AlphaResource.self,
+                    MunaTestResults.Kyc_formResource.self,
                     request: request,
                     completion: { (result) in
                         switch result {
