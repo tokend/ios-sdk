@@ -20,14 +20,15 @@ extension ApiErrors {
         if let error = self.firstErrorWith(
             status: ApiError.Status.forbidden,
             code: ApiError.Code.tfaRequired
-            ), let meta = error.tfaMeta {
+        ),
+        let meta = error.tfaMeta {
             
             if initiateTFA {
                 handler.initiateTFA(
                     meta: meta,
                     completion: { tfaResult in
                         onCompletion(tfaResult)
-                })
+                    })
             } else {
                 onCompletion(.failure(self))
             }

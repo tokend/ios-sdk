@@ -42,7 +42,7 @@ public class AssetPairsApi: BaseApi {
         completion: @escaping (_ result: RequestAssetPairsResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildAssetPairsRequest(
             sendDate: sendDate,

@@ -37,7 +37,7 @@ public class BalancesApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestCollectionResult<Horizon.BalanceResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildDetailsRequest(
             accountId: accountId,
@@ -71,7 +71,7 @@ public class BalancesApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestSingleResult<Horizon.BalanceResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildDetailsRequest(
             balanceId: balanceId,

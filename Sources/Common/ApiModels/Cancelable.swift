@@ -1,7 +1,7 @@
 import Foundation
 
 /// Abstract protocol for cancelable object
-public protocol Cancelable {
+public protocol Cancelable: class {
     
     /// Shows whether is current instance is canceled
     var canceled: Bool { get }

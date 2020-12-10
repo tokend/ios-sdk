@@ -46,7 +46,7 @@ public class DocumentsApi: BaseApi {
         completion: @escaping (_ result: GetUploadPolicyResult) -> Void
         ) -> Cancelable {
         
-        var cancellable = self.network.getEmptyCancelable()
+        let cancellable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildGetUploadPolicyRequest(
             accountId: accountId,
@@ -122,7 +122,7 @@ public class DocumentsApi: BaseApi {
         completion: @escaping(GetDocumentURLResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildGetDocumentURLRequest(
             accountId: accountId,

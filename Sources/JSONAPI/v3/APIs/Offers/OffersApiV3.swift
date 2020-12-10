@@ -38,7 +38,7 @@ public class OffersApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestCollectionResult<Horizon.OfferResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildOffersRequest(
             parameters: parameters,
@@ -75,7 +75,7 @@ public class OffersApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestSingleResult<Horizon.OfferResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildOfferByIdRequest(
             offerId: offerId,

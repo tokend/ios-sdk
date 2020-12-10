@@ -57,7 +57,7 @@ public class AccountsApi: BaseApi {
         completion: @escaping (_ result: RequestAccountResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildAccountRequest(
             accountId: accountId,
@@ -117,7 +117,7 @@ public class AccountsApi: BaseApi {
         completion: @escaping (_ result: RequestSignersResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildSignersRequest(
             accountId: accountId,
@@ -173,7 +173,7 @@ public class AccountsApi: BaseApi {
         completion: @escaping (_ result: RequestAuthResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildAuthRequestRequest(
             accountId: accountId,
@@ -231,7 +231,7 @@ public class AccountsApi: BaseApi {
         completion: @escaping (_ result: RequestSendAuthResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildSendAuthRequestRequest(
             accountId: accountId,

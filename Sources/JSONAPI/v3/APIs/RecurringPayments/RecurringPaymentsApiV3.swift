@@ -82,7 +82,7 @@ public class RecurringPaymentsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestSingleResult<Recpayments.ScheduledPaymentRecordResource>) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         let request: SchedulePaymentRequest = .init(
             data: .init(
@@ -161,7 +161,7 @@ public class RecurringPaymentsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestCollectionResult<Recpayments.ScheduledPaymentRecordResource>) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildScheduledPaymentsRequest(
             filters: filters,
@@ -205,7 +205,7 @@ public class RecurringPaymentsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestSingleResult<Recpayments.ScheduledPaymentRecordResource>) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildScheduledPaymentRequest(
             id: id,
@@ -246,7 +246,7 @@ public class RecurringPaymentsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestEmptyResult) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildDeleteScheduledPaymentRequest(
             id: id,

@@ -36,7 +36,7 @@ public class FriendsApi: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestCollectionResult<Friends.UserResource>) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildFriendsRequest(
             accountId: accountId,
@@ -80,7 +80,7 @@ public class FriendsApi: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestEmptyResult) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         let data: [FriendMultipleRequest.Data.Relationships.NewFriends.NewFriend] = phones
             .map { (phone) in
@@ -147,7 +147,7 @@ public class FriendsApi: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestCollectionResult<Friends.RecentPaymentResource>) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildRecentPaymentsRequest(
             accountId: accountId,
@@ -198,7 +198,7 @@ public class FriendsApi: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestEmptyResult) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         let request: RecordPaymentRequest = .init(
             data: .init(

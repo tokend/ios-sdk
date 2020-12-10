@@ -32,7 +32,7 @@ public class PollsApiV3: JSONAPI.BaseApi {
         completion: @escaping(_ result: RequestCollectionResult<Horizon.PollResource>) -> Void
         ) -> Cancelable {
         
-        var cancellable = self.network.getEmptyCancelable()
+        let cancellable = self.network.getEmptyCancelable()
         
         let request = self.requestBuilder.buildPollsRequest(
             filter: filters,
@@ -58,7 +58,7 @@ public class PollsApiV3: JSONAPI.BaseApi {
         completion: @escaping(_ result: RequestSingleResult<Horizon.PollResource>) -> Void
         ) -> Cancelable {
         
-        var cancellable = self.network.getEmptyCancelable()
+        let cancellable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildPollByIdRequest(
             pollId: pollId,
@@ -90,7 +90,7 @@ public class PollsApiV3: JSONAPI.BaseApi {
         completion: @escaping(_ result: RequestCollectionResult<Horizon.VoteResource>) -> Void
         ) -> Cancelable {
         
-        var cancellable = self.network.getEmptyCancelable()
+        let cancellable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildVotesRequest(
             pollId: pollId,
@@ -126,7 +126,7 @@ public class PollsApiV3: JSONAPI.BaseApi {
         completion: @escaping(_ result: RequestCollectionResult<Horizon.VoteResource>) -> Void
         ) -> Cancelable {
         
-        var cancellable = self.network.getEmptyCancelable()
+        let cancellable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildVotesByIdRequest(
             pollId: pollId,
@@ -161,7 +161,7 @@ public class PollsApiV3: JSONAPI.BaseApi {
         completion: @escaping(_ result: RequestCollectionResult<Horizon.VoteResource>) -> Void
         ) -> Cancelable {
         
-        var cancellable = self.network.getEmptyCancelable()
+        let cancellable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildVotesByIdRequest(
             voterAccountId: voterAccountId,

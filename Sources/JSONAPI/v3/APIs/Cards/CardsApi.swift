@@ -43,7 +43,7 @@ public class CardsApi: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestEmptyResult) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         let request: AddCardRequest = .init(
             data: .init(
@@ -127,7 +127,7 @@ public class CardsApi: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestEmptyResult) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildDeleteCardRequest(
             cardNumber: cardNumber,
@@ -173,7 +173,7 @@ public class CardsApi: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestCollectionResult<Cards.CardResource>) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildCardsRequest(
             filters: filters,
@@ -217,7 +217,7 @@ public class CardsApi: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestSingleResult<Cards.CardResource>) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildCardRequest(
             cardNumber: cardNumber,
@@ -259,7 +259,7 @@ public class CardsApi: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestCollectionResult<Cards.CardResource>) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         let body: PublicCardListTempView = .init(
             data: .init(
@@ -335,7 +335,7 @@ public class CardsApi: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestCardUpdateResult) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         let body: UpdateCardRequest = .init(
             data: .init(
@@ -404,7 +404,7 @@ public class CardsApi: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestSingleResult<Cards.InfoResource>) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildInfoRequest(
             completion: { [weak self] (request) in

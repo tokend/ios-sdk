@@ -44,7 +44,7 @@ public class BalancesApi: BaseApi {
         completion: @escaping (_ result: RequestDetailsResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildDetailsRequest(
             accountId: accountId,

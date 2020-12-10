@@ -41,7 +41,7 @@ public class InvoicesApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestEmptyResult) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         let request: CreateInvoiceRequest = .init(
             data: .init(

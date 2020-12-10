@@ -16,7 +16,7 @@ extension BaseApiJSONAPI {
         completion: @escaping (_ result: RequestCollectionResult<ResourceType>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         let performRequest: (_ request: JSONAPI.RequestModel?) -> Void = { [weak self] (request) in
             guard let request = request else {
