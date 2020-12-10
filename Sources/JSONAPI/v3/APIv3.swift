@@ -39,6 +39,7 @@ public class APIv3 {
     public private(set) lazy var recurringPaymentsApi: RecurringPaymentsApiV3 = { return create() }()
     public private(set) lazy var invoicesApi: InvoicesApiV3 = { return create() }()
     public private(set) lazy var invitationsApi: InvitationsApiV3 = { return create() }()
+    public private(set) lazy var bookingApi: BookingApiV3 = { return create() }()
     
     // MARK: -
     
@@ -66,6 +67,8 @@ public class APIv3 {
         Invoices.AllResources.registerAllResources()
         Recpayments.AllResources.registerAllResources()
         Invitations.AllResources.registerAllResources()
+        MunaBooking.AllResources.registerAllResources()
+        MunaScheduler.AllResources.registerAllResources()
     }
     
     // MARK: - Private

@@ -10,10 +10,89 @@ public class BookingRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     private var booking: String { "booking" }
     private var businesses: String { "businesses" }
     
+    public func buildListBookingsRequest(
+        filters: BookingRequestFiltersV3,
+        include: [String]?,
+        pagination: RequestPagination,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+        let path = /self.integrations/self.booking
+        
+        let queryParameters = self.buildFilterQueryItems(filters.filterItems)
+        
+        self.buildRequest(
+            .simpleQueryIncludePagination(
+                path: path,
+                method: .get,
+                queryParameters: queryParameters,
+                include: include,
+                pagination: pagination
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+    
+    public func buildBookingByIdRequest(
+        bookingId: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+        let path = /self.integrations/self.booking/bookingId
+        
+        self.buildRequest(
+            JSONAPI.BaseRequestBuildModel.simple(
+                path: path,
+                method: .get
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
     
     public func buildListBusinessesRequest(
-        filters: BookingRequestFiltersV3
+        filters: BookingRequestFiltersV3,
+        include: [String]?,
+        pagination: RequestPagination,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
+        let path = /self.integrations/self.booking/self.businesses
         
+        let queryParameters = self.buildFilterQueryItems(filters.filterItems)
+        
+        self.buildRequest(
+            .simpleQueryIncludePagination(
+                path: path,
+                method: .get,
+                queryParameters: queryParameters,
+                include: include,
+                pagination: pagination
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+    
+    public func buildBusinessByIdRequest(
+        businessId: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+        let path = /self.integrations/self.booking/self.businesses/businessId
+        
+        self.buildRequest(
+            JSONAPI.BaseRequestBuildModel.simple(
+                path: path,
+                method: .get
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
     }
 }
