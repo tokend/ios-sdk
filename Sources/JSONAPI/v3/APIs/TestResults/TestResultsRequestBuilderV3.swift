@@ -12,7 +12,6 @@ public class TestResultsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     private var accounts: String { "accounts" }
     private var personalData: String { "personal-data" }
     private var verifications: String { "verifications" }
-//    private var assign: String { "assign" }
     
     public func buildTestResultsRequest(
         filters: TestResultsRequestFiltersV3,
@@ -49,7 +48,7 @@ public class TestResultsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         let path = /self.integrations/self.testResults/self.accounts/accountId/self.personalData
         
         self.buildRequest(
-            JSONAPI.BaseRequestBuildModel.simple(
+            .simple(
                 path: path,
                 method: .get
             ),

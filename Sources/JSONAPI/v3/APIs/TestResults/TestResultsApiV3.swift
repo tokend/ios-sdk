@@ -25,7 +25,7 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
     ///   - filters: Request filters.
     ///   - pagination: Pagination option.
     ///   - completion: The block which is called when the result will be fetched.
-    ///   - result: The model of `RequestCollectionResult<TestResource>`
+    ///   - result: The model of `RequestCollectionResult<MunaTestResults.TestResource>`
     /// - Returns: `Cancelable`
     @discardableResult
     public func getTestResults(
@@ -73,7 +73,7 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
     /// - Parameters:
     ///   - accountId: Identifier of account for which personal data will be fetched.
     ///   - completion: The block which is called when the result will be fetched.
-    ///   - result: The model of `RequestSingleResult<AlphaResource>`
+    ///   - result: The model of `RequestSingleResult<MunaTestResults.Kyc_formResource>`
     /// - Returns: `Cancelable`
     @discardableResult
     public func getPersonalData(
@@ -117,7 +117,7 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
     ///   - filters: Request filters.
     ///   - pagination: Pagination option.
     ///   - completion: The block which is called when the result will be fetched.
-    ///   - result: The model of `RequestCollectionResult<TestTypeResource>`
+    ///   - result: The model of `RequestCollectionResult<MunaTestResults.TestTypeResource>`
     /// - Returns: `Cancelable`
     @discardableResult
     public func getTestTypes(
@@ -167,7 +167,7 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
     ///   - filters: Request filters.
     ///   - pagination: Pagination option.
     ///   - completion: The block which is called when the result will be fetched.
-    ///   - result: The model of `RequestCollectionResult<VerificationResource>`
+    ///   - result: The model of `RequestCollectionResult<MunaTestResults.VerificationResource>`
     /// - Returns: `Cancelable`
     @discardableResult
     public func getVerificationHistory(
