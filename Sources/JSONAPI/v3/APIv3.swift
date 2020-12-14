@@ -39,6 +39,7 @@ public class APIv3 {
     public private(set) lazy var recurringPaymentsApi: RecurringPaymentsApiV3 = { return create() }()
     public private(set) lazy var invoicesApi: InvoicesApiV3 = { return create() }()
     public private(set) lazy var invitationsApi: InvitationsApiV3 = { return create() }()
+    public private(set) lazy var testResultsApi: TestResultsApiV3 = { return create() }()
     public private(set) lazy var kycApi: KYCApiV3 = { return create() }()
     
     // MARK: -
@@ -67,6 +68,7 @@ public class APIv3 {
         Invoices.AllResources.registerAllResources()
         Recpayments.AllResources.registerAllResources()
         Invitations.AllResources.registerAllResources()
+        MunaTestResults.AllResources.registerAllResources()
         KYC.AllResources.registerAllResources()
     }
     
