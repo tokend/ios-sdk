@@ -26,7 +26,7 @@ public class KYCApiV3: JSONAPI.BaseApi {
         completion: @escaping (RequestSingleResult<KYC.KycResource>) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildGetKycEntryRequest(
             by: accountId,
@@ -66,7 +66,7 @@ public class KYCApiV3: JSONAPI.BaseApi {
         completion: @escaping (RequestCollectionResult<KYC.KycResource>) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         let request: PostKYCEntriesRequest = .init(
             data: .init(

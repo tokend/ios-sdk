@@ -35,7 +35,7 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
         completion: @escaping ((_ result: RequestCollectionResult<MunaTestResults.TestResource>) -> Void)
     ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildTestResultsRequest(
             filters: filters,
@@ -73,15 +73,15 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
     /// - Parameters:
     ///   - accountId: Identifier of account for which personal data will be fetched.
     ///   - completion: The block which is called when the result will be fetched.
-    ///   - result: The model of `RequestSingleResult<MunaTestResults.Kyc_formResource>`
+    ///   - result: The model of `RequestSingleResult<MunaTestResults.BlobResource>`
     /// - Returns: `Cancelable`
     @discardableResult
     public func getPersonalData(
         accountId: String,
-        completion: @escaping (_ result: RequestSingleResult<MunaTestResults.Kyc_formResource>) -> Void
+        completion: @escaping (_ result: RequestSingleResult<MunaTestResults.BlobResource>) -> Void
     ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildPersonalDataRequest(
             accountId: accountId,
@@ -93,7 +93,7 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
                 }
                 
                 cancelable.cancelable = self?.requestSingle(
-                    MunaTestResults.Kyc_formResource.self,
+                    MunaTestResults.BlobResource.self,
                     request: request,
                     completion: { (result) in
                         switch result {
@@ -127,7 +127,7 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
         completion: @escaping ((_ result: RequestCollectionResult<MunaTestResults.TestTypeResource>) -> Void)
     ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildTestTypesRequest(
             filters: filters,
@@ -177,7 +177,7 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
         completion: @escaping ((_ result: RequestCollectionResult<MunaTestResults.VerificationResource>) -> Void)
     ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildVerificationHistoryRequest(
             filters: filters,
