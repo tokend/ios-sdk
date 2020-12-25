@@ -66,7 +66,7 @@ public class TestResultsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = /self.integrations/self.testResults
+        let path = /self.integrations/self.testResults/self.testTypes
         
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         
