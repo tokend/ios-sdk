@@ -37,7 +37,7 @@ public class RequestsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestCollectionResult<Horizon.ReviewableRequestResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildRequestsRequest(
             filters: filters,

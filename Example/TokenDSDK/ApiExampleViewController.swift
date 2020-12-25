@@ -194,7 +194,9 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                     onSuccess(walletData)
 
                 case .failure(let error):
-                    onFailed(error)
+                    break
+                    // TODO: - Fix
+//                    onFailed(error)
                 }
         })
     }

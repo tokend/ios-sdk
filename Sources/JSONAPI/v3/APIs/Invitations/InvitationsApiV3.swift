@@ -36,7 +36,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
         completion: @escaping ((_ result: RequestCollectionResult<Invitations.InvitationResource>) -> Void)
         ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildSortedInvitationsRequest(
             filters: filters,
@@ -94,7 +94,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
         
         let dateFormatter = DateFormatters.iso8601DateFormatter
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         let request: CreateInvitationRequest = .init(
             data: .init(
@@ -166,7 +166,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
         completion: @escaping ((_ result: RequestEmptyResult) -> Void)
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildAcceptInvitationRequest(
             id: id,
@@ -207,7 +207,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
         completion: @escaping ((_ result: RequestEmptyResult) -> Void)
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildCancelInvitationRequest(
             id: id,
@@ -248,7 +248,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
         completion: @escaping ((_ result: RequestEmptyResult) -> Void)
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildDeleteInvitationRequest(
             id: id,
@@ -289,7 +289,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
         completion: @escaping ((_ result: RequestEmptyResult) -> Void)
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildWaitInvitationRequest(
             id: id,
@@ -366,7 +366,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
         completion: @escaping ((_ result: RequestCollectionResult<Invitations.EventResource>) -> Void)
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildInvitationsHistoryRequest(
             filters: filters,
@@ -406,7 +406,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
         completion: @escaping (Result<Document<SystemInfoResource>, Error>) -> Void
     ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildSystemInfoRequest(
             completion: { (request) in
@@ -451,7 +451,7 @@ public class InvitationsApiV3: JSONAPI.BaseApi {
         completion: @escaping ((_ result: RequestCollectionResult<Invitations.InvitationResource>) -> Void)
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildInvitationsRequest(
             filters: filters,

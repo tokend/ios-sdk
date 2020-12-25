@@ -29,7 +29,7 @@ public class IntegrationsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestCollectionResult<BusinessResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildBusinessesRequest(
             accountId: accountId,
@@ -70,7 +70,7 @@ public class IntegrationsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestSingleResult<PaymentAccountResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildGetProxyAccountRequest(
             completion: { [weak self] (request) in
@@ -111,7 +111,7 @@ public class IntegrationsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestSingleResult<BusinessResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildBusinessRequest(
             accountId: accountId,
@@ -155,7 +155,7 @@ public class IntegrationsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestEmptyResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         let businessResource = BusinessResource()
         businessResource.id = businessAccountId
@@ -206,7 +206,7 @@ public class IntegrationsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestSingleResult<AtomicSwapBuyResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildSendAtomicSwapBuyRequest(
             envelope: envelope,
@@ -248,7 +248,7 @@ public class IntegrationsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestSingleResult<UserInfoResource>) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildUserRequest(
             userAccountId: userAccountId,
@@ -290,7 +290,7 @@ public class IntegrationsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestCollectionResult<UserInfoResource>) -> Void
     ) -> Cancelable {
 
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         let request: ManyUsersRequest = .init(
             data: .init(

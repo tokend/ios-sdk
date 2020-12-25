@@ -13,7 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
         
-        let vc = ApiExampleViewControllerV3()
+        let vc = KeyServerExampleViewController()
         
         self.window?.rootViewController = vc
         

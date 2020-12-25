@@ -1,6 +1,6 @@
 import Foundation
 
-public struct UpdateWalletRequest {
+public struct PutWalletRequest {
     public let url: String
     public let method: RequestMethod
     public let parametersEncoding: RequestParametersEncoding

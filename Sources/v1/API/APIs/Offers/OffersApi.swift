@@ -44,7 +44,7 @@ public class OffersApi: BaseApi {
         completion: @escaping (_ result: RequestOffersResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildOffersRequest(
             accountId: accountId,

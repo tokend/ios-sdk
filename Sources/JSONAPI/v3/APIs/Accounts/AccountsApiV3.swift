@@ -33,7 +33,7 @@ public class AccountsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestSingleResult<Horizon.AccountResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildAccountRequest(
             accountId: accountId,
@@ -76,7 +76,7 @@ public class AccountsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestCollectionResult<Horizon.SignerResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildSignersRequest(
             accountId: accountId,
@@ -122,7 +122,7 @@ public class AccountsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestCollectionResult<Horizon.ReviewableRequestResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildChangeRoleRequestsRequest(
             filters: filters,
@@ -163,7 +163,7 @@ public class AccountsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestSingleResult<Horizon.ReviewableRequestResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildRequestRequest(
             accountId: accountId,
@@ -201,7 +201,7 @@ public class AccountsApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestSingleResult<Horizon.ConvertedBalancesCollectionResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildConvertedBalancesRequest(
             accountId: accountId,

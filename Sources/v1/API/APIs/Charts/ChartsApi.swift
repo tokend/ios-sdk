@@ -42,7 +42,7 @@ public class ChartsApi: BaseApi {
         completion: @escaping (_ result: ChartsResult) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildChartsRequest(
             asset: asset,

@@ -37,7 +37,7 @@ public class AtomicSwapApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestCollectionResult<Horizon.AtomicSwapAskResource>) -> Void
         ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildAtomicSwapAsksRequest(
             filters: filters,

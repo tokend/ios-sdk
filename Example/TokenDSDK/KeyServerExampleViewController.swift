@@ -139,10 +139,43 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
         super.viewDidAppear(animated)
         
         self.alamofireNetwork.startLogger()
-        
-        self.performLogin { _ in
-            
+
+        guard let seed = try? Base32Check.decodeCheck(expectedVersion: .seedEd25519, encoded: "SCFRWKDIGTGULLVKSV7VD4QI66B2EX6IR6CSJSVWZMRAKZH7HP3R5Y5N"),
+              let key: ECDSA.KeyData = try? ECDSA.KeyData(seed: seed)
+        else {
+            return
         }
+
+        let walletInfo = WalletInfoBuilderV2.createWalletInfo(
+            login: "+380985682593",
+            password: "0000",
+            kdfParams: .init(
+                algorithm: "scrypt",
+                bits: 256,
+                id: "2",
+                n: 4096,
+                p: 1,
+                r: 8,
+                type: "kdf"
+            ),
+            keys: [key],
+            signers: []
+        )
+
+        switch walletInfo {
+
+        case .failure:
+            break
+
+        case .success(var walletInfo):
+            walletInfo.data.relationships.mutableJSON[.custom(key: "location")] = "Some location string for now"
+            if let encoded = try? JSONEncoder().encode(walletInfo) {
+                print(String(data: encoded, encoding: .utf8))
+            }
+        }
+//        self.performLogin { _ in
+//
+//        }
     }
     
     // MARK: -
