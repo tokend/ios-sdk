@@ -38,7 +38,7 @@ open class BusinessResource: Resource {
         return self.stringOptionalValue(key: CodingKeys.name) ?? ""
     }
     
-    open var workDays: MunaBooking.WorkHours? {
+    open var workDays: [String: MunaBooking.WorkHours]? {
         return self.codableOptionalValue(key: CodingKeys.workDays)
     }
     

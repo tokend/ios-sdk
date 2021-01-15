@@ -480,6 +480,8 @@ $resource_configs.each do |key, info|
         name = get_camel_name attr['name']
         type = get_camel_name attr['type']
         optional = attr['optional']
+        is_collection = attr['is_collection']
+        is_string_map = attr['is_string_map']
 
         output_type = get_output_attribute_type type
         cap_output_type = ''
@@ -518,6 +520,15 @@ $resource_configs.each do |key, info|
         end
 
         next if output_type.nil?
+        
+        if is_collection
+            output_type = "[#{output_type}]"
+            cap_output_type = "Codable"
+        end
+        if is_string_map
+            output_type = "[String: #{output_type}]"
+            cap_output_type = "Codable"
+        end
 
         low_output_type = cap_output_type.downcase
         getter_string = "return self.#{low_output_type}OptionalValue(key: CodingKeys.#{name})"
