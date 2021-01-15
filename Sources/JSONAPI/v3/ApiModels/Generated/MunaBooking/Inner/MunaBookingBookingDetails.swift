@@ -28,7 +28,7 @@ public struct BookingDetails: Decodable {
     public let maxDuration: String
     public let minDuration: String
     public let refund: Decimal
-    public let specificDetails: PayloadDetails
+    public let specificDetails: [String: PayloadDetails]
 
     // MARK: -
     
@@ -42,7 +42,7 @@ public struct BookingDetails: Decodable {
         self.maxDuration = try container.decode(String.self, forKey: .maxDuration)
         self.minDuration = try container.decode(String.self, forKey: .minDuration)
         self.refund = try container.decodeDecimalString(key: .refund)
-        self.specificDetails = try container.decode(PayloadDetails.self, forKey: .specificDetails)
+        self.specificDetails = try container.decode([String: PayloadDetails].self, forKey: .specificDetails)
     }
 
 }

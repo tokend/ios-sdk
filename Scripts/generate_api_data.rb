@@ -849,6 +849,7 @@ $inner_configs.each do |name, info|
         type = get_camel_name attr['type']
         optional = attr['optional']
         is_collection = attr['is_collection']
+        is_string_map = attr['is_string_map']
 
         output_type = get_output_attribute_type type
         output_init = ''
@@ -881,6 +882,7 @@ $inner_configs.each do |name, info|
             decode_output_type = output_type
 
             decode_output_type = "[#{output_type}]" if is_collection
+            decode_output_type = "[String: #{output_type}]" if is_string_map
 
             output_init += "container.decode(#{decode_output_type}.self, forKey: .#{name})"
           end
@@ -895,6 +897,7 @@ $inner_configs.each do |name, info|
           else
             decode_output_type = output_type
             decode_output_type = "[#{output_type}]" if is_collection
+            decode_output_type = "[String: #{output_type}]" if is_string_map
 
             decode_func = "decode(#{decode_output_type}.self, forKey"
           end
@@ -903,6 +906,7 @@ $inner_configs.each do |name, info|
         end
 
         output_type = "[#{output_type}]" if is_collection
+        output_type = "[String: #{output_type}]" if is_string_map
 
         output_type = "#{output_type}?" if optional
 

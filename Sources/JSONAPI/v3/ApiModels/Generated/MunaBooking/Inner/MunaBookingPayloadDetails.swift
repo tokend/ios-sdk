@@ -18,7 +18,7 @@ public struct PayloadDetails: Decodable {
     
     public let capacity: Int32
     public let price: PriceDetails
-    public let workDays: WorkHours
+    public let workDays: [String: WorkHours]
 
     // MARK: -
     
@@ -27,7 +27,7 @@ public struct PayloadDetails: Decodable {
         
         self.capacity = try container.decode(Int32.self, forKey: .capacity)
         self.price = try container.decode(PriceDetails.self, forKey: .price)
-        self.workDays = try container.decode(WorkHours.self, forKey: .workDays)
+        self.workDays = try container.decode([String: WorkHours].self, forKey: .workDays)
     }
 
 }
