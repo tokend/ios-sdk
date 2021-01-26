@@ -42,6 +42,7 @@ public class APIv3 {
     public private(set) lazy var testResultsApi: TestResultsApiV3 = { return create() }()
     public private(set) lazy var kycApi: KYCApiV3 = { return create() }()
     public private(set) lazy var bookingApi: BookingApiV3 = { return create() }()
+    public private(set) lazy var schedulerApi: SchedulerApiV3 = { return create() }()
     
     // MARK: -
     

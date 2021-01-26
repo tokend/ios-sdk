@@ -1,7 +1,7 @@
 import Foundation
 import DLJSONAPI
 
-/// Class provides functionality that allows to fetch test results' data
+/// Class provides functionality that allows to fetch bookings' data
 public class BookingApiV3: JSONAPI.BaseApi {
     
     // MARK: - Public properties
@@ -35,7 +35,7 @@ public class BookingApiV3: JSONAPI.BaseApi {
         completion: @escaping ((_ result: RequestCollectionResult<MunaBooking.BookingResource>) -> Void)
     ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildListBookingsRequest(
             filters: filters,
@@ -81,7 +81,7 @@ public class BookingApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestSingleResult<MunaBooking.BookingResource>) -> Void
     ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildBookingByIdRequest(
             bookingId: bookingId,
@@ -127,7 +127,7 @@ public class BookingApiV3: JSONAPI.BaseApi {
         completion: @escaping ((_ result: RequestCollectionResult<MunaBooking.BusinessResource>) -> Void)
     ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildListBusinessesRequest(
             filters: filters,
@@ -173,7 +173,7 @@ public class BookingApiV3: JSONAPI.BaseApi {
         completion: @escaping (_ result: RequestSingleResult<MunaBooking.BusinessResource>) -> Void
     ) -> Cancelable {
         
-        var cancelable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
 
         self.requestBuilder.buildBusinessByIdRequest(
             businessId: businessId,
