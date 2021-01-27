@@ -13,7 +13,9 @@ public class SchedulerRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     
     public func buildFreebusyRequest(
         calendarId: String,
-        filters: SchedulerRequestFiltersV3,
+        startTime: Int,
+        endTime: Int,
+        payload: String,
         include: [String]?,
         pagination: RequestPagination,
         sendDate: Date = Date(),
@@ -21,7 +23,11 @@ public class SchedulerRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     ) {
         let path = /self.integrations/self.scheduler/self.calendars/calendarId/self.freebusy
         
-        let queryParameters = self.buildFilterQueryItems(filters.filterItems)
+        let queryParameters: RequestQueryParameters = [
+            "start-time": "\(startTime)",
+            "end-time": "\(endTime)",
+            "payload": payload
+        ]
         
         self.buildRequest(
             .simpleQueryIncludePagination(
