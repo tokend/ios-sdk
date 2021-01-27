@@ -11,7 +11,7 @@ public class SchedulerRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     private var calendars: String { "calendars" }
     private var freebusy: String { "freebusy" }
     
-    public func buildFreebusyRequest(
+    public func buildFreeBusyRequest(
         calendarId: String,
         startTime: Int,
         endTime: Int,

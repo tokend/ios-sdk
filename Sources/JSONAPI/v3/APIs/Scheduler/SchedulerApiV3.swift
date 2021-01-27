@@ -21,9 +21,11 @@ public class SchedulerApiV3: JSONAPI.BaseApi {
     // MARK: - Public
 
     @discardableResult
-    public func getFreebusy(
+    public func getFreeBusy(
         calendarId: String,
-        filters: SchedulerRequestFiltersV3,
+        startTime: Int,
+        endTime: Int,
+        payload: String,
         include: [String]?,
         pagination: RequestPagination,
         completion: @escaping ((_ result: RequestCollectionResult<MunaScheduler.FreeBusyResource>) -> Void)
@@ -31,9 +33,11 @@ public class SchedulerApiV3: JSONAPI.BaseApi {
         
         let cancelable = self.network.getEmptyCancelable()
 
-        self.requestBuilder.buildFreebusyRequest(
+        self.requestBuilder.buildFreeBusyRequest(
             calendarId: calendarId,
-            filters: filters,
+            startTime: startTime,
+            endTime: endTime,
+            payload: payload,
             include: include,
             pagination: pagination,
             completion: { [weak self] (request) in
