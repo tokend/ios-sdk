@@ -8,6 +8,7 @@ public class BookingRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     
     private var integrations: String { "integrations" }
     private var booking: String { "booking" }
+    private var bookings: String { "bookings" }
     private var businesses: String { "businesses" }
     
     public func buildListBookingsRequest(
@@ -89,6 +90,27 @@ public class BookingRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
             JSONAPI.BaseRequestBuildModel.simple(
                 path: path,
                 method: .get
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+    
+    /// Builds request to book new event
+    public func buildBookEventRequest(
+        businessId: String,
+        bodyParameters: [String: Any],
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+        let path = /self.integrations/self.booking/self.businesses/businessId/self.bookings
+        
+        self.buildRequest(
+            .simpleBody(
+                path: path,
+                method: .post,
+                bodyParameters: bodyParameters
             ),
             shouldSign: true,
             sendDate: sendDate,

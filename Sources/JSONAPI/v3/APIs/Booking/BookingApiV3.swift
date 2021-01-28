@@ -203,4 +203,94 @@ public class BookingApiV3: JSONAPI.BaseApi {
         
         return cancelable
     }
+    
+    @discardableResult
+    public func bookEvent(
+        accountId: String,
+        businessId: String,
+        confirmationType: Int,
+        stateName: String,
+        stateValue: Int,
+        additionalInfo: String?,
+        address: String,
+        resultType: Int,
+        hospitalId: String,
+        testId: String,
+        testType: String,
+        startTime: Date,
+        endTime: Date,
+        additionalPhoto: BlobResponse.BlobContent.Attachment?,
+        completion: @escaping ((_ result: RequestSingleResult<MunaBooking.BookingResource>) -> Void)
+    ) -> Cancelable {
+        
+        let cancelable = self.network.getEmptyCancelable()
+        
+        let dateFormatter = DateFormatters.iso8601DateFormatter
+        
+        let request: BookEventRequest = .init(
+            data:
+                .init(
+                    attributes:
+                        .init(
+                            confirmationType: confirmationType,
+                            state: .init(
+                                name: stateName,
+                                value: stateValue
+                            ),
+                            details: .init(
+                                additionalInfo: additionalInfo,
+                                address: address,
+                                resultType: resultType,
+                                hospitalId: hospitalId,
+                                testId: testId,
+                                testType: testType,
+                                documents: .init(
+                                    additionalPhoto: additionalPhoto
+                                )
+                            ),
+                            source: accountId,
+                            startTime: dateFormatter.string(from: startTime),
+                            endTime: dateFormatter.string(from: endTime),
+                            participants: 1,
+                            payload: testId
+                        )
+                )
+        )
+        
+        guard let encodedRequest = try? request.documentDictionary()
+        else {
+            completion(.failure(JSONAPIError.failedToBuildRequest))
+            return cancelable
+        }
+        
+        self.requestBuilder.buildBookEventRequest(
+            businessId: businessId,
+            bodyParameters: encodedRequest,
+            completion: { [weak self] (request) in
+                
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self?.requestSingle(
+                    MunaBooking.BookingResource.self,
+                    request: request,
+                    completion: { (result) in
+                        
+                        switch result {
+                        
+                        case .success(let document):
+                            completion(.success(document))
+                            
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    }
+                )
+            }
+        )
+        
+        return cancelable
+    }
 }
