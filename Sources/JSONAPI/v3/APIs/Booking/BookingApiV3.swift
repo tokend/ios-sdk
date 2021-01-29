@@ -230,30 +230,27 @@ public class BookingApiV3: JSONAPI.BaseApi {
         let request: BookEventRequest = .init(
             data:
                 .init(
-                    attributes:
-                        .init(
-                            confirmationType: confirmationType,
-                            state: .init(
-                                name: stateName,
-                                value: stateValue
-                            ),
-                            details: .init(
-                                additionalInfo: additionalInfo,
-                                address: address,
-                                resultType: resultType,
-                                hospitalId: hospitalId,
-                                testId: testId,
-                                testType: testType,
-                                documents: .init(
-                                    additionalPhoto: additionalPhoto
-                                )
-                            ),
-                            source: accountId,
-                            startTime: dateFormatter.string(from: startTime),
-                            endTime: dateFormatter.string(from: endTime),
-                            participants: 1,
-                            payload: testId
+                    confirmationType: confirmationType,
+                    state: .init(
+                        name: stateName,
+                        value: stateValue
+                    ),
+                    details: .init(
+                        additionalInfo: additionalInfo,
+                        address: address,
+                        resultType: resultType,
+                        hospitalId: hospitalId,
+                        testId: testId,
+                        testType: testType,
+                        documents: .init(
+                            additionalPhoto: additionalPhoto
                         )
+                    ),
+                    source: accountId,
+                    startTime: dateFormatter.string(from: startTime),
+                    endTime: dateFormatter.string(from: endTime),
+                    participants: 1,
+                    payload: testType
                 )
         )
         

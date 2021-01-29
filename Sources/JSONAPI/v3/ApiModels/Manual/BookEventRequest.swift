@@ -10,13 +10,6 @@ struct BookEventRequest: Encodable {
 extension BookEventRequest {
     
     struct Data: Encodable {
-        let attributes: Attributes
-    }
-}
-
-extension BookEventRequest {
-    
-    struct Attributes: Encodable {
         let confirmationType: Int
         let state: State
         let details: Details
