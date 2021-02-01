@@ -37,7 +37,7 @@ extension BookEventRequest {
         let resultType: Int
         let hospitalId: String
         let testId: String
-        let testType: String
+        let testType: Int
         let documents: Documents
     }
 }

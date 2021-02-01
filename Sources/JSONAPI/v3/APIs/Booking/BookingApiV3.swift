@@ -216,7 +216,7 @@ public class BookingApiV3: JSONAPI.BaseApi {
         resultType: Int,
         hospitalId: String,
         testId: String,
-        testType: String,
+        testAt: Int,
         startTime: Date,
         endTime: Date,
         additionalPhoto: BlobResponse.BlobContent.Attachment?,
@@ -241,7 +241,7 @@ public class BookingApiV3: JSONAPI.BaseApi {
                         resultType: resultType,
                         hospitalId: hospitalId,
                         testId: testId,
-                        testType: testType,
+                        testType: testAt,
                         documents: .init(
                             additionalPhoto: additionalPhoto
                         )
@@ -250,7 +250,7 @@ public class BookingApiV3: JSONAPI.BaseApi {
                     startTime: dateFormatter.string(from: startTime),
                     endTime: dateFormatter.string(from: endTime),
                     participants: 1,
-                    payload: testType
+                    payload: testId
                 )
         )
         
