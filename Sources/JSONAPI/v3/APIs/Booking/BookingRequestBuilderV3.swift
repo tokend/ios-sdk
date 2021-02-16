@@ -11,6 +11,7 @@ public class BookingRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     private var bookings: String { "bookings" }
     private var businesses: String { "businesses" }
     
+    /// Builds request to get bookings list
     public func buildListBookingsRequest(
         filters: BookingRequestFiltersV3,
         include: [String]?,
@@ -36,6 +37,9 @@ public class BookingRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         )
     }
     
+    /// Builds request to get booking
+    /// - Parameters:
+    ///   - bookingId: The booking id.
     public func buildBookingByIdRequest(
         bookingId: String,
         sendDate: Date = Date(),
@@ -54,6 +58,7 @@ public class BookingRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         )
     }
     
+    /// Builds request to get businesses list
     public func buildListBusinessesRequest(
         filters: BookingRequestFiltersV3,
         include: [String]?,
@@ -79,6 +84,9 @@ public class BookingRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         )
     }
     
+    /// Builds request to get business
+    /// - Parameters:
+    ///   - businessId: The business id.
     public func buildBusinessByIdRequest(
         businessId: String,
         sendDate: Date = Date(),
@@ -97,7 +105,9 @@ public class BookingRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         )
     }
     
-    /// Builds request to book new event
+    /// Builds request to book new event for business
+    /// - Parameters:
+    ///   - businessId: The business id.
     public func buildBookEventRequest(
         businessId: String,
         bodyParameters: [String: Any],

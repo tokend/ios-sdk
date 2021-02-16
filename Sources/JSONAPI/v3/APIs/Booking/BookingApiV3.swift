@@ -204,6 +204,12 @@ public class BookingApiV3: JSONAPI.BaseApi {
         return cancelable
     }
     
+    /// Method sends request to book event for business.
+    /// - Parameters:
+    ///   - businessId: Identifier of business for which data will be fetched.
+    ///   - completion: The block which is called when the result will be fetched.
+    ///   - result: The model of `RequestSingleResult<BusinessResource>`
+    /// - Returns: `Cancelable`
     @discardableResult
     public func bookEvent(
         accountId: String,
