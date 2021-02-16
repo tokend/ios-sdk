@@ -74,6 +74,7 @@ public class APIv3 {
         KYC.AllResources.registerAllResources()
         MunaBooking.AllResources.registerAllResources()
         MunaScheduler.AllResources.registerAllResources()
+        MunaVaccineResults.AllResources.registerAllResources()
     }
     
     // MARK: - Private
