@@ -26,19 +26,22 @@ PODS:
     - TokenDWallet (= 3.1.1)
   - TokenDSDK/API (3.2.0-rc.6):
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/ContoFAAPI (3.2.0-rc.6):
-    - TokenDSDK/JSONAPI
-    - TokenDWallet (= 3.1.1)
-  - TokenDSDK/ContopassAPI (3.2.0-rc.6):
-    - TokenDSDK/JSONAPI
-    - TokenDWallet (= 3.1.1)
   - TokenDSDK/JSONAPI (3.2.0-rc.6):
+    - DLJSONAPI (>= 1.0.7)
+    - TokenDSDK/JSONAPI/ContoFA (= 3.2.0-rc.6)
+    - TokenDSDK/JSONAPI/Contopass (= 3.2.0-rc.6)
+    - TokenDSDK/JSONAPI/MUNA (= 3.2.0-rc.6)
+    - TokenDWallet (= 3.1.1)
+  - TokenDSDK/JSONAPI/ContoFA (3.2.0-rc.6):
+    - DLJSONAPI (>= 1.0.7)
+    - TokenDWallet (= 3.1.1)
+  - TokenDSDK/JSONAPI/Contopass (3.2.0-rc.6):
+    - DLJSONAPI (>= 1.0.7)
+    - TokenDWallet (= 3.1.1)
+  - TokenDSDK/JSONAPI/MUNA (3.2.0-rc.6):
     - DLJSONAPI (>= 1.0.7)
     - TokenDWallet (= 3.1.1)
   - TokenDSDK/KeyServer (3.2.0-rc.6):
-    - TokenDWallet (= 3.1.1)
-  - TokenDSDK/MUNAAPI (3.2.0-rc.6):
-    - TokenDSDK/JSONAPI
     - TokenDWallet (= 3.1.1)
   - TokenDSDK/RxJSONAPI (3.2.0-rc.6):
     - RxCocoa (~> 6.0.0-rc.1)
@@ -55,9 +58,9 @@ DEPENDENCIES:
   - TokenDSDK (from `../`)
   - TokenDSDK/AlamofireNetwork (from `../`)
   - TokenDSDK/AlamofireNetworkJSONAPI (from `../`)
-  - TokenDSDK/ContoFAAPI (from `../`)
-  - TokenDSDK/ContopassAPI (from `../`)
-  - TokenDSDK/MUNAAPI (from `../`)
+  - TokenDSDK/JSONAPI/ContoFA (from `../`)
+  - TokenDSDK/JSONAPI/Contopass (from `../`)
+  - TokenDSDK/JSONAPI/MUNA (from `../`)
   - TokenDSDK/RxJSONAPI (from `../`)
 
 SPEC REPOS:
@@ -86,9 +89,9 @@ SPEC CHECKSUMS:
   RxRelay: 56abad6d32f73567858506d08735fdb341935b9a
   RxSwift: dae1a32c48148897494b9e2a6b00a68b40694236
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  TokenDSDK: 466b21b7e5984d9d3c58c999ed482740656edb16
+  TokenDSDK: 9c6b18466d7df52641d3ee5124d3a89e6365cf64
   TokenDWallet: d13f6dfd420e9258ff4734e2d52e57bcdfc60eb3
 
-PODFILE CHECKSUM: 1f48beee135e5a5dcbf594d705c8db5ce90ce550
+PODFILE CHECKSUM: f352c1b5d093c17c8f6c6f492b29ef9145b477ca
 
 COCOAPODS: 1.10.0
