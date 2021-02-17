@@ -3,13 +3,13 @@
 import Foundation
 import DLJSONAPI
 
-// MARK: - Fund_updateResource
+// MARK: - AlphaResource
 
-extension MunaTestResults {
-open class Fund_updateResource: BlobResource {
+extension Blobs {
+open class AlphaResource: BlobResource {
     
     open override class var resourceType: String {
-        return "fund_update"
+        return "alpha"
     }
     
 }

@@ -3,13 +3,13 @@
 import Foundation
 import DLJSONAPI
 
-// MARK: - BravoResource
+// MARK: - Kyc_id_documentResource
 
-extension MunaVaccineResults {
-open class BravoResource: BlobResource {
+extension Blobs {
+open class Kyc_id_documentResource: BlobResource {
     
     open override class var resourceType: String {
-        return "bravo"
+        return "kyc_id_document"
     }
     
 }

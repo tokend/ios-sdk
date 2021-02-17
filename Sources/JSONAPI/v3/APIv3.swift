@@ -76,6 +76,7 @@ public class APIv3 {
         MunaBooking.AllResources.registerAllResources()
         MunaScheduler.AllResources.registerAllResources()
         MunaVaccineResults.AllResources.registerAllResources()
+        Blobs.AllResources.registerAllResources()
     }
     
     // MARK: - Private

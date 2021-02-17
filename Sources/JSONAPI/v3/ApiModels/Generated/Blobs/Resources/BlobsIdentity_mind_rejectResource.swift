@@ -5,7 +5,7 @@ import DLJSONAPI
 
 // MARK: - Identity_mind_rejectResource
 
-extension MunaVaccineResults {
+extension Blobs {
 open class Identity_mind_rejectResource: BlobResource {
     
     open override class var resourceType: String {

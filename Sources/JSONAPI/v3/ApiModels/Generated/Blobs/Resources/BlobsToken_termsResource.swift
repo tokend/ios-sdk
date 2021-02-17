@@ -3,13 +3,13 @@
 import Foundation
 import DLJSONAPI
 
-// MARK: - Fund_updateResource
+// MARK: - Token_termsResource
 
-extension MunaVaccineResults {
-open class Fund_updateResource: BlobResource {
+extension Blobs {
+open class Token_termsResource: BlobResource {
     
     open override class var resourceType: String {
-        return "fund_update"
+        return "token_terms"
     }
     
 }

@@ -73,12 +73,12 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
     /// - Parameters:
     ///   - accountId: Identifier of account for which personal data will be fetched.
     ///   - completion: The block which is called when the result will be fetched.
-    ///   - result: The model of `RequestSingleResult<MunaTestResults.BlobResource>`
+    ///   - result: The model of `RequestSingleResult<Blobs.BlobResource>`
     /// - Returns: `Cancelable`
     @discardableResult
     public func getPersonalData(
         accountId: String,
-        completion: @escaping (_ result: RequestSingleResult<MunaTestResults.BlobResource>) -> Void
+        completion: @escaping (_ result: RequestSingleResult<Blobs.BlobResource>) -> Void
     ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -93,7 +93,7 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
                 }
                 
                 cancelable.cancelable = self?.requestSingle(
-                    MunaTestResults.BlobResource.self,
+                    Blobs.BlobResource.self,
                     request: request,
                     completion: { (result) in
                         switch result {

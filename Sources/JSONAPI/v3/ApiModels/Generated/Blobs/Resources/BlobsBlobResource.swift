@@ -5,7 +5,7 @@ import DLJSONAPI
 
 // MARK: - BlobResource
 
-extension MunaTestResults {
+extension Blobs {
 open class BlobResource: Resource {
     
     open override class var resourceType: String {

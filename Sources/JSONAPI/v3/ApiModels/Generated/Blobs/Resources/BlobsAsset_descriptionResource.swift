@@ -5,7 +5,7 @@ import DLJSONAPI
 
 // MARK: - Asset_descriptionResource
 
-extension MunaVaccineResults {
+extension Blobs {
 open class Asset_descriptionResource: BlobResource {
     
     open override class var resourceType: String {

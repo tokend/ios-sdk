@@ -3,13 +3,13 @@
 import Foundation
 import DLJSONAPI
 
-// MARK: - DeltaResource
+// MARK: - Fund_overviewResource
 
-extension MunaVaccineResults {
-open class DeltaResource: BlobResource {
+extension Blobs {
+open class Fund_overviewResource: BlobResource {
     
     open override class var resourceType: String {
-        return "delta"
+        return "fund_overview"
     }
     
 }

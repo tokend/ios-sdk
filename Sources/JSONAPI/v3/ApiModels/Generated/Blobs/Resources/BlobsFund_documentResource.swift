@@ -3,13 +3,13 @@
 import Foundation
 import DLJSONAPI
 
-// MARK: - Kyc_formResource
+// MARK: - Fund_documentResource
 
-extension MunaTestResults {
-open class Kyc_formResource: BlobResource {
+extension Blobs {
+open class Fund_documentResource: BlobResource {
     
     open override class var resourceType: String {
-        return "kyc_form"
+        return "fund_document"
     }
     
 }
