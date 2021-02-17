@@ -33,17 +33,26 @@ public class APIv3 {
     public private(set) lazy var atomicSwapApi: AtomicSwapApiV3 = { return self.create() }()
     public private(set) lazy var requetsApi: RequestsApiV3 = { return self.create() }()
     public private(set) lazy var integrationsApi: IntegrationsApiV3 = { return self.create() }()
+    public private(set) lazy var transactionsApi: TransactionsApiV3 = { return self.create() }()
+    public private(set) lazy var kycApi: KYCApiV3 = { return create() }()
+    
+    #if TOKENDSDK_CONTOPASSAPI
+    public private(set) lazy var invitationsApi: InvitationsApiV3 = { return create() }()
+    #endif
+    
+    #if TOKENDSDK_CONTOFAAPI
     public private(set) lazy var cardsApi: CardsApi = { return self.create() }()
     public private(set) lazy var friendsApi: FriendsApi = { return self.create() }()
-    public private(set) lazy var transactionsApi: TransactionsApiV3 = { return self.create() }()
     public private(set) lazy var recurringPaymentsApi: RecurringPaymentsApiV3 = { return create() }()
     public private(set) lazy var invoicesApi: InvoicesApiV3 = { return create() }()
-    public private(set) lazy var invitationsApi: InvitationsApiV3 = { return create() }()
+    #endif
+    
+    #if TOKENDSDK_MUNAAPI
     public private(set) lazy var testResultsApi: TestResultsApiV3 = { return create() }()
-    public private(set) lazy var kycApi: KYCApiV3 = { return create() }()
     public private(set) lazy var bookingApi: BookingApiV3 = { return create() }()
     public private(set) lazy var schedulerApi: SchedulerApiV3 = { return create() }()
     public private(set) lazy var vaccineResultsApi: VaccineResultsApiV3 = { return create() }()
+    #endif
     
     // MARK: -
     
@@ -65,18 +74,27 @@ public class APIv3 {
     // MARK: - Public
     
     public static func registerResources() {
+        Horizon.AllResources.registerAllResources()
+        KYC.AllResources.registerAllResources()
+        Blobs.AllResources.registerAllResources()
+        
+        #if TOKENDSDK_CONTOPASSAPI
+        Invitations.AllResources.registerAllResources()
+        #endif
+        
+        #if TOKENDSDK_CONTOFAAPI
         Cards.AllResources.registerAllResources()
         Friends.AllResources.registerAllResources()
-        Horizon.AllResources.registerAllResources()
         Invoices.AllResources.registerAllResources()
         Recpayments.AllResources.registerAllResources()
-        Invitations.AllResources.registerAllResources()
+        #endif
+        
+        #if TOKENDSDK_MUNAAPI
         MunaTestResults.AllResources.registerAllResources()
-        KYC.AllResources.registerAllResources()
         MunaBooking.AllResources.registerAllResources()
         MunaScheduler.AllResources.registerAllResources()
         MunaVaccineResults.AllResources.registerAllResources()
-        Blobs.AllResources.registerAllResources()
+        #endif
     }
     
     // MARK: - Private

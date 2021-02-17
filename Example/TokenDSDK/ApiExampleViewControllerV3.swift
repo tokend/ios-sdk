@@ -127,24 +127,25 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
 //                }
 //        })
 
-        let filters = InvitationsRequestFiltersV3.with(.states([1]))
-            .addFilter(.guest(""))
-        self.tokenDApi.invitationsApi.getSortedInvitations(
-            filters: filters,
-            sort: .updatedAt(descending: true),
-            include: [],
-            pagination: .init(.indexedSingle(index: 0, limit: 100, order: .descending)),
-            completion: { [weak self] (result) in
-
-                switch result {
-
-                case .failure(let error):
-                    self?.showError(error)
-
-                case .success(let document):
-                    print(document)
-                }
-        })
+//        let filters = InvitationsRequestFiltersV3.with(.states([1]))
+//            .addFilter(.guest(""))
+//        self.tokenDApi.invitationsApi.getSortedInvitations(
+//            filters: filters,
+//            sort: .updatedAt(descending: true),
+//            include: [],
+//            pagination: .init(.indexedSingle(index: 0, limit: 100, order: .descending)),
+//            completion: { [weak self] (result) in
+//
+//                switch result {
+//
+//                case .failure(let error):
+//                    self?.showError(error)
+//
+//                case .success(let document):
+//                    print(document)
+//                }
+//        })
+        
 //        self.requestSystemInfo()
 //        self.requestRecurringPayment()
 //        self.requestRemoveCard()
@@ -346,40 +347,40 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         })
     }
 
-    func requestCards() {
-        let filters = CardsRequestsFilters.with(.owner(Constants.userAccountId))
-        let pagination = RequestPagination(.indexedSingle(index: 0, limit: 20, order: .descending))
-        self.tokenDApi.cardsApi.requestCards(
-            filters: filters,
-            include: ["balance"],
-            pagination: pagination,
-            completion: { [weak self] (result) in
-                switch result {
-
-                case .failure(let error):
-                    self?.showError(error)
-
-                case .success(let document):
-                    print("cards document: \(document)")
-                }
-        })
-    }
-
-    func requestCard() {
-        self.tokenDApi.cardsApi.requestCard(
-            cardNumber: "6635008740148757",
-            include: ["balance", "security_details"],
-            completion: { [weak self] (result) in
-                switch result {
-
-                case .failure(let error):
-                    self?.showError(error)
-
-                case .success(let document):
-                    print(document)
-                }
-        })
-    }
+//    func requestCards() {
+//        let filters = CardsRequestsFilters.with(.owner(Constants.userAccountId))
+//        let pagination = RequestPagination(.indexedSingle(index: 0, limit: 20, order: .descending))
+//        self.tokenDApi.cardsApi.requestCards(
+//            filters: filters,
+//            include: ["balance"],
+//            pagination: pagination,
+//            completion: { [weak self] (result) in
+//                switch result {
+//
+//                case .failure(let error):
+//                    self?.showError(error)
+//
+//                case .success(let document):
+//                    print("cards document: \(document)")
+//                }
+//        })
+//    }
+//
+//    func requestCard() {
+//        self.tokenDApi.cardsApi.requestCard(
+//            cardNumber: "6635008740148757",
+//            include: ["balance", "security_details"],
+//            completion: { [weak self] (result) in
+//                switch result {
+//
+//                case .failure(let error):
+//                    self?.showError(error)
+//
+//                case .success(let document):
+//                    print(document)
+//                }
+//        })
+//    }
 
     func requestUser() {
         self.tokenDApi.integrationsApi.sendManyUsersRequest(
@@ -416,142 +417,142 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
 //        })
     }
 
-    func requestSystemInfo() {
-        self.tokenDApi.recurringPaymentsApi.requestSystemInfo { [weak self] (result) in
-
-            switch result {
-
-            case .failure(let error):
-                self?.showError(error)
-
-            case .success(let document):
-                print(document.data)
-            }
-        }
-    }
-
-    func requestRecurringPayments() {
-        let filters = RecurringPaymentsRequestsFilters.with(.sourceAccount(Constants.userAccountId))
-        let pagination = RequestPagination(.indexedSingle(index: 0, limit: 20, order: .descending))
-
-        self.tokenDApi.recurringPaymentsApi.requestScheduledPayments(
-            filters: filters,
-            include: ["description"],
-            pagination: pagination,
-            completion: { [weak self] (result) in
-
-                switch result {
-
-                case .failure(let error):
-                    self?.showError(error)
-
-                case .success(let document):
-                    print(document.data)
-                }
-        })
-    }
-
-    func requestRecurringPayment() {
-
-        self.tokenDApi.recurringPaymentsApi.requestDeleteScheduledPayment(
-            id: "7",
-            completion: { [weak self] (result) in
-
-                switch result {
-
-                case .failure(let error):
-                    self?.showError(error)
-
-                case .success:
-                    print("success")
-                }
-        })
-
-        self.tokenDApi.recurringPaymentsApi.requestScheduledPayment(
-            id: "7",
-            include: ["description"],
-            completion: { [weak self] (result) in
-
-                switch result {
-
-                case .failure(let error):
-                    self?.showError(error)
-
-                case .success(let document):
-                    print(document.data)
-                }
-        })
-    }
-
-    func requestRemoveCard() {
-        self.tokenDApi.cardsApi.requestDeleteCard(
-            cardNumber: "5359421088825421",
-            completion: { [weak self] (result) in
-                switch result {
-
-                case .failure(let error):
-                    self?.showError(error)
-
-                case .success:
-                    print("remove card success")
-                }
-        })
-    }
-
-    func requestUpdateCard() {
-        self.tokenDApi.cardsApi.requestUpdateCard(
-            by: "4242424242424242",
-            bindBalanceIds: [
-                "balanceId3",
-                "balanceId4"
-            ],
-            unbindBalanceIds: [],
-            completion: { [weak self] (result) in
-                switch result {
-
-                case .failure(let error):
-                    self?.showError(error)
-
-                case .success:
-                    print("update card success")
-                }
-        })
-    }
-
-    func requestFriends() {
-        self.tokenDApi.friendsApi.requestFriends(
-            accountId: Constants.userAccountId,
-            include: nil,
-            pagination: .init(.indexedSingle(index: 0, limit: 20, order: .descending)),
-            completion: { [weak self] (result) in
-                switch result {
-
-                case .failure(let error):
-                    self?.showError(error)
-
-                case .success(let document):
-                    print("friends document: \(document)")
-                }
-        })
-    }
-
-    func requestRecentPayments() {
-        self.tokenDApi.friendsApi.requestRecentPayments(
-            accountId: Constants.userAccountId,
-            filters: .init(),
-            include: [],
-            pagination: .init(.indexedSingle(index: 0, limit: 20, order: .descending)),
-            completion: { [weak self] (result) in
-                switch result {
-
-                case .failure(let error):
-                    self?.showError(error)
-
-                case .success(let document):
-                    print("recent payments: \(document)")
-                }
-        })
-    }
+//    func requestSystemInfo() {
+//        self.tokenDApi.recurringPaymentsApi.requestSystemInfo { [weak self] (result) in
+//
+//            switch result {
+//
+//            case .failure(let error):
+//                self?.showError(error)
+//
+//            case .success(let document):
+//                print(document.data)
+//            }
+//        }
+//    }
+//
+//    func requestRecurringPayments() {
+//        let filters = RecurringPaymentsRequestsFilters.with(.sourceAccount(Constants.userAccountId))
+//        let pagination = RequestPagination(.indexedSingle(index: 0, limit: 20, order: .descending))
+//
+//        self.tokenDApi.recurringPaymentsApi.requestScheduledPayments(
+//            filters: filters,
+//            include: ["description"],
+//            pagination: pagination,
+//            completion: { [weak self] (result) in
+//
+//                switch result {
+//
+//                case .failure(let error):
+//                    self?.showError(error)
+//
+//                case .success(let document):
+//                    print(document.data)
+//                }
+//        })
+//    }
+//
+//    func requestRecurringPayment() {
+//
+//        self.tokenDApi.recurringPaymentsApi.requestDeleteScheduledPayment(
+//            id: "7",
+//            completion: { [weak self] (result) in
+//
+//                switch result {
+//
+//                case .failure(let error):
+//                    self?.showError(error)
+//
+//                case .success:
+//                    print("success")
+//                }
+//        })
+//
+//        self.tokenDApi.recurringPaymentsApi.requestScheduledPayment(
+//            id: "7",
+//            include: ["description"],
+//            completion: { [weak self] (result) in
+//
+//                switch result {
+//
+//                case .failure(let error):
+//                    self?.showError(error)
+//
+//                case .success(let document):
+//                    print(document.data)
+//                }
+//        })
+//    }
+//
+//    func requestRemoveCard() {
+//        self.tokenDApi.cardsApi.requestDeleteCard(
+//            cardNumber: "5359421088825421",
+//            completion: { [weak self] (result) in
+//                switch result {
+//
+//                case .failure(let error):
+//                    self?.showError(error)
+//
+//                case .success:
+//                    print("remove card success")
+//                }
+//        })
+//    }
+//
+//    func requestUpdateCard() {
+//        self.tokenDApi.cardsApi.requestUpdateCard(
+//            by: "4242424242424242",
+//            bindBalanceIds: [
+//                "balanceId3",
+//                "balanceId4"
+//            ],
+//            unbindBalanceIds: [],
+//            completion: { [weak self] (result) in
+//                switch result {
+//
+//                case .failure(let error):
+//                    self?.showError(error)
+//
+//                case .success:
+//                    print("update card success")
+//                }
+//        })
+//    }
+//
+//    func requestFriends() {
+//        self.tokenDApi.friendsApi.requestFriends(
+//            accountId: Constants.userAccountId,
+//            include: nil,
+//            pagination: .init(.indexedSingle(index: 0, limit: 20, order: .descending)),
+//            completion: { [weak self] (result) in
+//                switch result {
+//
+//                case .failure(let error):
+//                    self?.showError(error)
+//
+//                case .success(let document):
+//                    print("friends document: \(document)")
+//                }
+//        })
+//    }
+//
+//    func requestRecentPayments() {
+//        self.tokenDApi.friendsApi.requestRecentPayments(
+//            accountId: Constants.userAccountId,
+//            filters: .init(),
+//            include: [],
+//            pagination: .init(.indexedSingle(index: 0, limit: 20, order: .descending)),
+//            completion: { [weak self] (result) in
+//                switch result {
+//
+//                case .failure(let error):
+//                    self?.showError(error)
+//
+//                case .success(let document):
+//                    print("recent payments: \(document)")
+//                }
+//        })
+//    }
     
     func requestAtomicSwapAsks() {
         let filters = AtomicSwapFiltersV3.with(.baseAsset("82745DB9210D4AD4"))
