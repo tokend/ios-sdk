@@ -3,16 +3,15 @@
 import Foundation
 import DLJSONAPI
 
-extension MunaTestResults {
+extension MunaBooking {
 enum AllResources {
     
     // swiftlint:disable function_body_length
     public static func registerAllResources() {
         let allResources: [Resource.Type] = [
-            TestResource.self,
-            TestTypeResource.self,
-            AccountTestTypeResource.self,
-            VerificationResource.self
+            BusinessResource.self,
+            EventResource.self,
+            BookingResource.self
         ]
         
         for res in allResources {

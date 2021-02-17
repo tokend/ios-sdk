@@ -92,13 +92,13 @@ public class GeneralApi: BaseApi {
     }
     
     /// Model that will be fetched in `completion` block of `GeneralApi.requestAccountId(...)`
-    public enum RequestIdentitiesResult {
+    public enum RequestIdentitiesResult<SpecificAttributes: Decodable> {
         
         /// Case of failed response with `ApiErrors` model
         case failed(ApiErrors)
         
         /// Case of successful response with `AccountIdentityResponse` model
-        case succeeded(identities: [AccountIdentityResponse])
+        case succeeded(identities: [AccountIdentityResponse<SpecificAttributes>])
     }
     
     /// Model that is used to define filter whick will be used to fetch identities
@@ -125,15 +125,15 @@ public class GeneralApi: BaseApi {
     ///   - filter: Filter which will be used to fetch identities.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `GeneralApi.RequestIdentitiesResult`
-    public func requestIdentities(
+    public func requestIdentities<SpecificAttributes: Decodable>(
         filter: RequestIdentitiesFilter,
-        completion: @escaping (_ result: RequestIdentitiesResult) -> Void
-        ) {
+        completion: @escaping (_ result: RequestIdentitiesResult<SpecificAttributes>) -> Void
+    ) {
         
         let request = self.requestBuilder.buildGetIdentitiesRequest(filter: filter)
         
         self.network.responseObject(
-            ApiDataResponse<[AccountIdentityResponse]>.self,
+            ApiDataResponse<[AccountIdentityResponse<SpecificAttributes>]>.self,
             url: request.url,
             method: request.method,
             parameters: request.parameters,
@@ -151,8 +151,8 @@ public class GeneralApi: BaseApi {
     }
     
     /// Model that will be fetched in `completion` block of `GeneralApi.addIdentity(...)`
-    public enum RequestAddIdentityResult {
-        case success(identity: AccountIdentityResponse)
+    public enum RequestAddIdentityResult<SpecificAttributes: Decodable> {
+        case success(identity: AccountIdentityResponse<SpecificAttributes>)
         case failure(error: Error)
     }
     
@@ -161,9 +161,9 @@ public class GeneralApi: BaseApi {
     /// - Parameters:
     ///   - phoneNumber: New identity's phone number
     ///   - completion: Block that will be called when the result will be received.
-    public func addIdentity(
+    public func addIdentity<SpecificAttributes: Decodable>(
         withPhoneNumber phoneNumber: String,
-        completion: @escaping ((RequestAddIdentityResult) -> Void)
+        completion: @escaping ((RequestAddIdentityResult<SpecificAttributes>) -> Void)
     ) {
         
         let body: AddIdentityRequestBody = .init(phoneNumber: phoneNumber)
@@ -179,7 +179,7 @@ public class GeneralApi: BaseApi {
             )
         
         self.network.responseObject(
-            ApiDataResponse<AccountIdentityResponse>.self,
+            ApiDataResponse<AccountIdentityResponse<SpecificAttributes>>.self,
             url: request.url,
             method: request.method,
             parameters: request.parameters,

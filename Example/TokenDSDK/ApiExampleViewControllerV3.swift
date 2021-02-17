@@ -179,7 +179,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     func getPhoneByAccountId() {
         self.vc.tokenDApi.generalApi.requestIdentities(
             filter: .accountId(Constants.userAccountId),
-            completion: { result in
+            completion: { (result: GeneralApi.RequestIdentitiesResult<EmptySpecificAttributes>) in
                 switch result {
                     
                 case .failed(let error):

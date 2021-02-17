@@ -2,16 +2,16 @@ import Foundation
 import DLJSONAPI
 
 /// Class provides functionality that allows to fetch test results' data
-public class TestResultsApiV3: JSONAPI.BaseApi {
+public class VaccineResultsApiV3: JSONAPI.BaseApi {
     
     // MARK: - Public properties
 
-    public let requestBuilder: TestResultsRequestBuilderV3
-    
+    public let requestBuilder: VaccineResultsRequestBuilderV3
+
     // MARK: -
     
     public required init(apiStack: JSONAPI.BaseApiStack) {
-        self.requestBuilder = TestResultsRequestBuilderV3(
+        self.requestBuilder = VaccineResultsRequestBuilderV3(
             builderStack: .fromApiStack(apiStack)
         )
         
@@ -20,24 +20,24 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
     
     // MARK: - Public
     
-    /// Method sends request to fetch test results from api.
+    /// Method sends request to fetch vaccine results from api.
     /// - Parameters:
     ///   - filters: Request filters.
     ///   - pagination: Pagination option.
     ///   - completion: The block which is called when the result will be fetched.
-    ///   - result: The model of `RequestCollectionResult<MunaTestResults.TestResource>`
+    ///   - result: The model of `RequestCollectionResult<MunaVaccineResults.VaccineResource>`
     /// - Returns: `Cancelable`
     @discardableResult
-    public func getTestResults(
-        filters: TestResultsRequestFiltersV3,
+    public func getVaccineListResults(
+        filters: VaccineResultsRequestFiltersV3,
         include: [String]?,
         pagination: RequestPagination,
-        completion: @escaping ((_ result: RequestCollectionResult<MunaTestResults.TestResource>) -> Void)
+        completion: @escaping ((_ result: RequestCollectionResult<MunaVaccineResults.VaccineResource>) -> Void)
     ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
         
-        self.requestBuilder.buildTestResultsRequest(
+        self.requestBuilder.buildVaccineListResultsRequest(
             filters: filters,
             include: include,
             pagination: pagination,
@@ -49,7 +49,7 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
                 }
                 
                 cancelable.cancelable = self?.requestCollection(
-                    MunaTestResults.TestResource.self,
+                    MunaVaccineResults.VaccineResource.self,
                     request: request,
                     completion: { (result) in
                         
@@ -69,22 +69,22 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
         return cancelable
     }
     
-    /// Method sends request to fetch account's personal data from api.
+    /// Method sends request to fetch vaccine result's data from api.
     /// - Parameters:
-    ///   - accountId: Identifier of account for which personal data will be fetched.
+    ///   - bookingId: Identifier of booking for which data will be fetched.
     ///   - completion: The block which is called when the result will be fetched.
-    ///   - result: The model of `RequestSingleResult<Blobs.BlobResource>`
+    ///   - result: The model of `RequestSingleResult<MunaVaccineResults.VaccineResource>`
     /// - Returns: `Cancelable`
     @discardableResult
-    public func getPersonalData(
-        accountId: String,
-        completion: @escaping (_ result: RequestSingleResult<Blobs.BlobResource>) -> Void
+    public func getVaccineResultById(
+        vaccineResultId: String,
+        completion: @escaping (_ result: RequestSingleResult<MunaVaccineResults.VaccineResource>) -> Void
     ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
 
-        self.requestBuilder.buildPersonalDataRequest(
-            accountId: accountId,
+        self.requestBuilder.buildVaccineResultByIdRequest(
+            vaccineResultId: vaccineResultId,
             completion: { [weak self] (request) in
                 
                 guard let request = request else {
@@ -93,7 +93,7 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
                 }
                 
                 cancelable.cancelable = self?.requestSingle(
-                    Blobs.BlobResource.self,
+                    MunaVaccineResults.VaccineResource.self,
                     request: request,
                     completion: { (result) in
                         switch result {
@@ -112,24 +112,24 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
         return cancelable
     }
     
-    /// Method sends request to fetch test types from api.
+    /// Method sends request to fetch vaccine types from api.
     /// - Parameters:
     ///   - filters: Request filters.
     ///   - pagination: Pagination option.
     ///   - completion: The block which is called when the result will be fetched.
-    ///   - result: The model of `RequestCollectionResult<MunaTestResults.TestTypeResource>`
+    ///   - result: The model of `RequestCollectionResult<MunaVaccineResults.VaccineTypeResource>`
     /// - Returns: `Cancelable`
     @discardableResult
-    public func getTestTypes(
-        filters: TestResultsRequestFiltersV3,
+    public func getVaccineTypesList(
+        filters: VaccineResultsRequestFiltersV3,
         include: [String]?,
         pagination: RequestPagination,
-        completion: @escaping ((_ result: RequestCollectionResult<MunaTestResults.TestTypeResource>) -> Void)
+        completion: @escaping ((_ result: RequestCollectionResult<MunaVaccineResults.VaccineTypeResource>) -> Void)
     ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
         
-        self.requestBuilder.buildTestTypesRequest(
+        self.requestBuilder.buildVaccineTypesListRequest(
             filters: filters,
             include: include,
             pagination: pagination,
@@ -141,7 +141,7 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
                 }
                 
                 cancelable.cancelable = self?.requestCollection(
-                    MunaTestResults.TestTypeResource.self,
+                    MunaVaccineResults.VaccineTypeResource.self,
                     request: request,
                     completion: { (result) in
                         
@@ -160,29 +160,23 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
         
         return cancelable
     }
+    
+    /// Method sends request to fetch vaccine type's data from api.
+    /// - Parameters:
+    ///   - bookingId: Identifier of booking for which data will be fetched.
+    ///   - completion: The block which is called when the result will be fetched.
+    ///   - result: The model of `RequestSingleResult<MunaVaccineResults.VaccineTypeResource>`
+    /// - Returns: `Cancelable`
+    @discardableResult
+    public func getVaccineTypeById(
+        vaccineTypeId: String,
+        completion: @escaping (_ result: RequestSingleResult<MunaVaccineResults.VaccineTypeResource>) -> Void
+    ) -> Cancelable {
+        
+        let cancelable = self.network.getEmptyCancelable()
 
-    
-    /// Method sends request to fetch verification history from api.
-    /// - Parameters:
-    ///   - filters: Request filters.
-    ///   - pagination: Pagination option.
-    ///   - completion: The block which is called when the result will be fetched.
-    ///   - result: The model of `RequestCollectionResult<MunaTestResults.VerificationResource>`
-    /// - Returns: `Cancelable`
-    @discardableResult
-    public func getVerificationHistory(
-        filters: TestResultsRequestFiltersV3,
-        include: [String]?,
-        pagination: RequestPagination,
-        completion: @escaping ((_ result: RequestCollectionResult<MunaTestResults.VerificationResource>) -> Void)
-    ) -> Cancelable {
-        
-        let cancelable = self.network.getEmptyCancelable()
-        
-        self.requestBuilder.buildVerificationHistoryRequest(
-            filters: filters,
-            include: include,
-            pagination: pagination,
+        self.requestBuilder.buildVaccineTypeByIdRequest(
+            vaccineTypeId: vaccineTypeId,
             completion: { [weak self] (request) in
                 
                 guard let request = request else {
@@ -190,18 +184,17 @@ public class TestResultsApiV3: JSONAPI.BaseApi {
                     return
                 }
                 
-                cancelable.cancelable = self?.requestCollection(
-                    MunaTestResults.VerificationResource.self,
+                cancelable.cancelable = self?.requestSingle(
+                    MunaVaccineResults.VaccineTypeResource.self,
                     request: request,
                     completion: { (result) in
-                        
                         switch result {
                         
-                        case .success(let document):
-                            completion(.success(document))
-                            
                         case .failure(let error):
                             completion(.failure(error))
+                            
+                        case .success(let document):
+                            completion(.success(document))
                         }
                     }
                 )

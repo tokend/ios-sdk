@@ -337,7 +337,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     
     func requestAccountIdForEmail(_ email: String) {
         self.tokenDApi.generalApi.requestIdentities(
-            filter: .login(email)) { [weak self] (result) in
+            filter: .login(email)) { [weak self] (result: GeneralApi.RequestIdentitiesResult<EmptySpecificAttributes>) in
             switch result {
             case .succeeded:
                 print("\(#function) - success")
@@ -349,7 +349,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     
     func requestEmailForAccountId(_ accountId: String) {
         self.tokenDApi.generalApi.requestIdentities(
-        filter: .accountId(accountId)) { [weak self] (result) in
+        filter: .accountId(accountId)) { [weak self] (result: GeneralApi.RequestIdentitiesResult<EmptySpecificAttributes>) in
             switch result {
             case .succeeded(let data):
                 print(data)
@@ -490,7 +490,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         
         self.tokenDApi.generalApi.requestIdentities(
             filter: .login(Constants.sendTransactionDestinationEmail),
-            completion: { result in
+            completion: { (result: GeneralApi.RequestIdentitiesResult<EmptySpecificAttributes>) in
                 switch result {
                     
                 case .failed(let error):
