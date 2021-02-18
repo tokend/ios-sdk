@@ -8,9 +8,9 @@ use_modular_headers!
 def main_pods
   pod 'TokenDSDK', path: '../'
   pod 'TokenDSDK/AlamofireNetwork', :path => '../'
-  pod 'TokenDSDK/JSONAPI/MUNA', path: '../'
-  pod 'TokenDSDK/JSONAPI/ContoFA', path: '../'
-  pod 'TokenDSDK/JSONAPI/Contopass', path: '../'
+  pod 'TokenDSDK/MUNA', path: '../'
+  pod 'TokenDSDK/ContoFA', path: '../'
+  pod 'TokenDSDK/Contopass', path: '../'
 
   pod 'TokenDSDK/AlamofireNetworkJSONAPI', path: '../'
   pod 'TokenDSDK/RxJSONAPI', path: '../'

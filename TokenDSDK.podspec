@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'TokenDSDK'
-  s.version          = '3.3.0'
+  s.version          = '3.3.1'
   s.summary          = 'TokenD SDK for iOS.'
   s.homepage         = 'https://github.com/tokend/ios-sdk'
   s.license          = { type: 'Apache License, Version 2.0', file: 'LICENSE' }
@@ -52,21 +52,24 @@ Pod::Spec.new do |s|
     ss.source_files = jsonapi_v3_source_files
     ss.dependency 'DLJSONAPI', '>= 1.0.7'
     ss.xcconfig = { 'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => '$(inherited)' }
+  end
 
-    ss.subspec 'MUNA' do |sss|
-      sss.xcconfig = { 'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'TOKENDSDK_MUNAAPI' }
-      sss.source_files = jsonapi_muna_v3_source_files
-    end
+  s.subspec 'MUNA' do |ss|
+    ss.xcconfig = { 'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'TOKENDSDK_MUNAAPI' }
+    ss.source_files = jsonapi_muna_v3_source_files
+    ss.dependency 'TokenDSDK/JSONAPI'
+  end
 
-    ss.subspec 'Contopass' do |sss|
-      sss.xcconfig = { 'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'TOKENDSDK_CONTOPASSAPI' }
-      sss.source_files = jsonapi_contopass_v3_source_files
-    end
+  s.subspec 'Contopass' do |ss|
+    ss.xcconfig = { 'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'TOKENDSDK_CONTOPASSAPI' }
+    ss.source_files = jsonapi_contopass_v3_source_files
+    ss.dependency 'TokenDSDK/JSONAPI'
+  end
 
-    ss.subspec 'ContoFA' do |sss|
-      sss.xcconfig = { 'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'TOKENDSDK_CONTOFAAPI' }
-      sss.source_files = jsonapi_contofa_v3_source_files
-    end
+  s.subspec 'ContoFA' do |ss|
+    ss.xcconfig = { 'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'TOKENDSDK_CONTOFAAPI' }
+    ss.source_files = jsonapi_contofa_v3_source_files
+    ss.dependency 'TokenDSDK/JSONAPI'
   end
 
   s.subspec 'AlamofireNetworkJSONAPI' do |ss|
