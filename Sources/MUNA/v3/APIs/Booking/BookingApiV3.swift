@@ -296,4 +296,42 @@ public class BookingApiV3: JSONAPI.BaseApi {
         
         return cancelable
     }
+    
+    @discardableResult
+    public func requestCancelBooking(
+        businessId: String,
+        bookingId: String,
+        completion: @escaping (_ result: RequestEmptyResult) -> Void
+    ) -> Cancelable {
+        
+        let cancelable = self.network.getEmptyCancelable()
+
+        self.requestBuilder.buildCancelBookingRequest(
+            businessId: businessId,
+            bookingId: bookingId,
+            completion: { [weak self] (request) in
+                
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self?.requestEmpty(
+                    request: request,
+                    completion: { (result) in
+                        switch result {
+                        
+                        case .failure(let error):
+                            completion(.failure(error))
+                            
+                        case .success:
+                            completion(.success)
+                        }
+                    }
+                )
+            }
+        )
+        
+        return cancelable
+    }
 }

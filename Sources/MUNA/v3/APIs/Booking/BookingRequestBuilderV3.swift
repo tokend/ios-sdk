@@ -127,4 +127,24 @@ public class BookingRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
             completion: completion
         )
     }
+    
+    public func buildCancelBookingRequest(
+        businessId: String,
+        bookingId: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+        
+        let path = /self.integrations/self.booking/self.businesses/businessId/self.bookings
+        
+        self.buildRequest(
+            .init(
+                path: path,
+                method: .delete
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
 }
