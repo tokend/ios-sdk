@@ -128,6 +128,10 @@ public class BookingRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         )
     }
     
+    /// Builds request to cancel existing booking
+    /// - Parameters:
+    /// - businessId: The business id.
+    /// - bookingId: The booking id.
     public func buildCancelBookingRequest(
         businessId: String,
         bookingId: String,
@@ -135,7 +139,7 @@ public class BookingRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = /self.integrations/self.booking/self.businesses/businessId/self.bookings
+        let path = /self.integrations/self.booking/self.businesses/businessId/self.bookings/bookingId
         
         self.buildRequest(
             .init(

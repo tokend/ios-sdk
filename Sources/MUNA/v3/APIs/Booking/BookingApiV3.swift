@@ -297,6 +297,12 @@ public class BookingApiV3: JSONAPI.BaseApi {
         return cancelable
     }
     
+    /// Allows to cancel existing booking.
+    /// - Parameters:
+    ///   - businessId: Business id.
+    ///   - bookindId: Booking identifier.
+    ///   - result: Member of `RequestEmptyResult`
+    /// - Returns: `Cancelable`
     @discardableResult
     public func requestCancelBooking(
         businessId: String,
