@@ -151,7 +151,7 @@ public class GeneralApi: BaseApi {
     }
     
     /// Model that will be fetched in `completion` block of `GeneralApi.addIdentity(...)`
-    public enum RequestAddIdentityResult<SpecificAttributes: Decodable> {
+    public enum AddIdentityResult<SpecificAttributes: Decodable> {
         case success(identity: AccountIdentityResponse<SpecificAttributes>)
         case failure(error: Error)
     }
@@ -163,7 +163,7 @@ public class GeneralApi: BaseApi {
     ///   - completion: Block that will be called when the result will be received.
     public func addIdentity<SpecificAttributes: Decodable>(
         withPhoneNumber phoneNumber: String,
-        completion: @escaping ((RequestAddIdentityResult<SpecificAttributes>) -> Void)
+        completion: @escaping ((AddIdentityResult<SpecificAttributes>) -> Void)
     ) {
         
         let body: AddIdentityRequestBody = .init(phoneNumber: phoneNumber)
@@ -197,7 +197,7 @@ public class GeneralApi: BaseApi {
     }
     
     /// Model that will be fetched in `completion` block of `GeneralApi.deleteIdentity(...)`
-    public enum RequestDeleteIdentityResult {
+    public enum DeleteIdentityResult {
         case success
         case failure(ApiErrors)
     }
