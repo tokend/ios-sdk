@@ -207,6 +207,7 @@ public class GeneralApi: BaseApi {
     /// - Parameters:
     ///   - phoneNumber: Identity's accountId
     ///   - completion: Block that will be called when the result will be received.
+    @discardableResult
     public func deleteIdentity(
         for accountId: String,
         sendDate: Date = Date(),
@@ -227,6 +228,8 @@ public class GeneralApi: BaseApi {
                 cancelable.cancelable = self?.network.responseDataEmpty(
                     url: request.url,
                     method: request.method,
+                    headers: request.signedHeaders,
+                    bodyData: nil,
                     completion: { result in
                         switch result {
                         

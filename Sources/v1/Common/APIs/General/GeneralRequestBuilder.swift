@@ -104,11 +104,11 @@ public class GeneralRequestBuilder: BaseApiRequestBuilder {
         completion: @escaping (RequestSigned?) -> Void
     ) {
         let baseUrl = self.apiConfiguration.urlString
-        let path = baseUrl/self.identities/accountId
+        let url = baseUrl/self.identities/accountId
         
         self.buildRequestSigned(
             baseUrl: baseUrl,
-            url: path,
+            url: url,
             method: .delete,
             sendDate: sendDate,
             completion: completion
