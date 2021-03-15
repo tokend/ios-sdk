@@ -93,6 +93,28 @@ public class GeneralRequestBuilder: BaseApiRequestBuilder {
         return request
     }
     
+    public struct DeleteIdentityRequest {
+        public let url: String
+        public let method: RequestMethod
+    }
+    
+    public func buildDeleteIdentityRequest(
+        accountId: String,
+        sendDate: Date,
+        completion: @escaping (RequestSigned?) -> Void
+    ) {
+        let baseUrl = self.apiConfiguration.urlString
+        let url = baseUrl/self.identities/accountId
+        
+        self.buildRequestSigned(
+            baseUrl: baseUrl,
+            url: url,
+            method: .delete,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+    
     /// Builds request to set phone identity.
     /// - Parameters:
     ///   - accountId: Account's identifier.

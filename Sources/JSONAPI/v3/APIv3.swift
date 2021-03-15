@@ -52,6 +52,7 @@ public class APIv3 {
     public private(set) lazy var bookingApi: BookingApiV3 = { return create() }()
     public private(set) lazy var schedulerApi: SchedulerApiV3 = { return create() }()
     public private(set) lazy var vaccineResultsApi: VaccineResultsApiV3 = { return create() }()
+    public private(set) lazy var tutorialsApi: TutorialsApiV3 = { return create() }()
     #endif
     
     // MARK: -
@@ -94,6 +95,7 @@ public class APIv3 {
         MunaBooking.AllResources.registerAllResources()
         MunaScheduler.AllResources.registerAllResources()
         MunaVaccineResults.AllResources.registerAllResources()
+        MunaTutorials.AllResources.registerAllResources()
         #endif
     }
     

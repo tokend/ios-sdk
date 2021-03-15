@@ -151,7 +151,7 @@ public class GeneralApi: BaseApi {
     }
     
     /// Model that will be fetched in `completion` block of `GeneralApi.addIdentity(...)`
-    public enum RequestAddIdentityResult<SpecificAttributes: Decodable> {
+    public enum AddIdentityResult<SpecificAttributes: Decodable> {
         case success(identity: AccountIdentityResponse<SpecificAttributes>)
         case failure(error: Error)
     }
@@ -163,7 +163,7 @@ public class GeneralApi: BaseApi {
     ///   - completion: Block that will be called when the result will be received.
     public func addIdentity<SpecificAttributes: Decodable>(
         withPhoneNumber phoneNumber: String,
-        completion: @escaping ((RequestAddIdentityResult<SpecificAttributes>) -> Void)
+        completion: @escaping ((AddIdentityResult<SpecificAttributes>) -> Void)
     ) {
         
         let body: AddIdentityRequestBody = .init(phoneNumber: phoneNumber)
@@ -194,6 +194,57 @@ public class GeneralApi: BaseApi {
                     completion(.failure(error: errors))
                 }
             })
+    }
+    
+    /// Model that will be fetched in `completion` block of `GeneralApi.deleteIdentity(...)`
+    public enum DeleteIdentityResult {
+        case success
+        case failure(ApiErrors)
+    }
+    
+    /// Method sends request to create new identity using phone number.
+    /// The result of request will be fetched in `completion` block as `GeneralApi.RequestDeleteIdentityResult`
+    /// - Parameters:
+    ///   - phoneNumber: Identity's accountId
+    ///   - completion: Block that will be called when the result will be received.
+    @discardableResult
+    public func deleteIdentity(
+        for accountId: String,
+        sendDate: Date = Date(),
+        completion: @escaping (RequestDeleteIdentityResult) -> Void
+    ) -> Cancelable {
+        
+        let cancelable = self.network.getEmptyCancelable()
+
+        self.requestBuilder.buildDeleteIdentityRequest(
+            accountId: accountId,
+            sendDate: sendDate,
+            completion: { [weak self] (request) in
+                guard let request = request else {
+                    completion(.failure(.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self?.network.responseDataEmpty(
+                    url: request.url,
+                    method: request.method,
+                    headers: request.signedHeaders,
+                    bodyData: nil,
+                    completion: { result in
+                        switch result {
+                        
+                        case .success:
+                            completion(.success)
+                            
+                        case .failure(let errors):
+                            completion(.failure(errors))
+                        }
+                    }
+                )
+            }
+        )
+        
+        return cancelable
     }
     
     /// Model that will be fetched in `completion` block of `GeneralApi.requestSetPhone(...)`
