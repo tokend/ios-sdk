@@ -196,6 +196,41 @@ public class GeneralApi: BaseApi {
             })
     }
     
+    /// Model that will be fetched in `completion` block of `GeneralApi.deleteIdentity(...)`
+    public enum RequestDeleteIdentityResult {
+        case success
+        case failure(error: Error)
+    }
+    
+    /// Method sends request to create new identity using phone number.
+    /// The result of request will be fetched in `completion` block as `GeneralApi.RequestDeleteIdentityResult`
+    /// - Parameters:
+    ///   - phoneNumber: Identity's accountId
+    ///   - completion: Block that will be called when the result will be received.
+    public func deleteIdentity(
+        for accountId: String,
+        completion: @escaping (RequestDeleteIdentityResult) -> Void
+    ) {
+        
+        let request = requestBuilder.buildDeleteIdentityRequest(accountId: accountId)
+        
+        self.network.responseDataEmpty(
+            url: request.url,
+            method: request.method,
+            completion: { (result) in
+                
+                switch result {
+                
+                case .success:
+                    completion(.success)
+                    
+                case .failure(errors: let errors):
+                    completion(.failure(error: errors))
+                }
+            }
+        )
+    }
+    
     /// Model that will be fetched in `completion` block of `GeneralApi.requestSetPhone(...)`
     public enum SetPhoneRequestResult {
         /// Case of failed response with `ApiErrors` model
