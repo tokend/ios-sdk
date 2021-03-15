@@ -199,7 +199,7 @@ public class GeneralApi: BaseApi {
     /// Model that will be fetched in `completion` block of `GeneralApi.deleteIdentity(...)`
     public enum RequestDeleteIdentityResult {
         case success
-        case failure(error: Error)
+        case failure(ApiErrors)
     }
     
     /// Method sends request to create new identity using phone number.
@@ -209,26 +209,39 @@ public class GeneralApi: BaseApi {
     ///   - completion: Block that will be called when the result will be received.
     public func deleteIdentity(
         for accountId: String,
+        sendDate: Date = Date(),
         completion: @escaping (RequestDeleteIdentityResult) -> Void
-    ) {
+    ) -> Cancelable {
         
-        let request = requestBuilder.buildDeleteIdentityRequest(accountId: accountId)
-        
-        self.network.responseDataEmpty(
-            url: request.url,
-            method: request.method,
-            completion: { (result) in
-                
-                switch result {
-                
-                case .success:
-                    completion(.success)
-                    
-                case .failure(errors: let errors):
-                    completion(.failure(error: errors))
+        let cancelable = self.network.getEmptyCancelable()
+
+        self.requestBuilder.buildDeleteIdentityRequest(
+            accountId: accountId,
+            sendDate: sendDate,
+            completion: { [weak self] (request) in
+                guard let request = request else {
+                    completion(.failure(.failedToSignRequest))
+                    return
                 }
+                
+                cancelable.cancelable = self?.network.responseDataEmpty(
+                    url: request.url,
+                    method: request.method,
+                    completion: { result in
+                        switch result {
+                        
+                        case .success:
+                            completion(.success)
+                            
+                        case .failure(let errors):
+                            completion(.failure(errors))
+                        }
+                    }
+                )
             }
         )
+        
+        return cancelable
     }
     
     /// Model that will be fetched in `completion` block of `GeneralApi.requestSetPhone(...)`

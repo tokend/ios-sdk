@@ -99,17 +99,20 @@ public class GeneralRequestBuilder: BaseApiRequestBuilder {
     }
     
     public func buildDeleteIdentityRequest(
-        accountId: String
-    ) -> DeleteIdentityRequest {
+        accountId: String,
+        sendDate: Date,
+        completion: @escaping (RequestSigned?) -> Void
+    ) {
         let baseUrl = self.apiConfiguration.urlString
         let path = baseUrl/self.identities/accountId
         
-        let request = DeleteIdentityRequest(
+        self.buildRequestSigned(
+            baseUrl: baseUrl,
             url: path,
-            method: .delete
+            method: .delete,
+            sendDate: sendDate,
+            completion: completion
         )
-        
-        return request
     }
     
     /// Builds request to set phone identity.
