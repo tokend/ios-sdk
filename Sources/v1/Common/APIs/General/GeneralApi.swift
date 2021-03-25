@@ -211,7 +211,7 @@ public class GeneralApi: BaseApi {
     public func deleteIdentity(
         for accountId: String,
         sendDate: Date = Date(),
-        completion: @escaping (RequestDeleteIdentityResult) -> Void
+        completion: @escaping (DeleteIdentityResult) -> Void
     ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
