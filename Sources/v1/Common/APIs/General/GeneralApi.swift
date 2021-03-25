@@ -255,6 +255,9 @@ public class GeneralApi: BaseApi {
         /// Case of failed tfa
         case tfaFailed
         
+        /// Case of cancelled tfa
+        case tfaCancelled
+        
         /// Case of successful response
         case succeeded
     }
@@ -302,7 +305,7 @@ public class GeneralApi: BaseApi {
                                 )
                                 
                             case .canceled:
-                                completion(.tfaFailed)
+                                completion(.tfaCancelled)
                             }
                     },
                         onNoTFA: {
@@ -322,6 +325,9 @@ public class GeneralApi: BaseApi {
         
         /// Case of failed tfa
         case tfaFailed
+        
+        /// Case of cancelled tfa
+        case tfaCancelled
         
         /// Case of successful response
         case succeeded
@@ -371,7 +377,7 @@ public class GeneralApi: BaseApi {
                                 )
                                 
                             case .canceled:
-                                completion(.tfaFailed)
+                                completion(.tfaCancelled)
                             }
                     },
                         onNoTFA: {

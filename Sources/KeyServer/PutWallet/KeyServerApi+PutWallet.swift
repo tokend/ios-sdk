@@ -5,6 +5,7 @@ public extension KeyServerApi {
     enum PutWalletError: Swift.Error, LocalizedError {
 
         case tfaFailed
+        case tfaCancelled
         case unverifiedWallet
 
         // MARK: - Swift.Error
@@ -14,6 +15,9 @@ public extension KeyServerApi {
 
             case .tfaFailed:
                 return "TFA failed"
+                
+            case .tfaCancelled:
+                return "TFA cancelled"
 
             case .unverifiedWallet:
                 return "Unverified wallet"
@@ -145,8 +149,11 @@ private extension KeyServerApi {
                         completion: completion
                     )
 
-                case .failure, .canceled:
+                case .failure:
                     completion(.failure(PutWalletError.tfaFailed))
+                    
+                case .canceled:
+                    completion(.failure(PutWalletError.tfaCancelled))
                 }
             },
             onNoTFA: {

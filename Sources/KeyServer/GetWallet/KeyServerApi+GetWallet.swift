@@ -6,6 +6,7 @@ public extension KeyServerApi {
 
         case walletShouldBeVerified(walletId: String)
         case tfaFailed
+        case tfaCancelled
         case wrongPassword
 
         // MARK: - Swift.Error
@@ -18,6 +19,9 @@ public extension KeyServerApi {
 
             case .tfaFailed:
                 return "TFA failed"
+                
+            case .tfaCancelled:
+                return "TFA canceled"
 
             case .wrongPassword:
                 return "Wrong password"
@@ -134,8 +138,11 @@ private extension KeyServerApi {
                             completion: completion
                         )
 
-                    case .failure, .canceled:
+                    case .failure:
                         completion(.failure(GetWalletError.tfaFailed))
+                        
+                    case .canceled:
+                        completion(.failure(GetWalletError.tfaCancelled))
                     }
                 },
                 onNoTFA: {

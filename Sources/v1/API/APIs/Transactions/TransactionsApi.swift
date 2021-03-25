@@ -93,6 +93,7 @@ public class TransactionsApi: BaseApi {
         public enum PaymentError: Swift.Error, LocalizedError {
             case other(ApiErrors)
             case tfaFailed
+            case tfaCancelled
             
             // MARK: - Swift.Error
             
@@ -102,6 +103,8 @@ public class TransactionsApi: BaseApi {
                     return errors.localizedDescription
                 case .tfaFailed:
                     return "TFA failed"
+                case .tfaCancelled:
+                    return "TFA cancelled"
                 }
             }
         }
@@ -156,6 +159,7 @@ public class TransactionsApi: BaseApi {
         public enum PaymentError: Swift.Error, LocalizedError {
             case other(ApiErrors)
             case tfaFailed
+            case tfaCancelled
             
             // MARK: - Swift.Error
             
@@ -165,6 +169,8 @@ public class TransactionsApi: BaseApi {
                     return errors.localizedDescription
                 case .tfaFailed:
                     return "TFA failed"
+                case .tfaCancelled:
+                    return "TFA cancelled"
                 }
             }
         }
@@ -248,8 +254,11 @@ public class TransactionsApi: BaseApi {
                                     completion: completion
                                     )
                                 
-                            case .failure, .canceled:
+                            case .failure:
                                 completion(.failure(.tfaFailed))
+                                
+                            case .canceled:
+                                completion(.failure(.tfaCancelled))
                             }
                     },
                         onNoTFA: {
@@ -301,8 +310,11 @@ public class TransactionsApi: BaseApi {
                                     completion: completion
                                 )
                                 
-                            case .failure, .canceled:
+                            case .failure:
                                 completion(.failure(.tfaFailed))
+                                
+                            case .canceled:
+                                completion(.failure(.tfaCancelled))
                             }
                     },
                         onNoTFA: {

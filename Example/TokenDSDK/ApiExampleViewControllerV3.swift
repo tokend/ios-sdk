@@ -216,6 +216,9 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
                         
                     case .tfaFailed:
                         print("TFA Failed")
+                        
+                    case .tfaCancelled:
+                        print("TFA Cancelled")
                     }
             }
         )
@@ -240,6 +243,9 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
                         
                     case .tfaFailed:
                         print("TFA Failed")
+                        
+                    case .tfaCancelled:
+                        print("TFA Cancelled")
                     }
             }
         )

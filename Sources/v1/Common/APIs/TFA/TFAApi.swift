@@ -105,6 +105,7 @@ public class TFAApi {
             case factorAlreadyExists
             case other(ApiErrors)
             case tfaFailed
+            case tfaCancelled
             
             // MARK: - Swift.Error
             
@@ -116,6 +117,8 @@ public class TFAApi {
                     return errors.localizedDescription
                 case .tfaFailed:
                     return "TFA failed"
+                case .tfaCancelled:
+                    return "TFA cancelled"
                 }
             }
         }
@@ -175,6 +178,7 @@ public class TFAApi {
         public enum UpdateError: Swift.Error, LocalizedError {
             case other(ApiErrors)
             case tfaFailed
+            case tfaCancelled
             
             // MARK: - Swift.Error
             
@@ -184,6 +188,8 @@ public class TFAApi {
                     return errors.localizedDescription
                 case .tfaFailed:
                     return "TFA failed"
+                case .tfaCancelled:
+                    return "TFA cancelled"
                 }
             }
         }
@@ -246,6 +252,7 @@ public class TFAApi {
         /// Errors that are might be fetched while deleting factor
         public enum DeleteError: Swift.Error, LocalizedError {
             case tfaFailed
+            case tfaCancelled
             case other(ApiErrors)
             
             // MARK: - Swift.Error
@@ -256,6 +263,8 @@ public class TFAApi {
                     return errors.localizedDescription
                 case .tfaFailed:
                     return "TFA failed"
+                case .tfaCancelled:
+                    return "TFA cancelled"
                 }
             }
         }
@@ -345,8 +354,11 @@ public class TFAApi {
                                     completion: completion
                                     )
                                 
-                            case .failure, .canceled:
+                            case .failure:
                                 completion(.failure(.tfaFailed))
+                                
+                            case .canceled:
+                                completion(.failure(.tfaCancelled))
                             }
                     },
                         onNoTFA: {
@@ -397,8 +409,11 @@ public class TFAApi {
                                     completion: completion
                                     )
                                 
-                            case .failure, .canceled:
+                            case .failure:
                                 completion(.failure(.tfaFailed))
+                                
+                            case .canceled:
+                                completion(.failure(.tfaCancelled))
                             }
                     },
                         onNoTFA: {
@@ -447,8 +462,11 @@ public class TFAApi {
                                     completion: completion
                                     )
                                 
-                            case .failure, .canceled:
+                            case .failure:
                                 completion(.failure(.tfaFailed))
+                                
+                            case .canceled:
+                                completion(.failure(.tfaCancelled))
                             }
                     },
                         onNoTFA: {
