@@ -41,6 +41,8 @@ public class LoadAllResourcesController <ResourceType: Resource> {
         completion: @escaping  LoadCompletionBlock
         ) {
         
+        self.error = nil
+        self.data = []
         self.requestPagination.resetToFirstPage()
         
         loadPage(self.requestPagination, { [weak self] (result) in
