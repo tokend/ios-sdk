@@ -202,6 +202,7 @@ public class UpdatePasswordRequestBuilder {
         
         let requestSigner = JSONAPI.RequestSignerBlockCaller(
             signingKey: signingKeyPair,
+            accountId: walletData.accountId,
             onSignRequest: onSignRequest
         )
         
@@ -378,6 +379,7 @@ public class UpdatePasswordRequestBuilder {
         
         let requestSigner = JSONAPI.RequestSignerBlockCaller(
             signingKey: recoveryKeyPair,
+            accountId: originalAccountId,
             onSignRequest: onSignRequest
         )
         

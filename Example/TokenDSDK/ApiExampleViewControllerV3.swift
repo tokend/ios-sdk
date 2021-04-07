@@ -73,7 +73,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             configuration: self.apiConfig,
             callbacks: self.apiCallbacks,
             network: self.network,
-            requestSigner: JSONAPI.RequestSigner(keyDataProvider: self)
+            requestSigner: JSONAPI.RequestSigner(keyDataProvider: self, accountIdProvider: self)
         )
         return api
     }()
