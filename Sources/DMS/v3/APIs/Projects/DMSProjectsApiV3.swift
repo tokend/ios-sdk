@@ -27,7 +27,7 @@ public extension DMS.ProjectsApiV3 {
     
     @discardableResult
     func getListOfProjects(
-        filters: ProjectsRequestFiltersV3,
+        filters: DMS.ProjectsRequestFiltersV3,
         pagination: RequestPagination,
         completion: @escaping ((_ result: RequestCollectionResult<DMS.ProjectsResource>) -> Void)
     ) -> Cancelable {
@@ -36,6 +36,7 @@ public extension DMS.ProjectsApiV3 {
         
         self.requestBuilder.buildGetListOfProjects(
             filters: filters,
+            pagination: pagination,
             completion: { [weak self] (request) in
                 
                 guard let request = request else {

@@ -1,6 +1,7 @@
 import Foundation
 
 public extension DMS {
+    
     class ProjectsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         
         // MARK: - Private properties
@@ -14,7 +15,8 @@ public extension DMS {
 public extension DMS.ProjectsRequestBuilderV3 {
     
     func buildGetListOfProjects(
-        filters: ProjectsRequestFiltersV3,
+        filters: DMS.ProjectsRequestFiltersV3,
+        pagination: RequestPagination,
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
@@ -23,10 +25,11 @@ public extension DMS.ProjectsRequestBuilderV3 {
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         
         self.buildRequest(
-            .simpleQuery(
+            .simpleQueryPagination(
                 path: path,
                 method: .get,
-                queryParameters: queryParameters
+                queryParameters: queryParameters,
+                pagination: pagination
             ),
             shouldSign: true,
             sendDate: sendDate,
