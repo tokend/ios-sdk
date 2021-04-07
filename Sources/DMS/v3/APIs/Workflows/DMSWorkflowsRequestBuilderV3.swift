@@ -6,6 +6,8 @@ public extension DMS {
         
         // MARK: - Private properties
         
+        private var integrations: String { "integrations" }
+        private var dms: String { "dms" }
         private var workflows: String { "workflows" }
         private var supplementaryFiles: String { "supplementary-files" }
         private var steps: String { "steps" }
@@ -26,7 +28,7 @@ public extension DMS.WorkflowsRequestBuilderV3 {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = self.workflows/workflowId/self.supplementaryFiles
+        let path = self.integrations/self.dms/self.workflows/workflowId/self.supplementaryFiles
         
         self.buildRequest(
             .simplePagination(
@@ -47,7 +49,7 @@ public extension DMS.WorkflowsRequestBuilderV3 {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = self.workflows/workflowId/self.supplementaryFiles
+        let path = self.integrations/self.dms/self.workflows/workflowId/self.supplementaryFiles
         
         self.buildRequest(
             .simpleBody(
@@ -68,7 +70,7 @@ public extension DMS.WorkflowsRequestBuilderV3 {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = self.workflows/workflowId/self.supplementaryFiles/supplementaryFileId
+        let path = self.integrations/self.dms/self.workflows/workflowId/self.supplementaryFiles/supplementaryFileId
         
         self.buildRequest(
             .simple(
@@ -88,7 +90,7 @@ public extension DMS.WorkflowsRequestBuilderV3 {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = self.workflows/self.steps/stepId
+        let path = self.integrations/self.dms/self.workflows/self.steps/stepId
         
         self.buildRequest(
             .simpleBody(
@@ -109,7 +111,7 @@ public extension DMS.WorkflowsRequestBuilderV3 {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = self.workflows/self.steps/stepId/self.draft
+        let path = self.integrations/self.dms/self.workflows/self.steps/stepId/self.draft
         
         self.buildRequest(
             .simpleBody(
@@ -130,7 +132,7 @@ public extension DMS.WorkflowsRequestBuilderV3 {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = self.workflows/self.steps/self.completed
+        let path = self.integrations/self.dms/self.workflows/self.steps/self.completed
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         
         self.buildRequest(
@@ -153,7 +155,7 @@ public extension DMS.WorkflowsRequestBuilderV3 {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = self.workflows/self.steps/self.current
+        let path = self.integrations/self.dms/self.workflows/self.steps/self.current
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         
         self.buildRequest(

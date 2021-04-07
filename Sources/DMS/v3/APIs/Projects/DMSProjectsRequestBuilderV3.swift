@@ -6,6 +6,8 @@ public extension DMS {
         
         // MARK: - Private properties
         
+        private var integrations: String { "integrations" }
+        private var dms: String { "dms" }
         private var projects: String { "projects" }
     }
 }
@@ -21,7 +23,7 @@ public extension DMS.ProjectsRequestBuilderV3 {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = self.projects
+        let path = self.integrations/self.dms/self.projects
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         
         self.buildRequest(
