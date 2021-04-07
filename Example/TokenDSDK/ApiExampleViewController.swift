@@ -6,7 +6,7 @@ import DLJSONAPI
 import SnapKit
 
 // swiftlint:disable file_length type_body_length force_try line_length
-class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProtocol {
+class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProtocol, RequestSignAccountIdProviderProtocol {
     
     var privateKey: ECDSA.KeyData? = try? ECDSA.KeyData(
         seed: try! Base32Check.decodeCheck(
@@ -27,6 +27,10 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         
         let publicKey = Base32Check.encode(version: .accountIdEd25519, data: publicKeyData)
         completion(publicKey)
+    }
+    
+    func getAccountId(completion: @escaping (String?) -> Void) {
+        completion(nil)
     }
     
     lazy var apiConfig: ApiConfiguration = {
@@ -77,7 +81,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     lazy var verifyApi: TokenDSDK.TFAVerifyApi = {
         let api = TokenDSDK.TFAVerifyApi(
             apiConfiguration: self.apiConfig,
-            requestSigner: RequestSigner(keyDataProvider: self),
+            requestSigner: RequestSigner(keyDataProvider: self, accountIdProvider: self),
             network: self.network
         )
         return api
@@ -88,7 +92,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
             configuration: self.apiConfig,
             callbacks: self.apiCallbacks,
             network: self.network,
-            requestSigner: RequestSigner(keyDataProvider: self)
+            requestSigner: RequestSigner(keyDataProvider: self, accountIdProvider: self)
         )
         return api
     }()
@@ -111,7 +115,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                 apiConfiguration: self.apiConfig,
                 callbacks: self.apiCallbacks,
                 network: self.tokenDApi.network,
-                requestSigner: RequestSigner(keyDataProvider: self),
+                requestSigner: RequestSigner(keyDataProvider: self, accountIdProvider: self),
                 verifyApi: self.verifyApi
             )
         )
@@ -124,7 +128,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                 apiConfiguration: self.apiConfig,
                 callbacks: self.apiCallbacks,
                 network: self.tokenDApi.network,
-                requestSigner: RequestSigner(keyDataProvider: self),
+                requestSigner: RequestSigner(keyDataProvider: self, accountIdProvider: self),
                 verifyApi: self.verifyApi
             )
         )

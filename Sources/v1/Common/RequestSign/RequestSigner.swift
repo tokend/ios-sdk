@@ -32,6 +32,7 @@ public struct RequestSignParametersModel {
 
 public typealias SignRequestBlock = (
     _ signingKey: ECDSA.KeyData,
+    _ accountId: String,
     _ request: RequestSignParametersModel,
     _ sendDate: Date,
     _ completion: @escaping (RequestHeaders?) -> Void
@@ -62,11 +63,17 @@ open class RequestSigner: RequestSignerProtocol {
     // MARK: - Private properties
     
     private let keyDataProvider: RequestSignKeyDataProviderProtocol
+    private let accountIdProvider: RequestSignAccountIdProviderProtocol
     
     // MARK: -
     
-    public init(keyDataProvider: RequestSignKeyDataProviderProtocol) {
+    public init(
+        keyDataProvider: RequestSignKeyDataProviderProtocol,
+        accountIdProvider: RequestSignAccountIdProviderProtocol
+    ) {
+        
         self.keyDataProvider = keyDataProvider
+        self.accountIdProvider = accountIdProvider
         
         let locale = Locale(identifier: "en_US_POSIX")
         self.dateFormatter.locale = locale
@@ -136,6 +143,8 @@ open class RequestSigner: RequestSignerProtocol {
         completion: @escaping (RequestHeaders?) -> Void
         ) {
         
+        var headers: RequestHeaders = [:]
+        
         var signatureParts: [String] = []
         
         for subject in subjects {
@@ -150,7 +159,7 @@ open class RequestSigner: RequestSignerProtocol {
         guard
             let signatureData = signatureBase.data(using: .utf8)
             else {
-                completion(RequestHeaders())
+                completion(headers)
                 return
         }
         
@@ -158,45 +167,47 @@ open class RequestSigner: RequestSignerProtocol {
         
         self.sign(hashedData: hashedData, completion: { [weak self] (signature) in
             guard let signatureBaseData = signature else {
-                completion(RequestHeaders())
+                completion(headers)
                 return
             }
             
             let signatureBase64 = signatureBaseData.base64EncodedString()
             
-            self?.keyDataProvider.getPublicKeyString(completion: { (publicKey) in
+            self?.keyDataProvider.getPublicKeyString(completion: { [weak self] (publicKey) in
                 guard let publicKey = publicKey else {
-                    completion(RequestHeaders())
+                    completion(headers)
                     return
                 }
                 
-                let keyIdPart = "keyId=\"\(publicKey)\""
-                let algorithmPart = "algorithm=\"ed25519-sha256\""
-                let signaturePart = "signature=\"\(signatureBase64)\""
-                
-                let subjectKeys: [String] = subjects.map({ subject -> String in
-                    return subject.key
-                })
-                let headersPartValue: String = subjectKeys.joined(separator: " ").lowercased()
-                let headersPart = "headers=\"\(headersPartValue)\""
-                
-                let authString: String = [
-                    keyIdPart,
-                    algorithmPart,
-                    signaturePart,
-                    headersPart
+                self?.accountIdProvider.getAccountId(completion: { (accountId) in
+                    
+                    let keyIdPart = "keyId=\"\(publicKey)\""
+                    let algorithmPart = "algorithm=\"ed25519-sha256\""
+                    let signaturePart = "signature=\"\(signatureBase64)\""
+                    
+                    let subjectKeys: [String] = subjects.map({ subject -> String in
+                        return subject.key
+                    })
+                    let headersPartValue: String = subjectKeys.joined(separator: " ").lowercased()
+                    let headersPart = "headers=\"\(headersPartValue)\""
+                    
+                    let authString: String = [
+                        keyIdPart,
+                        algorithmPart,
+                        signaturePart,
+                        headersPart
                     ].joined(separator: ",")
-                
-                var headers = RequestHeaders()
-                
-                for subject in subjects where subject.shouldIncludeInHeaders {
-                    headers[subject.key] = subject.value
-                }
-                
-                headers["Authorization"] = authString
-                
-                completion(headers)
+                    
+                    for subject in subjects where subject.shouldIncludeInHeaders {
+                        headers[subject.key] = subject.value
+                    }
+                    
+                    headers["Authorization"] = authString
+                    headers["Account-Id"] = accountId
+                })
             })
+            
+            completion(headers)
         })
     }
     
@@ -254,23 +265,30 @@ open class RequestSignerBlockCaller: RequestSignerProtocol {
     // MARK: - Public properties
     
     public let signingKey: ECDSA.KeyData
+    public let originalAccountId: String
     public let onSignRequest: SignRequestBlock
     
     public init(
         signingKey: ECDSA.KeyData,
+        originalAccountId: String,
         onSignRequest: @escaping SignRequestBlock
         ) {
         
         self.signingKey = signingKey
+        self.originalAccountId = originalAccountId
         self.onSignRequest = onSignRequest
     }
     
     // MARK: - Public
     
     public static func getUnsafeSignRequestBlock() -> SignRequestBlock {
-        return { signingKey, request, sendDate, completion in
+        return { signingKey, originalAccountId, request, sendDate, completion in
             let keyDataProvider = UnsafeRequestSignKeyDataProvider(keyPair: signingKey)
-            var requestSigner: RequestSigner? = RequestSigner(keyDataProvider: keyDataProvider)
+            let accountIdProvider = UnsafeRequestSignAccountIdProvider(accountId: originalAccountId)
+            var requestSigner: RequestSigner? = RequestSigner(
+                keyDataProvider: keyDataProvider,
+                accountIdProvider: accountIdProvider
+            )
             
             requestSigner?.sign(
                 request: request,
@@ -290,6 +308,6 @@ open class RequestSignerBlockCaller: RequestSignerProtocol {
         completion: @escaping (RequestHeaders?) -> Void
         ) {
         
-        self.onSignRequest(self.signingKey, request, sendDate, completion)
+        self.onSignRequest(self.signingKey, self.originalAccountId, request, sendDate, completion)
     }
 }
