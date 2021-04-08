@@ -58,6 +58,7 @@ public class APIv3 {
     #if TOKENDSDK_DMSAPI
     public private(set) lazy var dmsProjectsApi: DMS.ProjectsApiV3 = { return create() }()
     public private(set) lazy var dmsWorkflowsApi: DMS.WorkflowsApiV3 = { return create() }()
+    public private(set) lazy var dmsUsersApi: DMS.UsersApiV3 = { return create() }()
     #endif
     
     // MARK: -
