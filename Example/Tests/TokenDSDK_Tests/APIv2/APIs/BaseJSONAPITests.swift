@@ -30,7 +30,10 @@ class BaseJSONAPITests: XCTestCase {
         let requestSignerV3 = JSONAPI.RequestSigner(
             keyDataProvider: UnsafeRequestSignKeyDataProvider(
                 keyPair: keyPair
-        ))
+            ),
+            accountIdProvider: UnsafeRequestSignAccountIdProvider(
+                accountId: "accountId"
+            ))
         
         return JSONAPI.BaseApiStack(
             apiConfiguration: apiConfiguration,

@@ -14,7 +14,10 @@ class BaseJSONAPIRequestBuilderTests: XCTestCase {
         let requestSigner = JSONAPI.RequestSigner(
             keyDataProvider: UnsafeRequestSignKeyDataProvider(
                 keyPair: try! ECDSA.KeyData()
-        ))
+            ),
+            accountIdProvider: UnsafeRequestSignAccountIdProvider(
+                accountId: "accountId"
+            ))
         
         let network = JSONAPI.AlamofireNetwork(
             resourcePool: ResourcePool(queue: DispatchQueue(label: "test")),
