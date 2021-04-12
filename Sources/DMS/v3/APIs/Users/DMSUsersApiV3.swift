@@ -28,6 +28,7 @@ public extension DMS.UsersApiV3 {
     @discardableResult
     func getUser(
         for accountId: String,
+        include: [String]?,
         completion: @escaping ((_ result: RequestSingleResult<DMS.UserResource>) -> Void)
     ) -> Cancelable {
         
@@ -35,6 +36,7 @@ public extension DMS.UsersApiV3 {
         
         requestBuilder.buildGetUser(
             for: accountId,
+            include: include,
             completion: { [weak self] (request) in
                 
                 guard let request = request else {

@@ -16,6 +16,7 @@ public extension DMS.UsersRequestBuilderV3 {
     
     func buildGetUser(
         for accountId: String,
+        include: [String]?,
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
@@ -23,9 +24,11 @@ public extension DMS.UsersRequestBuilderV3 {
         let path = self.users/accountId
         
         self.buildRequest(
-            .simple(
+            .simpleQueryInclude(
                 path: path,
-                method: .get
+                method: .get,
+                queryParameters: [:],
+                include: include
             ),
             shouldSign: true,
             sendDate: sendDate,
