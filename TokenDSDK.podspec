@@ -52,7 +52,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'JSONAPI' do |ss|
     ss.source_files = jsonapi_v3_source_files
-    ss.dependency 'DLJSONAPI', '>= 1.0.7'
+    ss.dependency 'DLJSONAPI', '>= 1.0.8'
     ss.xcconfig = { 'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => '$(inherited)' }
   end
 
