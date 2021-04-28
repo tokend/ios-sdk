@@ -33,15 +33,13 @@ public extension KeyServerApi {
     /// The result of request will be fetched in `completion` block as `KeyServerApi.RequestWalletResult`
     /// - Parameters:
     ///   - walletId: Wallet id.
-    ///   - walletKDF: Wallet KDF params.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `KeyServerApi.RequestWalletResult`
     /// - Returns: `Cancelable`
     @discardableResult
     func getWallet(
         walletId: String,
-        walletKDF: WalletKDFParams,
-        completion: @escaping (_ result: Result<WalletDataModel, Swift.Error>) -> Void
+        completion: @escaping (_ result: Result<WalletDataResponse, Swift.Error>) -> Void
         ) -> Cancelable {
 
         let request = self.requestBuilder.buildGetWalletRequest(walletId: walletId)
@@ -49,7 +47,6 @@ public extension KeyServerApi {
         return self.performGetWalletRequest(
             request,
             walletId: walletId,
-            walletKDF: walletKDF,
             initiateTFA: true,
             completion: completion
         )
@@ -64,7 +61,6 @@ private extension KeyServerApi {
     /// The result of request will be fetched in `completion` block as `KeyServerApi.RequestWalletResult`
     /// - Parameters:
     ///   - walletId: Wallet id.
-    ///   - walletKDF: Wallet KDF params.
     ///   - request: Wallet request model.
     ///   - initiateTFA: Flag to initiate TFA in case of TFA required error.
     ///   - completion: Block that will be called when the result will be received.
@@ -73,9 +69,8 @@ private extension KeyServerApi {
     func performGetWalletRequest(
         _ request: GetWalletRequest,
         walletId: String,
-        walletKDF: WalletKDFParams,
         initiateTFA: Bool,
-        completion: @escaping (_ result: Result<WalletDataModel, Swift.Error>) -> Void
+        completion: @escaping (_ result: Result<WalletDataResponse, Swift.Error>) -> Void
         ) -> Cancelable {
 
         var cancellable = self.network.getEmptyCancelable()
@@ -88,13 +83,11 @@ private extension KeyServerApi {
                 switch result {
 
                 case .success(let response):
-                    let walletData = WalletDataModel.fromResponse(response.data, walletKDF: walletKDF)
-                    completion(.success(walletData))
+                    completion(.success(response.data))
 
                 case .failure(let errors):
                     cancellable.cancelable = self?.onGetWalletFailed(
                         walletId: walletId,
-                        walletKDF: walletKDF,
                         errors: errors,
                         request: request,
                         initiateTFA: initiateTFA,
@@ -108,11 +101,10 @@ private extension KeyServerApi {
 
     func onGetWalletFailed(
         walletId: String,
-        walletKDF: WalletKDFParams,
         errors: ApiErrors,
         request: GetWalletRequest,
         initiateTFA: Bool,
-        completion: @escaping (_ result: Result<WalletDataModel, Swift.Error>) -> Void
+        completion: @escaping (_ result: Result<WalletDataResponse, Swift.Error>) -> Void
         ) -> Cancelable {
 
         let cancellable = self.network.getEmptyCancelable()
@@ -133,7 +125,6 @@ private extension KeyServerApi {
                         cancellable.cancelable = self?.performGetWalletRequest(
                             request,
                             walletId: walletId,
-                            walletKDF: walletKDF,
                             initiateTFA: false,
                             completion: completion
                         )

@@ -324,13 +324,13 @@ public extension KeyServerApi {
 
         getWallet(
             walletId: walletId,
-            walletKDF: walletKDF,
             completion: { (result) in
 
                 switch result {
 
                 case .success(let data):
-                    completion(.success(walletData: data))
+                    let walletData = WalletDataModel.fromResponse(data, walletKDF: walletKDF)
+                    completion(.success(walletData: walletData))
 
                 case .failure(let error):
                     completion(.failure(.swiftError(error)))
