@@ -29,6 +29,8 @@ Pod::Spec.new do |s|
   jsonapi_contopass_v3_source_files = 'Sources/Contopass/v3/**/*.swift'
 
   jsonapi_contofa_v3_source_files = 'Sources/ContoFA/v3/**/*.swift'
+  
+  jsonapi_dms_v3_source_files = 'Sources/DMS/v3/**/*.swift'
 
   jsonapi_v3_alamofire_files = 'Sources/Alamofire/Common/**/*.swift',
                                'Sources/Alamofire/JSONAPI/**/*.swift'
@@ -50,7 +52,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'JSONAPI' do |ss|
     ss.source_files = jsonapi_v3_source_files
-    ss.dependency 'DLJSONAPI', '>= 1.0.7'
+    ss.dependency 'DLJSONAPI', '>= 1.0.9'
     ss.xcconfig = { 'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => '$(inherited)' }
   end
 
@@ -69,6 +71,12 @@ Pod::Spec.new do |s|
   s.subspec 'ContoFA' do |ss|
     ss.xcconfig = { 'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'TOKENDSDK_CONTOFAAPI' }
     ss.source_files = jsonapi_contofa_v3_source_files
+    ss.dependency 'TokenDSDK/JSONAPI'
+  end
+  
+  s.subspec 'DMS' do |ss|
+    ss.xcconfig = { 'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'TOKENDSDK_DMSAPI' }
+    ss.source_files = jsonapi_dms_v3_source_files
     ss.dependency 'TokenDSDK/JSONAPI'
   end
 

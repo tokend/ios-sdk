@@ -41,6 +41,7 @@ public struct RequestSignParametersModelJSONAPI {
 
 public typealias SignRequestBlockJSONAPI = (
     _ signingKey: ECDSA.KeyData,
+    _ accountId: String,
     _ request: JSONAPI.RequestSignParametersModel,
     _ completion: @escaping (RequestHeaders?) -> Void
     ) -> Void
@@ -76,11 +77,17 @@ open class RequestSignerJSONAPI: JSONAPI.RequestSignerProtocol {
     // MARK: - Private properties
     
     private let keyDataProvider: RequestSignKeyDataProviderProtocol
+    private let accountIdProvider: RequestSignAccountIdProviderProtocol
     
     // MARK: -
     
-    public init(keyDataProvider: RequestSignKeyDataProviderProtocol) {
+    public init(
+        keyDataProvider: RequestSignKeyDataProviderProtocol,
+        accountIdProvider: RequestSignAccountIdProviderProtocol
+    ) {
+        
         self.keyDataProvider = keyDataProvider
+        self.accountIdProvider = accountIdProvider
         
         let locale = Locale(identifier: "en_US_POSIX")
         self.dateFormatter.locale = locale
@@ -179,32 +186,37 @@ open class RequestSignerJSONAPI: JSONAPI.RequestSignerProtocol {
                     return
                 }
                 
-                let keyIdPart = "keyId=\"\(publicKey)\""
-                let algorithmPart = "algorithm=\"ed25519-sha256\""
-                let signaturePart = "signature=\"\(signatureBase64)\""
-                
-                let subjectKeys: [String] = subjects.map({ subject -> String in
-                    return subject.key
-                })
-                let headersPartValue: String = subjectKeys.joined(separator: " ").lowercased()
-                let headersPart = "headers=\"\(headersPartValue)\""
-                
-                let authString: String = [
-                    keyIdPart,
-                    algorithmPart,
-                    signaturePart,
-                    headersPart
+                self?.accountIdProvider.getAccountId(completion: { (accountId) in
+                    
+                    let keyIdPart = "keyId=\"\(publicKey)\""
+                    let algorithmPart = "algorithm=\"ed25519-sha256\""
+                    let signaturePart = "signature=\"\(signatureBase64)\""
+                    
+                    let subjectKeys: [String] = subjects.map({ subject -> String in
+                        return subject.key
+                    })
+                    let headersPartValue: String = subjectKeys.joined(separator: " ").lowercased()
+                    let headersPart = "headers=\"\(headersPartValue)\""
+                    
+                    let authString: String = [
+                        keyIdPart,
+                        algorithmPart,
+                        signaturePart,
+                        headersPart
                     ].joined(separator: ",")
-                
-                var headers = RequestHeaders()
-                
-                for subject in subjects where subject.shouldIncludeInHeaders {
-                    headers[subject.key] = subject.value
-                }
-                
-                headers["Authorization"] = authString
-                
-                completion(headers)
+                    
+                    var headers = RequestHeaders()
+                    
+                    for subject in subjects where subject.shouldIncludeInHeaders {
+                        headers[subject.key] = subject.value
+                    }
+                    
+                    headers["Authorization"] = authString
+                    headers["Account-Id"] = accountId
+                    
+                    completion(headers)
+                    
+                })
             })
         })
     }
@@ -262,23 +274,27 @@ open class RequestSignerBlockCallerJSONAPI: JSONAPI.RequestSignerProtocol {
     // MARK: - Public properties
     
     public let signingKey: ECDSA.KeyData
+    public let accountId: String
     public let onSignRequest: JSONAPI.SignRequestBlock
     
     public init(
         signingKey: ECDSA.KeyData,
+        accountId: String,
         onSignRequest: @escaping JSONAPI.SignRequestBlock
         ) {
         
         self.signingKey = signingKey
+        self.accountId = accountId
         self.onSignRequest = onSignRequest
     }
     
     // MARK: - Public
     
     public static func getUnsafeSignRequestBlock() -> JSONAPI.SignRequestBlock {
-        return { signingKey, request, completion in
+        return { signingKey, accountId, request, completion in
             let keyDataProvider = UnsafeRequestSignKeyDataProvider(keyPair: signingKey)
-            var requestSigner: JSONAPI.RequestSigner? = JSONAPI.RequestSigner(keyDataProvider: keyDataProvider)
+            let accountIdProvider = UnsafeRequestSignAccountIdProvider(accountId: accountId)
+            var requestSigner: JSONAPI.RequestSigner? = JSONAPI.RequestSigner(keyDataProvider: keyDataProvider, accountIdProvider: accountIdProvider)
             
             requestSigner?.sign(
                 request: request,
@@ -296,7 +312,7 @@ open class RequestSignerBlockCallerJSONAPI: JSONAPI.RequestSignerProtocol {
         completion: @escaping (RequestHeaders?) -> Void
         ) {
         
-        self.onSignRequest(self.signingKey, request, completion)
+        self.onSignRequest(self.signingKey, self.accountId, request, completion)
     }
 }
 

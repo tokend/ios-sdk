@@ -11,7 +11,7 @@ import TokenDWallet
 // swiftlint:disable file_length
 // swiftlint:disable line_length
 // swiftlint:disable type_body_length
-class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderProtocol {
+class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderProtocol, RequestSignAccountIdProviderProtocol {
     
     var privateKey: ECDSA.KeyData? = try? ECDSA.KeyData(
         seed: Base32Check.decodeCheck(
@@ -32,6 +32,10 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
 
         let publicKey = Base32Check.encode(version: .accountIdEd25519, data: publicKeyData)
         completion(publicKey)
+    }
+    
+    func getAccountId(completion: @escaping (String?) -> Void) {
+        completion(nil)
     }
     
     lazy var apiConfig: ApiConfiguration = {
@@ -69,7 +73,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             configuration: self.apiConfig,
             callbacks: self.apiCallbacks,
             network: self.network,
-            requestSigner: JSONAPI.RequestSigner(keyDataProvider: self)
+            requestSigner: JSONAPI.RequestSigner(keyDataProvider: self, accountIdProvider: self)
         )
         return api
     }()

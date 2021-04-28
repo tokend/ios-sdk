@@ -55,6 +55,12 @@ public class APIv3 {
     public private(set) lazy var tutorialsApi: TutorialsApiV3 = { return create() }()
     #endif
     
+    #if TOKENDSDK_DMSAPI
+    public private(set) lazy var dmsProjectsApi: DMS.ProjectsApiV3 = { return create() }()
+    public private(set) lazy var dmsWorkflowsApi: DMS.WorkflowsApiV3 = { return create() }()
+    public private(set) lazy var dmsUsersApi: DMS.UsersApiV3 = { return create() }()
+    #endif
+    
     // MARK: -
     
     public init(
@@ -96,6 +102,10 @@ public class APIv3 {
         MunaScheduler.AllResources.registerAllResources()
         MunaVaccineResults.AllResources.registerAllResources()
         MunaTutorials.AllResources.registerAllResources()
+        #endif
+        
+        #if TOKENDSDK_DMSAPI
+        DMS.AllResources.registerAllResources()
         #endif
     }
     

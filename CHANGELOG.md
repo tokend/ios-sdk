@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 
 ### Added
 - Separate error for TFA cancelled so that user can recognize it and handle in a proper way
+- `Account-Id` signature header
 
 ### Fixed
 - `LoadAllResourcesController` bug with not reloading resources after error occured
