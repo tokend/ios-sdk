@@ -6,16 +6,24 @@ public extension KeyServerApi {
     /// The result of request will be fetched in `completion` block as `KeyServerApi.RequestWalletResult`
     /// - Parameters:
     ///   - walletId: Wallet id.
+    ///   - latitude: User's location latitude.
+    ///   - longitude: User's location longitude.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `KeyServerApi.RequestWalletResult`
     /// - Returns: `Cancelable`
     @discardableResult
     func munaGetWallet(
         walletId: String,
+        latitude: String,
+        longitude: String,
         completion: @escaping (_ result: Result<WalletDataResponse, Swift.Error>) -> Void
         ) -> Cancelable {
 
-        let request = self.requestBuilder.buildMUNAGetWalletRequest(walletId: walletId)
+        let request = self.requestBuilder.buildMUNAGetWalletRequest(
+            walletId: walletId,
+            latitude: latitude,
+            longitude: longitude
+        )
 
         return self.performGetWalletRequest(
             request,
