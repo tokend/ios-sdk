@@ -9,6 +9,8 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 
+## [3.3.3] 2021-05-05
+
 ### Added
 - `KeyServerLoginService` to have ability to change `walletKDF ` and `walletData` source
 - `custom` `RequestIdentitiesFilter`
