@@ -15,12 +15,6 @@ public extension KeyServerApi {
         /// Failed to decode keychain data from wallet data.
         case cannotDecodeKeychainData
 
-        /// Failed to derive key pair from wallet data.
-        case cannotDeriveKeyPair
-
-        /// Failed to derive wallet id from wallet KDF params.
-        case cannotDeriveWalletId
-
         // MARK: - Swift.Error
 
         public var errorDescription: String? {
@@ -28,12 +22,6 @@ public extension KeyServerApi {
 
             case .cannotDecodeKeychainData:
                 return "Cannot decode keychain data"
-
-            case .cannotDeriveKeyPair:
-                return "Cannot derive key pair"
-
-            case .cannotDeriveWalletId:
-                return "Cannot derive wallet id"
             }
         }
     }
@@ -47,6 +35,7 @@ public extension KeyServerApi {
     ///   - result: Member of `KeyServerApi.LoginRequestResult`
     /// - Returns: `Cancelable`
     @discardableResult
+    @available(*, deprecated, message: "Use KeyServerLoginService")
     func loginWith(
         login: String,
         password: String,
@@ -85,6 +74,7 @@ public extension KeyServerApi {
     ///   - result: Member of `KeyServerApi.LoginRequestResult`
     /// - Returns: `Cancelable`
     @discardableResult
+    @available(*, deprecated, message: "Use KeyServerLoginService")
     func loginWith(
         login: String,
         password: String,
@@ -131,12 +121,12 @@ private extension KeyServerApi {
 
         return self.getWallet(
             walletId: base16WalletId,
-            walletKDF: walletKDF,
             completion: { [weak self] result in
 
                 switch result {
 
-                case .success(let walletData):
+                case .success(let response):
+                    let walletData = WalletDataModel.fromResponse(response, walletKDF: walletKDF)
                     self?.continueLoginForWalletData(
                         login: login,
                         password: password,

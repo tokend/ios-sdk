@@ -117,6 +117,9 @@ public class GeneralApi: BaseApi {
         
         /// Filter is used when it is needed to fetch identities by telegram username
         case telegram(_ telegram: String)
+        
+        /// Filter is used when it is needed to fetch identities by a specific parameter
+        case custom(_ key: String, _ value: String)
     }
     
     /// Method sends request to get identities via login or accountId.

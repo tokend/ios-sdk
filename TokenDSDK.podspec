@@ -40,6 +40,8 @@ Pod::Spec.new do |s|
 
   key_server_v1_source_files = 'Sources/Common/**/*.swift',
                                'Sources/KeyServer/**/*.swift'
+                               
+  key_server_muna_v1_source_files = 'Sources/MUNA/KeyServer/**/*.swift'
 
   s.subspec 'API' do |ss|
     ss.source_files = v1_source_files
@@ -93,6 +95,11 @@ Pod::Spec.new do |s|
 
   s.subspec 'KeyServer' do |ss|
     ss.source_files = key_server_v1_source_files
+  end
+  
+  s.subspec 'MUNAKeyServer' do |ss|
+      ss.source_files = key_server_muna_v1_source_files
+      ss.dependency 'TokenDSDK/KeyServer'
   end
 
   s.default_subspecs = 'API', 'JSONAPI', 'KeyServer'

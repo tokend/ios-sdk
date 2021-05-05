@@ -2,47 +2,28 @@ import Foundation
 
 public extension KeyServerApi {
 
-    enum GetWalletError: Swift.Error, LocalizedError {
-
-        case walletShouldBeVerified(walletId: String)
-        case tfaFailed
-        case tfaCancelled
-        case wrongPassword
-
-        // MARK: - Swift.Error
-
-        public var errorDescription: String? {
-            switch self {
-
-            case .walletShouldBeVerified:
-                return "Wallet should be verified"
-
-            case .tfaFailed:
-                return "TFA failed"
-                
-            case .tfaCancelled:
-                return "TFA canceled"
-
-            case .wrongPassword:
-                return "Wrong password"
-            }
-        }
-    }
-
     /// Method sends request to get wallet data from api.
     /// The result of request will be fetched in `completion` block as `KeyServerApi.RequestWalletResult`
     /// - Parameters:
     ///   - walletId: Wallet id.
+    ///   - latitude: User's location latitude.
+    ///   - longitude: User's location longitude.
     ///   - completion: Block that will be called when the result will be received.
     ///   - result: Member of `KeyServerApi.RequestWalletResult`
     /// - Returns: `Cancelable`
     @discardableResult
-    func getWallet(
+    func munaGetWallet(
         walletId: String,
+        latitude: String,
+        longitude: String,
         completion: @escaping (_ result: Result<WalletDataResponse, Swift.Error>) -> Void
         ) -> Cancelable {
 
-        let request = self.requestBuilder.buildGetWalletRequest(walletId: walletId)
+        let request = self.requestBuilder.buildMUNAGetWalletRequest(
+            walletId: walletId,
+            latitude: latitude,
+            longitude: longitude
+        )
 
         return self.performGetWalletRequest(
             request,
