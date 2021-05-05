@@ -57,6 +57,11 @@ public class GeneralRequestBuilder: BaseApiRequestBuilder {
             parameters = [
                 "filter[telegram_username]": username
             ]
+            
+        case .custom(let key, let value):
+            parameters = [
+                "filter[\(key)]": value
+            ]
         }
         
         let request = GetIdentitiesRequest(

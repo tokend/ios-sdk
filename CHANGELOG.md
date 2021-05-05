@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 
 ### Added
 - `KeyServerLoginService` to have ability to change `walletKDF ` and `walletData` source
+- `custom` `RequestIdentitiesFilter`
 
 ### Deprecated
 - `KeyServerApi+Login` methods (use `KeyServerLoginService` instead)
