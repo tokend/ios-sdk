@@ -26,7 +26,7 @@ public class EventHistoryApiV3: JSONAPI.BaseApi {
     ///   - filters: Request filters.
     ///   - pagination: Pagination option.
     ///   - completion: The block which is called when the result will be fetched.
-    ///   - result: The model of `RequestCollectionResult<Invoices.DataResource>`
+    ///   - result: The model of `RequestCollectionResult<Horizon.DataResource>`
     /// - Returns: `Cancelable`
     
     @discardableResult
@@ -34,7 +34,7 @@ public class EventHistoryApiV3: JSONAPI.BaseApi {
         filters: EventHistoryRequestFiltersV3,
         include: [String]?,
         pagination: RequestPagination,
-        completion: @escaping ((_ result: RequestCollectionResult<Invoices.DataResource>) -> Void)
+        completion: @escaping ((_ result: RequestCollectionResult<Horizon.DataResource>) -> Void)
     ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -51,7 +51,7 @@ public class EventHistoryApiV3: JSONAPI.BaseApi {
                 }
                 
                 cancelable.cancelable = self?.requestCollection(
-                    Invoices.DataResource.self,
+                    Horizon.DataResource.self,
                     request: request,
                     completion: { (result) in
                         
