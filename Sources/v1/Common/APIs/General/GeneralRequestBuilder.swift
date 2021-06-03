@@ -2,6 +2,7 @@ import Foundation
 
 /// Class provides functionality that allows to build requests
 /// which are used to fetch general data
+@available(*, deprecated)
 public class GeneralRequestBuilder: BaseApiRequestBuilder {
     
     // MARK: - Public properties

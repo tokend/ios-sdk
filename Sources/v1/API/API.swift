@@ -30,6 +30,7 @@ public class API {
     public private(set) lazy var balancesApi: BalancesApi         = { return self.create() }()
     public private(set) lazy var blobsApi: BlobsApi               = { return self.create() }()
     public private(set) lazy var chartsApi: ChartsApi             = { return self.create() }()
+    @available(*, deprecated)
     public private(set) lazy var generalApi: GeneralApi           = { return self.create() }()
     public private(set) lazy var offersApi: OffersApi             = { return self.create() }()
     public private(set) lazy var orderBookApi: OrderBookApi       = { return self.create() }()

@@ -1,6 +1,7 @@
 import Foundation
 import TokenDWallet
 
+@available(*, deprecated)
 public struct FeeResponse: Decodable {
     
     public typealias FeeType = TokenDWallet.FeeType

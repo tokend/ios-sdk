@@ -3,6 +3,7 @@ import DLJSONAPI
 
 /// Class provides functionality that allows to fetch data which is necessary
 /// for other requests building
+@available(*, deprecated)
 public class GeneralApi: BaseApi {
     
     // MARK: - Private properties
@@ -58,6 +59,7 @@ public class GeneralApi: BaseApi {
     
     /// Method sends request to get network info.
     /// The result of request will be fetched in `completion` block as `GeneralApi.RequestNetworkInfoResult`
+    @available(*, deprecated, message: "Use InfoApiV3 instead")
     public func requestNetworkInfo(
         completion: @escaping (RequestNetworkInfoResult) -> Void
         ) {
