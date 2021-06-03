@@ -1,6 +1,6 @@
 import Foundation
 
-public struct AccountIdentityResponse<SpecificAttributes: Decodable>: Decodable {
+public struct IdentityResponse<SpecificAttributes: Decodable>: Decodable {
     
     public let attributes: Attributes
     public let id: String
@@ -27,7 +27,7 @@ public struct AccountIdentityResponse<SpecificAttributes: Decodable>: Decodable 
     }
 }
 
-extension AccountIdentityResponse {
+extension IdentityResponse {
     
     public struct Attributes: Decodable {
         

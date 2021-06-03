@@ -444,7 +444,7 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
     func requestAccountIdForEmail(_ email: String) {
         self.generalApi.requestIdentities(
             filter: .login(email)
-        ) { [weak self] (result: GeneralApi.RequestIdentitiesResult<EmptySpecificAttributes>) in
+        ) { [weak self] (result: IdentitiesApi.RequestIdentitiesResult<EmptySpecificAttributes>) in
             switch result {
             case .succeeded:
                 print("\(#function) - success")
