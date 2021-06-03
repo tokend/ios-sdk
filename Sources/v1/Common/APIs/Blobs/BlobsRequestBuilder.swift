@@ -4,23 +4,29 @@ import Foundation
 /// which are used to fetch blobs
 public class BlobsRequestBuilder: BaseApiRequestBuilder {
     
+    // MARK: - Private properties
+    
     private let blobs: String = "blobs"
     
-    // MARK: - Public
+}
+
+// MARK: - Public methods
+ 
+public extension BlobsRequestBuilder {
     
-    /// Builds request to fetch blob
+    /// Builds request to get blob.
     /// - Parameters:
     ///   - blobId: Blob Id.
     ///   - sendDate: Send time of request.
     ///   - completion: Returns `GetBlobRequest` or nil.
-    public func buildGetBlobRequest(
+    func buildGetBlobRequest(
         blobId: String,
         sendDate: Date,
         completion: @escaping (GetBlobRequest?) -> Void
         ) {
         
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath(self.blobs).addPath(blobId)
+        let url = baseUrl/self.blobs/blobId
         
         self.buildRequestSigned(
             baseUrl: baseUrl,
@@ -31,19 +37,19 @@ public class BlobsRequestBuilder: BaseApiRequestBuilder {
         )
     }
 
-    /// Builds request to post blob
+    /// Builds request to create blob.
     /// - Parameters:
     ///   - body: Blob data.
     ///   - sendDate: Send time of request.
     ///   - completion: Returns `PostBlobRequest` or nil.
-    public func buildPostBlobRequest(
+    func buildPostBlobRequest(
         body: Data,
         sendDate: Date,
         completion: @escaping (PostBlobRequest?) -> Void
     ) {
 
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath(self.blobs)
+        let url = baseUrl/self.blobs
 
         self.buildRequestDataSigned(
             baseUrl: baseUrl,
