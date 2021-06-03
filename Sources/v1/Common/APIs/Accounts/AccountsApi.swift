@@ -1,6 +1,7 @@
 import Foundation
 
 /// Class provides functionality that allows to fetch account data
+@available(*, deprecated, message: "Use AccountsApiV3")
 public class AccountsApi: BaseApi {
     
     let requestBuilder: AccountsRequestBuilder
@@ -138,121 +139,6 @@ public class AccountsApi: BaseApi {
                             
                         case .success(let object):
                             completion(.success(signers: object))
-                            
-                        case .failure(let errors):
-                            completion(.failure(errors))
-                        }
-                })
-        })
-        
-        return cancelable
-    }
-    
-    /// Model that will be fetched in completion block of `AccountsApi.requestAuthResult(...)`
-    public enum RequestAuthResult {
-        
-        /// Case of successful response from api with `AuthResultResponse` model
-        case success(AuthResultResponse)
-        
-        /// Case of failed response from api with `ApiErrors` model
-        case failure(ApiErrors)
-    }
-    
-    /// Method sends request to get authentication result for according account from api.
-    /// The result of request will be fetched in `completion` block as `AccountsApi.RequestAuthResult`
-    /// - Parameters:
-    ///   - accountId: Identifier of account which was used to perform authentication
-    ///   - sendDate: Send time of request.
-    ///   - completion: Block that will be called when the result will be received.
-    ///   - result: Member of `AccountsApi.RequestAuthResult`
-    /// - Returns: `Cancelable`
-    @discardableResult
-    public func requestAuthResult(
-        accountId: String,
-        sendDate: Date = Date(),
-        completion: @escaping (_ result: RequestAuthResult) -> Void
-        ) -> Cancelable {
-        
-        let cancelable = self.network.getEmptyCancelable()
-        
-        self.requestBuilder.buildAuthRequestRequest(
-            accountId: accountId,
-            sendDate: sendDate,
-            completion: { [weak self] (request) in
-                
-                guard let request = request else {
-                    completion(.failure(.failedToSignRequest))
-                    return
-                }
-                
-                cancelable.cancelable = self?.network.responseObject(
-                    AuthResultResponse.self,
-                    url: request.url,
-                    method: request.method,
-                    headers: request.signedHeaders,
-                    completion: { (result) in
-                        switch result {
-                            
-                        case .success(let object):
-                            completion(.success(object))
-                            
-                        case .failure(let errors):
-                            completion(.failure(errors))
-                        }
-                })
-        })
-        
-        return cancelable
-    }
-    
-    /// Model that will be fetched in completion block of `AccountsApi.requestSendAuthResult(...)`
-    public enum RequestSendAuthResult {
-        
-        /// Case of successful response from api
-        case success
-        
-        /// Case of failed response from api with `ApiErrors` model
-        case failure(ApiErrors)
-    }
-    /// Method sends request to post authentication result for according account.
-    /// The result of request will be fetched in `completion` block as `AccountsApi.RequestSendAuthResult`
-    /// - Parameters:
-    ///   - accountId: Identifier of account which was used to perform authentication
-    ///   - parameters: Parameters that used to define the result of authentication
-    ///   - sendDate: Send time of request.
-    ///   - completion: Block that will be called when the result will be received.
-    ///   - result: Member of `AccountsApi.RequestSendAuthResult`
-    /// - Returns: `Cancelable`
-    @discardableResult
-    public func requestSendAuthResult(
-        accountId: String,
-        parameters: SendAuthResultRequestParameters,
-        sendDate: Date = Date(),
-        completion: @escaping (_ result: RequestSendAuthResult) -> Void
-        ) -> Cancelable {
-        
-        let cancelable = self.network.getEmptyCancelable()
-        
-        self.requestBuilder.buildSendAuthRequestRequest(
-            accountId: accountId,
-            parameters: parameters,
-            sendDate: sendDate,
-            completion: { [weak self] (request) in
-                
-                guard let request = request else {
-                    completion(.failure(.failedToSignRequest))
-                    return
-                }
-                
-                cancelable.cancelable = self?.network.responseJSON(
-                    url: request.url,
-                    method: request.method,
-                    headers: request.signedHeaders,
-                    completion: { (result) in
-                        switch result {
-                            
-                        case .success:
-                            completion(.success)
                             
                         case .failure(let errors):
                             completion(.failure(errors))

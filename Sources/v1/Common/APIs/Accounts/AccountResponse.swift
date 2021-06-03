@@ -1,5 +1,6 @@
 import Foundation
 
+@available(*, deprecated, message: "Use AccountsApiV3")
 public struct AccountResponse: Decodable {
     
     public let accountId: String
@@ -9,8 +10,10 @@ public struct AccountResponse: Decodable {
     public let roleId: UInt32
 }
 
+@available(*, deprecated, message: "Use AccountsApiV3")
 extension AccountResponse {
     
+    @available(*, deprecated, message: "Use AccountsApiV3")
     public struct Balance {
         
         public let locked: Decimal
@@ -20,8 +23,10 @@ extension AccountResponse {
     }
 }
 
+@available(*, deprecated, message: "Use AccountsApiV3")
 extension AccountResponse {
     
+    @available(*, deprecated, message: "Use AccountsApiV3")
     public struct ExternalSystemAccount {
         
         public typealias ValueRawValue = UInt32
@@ -33,8 +38,10 @@ extension AccountResponse {
     }
 }
 
+@available(*, deprecated, message: "Use AccountsApiV3")
 extension AccountResponse.ExternalSystemAccount {
     
+    @available(*, deprecated, message: "Use AccountsApiV3")
     public struct ExternalSystemAccountType: Decodable {
         
         public let name: String?
@@ -42,9 +49,11 @@ extension AccountResponse.ExternalSystemAccount {
     }
 }
 
+@available(*, deprecated, message: "Use AccountsApiV3")
 extension AccountResponse {
     
     public typealias AccountTypeRawValue = Int
+    @available(*, deprecated, message: "Use AccountsApiV3")
     public struct Referral: Decodable {
         
         public let accountId: String
@@ -56,8 +65,10 @@ extension AccountResponse {
     }
 }
 
+@available(*, deprecated, message: "Use AccountsApiV3")
 extension AccountResponse {
     
+    @available(*, deprecated, message: "Use AccountsApiV3")
     public enum AccountType: AccountTypeRawValue {
         case operational        = 1
         case general            = 2
@@ -71,6 +82,7 @@ extension AccountResponse {
 
 // MARK: - Decodables
 
+@available(*, deprecated, message: "Use AccountsApiV3")
 extension AccountResponse.Balance: Decodable {
     enum CodingKeys: String, CodingKey {
         case locked
@@ -89,6 +101,7 @@ extension AccountResponse.Balance: Decodable {
     }
 }
 
+@available(*, deprecated, message: "Use AccountsApiV3")
 extension AccountResponse.ExternalSystemAccount: Decodable {
     enum CodingKeys: String, CodingKey {
         case type

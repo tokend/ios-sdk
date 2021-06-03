@@ -21,6 +21,7 @@ public class API {
         )
     }()
     
+    @available(*, deprecated, message: "Use AccountsApiV3")
     public private(set) lazy var accountsApi: AccountsApi         = { return self.create() }()
     public private(set) lazy var documentsApi: DocumentsApi       = { return self.create() }()
     public private(set) lazy var assetPairsApi: AssetPairsApi     = { return self.create() }()

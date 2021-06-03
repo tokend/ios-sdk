@@ -1,5 +1,6 @@
 import Foundation
 
+@available(*, deprecated, message: "Use AccountsApiV3")
 extension AccountsApi {
 
     /// Model that will be fetched in `completion` block of `requestBlob(...)`
