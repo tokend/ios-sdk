@@ -141,7 +141,8 @@ enum AllResources {
             SaleParticipationResource.self,
             ManageCreatePollRequestOpResource.self,
             CalculatedFeeResource.self,
-            ConvertedBalanceStateResource.self
+            ConvertedBalanceStateResource.self,
+            DataResource.self
         ]
         
         for res in allResources {

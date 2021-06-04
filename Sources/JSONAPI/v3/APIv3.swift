@@ -53,6 +53,7 @@ public class APIv3 {
     public private(set) lazy var schedulerApi: SchedulerApiV3 = { return create() }()
     public private(set) lazy var vaccineResultsApi: VaccineResultsApiV3 = { return create() }()
     public private(set) lazy var tutorialsApi: TutorialsApiV3 = { return create() }()
+    public private(set) lazy var eventHistoryApi: EventHistoryApiV3 = { return create() }()
     #endif
     
     #if TOKENDSDK_DMSAPI
