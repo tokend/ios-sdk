@@ -44,16 +44,16 @@ public extension IdentitiesApi {
         case custom(_ key: String, _ value: String)
     }
     /// Method sends request to get identities via login or accountId.
-    /// The result of request will be fetched in `completion` block as `GeneralApi.RequestIdentitiesResult`
+    /// The result of request will be fetched in `completion` block as `Swift.Result<[IdentityResponse<SpecificAttributes>], Swift.Error>`
     /// - Parameters:
     ///   - filter: Filter which will be used to fetch identities.
     ///   - completion: Block that will be called when the result will be received.
-    ///   - result: Member of `Swift.Result<[IdentityResponse<SpecificAttributes>], ApiErrors>`
+    ///   - result: Member of `Swift.Result<[IdentityResponse<SpecificAttributes>], Swift.Error>`
     /// - Returns: `Cancelable`
     @discardableResult
     func requestIdentities<SpecificAttributes: Decodable>(
         filter: RequestIdentitiesFilter,
-        completion: @escaping (Swift.Result<[IdentityResponse<SpecificAttributes>], ApiErrors>) -> Void
+        completion: @escaping (Swift.Result<[IdentityResponse<SpecificAttributes>], Swift.Error>) -> Void
     ) -> Cancelable {
         
         let request = self.requestBuilder.buildGetIdentitiesRequest(filter: filter)
@@ -77,7 +77,7 @@ public extension IdentitiesApi {
     }
     
     /// Method sends request to create new identity using phone number.
-    /// The result of request will be fetched in `completion` block as `GeneralApi.RequestAddIdentityResult`
+    /// The result of request will be fetched in `completion` block as `Swift.Result<IdentityResponse<SpecificAttributes>, Swift.Error>`
     /// - Parameters:
     ///   - phoneNumber: New identity's phone number
     ///   - completion: Block that will be called when the result will be received.
@@ -126,13 +126,13 @@ public extension IdentitiesApi {
     /// - Parameters:
     ///   - phoneNumber: Identity's accountId
     ///   - completion: Block that will be called when the result will be received.
-    ///   - result: Member of `Swift.Result<Void, ApiErrors>`
+    ///   - result: Member of `Swift.Result<Void, Swift.Error>`
     /// - Returns: `Cancelable`
     @discardableResult
     func deleteIdentity(
         for accountId: String,
         sendDate: Date = Date(),
-        completion: @escaping (Swift.Result<Void, ApiErrors>) -> Void
+        completion: @escaping (Swift.Result<Void, Swift.Error>) -> Void
     ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -142,7 +142,7 @@ public extension IdentitiesApi {
             sendDate: sendDate,
             completion: { [weak self] (request) in
                 guard let request = request else {
-                    completion(.failure(.failedToSignRequest))
+                    completion(.failure(ApiErrors.failedToSignRequest))
                     return
                 }
                 

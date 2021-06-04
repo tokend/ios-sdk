@@ -7,7 +7,7 @@ public extension IdentitiesApi {
     enum RequestIdentitiesResult<SpecificAttributes: Decodable> {
         
         /// Case of failed response with `ApiErrors` model
-        case failed(ApiErrors)
+        case failed(Swift.Error)
         
         /// Case of successful response with `AccountIdentityResponse` model
         case succeeded(identities: [AccountIdentityResponse<SpecificAttributes>])
@@ -26,7 +26,7 @@ public extension IdentitiesApi {
         
         self.requestIdentities(
             filter: filter,
-            completion: { (result: Swift.Result<[AccountIdentityResponse<SpecificAttributes>], ApiErrors>) in
+            completion: { (result: Swift.Result<[AccountIdentityResponse<SpecificAttributes>], Swift.Error>) in
                 
                 switch result {
                 
@@ -78,7 +78,7 @@ public extension IdentitiesApi {
     @available(*, deprecated)
     enum DeleteIdentityResult {
         case success
-        case failure(ApiErrors)
+        case failure(Swift.Error)
     }
     
     /// Method sends request to create new identity using phone number.
@@ -97,7 +97,7 @@ public extension IdentitiesApi {
         return deleteIdentity(
             for: accountId,
             sendDate: sendDate,
-            completion: { (result: Swift.Result<Void, ApiErrors>) in
+            completion: { (result: Swift.Result<Void, Swift.Error>) in
                 
                 switch result {
                 
