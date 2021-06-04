@@ -1,57 +1,60 @@
 import Foundation
 
-/// Class provides functionality that allows to build requests
-/// which are used to fetch and upload documents.
-public class DocumentsRequestBuilder: BaseApiRequestBuilder {
-    
-    // MARK: - Internal properties
-    
-    internal let accounts: String = "accounts"
-    internal let documents: String = "documents"
-    
-}
-    
-// MARK: - Public methods
-
 public extension DocumentsRequestBuilder {
     
-    /// Builds request to get upload policy.
+    /// Builds request to request upload policy.
     /// - Parameters:
-    ///   - body: Blob data.
+    ///   - accountId: Account Id.
+    ///   - policyType: Policy type. See possible values in `UploadPolicy.Type`.
+    ///   - contentType: Content type. See possible values in `UploadPolicy.Content`.
     ///   - sendDate: Send time of request.
     ///   - completion: Returns `RequestDataSigned` or nil.
+    @available(*, deprecated, message: "Use buildGetUploadPolicyRequest")
     func buildGetUploadPolicyRequest(
-        body: Data,
+        accountId: String,
+        policyType: String,
+        contentType: String,
         sendDate: Date = Date(),
         completion: @escaping (RequestDataSigned?) -> Void
-    ) {
+        ) {
         
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl/self.documents
+        let url = baseUrl/self.accounts/accountId/self.documents
+        
+        let request = GetUploadPolicyRequest(policyType: policyType, contentType: contentType)
+        
+        let requestData = ApiDataRequest<GetUploadPolicyRequest, Empty>(data: request)
+        guard let requestDataEncoded = try? requestData.encode() else {
+            completion(nil)
+            return
+        }
         
         self.buildRequestDataSigned(
             baseUrl: baseUrl,
             url: url,
             method: .post,
-            requestData: body,
+            requestData: requestDataEncoded,
             sendDate: sendDate,
             completion: completion
         )
     }
     
-    /// Builds request to get document url.
+    /// Builds request to fetch document url.
     /// - Parameters:
+    ///   - accountId: Account Id.
     ///   - documentId: Document Id.
     ///   - sendDate: Send time of request.
     ///   - completion: Returns `RequestSigned` or nil.
+    @available(*, deprecated, message: "Use buildGetDocumentURLRequest instead")
     func buildGetDocumentURLRequest(
+        accountId: String,
         documentId: String,
         sendDate: Date = Date(),
         completion: @escaping (RequestSigned?) -> Void
         ) {
         
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl/self.documents/documentId
+        let url = baseUrl/self.accounts/accountId/self.documents/documentId
         
         self.buildRequestSigned(
             baseUrl: baseUrl,

@@ -1,5 +1,6 @@
 import Foundation
 
+@available(*, deprecated)
 public struct GetUploadPolicyRequest: Encodable {
     
     // MARK: - Public properties
@@ -15,6 +16,7 @@ public struct GetUploadPolicyRequest: Encodable {
     }
 }
 
+@available(*, deprecated)
 extension GetUploadPolicyRequest {
     
     public struct Attributes: Encodable {
