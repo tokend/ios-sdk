@@ -1,40 +1,33 @@
 import Foundation
 
-/// Class provides functionality that allows to fetch charts
-public class ChartsApi: BaseApi {
-    
-    // MARK: - Public properties
-    
-    public let requestBuilder: ChartsRequestBuilder
-    
-    // MARK: -
-    
-    public required init(apiStack: BaseApiStack) {
-        self.requestBuilder = ChartsRequestBuilder(
-            builderStack: BaseApiRequestBuilderStack.fromApiStack(apiStack)
-        )
-        
-        super.init(apiStack: apiStack)
-    }
-}
-
-// MARK: - Public methods
-
+@available(*, deprecated)
 public extension ChartsApi {
     
+    /// Model that will be fetched in completion block of `ChartsApi.requestCharts(...)`
+    @available(*, deprecated)
+    enum ChartsResult {
+        
+        /// Case of successful response with `ChartsResponse` model
+        case success(charts: ChartsResponse)
+        
+        /// Case of failed response with `ApiErrors` model
+        case failure(ApiErrors)
+    }
+    
     /// Method sends request to get balances for according account from api.
-    /// The result of request will be fetched in `completion` block as `Swift.Result<ChartsResponse, Swift.Error>`
+    /// The result of request will be fetched in `completion` block as `ChartsApi.ChartsResult`
     /// - Parameters:
     ///   - asset: The code of the asset for which charts are going to be fetched.
     ///   - sendDate: Send time of request.
     ///   - completion: Block that will be called when the result will be received.
-    ///   - result: Member of `Swift.Result<ChartsResponse, Swift.Error>`
+    ///   - result: Member of `ChartsApi.ChartsResult`
     /// - Returns: `Cancelable`
     @discardableResult
-    func getCharts(
+    @available(*, deprecated, renamed: "getCharts")
+    func requestCharts(
         asset: String,
         sendDate: Date = Date(),
-        completion: @escaping (Swift.Result<ChartsResponse, Swift.Error>) -> Void
+        completion: @escaping (_ result: ChartsResult) -> Void
         ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -44,7 +37,7 @@ public extension ChartsApi {
             sendDate: sendDate,
             completion: { [weak self] (request) in
                 guard let request = request else {
-                    completion(.failure(ApiErrors.failedToSignRequest))
+                    completion(.failure(.failedToSignRequest))
                     return
                 }
                 
@@ -57,7 +50,7 @@ public extension ChartsApi {
                         switch result {
                             
                         case .success(let object):
-                            completion(.success(object))
+                            completion(.success(charts: object))
                             
                         case .failure(let errors):
                             completion(.failure(errors))

@@ -21,20 +21,30 @@ public class API {
         )
     }()
     
+    @available(*, deprecated, message: "Use AccountsApiV3")
     public private(set) lazy var accountsApi: AccountsApi         = { return self.create() }()
     public private(set) lazy var documentsApi: DocumentsApi       = { return self.create() }()
+    public private(set) lazy var identitiesApi: IdentitiesApi     = { return self.create() }()
+    @available(*, deprecated, message: "Use AssetPairsAPIv3")
     public private(set) lazy var assetPairsApi: AssetPairsApi     = { return self.create() }()
+    @available(*, deprecated, message: "Use AssetsAPIv3")
     public private(set) lazy var assetsApi: AssetsApi             = { return self.create() }()
+    @available(*, deprecated, message: "Use BalancesAPIv3")
     public private(set) lazy var balancesApi: BalancesApi         = { return self.create() }()
     public private(set) lazy var blobsApi: BlobsApi               = { return self.create() }()
     public private(set) lazy var chartsApi: ChartsApi             = { return self.create() }()
+    @available(*, deprecated)
     public private(set) lazy var generalApi: GeneralApi           = { return self.create() }()
+    @available(*, deprecated, message: "Use OffersAPIv3")
     public private(set) lazy var offersApi: OffersApi             = { return self.create() }()
+    @available(*, deprecated, message: "Use OrderBookAPIv3")
     public private(set) lazy var orderBookApi: OrderBookApi       = { return self.create() }()
+    @available(*, deprecated, message: "Use SalesAPIv3")
     public private(set) lazy var salesApi: SalesApi               = { return self.create() }()
     public private(set) lazy var tfaApi: TFAApi                   = { return self.createTFAApi() }()
     public private(set) lazy var tfaVerifyApi: TFAVerifyApi       = { return self.createTFAVerifyApi() }()
-    public private(set) lazy var transactionsApi: TransactionsApi = { return self.createTransactionsApi() }()
+    @available(*, deprecated, message: "Use TransactionsAPIv3")
+    public private(set) lazy var transactionsApi: TransactionsApi = { return self.create() }()
     
     // MARK: -
     
@@ -74,11 +84,6 @@ public class API {
             requestSigner: self.requestSigner,
             network: self.network
         )
-        return api
-    }
-    
-    private func createTransactionsApi() -> TransactionsApi {
-        let api = TransactionsApi(apiStack: self.baseApiStack)
         return api
     }
 }

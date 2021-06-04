@@ -3,7 +3,11 @@ import Foundation
 /// Class provides functionality that allows to fetch blobs
 public class BlobsApi: BaseApi {
     
-    let requestBuilder: BlobsRequestBuilder
+    // MARK: - Internal properties
+    
+    internal let requestBuilder: BlobsRequestBuilder
+    
+    // MARK: -
     
     public required init(apiStack: BaseApiStack) {
         self.requestBuilder = BlobsRequestBuilder(
@@ -12,18 +16,11 @@ public class BlobsApi: BaseApi {
         
         super.init(apiStack: apiStack)
     }
-    
-    // MARK: - Public
-    
-    /// Model that will be fetched in `completion` block of `BlobsApi.requestBlob(...)`
-    public enum GetBlobResult {
-        
-        /// Case of succesful response from api with `BlobResponse` model
-        case success(blob: BlobResponse)
-        
-        /// Case of failed response from api with `ApiErrors` model
-        case failure(ApiErrors)
-    }
+}
+ 
+// MARK: - Public methods
+
+public extension BlobsApi {
     
     /// Method sends request to get blob from api.
     /// The result of request will be fetched in `completion` block as `BlobsApi.GetBlobResult`
@@ -33,9 +30,9 @@ public class BlobsApi: BaseApi {
     ///   - result: Member of `BlobsApi.GetBlobResult`
     /// - Returns: `Cancelable`
     @discardableResult
-    public func requestBlob(
+    func getBlob(
         blobId: String,
-        completion: @escaping (_ result: GetBlobResult) -> Void
+        completion: @escaping (Swift.Result<BlobResponse, Swift.Error>) -> Void
         ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -45,7 +42,7 @@ public class BlobsApi: BaseApi {
             sendDate: Date(),
             completion: { [weak self] (request) in
                 guard let request = request else {
-                    completion(.failure(.failedToSignRequest))
+                    completion(.failure(ApiErrors.failedToSignRequest))
                     return
                 }
                 
@@ -61,34 +58,33 @@ public class BlobsApi: BaseApi {
                             completion(.failure(errors))
                             
                         case .success(let object):
-                            completion(.success(blob: object.data))
+                            completion(.success(object.data))
                         }
                 })
         })
         
         return cancelable
     }
-
-    /// Model that will be fetched in `completion` block of `postBlob(...)`
-    public enum PostBlobResult {
-
-        /// Case of succesful response from api
-        case success(BlobResponse)
-
-        /// Case of failed response from api with `ApiErrors` model
-        case failure(ApiErrors)
-    }
+    
+    /// Method sends request to create blob.
+    /// - Parameters:
+    ///   - type: Blob type.
+    ///   - value: Blob value.
+    ///   - ownerAccountId: Owner account id.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `Swift.Result<BlobResponse, Swift.Error>`
+    /// - Returns: `Cancelable`
     @discardableResult
-    public func postBlob(
+    func postBlob(
         type: String,
         value: String,
         ownerAccountId: String,
-        completion: @escaping (PostBlobResult) -> Void
+        completion: @escaping (Swift.Result<BlobResponse, Swift.Error>) -> Void
     ) -> Cancelable {
 
         let cancelable = self.network.getEmptyCancelable()
 
-        let postBlob: PostBlobModel = .init(
+        let body: ApiDataRequest<PostBlobRequestModel, Empty> = .init(
             data: .init(
                 type: type,
                 attributes: .init(
@@ -103,10 +99,13 @@ public class BlobsApi: BaseApi {
                 )
             )
         )
-
-        guard let encodedRequest = try? postBlob.encode() else {
-            completion(.failure(.failedToSignRequest))
-            return cancelable
+        
+        let encodedRequest: Data
+        do {
+            encodedRequest = try body.encode()
+        } catch {
+            completion(.failure(error))
+            return network.getEmptyCancelable()
         }
 
         self.requestBuilder.buildPostBlobRequest(
@@ -114,7 +113,7 @@ public class BlobsApi: BaseApi {
             sendDate: Date(),
             completion: { [weak self] (request) in
                 guard let request = request else {
-                    completion(.failure(.failedToSignRequest))
+                    completion(.failure(ApiErrors.failedToSignRequest))
                     return
                 }
 

@@ -1,6 +1,7 @@
 import Foundation
 
 /// Network info response model
+@available(*, deprecated, message: "Use InfoApiV3")
 public struct NetworkInfoResponse: Decodable {
     
     // MARK: - Public properties

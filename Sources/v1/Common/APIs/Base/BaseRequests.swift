@@ -20,6 +20,33 @@ public class RequestPlain {
     }
 }
 
+/// Base model for signed request with parameters.
+public class RequestParametersPlain: RequestPlain {
+    
+    // MARK: - Public properties
+    
+    public let parameters: RequestParameters?
+    public let parametersEncoding: RequestParametersEncoding
+    
+    // MARK: -
+    
+    public init(
+        url: String,
+        method: RequestMethod,
+        parameters: RequestParameters?,
+        parametersEncoding: RequestParametersEncoding
+        ) {
+        
+        self.parameters = parameters
+        self.parametersEncoding = parametersEncoding
+        
+        super.init(
+            url: url,
+            method: method
+        )
+    }
+}
+
 /// Base model for signed request.
 public class RequestSigned {
     
@@ -68,6 +95,30 @@ public class RequestParametersSigned: RequestSigned {
             url: url,
             method: method,
             signedHeaders: signedHeaders
+        )
+    }
+}
+
+/// Base model for signed request with raw data.
+public class RequestData: RequestPlain {
+    
+    // MARK: - Public properties
+    
+    public let requestData: Data
+    
+    // MARK: -
+    
+    public init(
+        url: String,
+        method: RequestMethod,
+        requestData: Data
+        ) {
+        
+        self.requestData = requestData
+        
+        super.init(
+            url: url,
+            method: method
         )
     }
 }

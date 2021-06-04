@@ -341,7 +341,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     
     func requestAccountIdForEmail(_ email: String) {
         self.tokenDApi.generalApi.requestIdentities(
-            filter: .login(email)) { [weak self] (result: GeneralApi.RequestIdentitiesResult<EmptySpecificAttributes>) in
+            filter: .login(email)) { [weak self] (result: IdentitiesApi.RequestIdentitiesResult<EmptySpecificAttributes>) in
             switch result {
             case .succeeded:
                 print("\(#function) - success")
@@ -353,7 +353,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     
     func requestEmailForAccountId(_ accountId: String) {
         self.tokenDApi.generalApi.requestIdentities(
-        filter: .accountId(accountId)) { [weak self] (result: GeneralApi.RequestIdentitiesResult<EmptySpecificAttributes>) in
+        filter: .accountId(accountId)) { [weak self] (result: IdentitiesApi.RequestIdentitiesResult<EmptySpecificAttributes>) in
             switch result {
             case .succeeded(let data):
                 print(data)
@@ -494,7 +494,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         
         self.tokenDApi.generalApi.requestIdentities(
             filter: .login(Constants.sendTransactionDestinationEmail),
-            completion: { (result: GeneralApi.RequestIdentitiesResult<EmptySpecificAttributes>) in
+            completion: { (result: IdentitiesApi.RequestIdentitiesResult<EmptySpecificAttributes>) in
                 switch result {
                     
                 case .failed(let error):
@@ -615,7 +615,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     func getFactors(walletId: String) {
         self.tokenDApi.tfaApi.getFactors(
             walletId: walletId,
-            completion: { (result) in
+            completion: { (result: Swift.Result) in
                 switch result {
                     
                 case .failure(let errors):
@@ -654,7 +654,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
             self.tokenDApi.tfaApi.createFactor(
                 walletId: walletId,
                 type: TFAFactorType.totp.rawValue,
-                completion: { (result) in
+                completion: { (result: Swift.Result) in
                     switch result {
                         
                     case .failure(let error):
@@ -670,7 +670,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         
         self.tokenDApi.tfaApi.getFactors(
             walletId: walletId,
-            completion: { (result) in
+            completion: { (result: Swift.Result) in
                 switch result {
                     
                 case .failure(let errors):
@@ -690,7 +690,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
             walletId: walletId,
             factorId: factorId,
             priority: priority,
-            completion: { result in
+            completion: { (result: Swift.Result) in
                 switch result {
                     
                 case .failure(let error):
@@ -713,7 +713,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         
         self.tokenDApi.tfaApi.getFactors(
             walletId: walletId,
-            completion: { (result) in
+            completion: { (result: Swift.Result) in
                 switch result {
                     
                 case .failure(let errors):
@@ -731,7 +731,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                         self.tokenDApi.tfaApi.deleteFactor(
                             walletId: walletId,
                             factorId: id,
-                            completion: { (deleteResult) in
+                            completion: { (deleteResult: Swift.Result) in
                                 switch deleteResult {
                                     
                                 case .failure(let error):

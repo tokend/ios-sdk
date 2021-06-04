@@ -1,57 +1,32 @@
 import Foundation
 
-/// Class provides functionality that allows to perform TFA operations
-public class TFAApi {
-    
-    // MARK: - Public properties
-    
-    public let requestBuilder: TFARequestBuilder
-    public let network: NetworkFacade
-    public let verifyApi: TFAVerifyApi
-    public let tfaHandler: TFAHandlerProtocol
-    
-    // MARK: -
-    
-    public init(
-        apiConfiguration: ApiConfiguration,
-        requestSigner: RequestSignerProtocol,
-        callbacks: ApiCallbacks,
-        network: NetworkProtocol
-        ) {
-        self.requestBuilder = TFARequestBuilder(
-            builderStack: BaseApiRequestBuilderStack.init(
-                apiConfiguration: apiConfiguration,
-                requestSigner: requestSigner
-            )
-        )
-        self.network = NetworkFacade(network: network)
-        self.verifyApi = TFAVerifyApi(
-            apiConfiguration: apiConfiguration,
-            requestSigner: requestSigner,
-            network: self.network.network
-        )
-        self.tfaHandler = TFAHandler(
-            callbacks: callbacks,
-            verifyApi: self.verifyApi
-        )
-    }
-}
-    
-// MARK: - Public methods
-
+@available(*, deprecated)
 public extension TFAApi {
+    
+    /// Model that will be fetched in `completion` block
+    /// of `TFAApi.getFactors(...)`
+    @available(*, deprecated, message: "Use getFactors instead")
+    enum GetFactorsResult {
+        
+        /// Case of failed response with `ApiErrors` model
+        case failure(ApiErrors)
+        
+        /// Case of successful response with list of `TFAFactor` models
+        case success(factors: [TFAFactor])
+    }
     
     /// Method gets factor which is used in wallet with exact `walletId`
     /// - Parameters:
     ///   - walletId: Identifier of wallet for which factors should be fetched
     ///   - completion: The block which is called when the result of request is fetched
-    ///   - result: The member of `Swift.Result<[TFAFactor], Swift.Error>`
+    ///   - result: The member of `GetFactorsResult`
     /// - Returns: `Cancelable`
     @discardableResult
+    @available(*, deprecated, renamed: "getFactors")
     func getFactors(
         walletId: String,
         sendDate: Date = Date(),
-        completion: @escaping (Swift.Result<[TFAFactor], Swift.Error>) -> Void
+        completion: @escaping (_ result: GetFactorsResult) -> Void
         ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -74,7 +49,7 @@ public extension TFAApi {
                         switch result {
                             
                         case .success(let object):
-                            completion(.success(object.data))
+                            completion(.success(factors: object.data))
                             
                         case .failure(let errors):
                             completion(.failure(errors))
@@ -85,63 +60,67 @@ public extension TFAApi {
         return cancelable
     }
     
-    enum CreateFactorError: Swift.Error, LocalizedError {
-        
-        case factorAlreadyExists
-        case tfaFailed
-        case tfaCancelled
-        
-        // MARK: - Swift.Error
-        
-        public var errorDescription: String? {
-            switch self {
-            case .factorAlreadyExists:
-                return "Factor already exists"
-            case .tfaFailed:
-                return "TFA failed"
-            case .tfaCancelled:
-                return "TFA cancelled"
+    /// Model that will be fetched in `completion` block
+    /// of `TFAApi.createFactor(...)`
+    @available(*, deprecated, message: "Use createFactor instead")
+    enum CreateFactorResult {
+        /// Errors that are might be fetched while creating factor
+        public enum CreateError: Swift.Error, LocalizedError {
+            case factorAlreadyExists
+            case other(ApiErrors)
+            case tfaFailed
+            case tfaCancelled
+            
+            // MARK: - Swift.Error
+            
+            public var errorDescription: String? {
+                switch self {
+                case .factorAlreadyExists:
+                    return "Factor already exists"
+                case .other(let errors):
+                    return errors.localizedDescription
+                case .tfaFailed:
+                    return "TFA failed"
+                case .tfaCancelled:
+                    return "TFA cancelled"
+                }
             }
         }
+        
+        /// Case of failed response with `CreateError` model
+        case failure(CreateError)
+        
+        /// Case of successful response with `TFACreateFactorResponse` model
+        case success(TFACreateFactorResponse)
     }
+    
     /// Method creates factor which will be used in wallet with exact `walletId`
     /// - Parameters:
     ///   - walletId: Identifier of wallet for which factor should be created
     ///   - type: Type of factor
     ///   - completion: The block which is called when the result of request is fetched
-    ///   - result: The member of `Swift.Result<TFACreateFactorResponse, Swift.Error>`
+    ///   - result: The member of `CreateFactorResult`
     /// - Returns: `Cancelable`
     @discardableResult
+    @available(*, deprecated, renamed: "createFactor")
     func createFactor(
         walletId: String,
         type: String,
         sendDate: Date = Date(),
-        completion: @escaping (Swift.Result<TFACreateFactorResponse, Swift.Error>) -> Void
+        completion: @escaping (_ result: CreateFactorResult) -> Void
         ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
         
-        let body = ApiDataRequest<TFACreateFactorModel, WalletInfoModelV2.Include>(
-            data: TFACreateFactorModel(
-                type: type
-            )
-        )
-
-        let encodedRequest: Data
-        do {
-            encodedRequest = try body.encode()
-        } catch {
-            completion(.failure(error))
-            return network.getEmptyCancelable()
-        }
+        let model = TFACreateFactorModel(type: type)
         
         self.requestBuilder.buildCreateFactorRequest(
             walletId: walletId,
-            body: encodedRequest,
+            model: model,
             sendDate: sendDate,
             completion: { [weak self] (request) in
                 guard let request = request else {
-                    completion(.failure(ApiErrors.failedToSignRequest))
+                    completion(.failure(.other(.failedToSignRequest)))
                     return
                 }
                 
@@ -155,22 +134,36 @@ public extension TFAApi {
         return cancelable
     }
     
-    enum UpdateFactorError: Swift.Error, LocalizedError {
-        
-        case tfaFailed
-        case tfaCancelled
-        
-        // MARK: - Swift.Error
-        
-        public var errorDescription: String? {
-            switch self {
-            case .tfaFailed:
-                return "TFA failed"
-            case .tfaCancelled:
-                return "TFA cancelled"
+    /// Model that will be fetched in `completion` block
+    /// of `TFAApi.updateFactor(...)`
+    enum UpdateFactorResult {
+        /// Errors that are might be fetched while updating factor
+        public enum UpdateError: Swift.Error, LocalizedError {
+            case other(ApiErrors)
+            case tfaFailed
+            case tfaCancelled
+            
+            // MARK: - Swift.Error
+            
+            public var errorDescription: String? {
+                switch self {
+                case .other(let errors):
+                    return errors.localizedDescription
+                case .tfaFailed:
+                    return "TFA failed"
+                case .tfaCancelled:
+                    return "TFA cancelled"
+                }
             }
         }
+        
+        /// Case of failed response with `UpdateError` model
+        case failure(UpdateError)
+        
+        /// Case of successful response
+        case success
     }
+    
     /// Method updates factor with `factorId` which is used in wallet with `walletId`
     /// - Parameters:
     ///   - walletId: Identifier of wallet for which factor should be updated
@@ -185,34 +178,22 @@ public extension TFAApi {
         factorId: Int,
         priority: Int,
         sendDate: Date = Date(),
-        completion: @escaping (Swift.Result<Void, Swift.Error>) -> Void
+        completion: @escaping (_ result: UpdateFactorResult) -> Void
         ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
         
         let attributes = TFAUpdateFactorModel.Attributes(priority: priority)
-        let body = ApiDataRequest<TFAUpdateFactorModel, WalletInfoModelV2.Include>(
-            data: TFAUpdateFactorModel(
-                attributes: attributes
-            )
-        )
-        
-        let encodedRequest: Data
-        do {
-            encodedRequest = try body.encode()
-        } catch {
-            completion(.failure(error))
-            return network.getEmptyCancelable()
-        }
+        let model = TFAUpdateFactorModel(attributes: attributes)
         
         self.requestBuilder.buildUpdateFactorRequest(
             walletId: walletId,
             factorId: factorId,
-            body: encodedRequest,
+            model: model,
             sendDate: sendDate,
             completion: { [weak self] (request) in
                 guard let request = request else {
-                    completion(.failure(ApiErrors.failedToSignRequest))
+                    completion(.failure(.other(.failedToSignRequest)))
                     return
                 }
                 
@@ -225,23 +206,37 @@ public extension TFAApi {
         
         return cancelable
     }
-    
-    enum DeleteFactorError: Swift.Error, LocalizedError {
         
-        case tfaFailed
-        case tfaCancelled
-        
-        // MARK: - Swift.Error
-        
-        public var errorDescription: String? {
-            switch self {
-            case .tfaFailed:
-                return "TFA failed"
-            case .tfaCancelled:
-                return "TFA cancelled"
+    /// Model that will be fetched in `completion` block
+    /// of `TFAApi.deleteFactor(...)`
+    enum DeleteFactorResult {
+        /// Errors that are might be fetched while deleting factor
+        public enum DeleteError: Swift.Error, LocalizedError {
+            case tfaFailed
+            case tfaCancelled
+            case other(ApiErrors)
+            
+            // MARK: - Swift.Error
+            
+            public var errorDescription: String? {
+                switch self {
+                case .other(let errors):
+                    return errors.localizedDescription
+                case .tfaFailed:
+                    return "TFA failed"
+                case .tfaCancelled:
+                    return "TFA cancelled"
+                }
             }
         }
+        
+        /// Case of failed response with `DeleteError` model
+        case failure(DeleteError)
+        
+        /// Case of successful response
+        case success
     }
+    
     /// Method deletes factor with `factorId` which is used in wallet with `walletId`
     /// - Parameters:
     ///   - walletId: Wallet identifier
@@ -254,7 +249,7 @@ public extension TFAApi {
         walletId: String,
         factorId: Int,
         sendDate: Date = Date(),
-        completion: @escaping (Swift.Result<Void, Swift.Error>) -> Void
+        completion: @escaping (_ result: DeleteFactorResult) -> Void
         ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -265,7 +260,7 @@ public extension TFAApi {
             sendDate: sendDate,
             completion: { [weak self] (request) in
                 guard let request = request else {
-                    completion(.failure(ApiErrors.failedToSignRequest))
+                    completion(.failure(.other(.failedToSignRequest)))
                     return
                 }
                 
@@ -279,15 +274,14 @@ public extension TFAApi {
         return cancelable
     }
 }
-    
-// MARK: - Private methods
 
+@available(*, deprecated)
 private extension TFAApi {
     
     func createFactor(
-        request: RequestDataSigned,
+        request: TFACreateFactorRequest,
         initiateTFA: Bool,
-        completion: @escaping (Swift.Result<TFACreateFactorResponse, Swift.Error>) -> Void
+        completion: @escaping (_ result: CreateFactorResult) -> Void
         ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -299,7 +293,6 @@ private extension TFAApi {
             headers: request.signedHeaders,
             bodyData: request.requestData,
             completion: { [weak self] (result) in
-                
                 switch result {
                     
                 case .success(let object):
@@ -307,7 +300,7 @@ private extension TFAApi {
                     
                 case .failure(let errors):
                     guard let sself = self else {
-                        completion(.failure(errors))
+                        completion(.failure(.other(errors)))
                         return
                     }
                     
@@ -325,17 +318,17 @@ private extension TFAApi {
                                     )
                                 
                             case .failure:
-                                completion(.failure(CreateFactorError.tfaFailed))
+                                completion(.failure(.tfaFailed))
                                 
                             case .canceled:
-                                completion(.failure(CreateFactorError.tfaCancelled))
+                                completion(.failure(.tfaCancelled))
                             }
                     },
                         onNoTFA: {
                             if errors.contains(status: ApiError.Status.conflict) {
-                                completion(.failure(CreateFactorError.factorAlreadyExists))
+                                completion(.failure(.factorAlreadyExists))
                             } else {
-                                completion(.failure(errors))
+                                completion(.failure(.other(errors)))
                             }
                     })
                 }
@@ -345,9 +338,9 @@ private extension TFAApi {
     }
     
     func updateFactor(
-        request: RequestDataSigned,
+        request: TFAUpdateFactorRequest,
         initiateTFA: Bool,
-        completion: @escaping (Swift.Result<Void, Swift.Error>) -> Void
+        completion: @escaping (_ result: UpdateFactorResult) -> Void
         ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -362,7 +355,7 @@ private extension TFAApi {
                     
                 case .failure(let errors):
                     guard let sself = self else {
-                        completion(.failure(errors))
+                        completion(.failure(.other(errors)))
                         return
                     }
                     
@@ -380,18 +373,18 @@ private extension TFAApi {
                                     )
                                 
                             case .failure:
-                                completion(.failure(UpdateFactorError.tfaFailed))
+                                completion(.failure(.tfaFailed))
                                 
                             case .canceled:
-                                completion(.failure(UpdateFactorError.tfaCancelled))
+                                completion(.failure(.tfaCancelled))
                             }
                     },
                         onNoTFA: {
-                            completion(.failure(errors))
+                            completion(.failure(.other(errors)))
                     })
                     
                 case .success:
-                    completion(.success(()))
+                    completion(.success)
                 }
         })
         
@@ -399,9 +392,9 @@ private extension TFAApi {
     }
     
     func deleteFactor(
-        request: RequestSigned,
+        request: TFADeleteFactorRequest,
         initiateTFA: Bool,
-        completion: @escaping (Swift.Result<Void, Swift.Error>) -> Void
+        completion: @escaping (_ result: DeleteFactorResult) -> Void
         ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -415,7 +408,7 @@ private extension TFAApi {
                     
                 case .failure(let errors):
                     guard let sself = self else {
-                        completion(.failure(errors))
+                        completion(.failure(.other(errors)))
                         return
                     }
                     
@@ -433,18 +426,18 @@ private extension TFAApi {
                                     )
                                 
                             case .failure:
-                                completion(.failure(DeleteFactorError.tfaFailed))
+                                completion(.failure(.tfaFailed))
                                 
                             case .canceled:
-                                completion(.failure(DeleteFactorError.tfaCancelled))
+                                completion(.failure(.tfaCancelled))
                             }
                     },
                         onNoTFA: {
-                            completion(.failure(errors))
+                            completion(.failure(.other(errors)))
                     })
                     
                 case .success:
-                    completion(.success(()))
+                    completion(.success)
                 }
         })
         

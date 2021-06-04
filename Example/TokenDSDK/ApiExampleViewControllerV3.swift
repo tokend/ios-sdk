@@ -184,7 +184,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     func getPhoneByAccountId() {
         self.vc.tokenDApi.generalApi.requestIdentities(
             filter: .accountId(Constants.userAccountId),
-            completion: { (result: GeneralApi.RequestIdentitiesResult<EmptySpecificAttributes>) in
+            completion: { (result: IdentitiesApi.RequestIdentitiesResult<EmptySpecificAttributes>) in
                 switch result {
                     
                 case .failed(let error):
@@ -206,7 +206,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             .generalApi
             .requestSetPhone(
                 accountId: Constants.userAccountId,
-                phone: .init(phone: "+88005553535"),
+                phone: "+88005553535",
                 completion: { (result) in
                     switch result {
                         
@@ -233,7 +233,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             .generalApi
             .requestSetTelegram(
                 accountId: Constants.userAccountId,
-                telegram: .init(username: "username"),
+                telegram: "username",
                 completion: { (result) in
                     switch result {
                         

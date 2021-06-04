@@ -1,6 +1,7 @@
 import Foundation
 
 /// Class provides functionality that allows to fetch sales' data
+@available(*, deprecated, message: "Use SalesApiV3")
 public class SalesApi: BaseApi {
     
     // MARK: - Public properties

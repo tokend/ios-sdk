@@ -7,7 +7,9 @@ public class DocumentsApi: BaseApi {
     
     public static let maxRecommendedDocumentSize: Int = 5 * 1024 * 1024 // bytes
     
-    public let requestBuilder: DocumentsRequestBuilder
+    // MARK: - Internal properties
+    
+    internal let requestBuilder: DocumentsRequestBuilder
     
     // MARK: -
     
@@ -18,65 +20,84 @@ public class DocumentsApi: BaseApi {
         
         super.init(apiStack: apiStack)
     }
+}
     
-    // MARK: - Public
+// MARK: - Public methods
+
+public extension DocumentsApi {
     
-    /// Model that will be fetched in `completion` block of `DocumentsApi.requestUploadPolicy(...)`
-    public enum GetUploadPolicyResult {
-        
-        /// Case of failed response from api with `ApiErrors` model
-        case failure(ApiErrors)
-        
-        /// Case of succesful response from api with `GetUploadPolicyResponse` model
-        case success(GetUploadPolicyResponse)
-    }
-    
-    /// Requests upload policy
+    /// Requests upload policy.
     /// - Parameters:
-    ///   - accountId: Account Id.
-    ///   - policyType: Policy type. See possible values in `UploadPolicy.Type`.
-    ///   - contentType: Content type. See possible values in `UploadPolicy.Content`.
-    ///   - completion: Returns `GetUploadPolicyResult`.
+    ///   - type: Document policy type. See possible values in `UploadPolicy.PolicyType`.
+    ///   - contentType: Content type. See possible values in `UploadPolicy.ContentType`.
+    ///   - ownerAccountId: Owner account Id.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `Swift.Result<GetUploadPolicyResponseModel, Swift.Error>`
     /// - Returns: `Cancelable`
     @discardableResult
-    public func requestUploadPolicy(
-        accountId: String,
-        policyType: String,
+    func getUploadPolicy(
+        type: String,
         contentType: String,
-        completion: @escaping (_ result: GetUploadPolicyResult) -> Void
-        ) -> Cancelable {
+        ownerAccountId: String,
+        completion: @escaping (Swift.Result<GetUploadPolicyResponse, Swift.Error>) -> Void
+    ) -> Cancelable {
         
-        let cancellable = self.network.getEmptyCancelable()
+        let cancelable = self.network.getEmptyCancelable()
+        
+        let body: ApiDataRequest<GetUploadPolicyRequestModel, Empty> = .init(
+            data: .init(
+                type: type,
+                attributes: .init(
+                    contentType: contentType
+                ),
+                relationships: .init(
+                    owner: .init(
+                        data: .init(
+                            id: ownerAccountId
+                        )
+                    )
+                )
+            )
+        )
+        
+        let encodedRequest: Data
+        do {
+            encodedRequest = try body.encode()
+        } catch {
+            completion(.failure(error))
+            return network.getEmptyCancelable()
+        }
         
         self.requestBuilder.buildGetUploadPolicyRequest(
-            accountId: accountId,
-            policyType: policyType,
-            contentType: contentType,
+            body: encodedRequest,
+            sendDate: Date(),
             completion: { [weak self] (request) in
                 guard let request = request else {
-                    completion(.failure(.failedToSignRequest))
+                    completion(.failure(ApiErrors.failedToSignRequest))
                     return
                 }
                 
-                cancellable.cancelable = self?.network.responseDataObject(
+                cancelable.cancelable = self?.network.responseDataObject(
                     ApiDataResponse<GetUploadPolicyResponse>.self,
                     url: request.url,
                     method: request.method,
                     headers: request.signedHeaders,
                     bodyData: request.requestData,
                     completion: { (result) in
+
                         switch result {
-                            
+
                         case .failure(let errors):
                             completion(.failure(errors))
-                            
-                        case .success(let object):
-                            completion(.success(object.data))
+
+                        case .success(let response):
+                            completion(.success(response.data))
                         }
                 })
-        })
+            }
+        )
         
-        return cancellable
+        return cancelable
     }
     
     /// Uploads document for given upload policy with upload option.
@@ -85,51 +106,40 @@ public class DocumentsApi: BaseApi {
     ///   - uploadOption: Upload option.
     ///   - completion: Returns `ResponseMultiPartFormDataResult`.
     /// - Returns: `Cancelable`
-    public func uploadDocument(
+    func uploadDocument(
         uploadPolicy: GetUploadPolicyResponse,
         uploadOption: DocumentUploadOption,
         completion: @escaping (ResponseMultiPartFormDataResult) -> Void
         ) -> Cancelable {
         
         return self.network.uploadMultiPartFormData(
-            url: uploadPolicy.url,
-            formData: uploadPolicy.attributes,
+            url: uploadPolicy.attributes.url,
+            formData: uploadPolicy.attributesJSON,
             uploadOption: uploadOption,
             completion: completion
         )
     }
     
-    /// Model that will be fetched in `completion` block of `DocumentsApi.requestDocumentURL(...)`
-    public enum GetDocumentURLResult {
-        
-        /// Case of failed response from api with `ApiErrors` model
-        case failure(ApiErrors)
-        
-        /// Case of succesful response from api with `GetDocumentUrlResponse` model
-        case success(GetDocumentUrlResponse)
-    }
-    
     /// Requests document url.
     /// - Parameters:
-    ///   - accountId: Account Id.
     ///   - documentId: Document Id.
-    ///   - completion: Returns `GetDocumentURLResult`.
+    ///   - completion: Block that will be called when the result will be received.
+    ///   - result: Member of `Swift.Result<GetDocumentUrlResponse, Swift.Error>`
     /// - Returns: `Cancelable`
     @discardableResult
-    public func requestDocumentURL(
-        accountId: String,
+    func getDocumentURL(
         documentId: String,
-        completion: @escaping(GetDocumentURLResult) -> Void
-        ) -> Cancelable {
+        completion: @escaping(Swift.Result<GetDocumentUrlResponse, Swift.Error>) -> Void
+    ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildGetDocumentURLRequest(
-            accountId: accountId,
             documentId: documentId,
+            sendDate: Date(),
             completion: { [weak self] (request) in
                 guard let request = request else {
-                    completion(.failure(.failedToSignRequest))
+                    completion(.failure(ApiErrors.failedToSignRequest))
                     return
                 }
                 
@@ -148,7 +158,8 @@ public class DocumentsApi: BaseApi {
                             completion(.success(object.data))
                         }
                 })
-        })
+            }
+        )
         
         return cancelable
     }

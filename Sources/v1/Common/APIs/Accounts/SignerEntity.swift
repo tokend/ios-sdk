@@ -1,5 +1,6 @@
 import Foundation
 
+@available(*, deprecated, message: "Use AccountsApiV3")
 open class SignerEntity: Decodable {
     
     // MARK: - Public properties

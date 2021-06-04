@@ -35,6 +35,7 @@ public class APIv3 {
     public private(set) lazy var integrationsApi: IntegrationsApiV3 = { return self.create() }()
     public private(set) lazy var transactionsApi: TransactionsApiV3 = { return self.create() }()
     public private(set) lazy var kycApi: KYCApiV3 = { return create() }()
+    public private(set) lazy var infoApi: InfoApiV3 = { return create() }()
     
     #if TOKENDSDK_CONTOPASSAPI
     public private(set) lazy var invitationsApi: InvitationsApiV3 = { return create() }()

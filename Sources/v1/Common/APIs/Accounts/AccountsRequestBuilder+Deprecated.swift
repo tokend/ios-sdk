@@ -1,5 +1,6 @@
 import Foundation
 
+@available(*, deprecated, message: "Use AccountsApiV3")
 extension AccountsRequestBuilder {
 
     private var accounts: String { "accounts" }

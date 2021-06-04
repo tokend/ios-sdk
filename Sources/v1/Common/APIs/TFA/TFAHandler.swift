@@ -22,9 +22,14 @@ public protocol TFAHandlerProtocol {
 }
 
 /// Class provides functionality that allows to handle the process of TFA
-public class TFAHandler: TFAHandlerProtocol {
+public class TFAHandler {
+    
+    // MARK: - Public properties
+    
     public let verifyApi: TFAVerifyApi
     public let callbacks: ApiCallbacks
+    
+    // MARK: -
     
     public init(
         callbacks: ApiCallbacks,
@@ -33,21 +38,11 @@ public class TFAHandler: TFAHandlerProtocol {
         self.callbacks = callbacks
         self.verifyApi = verifyApi
     }
+}
     
-    // MARK: - TFAHandlerProtocol
-    
-    enum InitiateTFAError: Swift.Error, LocalizedError {
-        case noKeychainOrSalt
-        
-        // MARK: - Swift.Error
-        
-        public var errorDescription: String? {
-            switch self {
-            case .noKeychainOrSalt:
-                return "No keychain or salt data provided"
-            }
-        }
-    }
+// MARK: - TFAHandlerProtocol
+
+extension TFAHandler: TFAHandlerProtocol {
     
     /// Method initiates TFA
     ///  - Parameters:
@@ -104,10 +99,13 @@ public class TFAHandler: TFAHandlerProtocol {
             completion(.canceled)
         })
     }
+}
     
-    // MARK: - Private
+// MARK: - Private methods
+
+private extension TFAHandler {
     
-    fileprivate func submitTFAFactor(
+    func submitTFAFactor(
         walletId: String,
         token: String,
         signedToken: String,
@@ -125,43 +123,36 @@ public class TFAHandler: TFAHandlerProtocol {
         })
     }
     
-    enum VerifyError: Swift.Error, LocalizedError {
-        case requestEncodingFailed
-        
-        // MARK: - Swift.Error
-        
-        public var errorDescription: String? {
-            switch self {
-            case .requestEncodingFailed:
-                return "Encoding failed"
-            }
-        }
-    }
-    private func verify(
+    func verify(
         walletId: String,
         token: String,
         signedToken: String,
         factorId: Int,
         completion: @escaping (_ result: TFAResult) -> Void
         ) {
-        let attributes = TFAVerifyRequest.Attributes(
-            otp: signedToken,
-            token: token
-        )
-        let tfa = TFAVerifyRequest(attributes: attributes)
         
-        guard let tfaData = try? ApiDataRequest<TFAVerifyRequest, WalletInfoModelV2.Include>(
-            data: tfa
-            ).encode() else {
-                completion(.failure(VerifyError.requestEncodingFailed))
-                return
+        let body = ApiDataRequest<TFAVerifyRequest, WalletInfoModelV2.Include>(
+            data: .init(
+                attributes: .init(
+                    otp: signedToken,
+                    token: token
+                )
+            )
+        )
+        
+        let tfaData: Data
+        do {
+            tfaData = try body.encode()
+        } catch {
+            completion(.failure(error))
+            return
         }
         
         self.verifyApi.verifyTFA(
             walletId: walletId,
             factorId: factorId,
             signedTokenData: tfaData,
-            completion: { result in
+            completion: { (result: Swift.Result) in
                 switch result {
                     
                 case .failure(let errors):
@@ -186,7 +177,6 @@ public struct TFAPasswordHandler {
     public enum InitiatePasswordTFAError: Swift.Error, LocalizedError {
         case keyPairDerivationFailed
         case tokenEncodingFailed
-        case tokenSignFailed
         
         // MARK: - Swift.Error
         
@@ -196,8 +186,6 @@ public struct TFAPasswordHandler {
                 return "Key pair derivation failed"
             case .tokenEncodingFailed:
                 return "Token encoding failed"
-            case .tokenSignFailed:
-                return "Token sign failed"
             }
         }
     }
@@ -215,26 +203,29 @@ public struct TFAPasswordHandler {
             salt: meta.salt
         )
         
-        guard
-            let keyPairs = try? KeyPairBuilder.getKeyPairs(
+        let signedToken: String
+        do {
+            
+            let keyPairs = try KeyPairBuilder.getKeyPairs(
                 forLogin: login,
                 password: password,
                 keychainData: meta.keychainData,
                 walletKDF: walletKDF
-            ),
-            let keyPair = keyPairs.first
+            )
+            guard let keyPair = keyPairs.first
             else {
                 completion(.failure(InitiatePasswordTFAError.keyPairDerivationFailed))
                 return
-        }
-
-        guard let data = meta.token.data(using: .utf8) else {
-            completion(.failure(InitiatePasswordTFAError.tokenEncodingFailed))
-            return
-        }
-        
-        guard let signedToken = try? ECDSA.signED25519(data: data, keyData: keyPair).base64EncodedString() else {
-            completion(.failure(InitiatePasswordTFAError.tokenSignFailed))
+            }
+            
+            guard let data = meta.token.data(using: .utf8) else {
+                completion(.failure(InitiatePasswordTFAError.tokenEncodingFailed))
+                return
+            }
+            
+            signedToken = try ECDSA.signED25519(data: data, keyData: keyPair).base64EncodedString()
+        } catch {
+            completion(.failure(error))
             return
         }
         

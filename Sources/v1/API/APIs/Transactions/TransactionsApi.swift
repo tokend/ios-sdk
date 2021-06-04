@@ -1,6 +1,7 @@
 import Foundation
 
 /// Class provides functionality that allows to fetch and send transactions
+@available(*, deprecated, message: "Use TransactionsApiV3")
 public class TransactionsApi: BaseApi {
     
     // MARK: - Public properties
