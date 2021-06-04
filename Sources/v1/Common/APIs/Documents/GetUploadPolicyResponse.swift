@@ -38,7 +38,7 @@ public extension GetUploadPolicyResponse {
     
     struct Attributes: Decodable {
         
-        let url: String
-        let key: String
+        public let url: String
+        public let key: String
     }
 }
