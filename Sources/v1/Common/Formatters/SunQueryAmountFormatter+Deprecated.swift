@@ -1,6 +1,7 @@
 import Foundation
 
 /// Class provides functionality that allows to format amount
+@available(*, deprecated)
 public class SunQueryAmountFormatter: AmountFormatterProtocol {
     
     public static let maximumFractionDigits: Int = 6
