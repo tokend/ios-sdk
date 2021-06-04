@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [4.0.0] 2021-06-04
+
+### Removed
+- All deprecated APIs and methods. To migrate to version `4.0.0` first install version `3.4.0` and follow suggestions.
+
 ## [3.4.0] 2021-06-04
 
 ### Refactored
