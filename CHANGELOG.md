@@ -9,6 +9,14 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 
+## 2021-06-04
+
+### Refactored
+- `APIv1`
+
+### Deprecated
+- `APIv1`
+
 ## [3.3.3] 2021-05-05
 
 ### Added
