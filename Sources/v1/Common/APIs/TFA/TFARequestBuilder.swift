@@ -4,29 +4,31 @@ import Foundation
 /// which are used to perform TFA actions
 public class TFARequestBuilder: BaseApiRequestBuilder {
     
-    // MARK: - Public properties
+    // MARK: - Internal properties
     
-    public let basePath: String = "wallets"
-    public let factorsPath: String = "factors"
-    public let verificationPath: String = "verification"
+    internal let wallets: String = "wallets"
+    internal let factors: String = "factors"
+    internal let verification: String = "verification"
     
-    // MARK: - Public
+}
+
+// MARK: - Public methods
+
+public extension TFARequestBuilder {
     
-    /// Method build request that fetches factors
+    /// Method build request that fetches factors.
     /// - Parameters:
-    ///   - walletId: Identifier of wallet for which factors should be fetched
-    ///   - sendDate: Request's send date
-    ///   - completion: Returns `TFAGetFactorsRequest` or nil.
-    public func buildGetFactorsRequest(
+    ///   - walletId: Identifier of wallet for which factors should be fetched.
+    ///   - sendDate: Request's send date.
+    ///   - completion: Returns `RequestSigned` or nil.
+    func buildGetFactorsRequest(
         walletId: String,
         sendDate: Date,
-        completion: @escaping (TFAGetFactorsRequest?) -> Void
-        ) {
+        completion: @escaping (RequestSigned?) -> Void
+    ) {
         
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath(self.basePath)
-            .addPath(walletId)
-            .addPath(self.factorsPath)
+        let url = baseUrl/self.wallets/walletId/self.factors
         
         self.buildRequestSigned(
             baseUrl: baseUrl,
@@ -37,95 +39,75 @@ public class TFARequestBuilder: BaseApiRequestBuilder {
         )
     }
     
-    /// Method build request that creates factor
+    /// Method build request that creates factor.
     /// - Parameters:
-    ///   - walletId: Identifier of wallet for which factor should be fetched
-    ///   - model: Create factor model
-    ///   - sendDate: Request's send date
-    ///   - completion: Returns `TFACreateFactorRequest` or nil.
-    public func buildCreateFactorRequest(
+    ///   - walletId: Identifier of wallet for which factor should be fetched.
+    ///   - body: Factor data.
+    ///   - sendDate: Request's send date.
+    ///   - completion: Returns `RequestDataSigned` or nil.
+    func buildCreateFactorRequest(
         walletId: String,
-        model: TFACreateFactorModel,
+        body: Data,
         sendDate: Date,
-        completion: @escaping (TFACreateFactorRequest?) -> Void
-        ) {
+        completion: @escaping (RequestDataSigned?) -> Void
+    ) {
         
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath(self.basePath)
-            .addPath(walletId)
-            .addPath(self.factorsPath)
-        
-        let requestData = ApiDataRequest<TFACreateFactorModel, WalletInfoModelV2.Include>(data: model)
-        guard let requestDataEncoded = try? requestData.encode() else {
-            completion(nil)
-            return
-        }
+        let url = baseUrl/self.wallets/walletId/self.factors
         
         self.buildRequestDataSigned(
             baseUrl: baseUrl,
             url: url,
             method: .post,
-            requestData: requestDataEncoded,
+            requestData: body,
             sendDate: sendDate,
             completion: completion
         )
     }
     
-    /// Method build request that creates factor
+    /// Method build request that creates factor.
     /// - Parameters:
-    ///   - walletId: Identifier of wallet for which factor should be updated
-    ///   - factorId: Identifier of factor that should be updated
-    ///   - model: Update model
-    ///   - sendDate: Request's send date
-    ///   - completion: Returns `TFAUpdateFactorRequest` or nil.
-    public func buildUpdateFactorRequest(
+    ///   - walletId: Identifier of wallet for which factor should be updated.
+    ///   - factorId: Identifier of factor that should be updated.
+    ///   - body: Factor data.
+    ///   - sendDate: Request's send date.
+    ///   - completion: Returns `RequestDataSigned` or nil.
+    func buildUpdateFactorRequest(
         walletId: String,
         factorId: Int,
-        model: TFAUpdateFactorModel,
+        body: Data,
         sendDate: Date,
-        completion: @escaping (TFAUpdateFactorRequest?) -> Void
-        ) {
+        completion: @escaping (RequestDataSigned?) -> Void
+    ) {
         
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath(self.basePath)
-            .addPath(walletId)
-            .addPath(self.factorsPath)
-            .addPath(factorId)
-        
-        let requestData = ApiDataRequest<TFAUpdateFactorModel, WalletInfoModelV2.Include>(data: model)
-        guard let requestDataEncoded = try? requestData.encode() else {
-            completion(nil)
-            return
-        }
+        let url = baseUrl/self.wallets/walletId/self.factors/"\(factorId)"
         
         self.buildRequestDataSigned(
             baseUrl: baseUrl,
             url: url,
             method: .patch,
-            requestData: requestDataEncoded,
+            requestData: body,
             sendDate: sendDate,
             completion: completion
         )
     }
     
-    /// Method build request that deletes factor
+    /// Method build request that deletes factor.
     /// - Parameters:
-    ///   - walletId: Identifier of wallet for which factor should be deleted
-    ///   - factorId: Identifier of factor that should be deleted
-    ///   - sendDate: Request's send date
-    ///   - completion: Returns `TFADeleteFactorRequest` or nil.
-    public func buildDeleteFactorRequest(
+    ///   - walletId: Identifier of wallet for which factor should be deleted.
+    ///   - factorId: Identifier of factor that should be deleted.
+    ///   - sendDate: Request's send date.
+    ///   - completion: Returns `RequestSigned` or nil.
+    func buildDeleteFactorRequest(
         walletId: String,
         factorId: Int,
         sendDate: Date,
-        completion: @escaping (TFADeleteFactorRequest?) -> Void
-        ) {
+        completion: @escaping (RequestSigned?) -> Void
+    ) {
         
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath(self.basePath)
-            .addPath(walletId)
-            .addPath(self.factorsPath)
-            .addPath(factorId)
+        let url = baseUrl/self.wallets/walletId/self.factors/"\(factorId)"
         
         self.buildRequestSigned(
             baseUrl: baseUrl,
@@ -142,23 +124,19 @@ public class TFARequestBuilder: BaseApiRequestBuilder {
     ///   - factorId: Identifier of factor that should be used to verify token
     ///   - signedTokenData: Data of token that should be verified
     /// - Returns: `TFAVerifySignedTokenRequest`
-    public func buildVerifySignedTokenRequest(
+    func buildVerifySignedTokenRequest(
         walletId: String,
         factorId: Int,
         signedTokenData: Data
-        ) -> TFAVerifySignedTokenRequest {
+    ) -> RequestData {
         
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath(self.basePath)
-            .addPath(walletId)
-            .addPath(self.factorsPath)
-            .addPath(factorId)
-            .addPath(self.verificationPath)
+        let url = baseUrl/self.wallets/walletId/self.factors/"\(factorId)"/self.verification
         
-        let request = TFAVerifySignedTokenRequest(
+        let request = RequestData(
             url: url,
             method: .put,
-            signedTokenData: signedTokenData
+            requestData: signedTokenData
         )
         
         return request

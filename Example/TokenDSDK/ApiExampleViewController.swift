@@ -615,7 +615,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     func getFactors(walletId: String) {
         self.tokenDApi.tfaApi.getFactors(
             walletId: walletId,
-            completion: { (result) in
+            completion: { (result: Swift.Result) in
                 switch result {
                     
                 case .failure(let errors):
@@ -654,7 +654,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
             self.tokenDApi.tfaApi.createFactor(
                 walletId: walletId,
                 type: TFAFactorType.totp.rawValue,
-                completion: { (result) in
+                completion: { (result: Swift.Result) in
                     switch result {
                         
                     case .failure(let error):
@@ -670,7 +670,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         
         self.tokenDApi.tfaApi.getFactors(
             walletId: walletId,
-            completion: { (result) in
+            completion: { (result: Swift.Result) in
                 switch result {
                     
                 case .failure(let errors):
@@ -690,7 +690,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
             walletId: walletId,
             factorId: factorId,
             priority: priority,
-            completion: { result in
+            completion: { (result: Swift.Result) in
                 switch result {
                     
                 case .failure(let error):
@@ -713,7 +713,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         
         self.tokenDApi.tfaApi.getFactors(
             walletId: walletId,
-            completion: { (result) in
+            completion: { (result: Swift.Result) in
                 switch result {
                     
                 case .failure(let errors):
@@ -731,7 +731,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
                         self.tokenDApi.tfaApi.deleteFactor(
                             walletId: walletId,
                             factorId: id,
-                            completion: { (deleteResult) in
+                            completion: { (deleteResult: Swift.Result) in
                                 switch deleteResult {
                                     
                                 case .failure(let error):

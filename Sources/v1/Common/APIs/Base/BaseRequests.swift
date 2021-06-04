@@ -100,6 +100,30 @@ public class RequestParametersSigned: RequestSigned {
 }
 
 /// Base model for signed request with raw data.
+public class RequestData: RequestPlain {
+    
+    // MARK: - Public properties
+    
+    public let requestData: Data
+    
+    // MARK: -
+    
+    public init(
+        url: String,
+        method: RequestMethod,
+        requestData: Data
+        ) {
+        
+        self.requestData = requestData
+        
+        super.init(
+            url: url,
+            method: method
+        )
+    }
+}
+
+/// Base model for signed request with raw data.
 public class RequestDataSigned: RequestSigned {
     
     // MARK: - Public properties
