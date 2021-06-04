@@ -48,26 +48,6 @@ public struct NetworkInfoModel {
         self.ledger = ledger
     }
     
-    @available(*, deprecated, message: "Use Horizon.HorizonStateResource instead")
-    public init?(
-        networkInfoResponse: NetworkInfoResponse,
-        requestTime: Date,
-        responseTime: Date
-        ) {
-        
-        self.init(
-            networkPassphrase: networkInfoResponse.networkPassphrase,
-            masterAccountId: networkInfoResponse.adminAccountId,
-            masterExchangeName: networkInfoResponse.masterExchangeName,
-            txExpirationPeriod: networkInfoResponse.txExpirationPeriod,
-            networkTime: networkInfoResponse.currentTime,
-            requestTime: requestTime,
-            responseTime: responseTime,
-            precision: networkInfoResponse.precision,
-            ledger: networkInfoResponse.ledgersState.core.latest
-        )
-    }
-    
     public init?(
         networkInfoResponse: Horizon.HorizonStateResource,
         requestTime: Date,

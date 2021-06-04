@@ -180,80 +180,6 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
             }
         })
     }
-    
-    func getPhoneByAccountId() {
-        self.vc.tokenDApi.generalApi.requestIdentities(
-            filter: .accountId(Constants.userAccountId),
-            completion: { (result: IdentitiesApi.RequestIdentitiesResult<EmptySpecificAttributes>) in
-                switch result {
-                    
-                case .failed(let error):
-                    print("error: \(error)")
-                    
-                case .succeeded(let identities):
-                    guard let number = identities.first(where: { (identity) -> Bool in
-                        return identity.attributes.phoneNumber != nil
-                    })?.attributes.phoneNumber else {
-                        return
-                    }
-                    print(number)
-                }
-        })
-    }
-    
-    func setPhone() {
-        self.vc.tokenDApi
-            .generalApi
-            .requestSetPhone(
-                accountId: Constants.userAccountId,
-                phone: "+88005553535",
-                completion: { (result) in
-                    switch result {
-                        
-                    case .failed(let error):
-                        if error.contains(status: "403") {
-                            
-                        }
-                        
-                    case .succeeded:
-                        print("Success")
-                        
-                    case .tfaFailed:
-                        print("TFA Failed")
-                        
-                    case .tfaCancelled:
-                        print("TFA Cancelled")
-                    }
-            }
-        )
-    }
-    
-    func setTelegram() {
-        self.vc.tokenDApi
-            .generalApi
-            .requestSetTelegram(
-                accountId: Constants.userAccountId,
-                telegram: "username",
-                completion: { (result) in
-                    switch result {
-                        
-                    case .failed(let error):
-                        if error.contains(status: "403") {
-                            
-                        }
-                        
-                    case .succeeded:
-                        print("Success")
-                        
-                    case .tfaFailed:
-                        print("TFA Failed")
-                        
-                    case .tfaCancelled:
-                        print("TFA Cancelled")
-                    }
-            }
-        )
-    }
 
     func sendTransaction() {
         self.tokenDApi.transactionsApi.requestSubmitTransaction(
@@ -268,20 +194,6 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
 
                 case .success(let document):
                     print(document)
-                }
-        })
-    }
-    
-    func sendFiatPayment() {
-        self.vc.transactionsApi.sendFiatPayment(
-            envelope: "AAAAAKbDjaev91h/pGho2pP/H0bmS6zQemCK/NBnvugPSv6FA7OCxl9K5RMAAAAAXVZiuQAAAABdX48pAAAAAAAAAAEAAAAAAAAAJQAAAAAAAAAMAAAAAABMS0AAAAADVUFIAAAAAAAAAAAAAAAAAAAAAAAAAAABD0r+hQAAAEBNuuXNsMBEPkjzWmJ5R4zsKq8fnW7hyJo4sqZTqW9xZyC37B6PxGx1PrSA1SN8um99nThzVC8Kv0NuT7chD4ID",
-            completion: { (result) in
-                switch result {
-                case .failure(let error):
-                    print("Error: \(error)")
-                    
-                case .success(let resposnse):
-                    print("Success: \(resposnse.data.attributes.payUrl)")
                 }
         })
     }
@@ -763,40 +675,6 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         })
     }
     
-    func loginAndRequestHistoryForFirstBalance() {
-        self.vc.performLogin(
-            onSuccess: { (walledData) in
-                self.vc.tokenDApi.balancesApi.requestDetails(
-                    accountId: walledData.accountId,
-                    completion: { (result) in
-                        switch result {
-                            
-                        case .failure(let errors):
-                            print("failed to fetch balances: \(errors.localizedDescription)")
-                            
-                        case .success(let balances):
-                            guard let balance = balances.first else {
-                                print("No balances")
-                                return
-                            }
-                            
-                            self.requestHistory(
-                                balance: balance.balanceId,
-                                completion: { (document) in
-                                    guard let data = document.data else {
-                                        print("failed to get data: \(document)")
-                                        return
-                                    }
-                                    
-                                    print("history: \(data)")
-                            })
-                        }
-                })
-        },
-            onFailed: { _ in }
-        )
-    }
-    
     func requestHistory(
         balance: String,
         completion: @escaping (_ doc: Document<[Horizon.ParticipantsEffectResource]>) -> Void
@@ -1021,8 +899,6 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         vc.sourceType = .photoLibrary
         vc.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary) ?? []
         
-        vc.delegate = self
-        
         self.present(vc, animated: true, completion: nil)
     }
     
@@ -1049,89 +925,6 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         
         case imageUrl(URL)
         case image(UIImage)
-    }
-    
-    func requestPolicyAndUpload(uploadOption: UploadOption) {
-        let image: UIImage
-        
-        switch uploadOption {
-            
-        case .image(let img):
-            image = img
-            
-        case .imageUrl(let url):
-            guard
-                let data = try? Data(contentsOf: url),
-                let img = UIImage(data: data) else {
-                    return
-            }
-            
-            image = img
-        }
-        
-        guard let data = self.resizeImageToMaxSizePNGData(image: image) else {
-            return
-        }
-        
-        let documentUploadOption = DocumentUploadOption.data(
-            data: data,
-            meta: DocumentUploadOption.MetaInfo(
-                fileName: "\(Date()).png",
-                mimeType: UploadPolicy.ContentType.imagePng
-            )
-        )
-        let policyType = UploadPolicy.PolicyType.generalPublic
-        let contentType = UploadPolicy.ContentType.imagePng
-        
-        self.vc.requestUploadPolicy(
-            policyType: policyType,
-            contentType: contentType,
-            completion: { (result) in
-                switch result {
-                    
-                case .failure(let errors):
-                    print("Failed to request policy: \(errors.localizedDescription)")
-                    
-                case .success(let response):
-                    self.uploadDocument(uploadPolicy: response, documentUploadOption: documentUploadOption)
-                }
-        })
-    }
-    
-    func uploadDocument(
-        uploadPolicy: GetUploadPolicyResponse,
-        documentUploadOption: DocumentUploadOption
-        ) {
-        
-        _ = self.vc.tokenDApi.documentsApi.uploadDocument(
-            uploadPolicy: uploadPolicy,
-            uploadOption: documentUploadOption,
-            completion: { (result) in
-                switch result {
-                    
-                case .failure(let error):
-                    print("Failed to upload file: \(error)")
-                    
-                case .success:
-                    print("File uploaded")
-                    self.requestDocumentUrl(documentId: uploadPolicy.documentId)
-                }
-        })
-    }
-    
-    func requestDocumentUrl(documentId: String) {
-        self.vc.requestDocumentUrl(
-            documentId: documentId,
-            completion: { (result) in
-                switch result {
-                    
-                case .failure(let error):
-                    print("Get document url error: \(error.localizedDescription)")
-                    
-                case .success(let response):
-                    print("Get document url: \(response.attributes.url)")
-                }
-        })
     }
     
     func requestChangeRoleRequests() {
@@ -1289,33 +1082,3 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
 //        self.requestPolicyAndUpload(documentUrl: url)
 //    }
 //}
-
-extension ApiExampleViewControllerV3: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    func imagePickerController(
-        _ picker: UIImagePickerController,
-        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
-        ) {
-        
-        picker.dismiss(animated: true, completion: nil)
-        
-        if #available(iOS 11.0, *) {
-            if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL {
-                self.requestPolicyAndUpload(uploadOption: .imageUrl(url))
-            } else if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-                self.requestPolicyAndUpload(uploadOption: .image(image))
-            } else if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-                self.requestPolicyAndUpload(uploadOption: .image(image))
-            }
-        } else {
-            if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-                self.requestPolicyAndUpload(uploadOption: .image(image))
-            } else if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-                self.requestPolicyAndUpload(uploadOption: .image(image))
-            }
-        }
-    }
-}
-// swiftlint:enable type_body_length
-// swiftlint:enable line_length
-// swiftlint:enable file_length

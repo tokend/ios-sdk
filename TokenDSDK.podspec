@@ -14,8 +14,7 @@ Pod::Spec.new do |s|
   s.ios.dependency 'TokenDWallet', '3.1.1'
 
   v1_source_files = 'Sources/Common/**/*.swift',
-                    'Sources/v1/API/**/*.swift',
-                    'Sources/v1/Common/**/*.swift'
+                    'Sources/v1/**/*.swift'
 
   v1_alamofire_files = 'Sources/Alamofire/Common/**/*.swift',
                        'Sources/Alamofire/v1/**/*.swift'

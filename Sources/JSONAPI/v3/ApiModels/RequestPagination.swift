@@ -22,8 +22,7 @@ public class RequestPagination {
         
         switch self.option {
             
-        case .single(let index, let limit, let order),
-             .indexedSingle(let index, let limit, let order):
+        case .indexedSingle(let index, let limit, let order):
             let page = IndexedPageModel(index: index, limit: limit, order: order)
             urlQueryItems = page.urlQueryItems()
 
@@ -31,8 +30,7 @@ public class RequestPagination {
             let page = CursorPageModel(cursor: cursor, limit: limit, order: order)
             urlQueryItems = page.urlQueryItems()
             
-        case .strategy(let strategy),
-             .indexedStrategy(let strategy):
+        case .indexedStrategy(let strategy):
             let page: IndexedPageModel
             if let nextPage = strategy.nextPage {
                 page = nextPage
@@ -59,16 +57,14 @@ public class RequestPagination {
     public func resetToFirstPage() {
         switch self.option {
             
-        case .strategy(let strategy),
-             .indexedStrategy(let strategy):
+        case .indexedStrategy(let strategy):
             _ = strategy.toStartPage()
 
         case .cursorStrategy(let strategy):
             _ = strategy.toStartPage()
 
         case .cursorSingle,
-             .indexedSingle,
-             .single:
+             .indexedSingle:
             break
         }
     }
@@ -89,13 +85,11 @@ public class RequestPagination {
     public func isLastPage(resultsCount: Int = .max) -> Bool {
         switch self.option {
 
-        case .single,
-             .indexedSingle,
+        case .indexedSingle,
              .cursorSingle:
             return true
 
-        case .strategy(let strategy),
-             .indexedStrategy(let strategy):
+        case .indexedStrategy(let strategy):
             return strategy.nextPage == nil || resultsCount < strategy.limit || strategy.limit == 0
 
         case .cursorStrategy(let strategy):
@@ -115,13 +109,11 @@ public class RequestPagination {
         let adjustedOption: Option
         switch self.option {
             
-        case .single,
-             .indexedSingle,
+        case .indexedSingle,
              .cursorSingle:
             adjustedOption = self.option
             
-        case .strategy(let strategy),
-             .indexedStrategy(let strategy):
+        case .indexedStrategy(let strategy):
             let isLastPage = resultsCount < strategy.limit
             
             if let links = links, let updated = IndexedPaginationStrategy(links: links) {
@@ -169,8 +161,6 @@ extension RequestPagination {
     public enum Option {
 
         /// Option for single page request.
-        @available(*, deprecated, renamed: "indexedSingle")
-        case single(index: Int, limit: Int, order: PaginationOrder)
         case indexedSingle(index: Int, limit: Int, order: PaginationOrder)
 
         /// Option for single page request.
@@ -178,8 +168,6 @@ extension RequestPagination {
 
         /// Option with strategy provided.
         /// Strategy reference should be updated in `request...` func according to response.
-        @available(*, deprecated, renamed: "indexedStrategy")
-        case strategy(_ strategy: IndexedPaginationStrategy)
         case indexedStrategy(_ strategy: IndexedPaginationStrategy)
 
         /// Option with strategy provided.

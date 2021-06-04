@@ -5,8 +5,6 @@ public extension KeyServerApi {
     enum GetWalletKDFError: Swift.Error, LocalizedError {
 
         /// KDF params not found for given login.
-        @available(*, deprecated, renamed: "loginNotFound")
-        case emailNotFound
         case loginNotFound
 
         // MARK: - Swift.Error
@@ -14,8 +12,7 @@ public extension KeyServerApi {
         public var errorDescription: String? {
             switch self {
 
-            case .emailNotFound,
-                 .loginNotFound:
+            case .loginNotFound:
                 return "KDF for login not found"
             }
         }
