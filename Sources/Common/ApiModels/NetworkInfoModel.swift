@@ -48,6 +48,7 @@ public struct NetworkInfoModel {
         self.ledger = ledger
     }
     
+    @available(*, deprecated, message: "Use Horizon.HorizonStateResource instead")
     public init?(
         networkInfoResponse: NetworkInfoResponse,
         requestTime: Date,
