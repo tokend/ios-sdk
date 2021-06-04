@@ -67,6 +67,30 @@ public struct NetworkInfoModel {
         )
     }
     
+    public init?(
+        networkInfoResponse: Horizon.HorizonStateResource,
+        requestTime: Date,
+        responseTime: Date
+        ) {
+        
+        guard let ledger = networkInfoResponse.core?.latest
+        else {
+            return nil
+        }
+        
+        self.init(
+            networkPassphrase: networkInfoResponse.networkPassphrase,
+            masterAccountId: networkInfoResponse.masterAccountId,
+            masterExchangeName: networkInfoResponse.environmentName,
+            txExpirationPeriod: UInt64(networkInfoResponse.txExpirationPeriod),
+            networkTime: Int64(networkInfoResponse.currentTime.timeIntervalSince1970),
+            requestTime: requestTime,
+            responseTime: responseTime,
+            precision: networkInfoResponse.precision,
+            ledger: ledger
+        )
+    }
+    
     // MARK: - Public
     
     public func getAdjustedSendTime(sendDate: Date) -> Int64 {
