@@ -1,6 +1,7 @@
 import Foundation
 
 /// Class provides functionality that allows to fetch order books
+@available(*, deprecated, message: "Use OrderBookApiV3")
 public class OrderBookApi: BaseApi {
     
     // MARK: - Public properties

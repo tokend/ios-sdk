@@ -1,6 +1,7 @@
 import Foundation
 
 /// Class provides functionality that allows to fetch asset pairs
+@available(*, deprecated, message: "Use AssetPairsApiV3")
 public class AssetPairsApi: BaseApi {
     
     // MARK: - Public properties

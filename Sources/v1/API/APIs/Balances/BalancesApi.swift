@@ -1,6 +1,7 @@
 import Foundation
 
 /// Class provides functionality that allows to fetch balances
+@available(*, deprecated, message: "Use BalancesApiV3")
 public class BalancesApi: BaseApi {
     
     // MARK: - Public properties

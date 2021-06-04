@@ -1,6 +1,7 @@
 import Foundation
 
 /// Class provides functionality that allows to fetch offers
+@available(*, deprecated, message: "Use OffersApiV3")
 public class OffersApi: BaseApi {
     
     // MARK: - Public properties
