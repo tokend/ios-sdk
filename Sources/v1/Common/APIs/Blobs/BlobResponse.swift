@@ -6,12 +6,25 @@ public struct BlobResponse: Decodable {
     
     public let attributes: Attributes
     public let id: String
-    public let type: String
+    public let typeString: String
     
-    public var blobType: BlobType {
-        return BlobType(rawValue: self.type) ?? .unknown
+    enum CodingKeys: String, CodingKey {
+        
+        case attributes
+        case id
+        case typeString = "type"
     }
     
+    public var type: TokenDSDK.BlobType? {
+        return TokenDSDK.BlobType(rawValue: self.typeString)
+    }
+    
+    @available(*, deprecated, renamed: "type")
+    public var blobType: BlobType {
+        return BlobType(rawValue: self.typeString) ?? .unknown
+    }
+    
+    @available(*, deprecated, message: "Use BlobType instead")
     public enum BlobType: String, Decodable {
         case assetDescription   = "asset_description"
         case fundOverview       = "fund_overview"
@@ -72,7 +85,7 @@ extension BlobResponse {
     }
     
     public func getBlobContent() -> BlobContent {
-        switch self.blobType {
+        switch self.type {
             
         case .assetDescription:
             return BlobContent.assetDescription(string: attributes.value)
@@ -105,7 +118,7 @@ extension BlobResponse {
 
             return .unknown
             
-        case .unknown:
+        default:
             return .unknown
         }
     }

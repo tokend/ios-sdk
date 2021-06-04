@@ -32,7 +32,7 @@ public extension BlobsApi {
     @discardableResult
     func getBlob(
         blobId: String,
-        completion: @escaping (_ result: Swift.Result<BlobResponse, Swift.Error>) -> Void
+        completion: @escaping (Swift.Result<BlobResponse, Swift.Error>) -> Void
         ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -84,7 +84,7 @@ public extension BlobsApi {
 
         let cancelable = self.network.getEmptyCancelable()
 
-        let body: PostBlobModel = .init(
+        let body: ApiDataRequest<PostBlobRequestModel, Empty> = .init(
             data: .init(
                 type: type,
                 attributes: .init(

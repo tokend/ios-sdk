@@ -22,7 +22,7 @@ public extension BlobsRequestBuilder {
     func buildGetBlobRequest(
         blobId: String,
         sendDate: Date,
-        completion: @escaping (GetBlobRequest?) -> Void
+        completion: @escaping (RequestSigned?) -> Void
         ) {
         
         let baseUrl = self.apiConfiguration.urlString
@@ -45,7 +45,7 @@ public extension BlobsRequestBuilder {
     func buildPostBlobRequest(
         body: Data,
         sendDate: Date,
-        completion: @escaping (PostBlobRequest?) -> Void
+        completion: @escaping (RequestDataSigned?) -> Void
     ) {
 
         let baseUrl = self.apiConfiguration.urlString
