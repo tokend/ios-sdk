@@ -503,7 +503,7 @@ $resource_configs.each do |key, info|
               else
                 output_type = $namespace + '.' + resource_name
               end
-              cap_output_type = 'Codable'
+              cap_output_type = 'Resource'
             end
           else
             inner_name = inner['name']
@@ -531,9 +531,13 @@ $resource_configs.each do |key, info|
         end
 
         low_output_type = cap_output_type.downcase
-        getter_string = "return self.#{low_output_type}OptionalValue(key: CodingKeys.#{name})"
+        if cap_output_type == 'Resource'
+            getter_string = "return self.value(forKey: CodingKeys.#{name}) as? #{output_type}"
+        else
+            getter_string = "return self.#{low_output_type}OptionalValue(key: CodingKeys.#{name})"
+        end
 
-        if optional || cap_output_type == 'Codable'
+        if optional || cap_output_type == 'Codable' || cap_output_type == 'Resource'
           output_type = "#{output_type}?"
         else
           output_type_default_value = get_output_attribute_type_default_value type
@@ -889,9 +893,19 @@ $inner_configs.each do |name, info|
         else
           decode_func = ''
           if output_type == 'Decimal'
-            decode_func = 'decodeDecimalString'
-            decode_func += 's' if is_collection
-            decode_func += '(key'
+              if optional
+                  decode_func = 'decodeOptionalDecimalString(key'
+              elsif is_collection
+                  decode_func = 'decodeDecimalStrings(key'
+              else
+                  decode_func = 'decodeDecimalString(key'
+              end
+          elsif output_type == 'Date'
+            if optional
+                decode_func = 'decodeOptionalDateString(key'
+            else
+                decode_func = 'decodeDateString(key'
+            end
           elsif output_type == '[String: Any]'
             decode_func = "decodeDictionary(#{output_type}.self, forKey"
           else
