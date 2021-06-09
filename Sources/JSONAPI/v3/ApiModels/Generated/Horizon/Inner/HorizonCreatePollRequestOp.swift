@@ -39,12 +39,12 @@ public struct CreatePollRequestOp: Decodable {
         
         self.allTasks = try? container.decode(UInt32.self, forKey: .allTasks)
         self.creatorDetails = try container.decodeDictionary([String: Any].self, forKey: .creatorDetails)
-        self.endTime = try container.decode(Date.self, forKey: .endTime)
+        self.endTime = try container.decodeDateString(key: .endTime)
         self.numberOfChoices = try container.decode(UInt64.self, forKey: .numberOfChoices)
         self.permissionType = try container.decode(UInt64.self, forKey: .permissionType)
         self.pollData = try container.decode(PollData.self, forKey: .pollData)
         self.resultProviderId = try container.decode(String.self, forKey: .resultProviderId)
-        self.startTime = try container.decode(Date.self, forKey: .startTime)
+        self.startTime = try container.decodeDateString(key: .startTime)
         self.voteConfirmationRequired = try container.decode(Bool.self, forKey: .voteConfirmationRequired)
     }
 

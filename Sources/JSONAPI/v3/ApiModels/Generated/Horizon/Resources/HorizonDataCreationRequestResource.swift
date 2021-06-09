@@ -3,23 +3,24 @@
 import Foundation
 import DLJSONAPI
 
-// MARK: - KYCRecoveryRequestResource
+// MARK: - DataCreationRequestResource
 
 extension Horizon {
-open class KYCRecoveryRequestResource: BaseReviewableRequestDetailsResource {
+open class DataCreationRequestResource: BaseReviewableRequestDetailsResource {
     
     open override class var resourceType: String {
-        return "request-details-kyc-recovery"
+        return "request-details-data-creation"
     }
     
     public enum CodingKeys: String, CodingKey {
         // attributes
         case creatorDetails
         case sequenceNumber
-        case signersData
+        case type
+        case value
         
         // relations
-        case targetAccount
+        case owner
     }
     
     // MARK: Attributes
@@ -32,14 +33,18 @@ open class KYCRecoveryRequestResource: BaseReviewableRequestDetailsResource {
         return self.uint32OptionalValue(key: CodingKeys.sequenceNumber) ?? 0
     }
     
-    open var signersData: [Horizon.UpdateSignerData]? {
-        return self.codableOptionalValue(key: CodingKeys.signersData)
+    open var attributesType: UInt64 {
+        return self.uint64OptionalValue(key: CodingKeys.type) ?? 0
+    }
+    
+    open var value: [String: Any] {
+        return self.dictionaryOptionalValue(key: CodingKeys.value) ?? [:]
     }
     
     // MARK: Relations
     
-    open var targetAccount: Horizon.AccountResource? {
-        return self.relationSingleOptionalValue(key: CodingKeys.targetAccount)
+    open var owner: Horizon.AccountResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.owner)
     }
     
 }

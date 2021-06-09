@@ -1,0 +1,51 @@
+// Auto-generated code. Do not edit.
+
+import Foundation
+import DLJSONAPI
+
+// MARK: - CloseDeferredPaymentRequestResource
+
+extension Horizon {
+open class CloseDeferredPaymentRequestResource: BaseReviewableRequestDetailsResource {
+    
+    open override class var resourceType: String {
+        return "request-details-close-deferred-payment"
+    }
+    
+    public enum CodingKeys: String, CodingKey {
+        // attributes
+        case amount
+        case creatorDetails
+        
+        // relations
+        case deferredPayment
+        case destinationAccount
+        case destinationBalance
+    }
+    
+    // MARK: Attributes
+    
+    open var amount: Decimal {
+        return self.decimalOptionalValue(key: CodingKeys.amount) ?? 0.0
+    }
+    
+    open var creatorDetails: [String: Any] {
+        return self.dictionaryOptionalValue(key: CodingKeys.creatorDetails) ?? [:]
+    }
+    
+    // MARK: Relations
+    
+    open var deferredPayment: Horizon.DeferredPaymentResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.deferredPayment)
+    }
+    
+    open var destinationAccount: Horizon.AccountResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.destinationAccount)
+    }
+    
+    open var destinationBalance: Horizon.BalanceResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.destinationBalance)
+    }
+    
+}
+}

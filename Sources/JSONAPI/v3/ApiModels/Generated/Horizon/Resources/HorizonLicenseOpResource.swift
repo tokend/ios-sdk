@@ -39,8 +39,8 @@ open class LicenseOpResource: BaseOperationDetailsResource {
         return self.stringOptionalValue(key: CodingKeys.prevLicenseHash) ?? ""
     }
     
-    open var signatures: String {
-        return self.stringOptionalValue(key: CodingKeys.signatures) ?? ""
+    open var signatures: [String]? {
+        return self.codableOptionalValue(key: CodingKeys.signatures)
     }
     
 }

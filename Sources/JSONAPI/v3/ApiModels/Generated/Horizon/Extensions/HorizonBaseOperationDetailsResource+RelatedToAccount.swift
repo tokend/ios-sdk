@@ -6,6 +6,12 @@ public enum BaseOperationDetailsRelatedToAccount {
     
     case createAccountOp(_ resource: Horizon.CreateAccountOpResource)
     case createChangeRoleRequestOp(_ resource: Horizon.CreateChangeRoleRequestOpResource)
+    case createCloseDeferredPaymentRequestOp(_ resource: Horizon.CreateCloseDeferredPaymentRequestOpResource)
+    case createDataCreationRequestOp(_ resource: Horizon.CreateDataCreationRequestOpResource)
+    case createDataOp(_ resource: Horizon.CreateDataOpResource)
+    case createDataRemoveRequestOp(_ resource: Horizon.CreateDataRemoveRequestOpResource)
+    case createDataUpdateRequestOp(_ resource: Horizon.CreateDataUpdateRequestOpResource)
+    case createDeferredPaymentCreationRequestOp(_ resource: Horizon.CreateDeferredPaymentCreationRequestOpResource)
     case createIssuanceRequestOp(_ resource: Horizon.CreateIssuanceRequestOpResource)
     case createKYCRecoveryRequestOp(_ resource: Horizon.CreateKYCRecoveryRequestOpResource)
     case createPaymentRequestOp(_ resource: Horizon.CreatePaymentRequestOpResource)
@@ -17,6 +23,7 @@ public enum BaseOperationDetailsRelatedToAccount {
     case openSwapOp(_ resource: Horizon.OpenSwapOpResource)
     case paymentOp(_ resource: Horizon.PaymentOpResource)
     case payoutOp(_ resource: Horizon.PayoutOpResource)
+    case removeDataOp(_ resource: Horizon.RemoveDataOpResource)
     case `self`(_ resource: Horizon.BaseOperationDetailsResource)
 }
 
@@ -27,6 +34,18 @@ extension Horizon.BaseOperationDetailsResource {
             return .createAccountOp(resource)
         } else if let resource = self as? Horizon.CreateChangeRoleRequestOpResource {
             return .createChangeRoleRequestOp(resource)
+        } else if let resource = self as? Horizon.CreateCloseDeferredPaymentRequestOpResource {
+            return .createCloseDeferredPaymentRequestOp(resource)
+        } else if let resource = self as? Horizon.CreateDataCreationRequestOpResource {
+            return .createDataCreationRequestOp(resource)
+        } else if let resource = self as? Horizon.CreateDataOpResource {
+            return .createDataOp(resource)
+        } else if let resource = self as? Horizon.CreateDataRemoveRequestOpResource {
+            return .createDataRemoveRequestOp(resource)
+        } else if let resource = self as? Horizon.CreateDataUpdateRequestOpResource {
+            return .createDataUpdateRequestOp(resource)
+        } else if let resource = self as? Horizon.CreateDeferredPaymentCreationRequestOpResource {
+            return .createDeferredPaymentCreationRequestOp(resource)
         } else if let resource = self as? Horizon.CreateIssuanceRequestOpResource {
             return .createIssuanceRequestOp(resource)
         } else if let resource = self as? Horizon.CreateKYCRecoveryRequestOpResource {
@@ -49,6 +68,8 @@ extension Horizon.BaseOperationDetailsResource {
             return .paymentOp(resource)
         } else if let resource = self as? Horizon.PayoutOpResource {
             return .payoutOp(resource)
+        } else if let resource = self as? Horizon.RemoveDataOpResource {
+            return .removeDataOp(resource)
         } else {
             return .`self`(self)
         }
@@ -62,6 +83,24 @@ extension Horizon.BaseOperationDetailsResource {
         
         
     case .createChangeRoleRequestOp(let resource):
+        
+        
+    case .createCloseDeferredPaymentRequestOp(let resource):
+        
+        
+    case .createDataCreationRequestOp(let resource):
+        
+        
+    case .createDataOp(let resource):
+        
+        
+    case .createDataRemoveRequestOp(let resource):
+        
+        
+    case .createDataUpdateRequestOp(let resource):
+        
+        
+    case .createDeferredPaymentCreationRequestOp(let resource):
         
         
     case .createIssuanceRequestOp(let resource):
@@ -95,6 +134,9 @@ extension Horizon.BaseOperationDetailsResource {
         
         
     case .payoutOp(let resource):
+        
+        
+    case .removeDataOp(let resource):
         
         
     case .`self`(let resource):

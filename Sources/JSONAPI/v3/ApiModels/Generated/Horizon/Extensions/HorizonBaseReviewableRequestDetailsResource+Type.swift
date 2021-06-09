@@ -5,16 +5,21 @@ import Foundation
 public enum BaseReviewableRequestDetailsType {
     
     case changeRoleRequest(_ resource: Horizon.ChangeRoleRequestResource)
+    case closeDeferredPaymentRequest(_ resource: Horizon.CloseDeferredPaymentRequestResource)
     case createAmlAlertRequest(_ resource: Horizon.CreateAmlAlertRequestResource)
     case createAssetRequest(_ resource: Horizon.CreateAssetRequestResource)
     case createAtomicSwapAskRequest(_ resource: Horizon.CreateAtomicSwapAskRequestResource)
     case createAtomicSwapBidRequest(_ resource: Horizon.CreateAtomicSwapBidRequestResource)
+    case createDeferredPaymentRequest(_ resource: Horizon.CreateDeferredPaymentRequestResource)
     case createIssuanceRequest(_ resource: Horizon.CreateIssuanceRequestResource)
     case createPaymentRequest(_ resource: Horizon.CreatePaymentRequestResource)
     case createPollRequest(_ resource: Horizon.CreatePollRequestResource)
     case createPreIssuanceRequest(_ resource: Horizon.CreatePreIssuanceRequestResource)
     case createSaleRequest(_ resource: Horizon.CreateSaleRequestResource)
     case createWithdrawRequest(_ resource: Horizon.CreateWithdrawRequestResource)
+    case dataCreationRequest(_ resource: Horizon.DataCreationRequestResource)
+    case dataRemoveRequest(_ resource: Horizon.DataRemoveRequestResource)
+    case dataUpdateRequest(_ resource: Horizon.DataUpdateRequestResource)
     case kYCRecoveryRequest(_ resource: Horizon.KYCRecoveryRequestResource)
     case manageOfferRequest(_ resource: Horizon.ManageOfferRequestResource)
     case redemptionRequest(_ resource: Horizon.RedemptionRequestResource)
@@ -29,6 +34,8 @@ extension Horizon.BaseReviewableRequestDetailsResource {
     public var baseReviewableRequestDetailsType: BaseReviewableRequestDetailsType {
         if let resource = self as? Horizon.ChangeRoleRequestResource {
             return .changeRoleRequest(resource)
+        } else if let resource = self as? Horizon.CloseDeferredPaymentRequestResource {
+            return .closeDeferredPaymentRequest(resource)
         } else if let resource = self as? Horizon.CreateAmlAlertRequestResource {
             return .createAmlAlertRequest(resource)
         } else if let resource = self as? Horizon.CreateAssetRequestResource {
@@ -37,6 +44,8 @@ extension Horizon.BaseReviewableRequestDetailsResource {
             return .createAtomicSwapAskRequest(resource)
         } else if let resource = self as? Horizon.CreateAtomicSwapBidRequestResource {
             return .createAtomicSwapBidRequest(resource)
+        } else if let resource = self as? Horizon.CreateDeferredPaymentRequestResource {
+            return .createDeferredPaymentRequest(resource)
         } else if let resource = self as? Horizon.CreateIssuanceRequestResource {
             return .createIssuanceRequest(resource)
         } else if let resource = self as? Horizon.CreatePaymentRequestResource {
@@ -49,6 +58,12 @@ extension Horizon.BaseReviewableRequestDetailsResource {
             return .createSaleRequest(resource)
         } else if let resource = self as? Horizon.CreateWithdrawRequestResource {
             return .createWithdrawRequest(resource)
+        } else if let resource = self as? Horizon.DataCreationRequestResource {
+            return .dataCreationRequest(resource)
+        } else if let resource = self as? Horizon.DataRemoveRequestResource {
+            return .dataRemoveRequest(resource)
+        } else if let resource = self as? Horizon.DataUpdateRequestResource {
+            return .dataUpdateRequest(resource)
         } else if let resource = self as? Horizon.KYCRecoveryRequestResource {
             return .kYCRecoveryRequest(resource)
         } else if let resource = self as? Horizon.ManageOfferRequestResource {
@@ -73,6 +88,9 @@ extension Horizon.BaseReviewableRequestDetailsResource {
     case .changeRoleRequest(let resource):
         
         
+    case .closeDeferredPaymentRequest(let resource):
+        
+        
     case .createAmlAlertRequest(let resource):
         
         
@@ -83,6 +101,9 @@ extension Horizon.BaseReviewableRequestDetailsResource {
         
         
     case .createAtomicSwapBidRequest(let resource):
+        
+        
+    case .createDeferredPaymentRequest(let resource):
         
         
     case .createIssuanceRequest(let resource):
@@ -101,6 +122,15 @@ extension Horizon.BaseReviewableRequestDetailsResource {
         
         
     case .createWithdrawRequest(let resource):
+        
+        
+    case .dataCreationRequest(let resource):
+        
+        
+    case .dataRemoveRequest(let resource):
+        
+        
+    case .dataUpdateRequest(let resource):
         
         
     case .kYCRecoveryRequest(let resource):

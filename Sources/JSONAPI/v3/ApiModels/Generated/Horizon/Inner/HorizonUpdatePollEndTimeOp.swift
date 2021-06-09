@@ -21,7 +21,7 @@ public struct UpdatePollEndTimeOp: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.newEndTime = try container.decode(Date.self, forKey: .newEndTime)
+        self.newEndTime = try container.decodeDateString(key: .newEndTime)
     }
 
 }

@@ -3,13 +3,13 @@
 import Foundation
 import DLJSONAPI
 
-// MARK: - CreateAmlAlertRequestOpResource
+// MARK: - CreateDeferredPaymentRequestResource
 
 extension Horizon {
-open class CreateAmlAlertRequestOpResource: BaseOperationDetailsResource {
+open class CreateDeferredPaymentRequestResource: BaseReviewableRequestDetailsResource {
     
     open override class var resourceType: String {
-        return "operations-create-aml-alert"
+        return "request-details-create-deferred-payment"
     }
     
     public enum CodingKeys: String, CodingKey {
@@ -18,8 +18,8 @@ open class CreateAmlAlertRequestOpResource: BaseOperationDetailsResource {
         case creatorDetails
         
         // relations
-        case balance
-        case request
+        case destinationAccount
+        case sourceBalance
     }
     
     // MARK: Attributes
@@ -34,12 +34,12 @@ open class CreateAmlAlertRequestOpResource: BaseOperationDetailsResource {
     
     // MARK: Relations
     
-    open var balance: Horizon.BalanceResource? {
-        return self.relationSingleOptionalValue(key: CodingKeys.balance)
+    open var destinationAccount: Horizon.AccountResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.destinationAccount)
     }
     
-    open var request: Horizon.ReviewableRequestResource? {
-        return self.relationSingleOptionalValue(key: CodingKeys.request)
+    open var sourceBalance: Horizon.BalanceResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.sourceBalance)
     }
     
 }

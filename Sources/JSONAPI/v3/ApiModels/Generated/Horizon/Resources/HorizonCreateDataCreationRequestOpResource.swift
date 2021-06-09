@@ -3,39 +3,44 @@
 import Foundation
 import DLJSONAPI
 
-// MARK: - CreateAmlAlertRequestOpResource
+// MARK: - CreateDataCreationRequestOpResource
 
 extension Horizon {
-open class CreateAmlAlertRequestOpResource: BaseOperationDetailsResource {
+open class CreateDataCreationRequestOpResource: BaseOperationDetailsResource {
     
     open override class var resourceType: String {
-        return "operations-create-aml-alert"
+        return "operations-create-data-creation-request"
     }
     
     public enum CodingKeys: String, CodingKey {
         // attributes
-        case amount
         case creatorDetails
+        case type
+        case value
         
         // relations
-        case balance
+        case owner
         case request
     }
     
     // MARK: Attributes
     
-    open var amount: Decimal {
-        return self.decimalOptionalValue(key: CodingKeys.amount) ?? 0.0
-    }
-    
     open var creatorDetails: [String: Any] {
         return self.dictionaryOptionalValue(key: CodingKeys.creatorDetails) ?? [:]
     }
     
+    open var attributesType: UInt64 {
+        return self.uint64OptionalValue(key: CodingKeys.type) ?? 0
+    }
+    
+    open var value: [String: Any] {
+        return self.dictionaryOptionalValue(key: CodingKeys.value) ?? [:]
+    }
+    
     // MARK: Relations
     
-    open var balance: Horizon.BalanceResource? {
-        return self.relationSingleOptionalValue(key: CodingKeys.balance)
+    open var owner: Horizon.AccountResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.owner)
     }
     
     open var request: Horizon.ReviewableRequestResource? {

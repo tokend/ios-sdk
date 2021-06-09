@@ -6,6 +6,8 @@ public enum BaseOperationDetailsRelatedToBalance {
     
     case createAmlAlertRequestOp(_ resource: Horizon.CreateAmlAlertRequestOpResource)
     case createAtomicSwapAskRequestOp(_ resource: Horizon.CreateAtomicSwapAskRequestOpResource)
+    case createCloseDeferredPaymentRequestOp(_ resource: Horizon.CreateCloseDeferredPaymentRequestOpResource)
+    case createDeferredPaymentCreationRequestOp(_ resource: Horizon.CreateDeferredPaymentCreationRequestOpResource)
     case createIssuanceRequestOp(_ resource: Horizon.CreateIssuanceRequestOpResource)
     case createPaymentRequestOp(_ resource: Horizon.CreatePaymentRequestOpResource)
     case createRedemptionRequestOp(_ resource: Horizon.CreateRedemptionRequestOpResource)
@@ -23,6 +25,10 @@ extension Horizon.BaseOperationDetailsResource {
             return .createAmlAlertRequestOp(resource)
         } else if let resource = self as? Horizon.CreateAtomicSwapAskRequestOpResource {
             return .createAtomicSwapAskRequestOp(resource)
+        } else if let resource = self as? Horizon.CreateCloseDeferredPaymentRequestOpResource {
+            return .createCloseDeferredPaymentRequestOp(resource)
+        } else if let resource = self as? Horizon.CreateDeferredPaymentCreationRequestOpResource {
+            return .createDeferredPaymentCreationRequestOp(resource)
         } else if let resource = self as? Horizon.CreateIssuanceRequestOpResource {
             return .createIssuanceRequestOp(resource)
         } else if let resource = self as? Horizon.CreatePaymentRequestOpResource {
@@ -50,6 +56,12 @@ extension Horizon.BaseOperationDetailsResource {
         
         
     case .createAtomicSwapAskRequestOp(let resource):
+        
+        
+    case .createCloseDeferredPaymentRequestOp(let resource):
+        
+        
+    case .createDeferredPaymentCreationRequestOp(let resource):
         
         
     case .createIssuanceRequestOp(let resource):

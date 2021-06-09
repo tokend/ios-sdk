@@ -15,6 +15,7 @@ open class CreatePaymentRequestOpResource: BaseOperationDetailsResource {
     public enum CodingKeys: String, CodingKey {
         // attributes
         case amount
+        case creatorDetails
         case destinationFee
         case reference
         case sourceFee
@@ -31,6 +32,10 @@ open class CreatePaymentRequestOpResource: BaseOperationDetailsResource {
     
     open var amount: Decimal {
         return self.decimalOptionalValue(key: CodingKeys.amount) ?? 0.0
+    }
+    
+    open var creatorDetails: [String: Any] {
+        return self.dictionaryOptionalValue(key: CodingKeys.creatorDetails) ?? [:]
     }
     
     open var destinationFee: Horizon.Fee? {

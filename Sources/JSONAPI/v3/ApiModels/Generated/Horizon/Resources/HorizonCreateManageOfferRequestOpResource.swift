@@ -15,6 +15,7 @@ open class CreateManageOfferRequestOpResource: BaseOperationDetailsResource {
     public enum CodingKeys: String, CodingKey {
         // attributes
         case baseAmount
+        case creatorDetails
         case fee
         case isBuy
         case offerId
@@ -29,6 +30,10 @@ open class CreateManageOfferRequestOpResource: BaseOperationDetailsResource {
     
     open var baseAmount: Decimal {
         return self.decimalOptionalValue(key: CodingKeys.baseAmount) ?? 0.0
+    }
+    
+    open var creatorDetails: [String: Any] {
+        return self.dictionaryOptionalValue(key: CodingKeys.creatorDetails) ?? [:]
     }
     
     open var fee: Horizon.Fee? {

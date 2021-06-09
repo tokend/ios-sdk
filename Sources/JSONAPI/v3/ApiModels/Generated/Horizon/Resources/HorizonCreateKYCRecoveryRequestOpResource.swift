@@ -33,7 +33,7 @@ open class CreateKYCRecoveryRequestOpResource: BaseOperationDetailsResource {
         return self.dictionaryOptionalValue(key: CodingKeys.creatorDetails) ?? [:]
     }
     
-    open var signersData: Horizon.UpdateSignerData? {
+    open var signersData: [Horizon.UpdateSignerData]? {
         return self.codableOptionalValue(key: CodingKeys.signersData)
     }
     

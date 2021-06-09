@@ -41,8 +41,8 @@ open class OrderBookEntryResource: Resource {
         return self.decimalOptionalValue(key: CodingKeys.cumulativeBaseAmount) ?? 0.0
     }
     
-    open var cumulativeQuoteAmount: Decimal {
-        return self.decimalOptionalValue(key: CodingKeys.cumulativeQuoteAmount) ?? 0.0
+    open var cumulativeQuoteAmount: String {
+        return self.stringOptionalValue(key: CodingKeys.cumulativeQuoteAmount) ?? ""
     }
     
     open var isBuy: Bool {
@@ -53,8 +53,8 @@ open class OrderBookEntryResource: Resource {
         return self.decimalOptionalValue(key: CodingKeys.price) ?? 0.0
     }
     
-    open var quoteAmount: Decimal {
-        return self.decimalOptionalValue(key: CodingKeys.quoteAmount) ?? 0.0
+    open var quoteAmount: String {
+        return self.stringOptionalValue(key: CodingKeys.quoteAmount) ?? ""
     }
     
     // MARK: Relations

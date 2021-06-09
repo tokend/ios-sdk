@@ -55,7 +55,7 @@ open class AccountResource: Resource {
         return self.relationCollectionOptionalValue(key: CodingKeys.limits)
     }
     
-    open var limitsWithStats: [Resource]? {
+    open var limitsWithStats: [Horizon.LimitsWithStatsResource]? {
         return self.relationCollectionOptionalValue(key: CodingKeys.limitsWithStats)
     }
     
