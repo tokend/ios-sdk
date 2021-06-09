@@ -13,40 +13,40 @@ PODS:
     - RxSwift (= 6.0.0-rc.1)
   - RxSwift (6.0.0-rc.1)
   - SnapKit (5.0.1)
-  - TokenDSDK (4.0.0):
-    - TokenDSDK/API (= 4.0.0)
-    - TokenDSDK/JSONAPI (= 4.0.0)
-    - TokenDSDK/KeyServer (= 4.0.0)
+  - TokenDSDK (4.0.1):
+    - TokenDSDK/API (= 4.0.1)
+    - TokenDSDK/JSONAPI (= 4.0.1)
+    - TokenDSDK/KeyServer (= 4.0.1)
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/AlamofireNetwork (4.0.0):
+  - TokenDSDK/AlamofireNetwork (4.0.1):
     - Alamofire (= 5.3.0)
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/AlamofireNetworkJSONAPI (4.0.0):
+  - TokenDSDK/AlamofireNetworkJSONAPI (4.0.1):
     - Alamofire (= 5.3.0)
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/API (4.0.0):
+  - TokenDSDK/API (4.0.1):
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/ContoFA (4.0.0):
+  - TokenDSDK/ContoFA (4.0.1):
     - TokenDSDK/JSONAPI
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/Contopass (4.0.0):
+  - TokenDSDK/Contopass (4.0.1):
     - TokenDSDK/JSONAPI
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/DMS (4.0.0):
+  - TokenDSDK/DMS (4.0.1):
     - TokenDSDK/JSONAPI
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/JSONAPI (4.0.0):
+  - TokenDSDK/JSONAPI (4.0.1):
     - DLJSONAPI (>= 1.0.9)
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/KeyServer (4.0.0):
+  - TokenDSDK/KeyServer (4.0.1):
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/MUNA (4.0.0):
+  - TokenDSDK/MUNA (4.0.1):
     - TokenDSDK/JSONAPI
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/MUNAKeyServer (4.0.0):
+  - TokenDSDK/MUNAKeyServer (4.0.1):
     - TokenDSDK/KeyServer
     - TokenDWallet (= 3.1.1)
-  - TokenDSDK/RxJSONAPI (4.0.0):
+  - TokenDSDK/RxJSONAPI (4.0.1):
     - RxCocoa (~> 6.0.0-rc.1)
     - RxSwift (~> 6.0.0-rc.1)
     - TokenDWallet (= 3.1.1)
@@ -94,7 +94,7 @@ SPEC CHECKSUMS:
   RxRelay: 56abad6d32f73567858506d08735fdb341935b9a
   RxSwift: dae1a32c48148897494b9e2a6b00a68b40694236
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  TokenDSDK: 2a653f5f173c62166311136597327560040a7ea5
+  TokenDSDK: 787d7367048b4f60144675db6ac9910280613221
   TokenDWallet: d13f6dfd420e9258ff4734e2d52e57bcdfc60eb3
 
 PODFILE CHECKSUM: 7900c9d4007b7a3a9f54393fff1c73d596a9f52d
