@@ -15,7 +15,7 @@ public extension Contoparty {
 
 public extension Contoparty.TokensRequestBuilderV3 {
     
-    func buildGetListOfProjects(
+    func buildGetListOfTokens(
         filters: Contoparty.TokensRequestFiltersV3,
         include: [String]?,
         pagination: RequestPagination,
@@ -26,6 +26,31 @@ public extension Contoparty.TokensRequestBuilderV3 {
         let path = self.tokens
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         
+        self.buildRequest(
+            .simpleQueryIncludePagination(
+                path: path,
+                method: .get,
+                queryParameters: queryParameters,
+                include: include,
+                pagination: pagination
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
+    
+    func buildTokensHistoryRequest(
+        filters: Contoparty.TokensRequestFiltersV3,
+        include: [String]?,
+        pagination: RequestPagination,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+
+        let path = self.tokens/self.history
+        let queryParameters = self.buildFilterQueryItems(filters.filterItems)
+
         self.buildRequest(
             .simpleQueryIncludePagination(
                 path: path,

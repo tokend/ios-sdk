@@ -9,6 +9,11 @@ public extension Contoparty {
         case status(_ value: Int)
         case edition(_ value: String)
         case id(_ value: [Int64])
+        
+        // for tokens history
+        case token_id(_ value: Int)
+        case created_at(_ value: String)
+        case op_type(_ value: String)
     }
     
     class TokensRequestFiltersV3: RequestFilters<TokensRequestFilterOptionV3> {}

@@ -35,7 +35,7 @@ public extension Contoparty.TokensApiV3 {
         
         let cancelable = self.network.getEmptyCancelable()
         
-        self.requestBuilder.buildGetListOfProjects(
+        self.requestBuilder.buildGetListOfTokens(
             filters: filters,
             include: include,
             pagination: pagination,
@@ -64,6 +64,44 @@ public extension Contoparty.TokensApiV3 {
             }
         )
         
+        return cancelable
+    }
+    
+    @discardableResult
+    func getITokensHistory(
+        filters: Contoparty.TokensRequestFiltersV3,
+        include: [String]?,
+        pagination: RequestPagination,
+        completion: @escaping ((_ result: RequestCollectionResult<Contoparty.TokenHistoryResource>) -> Void)
+    ) -> Cancelable {
+
+        let cancelable = self.network.getEmptyCancelable()
+
+        self.requestBuilder.buildTokensHistoryRequest(
+            filters: filters,
+            include: include,
+            pagination: pagination,
+            completion: { [weak self] (request) in
+
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+
+                cancelable.cancelable = self?.requestCollection(
+                    Contoparty.TokenHistoryResource.self,
+                    request: request,
+                    completion: { (result) in
+                        switch result {
+                        case .failure(let error):
+                            completion(.failure(error))
+
+                        case .success(let document):
+                            completion(.success(document))
+                        }
+                })
+        })
+
         return cancelable
     }
 }
