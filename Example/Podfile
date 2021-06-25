@@ -13,6 +13,7 @@ def main_pods
   pod 'TokenDSDK/Contopass', path: '../'
   pod 'TokenDSDK/DMS', path: '../'
   pod 'TokenDSDK/MUNAKeyServer', path: '../'
+  pod 'TokenDSDK/Contoparty', path: '../'
 
   pod 'TokenDSDK/AlamofireNetworkJSONAPI', path: '../'
   pod 'TokenDSDK/RxJSONAPI', path: '../'

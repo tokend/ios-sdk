@@ -63,6 +63,10 @@ public class APIv3 {
     public private(set) lazy var dmsUsersApi: DMS.UsersApiV3 = { return create() }()
     #endif
     
+    #if TOKENDSDK_CONTOPARTYAPI
+    public private(set) lazy var contopartyTokensApi: Contoparty.TokensApiV3 = { return create() }()
+    #endif
+    
     // MARK: -
     
     public init(
@@ -108,6 +112,10 @@ public class APIv3 {
         
         #if TOKENDSDK_DMSAPI
         DMS.AllResources.registerAllResources()
+        #endif
+        
+        #if TOKENDSDK_CONTOPARTYAPI
+        Contoparty.AllResources.registerAllResources()
         #endif
     }
     

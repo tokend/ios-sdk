@@ -30,6 +30,8 @@ Pod::Spec.new do |s|
   jsonapi_contofa_v3_source_files = 'Sources/ContoFA/v3/**/*.swift'
   
   jsonapi_dms_v3_source_files = 'Sources/DMS/v3/**/*.swift'
+  
+  jsonapi_contoparty_v3_source_files = 'Sources/Contoparty/v3/**/*.swift'
 
   jsonapi_v3_alamofire_files = 'Sources/Alamofire/Common/**/*.swift',
                                'Sources/Alamofire/JSONAPI/**/*.swift'
@@ -80,6 +82,12 @@ Pod::Spec.new do |s|
     ss.source_files = jsonapi_dms_v3_source_files
     ss.dependency 'TokenDSDK/JSONAPI'
   end
+  
+  s.subspec 'Contoparty' do |ss|
+      ss.xcconfig = { 'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'TOKENDSDK_CONTOPARTYAPI' }
+      ss.source_files = jsonapi_contoparty_v3_source_files
+      ss.dependency 'TokenDSDK/JSONAPI'
+    end
 
   s.subspec 'AlamofireNetworkJSONAPI' do |ss|
     ss.source_files = jsonapi_v3_alamofire_files
