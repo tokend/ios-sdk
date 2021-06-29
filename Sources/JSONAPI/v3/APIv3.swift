@@ -65,6 +65,7 @@ public class APIv3 {
     
     #if TOKENDSDK_CONTOPARTYAPI
     public private(set) lazy var contopartyTokensApi: Contoparty.TokensApiV3 = { return create() }()
+    public private(set) lazy var contopartyDraftTokensApi: Contoparty.DraftTokensApiV3 = { return create() }()
     #endif
     
     // MARK: -
