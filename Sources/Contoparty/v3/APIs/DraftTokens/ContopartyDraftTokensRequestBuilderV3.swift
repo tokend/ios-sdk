@@ -23,7 +23,7 @@ public extension Contoparty.DraftTokensRequestBuilderV3 {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = self.tokens
+        let path = self.tokens/self.draft
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         
         self.buildRequest(
