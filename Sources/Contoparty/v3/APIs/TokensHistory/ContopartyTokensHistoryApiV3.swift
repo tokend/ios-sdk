@@ -26,7 +26,7 @@ public extension Contoparty {
 public extension Contoparty.TokensHistoryApiV3 {
     
     @discardableResult
-    func getITokensHistory(
+    func getTokensHistory(
         filters: Contoparty.TokensHistoryRequestFiltersV3,
         include: [String]?,
         pagination: RequestPagination,
