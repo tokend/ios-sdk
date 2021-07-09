@@ -3,11 +3,11 @@ import DLJSONAPI
 
 public extension Contoparty {
     
-    class TokensApiV3: JSONAPI.BaseApi {
+    class TokensHistoryApiV3: JSONAPI.BaseApi {
         
         // MARK: - Public properties
         
-        public let requestBuilder: TokensRequestBuilderV3
+        public let requestBuilder: TokensHistoryRequestBuilderV3
         
         // MARK: -
         
@@ -23,47 +23,43 @@ public extension Contoparty {
 
 // MARK: - Public methods
 
-public extension Contoparty.TokensApiV3 {
+public extension Contoparty.TokensHistoryApiV3 {
     
     @discardableResult
-    func getListOfTokens(
-        filters: Contoparty.TokensRequestFiltersV3,
+    func getITokensHistory(
+        filters: Contoparty.TokensHistoryRequestFiltersV3,
         include: [String]?,
         pagination: RequestPagination,
-        completion: @escaping ((_ result: RequestCollectionResult<Contoparty.TokenResource>) -> Void)
+        completion: @escaping ((_ result: RequestCollectionResult<Contoparty.TokenHistoryResource>) -> Void)
     ) -> Cancelable {
-        
+
         let cancelable = self.network.getEmptyCancelable()
-        
-        self.requestBuilder.buildGetListOfTokens(
+
+        self.requestBuilder.buildTokensHistoryRequest(
             filters: filters,
             include: include,
             pagination: pagination,
             completion: { [weak self] (request) in
-                
+
                 guard let request = request else {
                     completion(.failure(JSONAPIError.failedToSignRequest))
                     return
                 }
-                
+
                 cancelable.cancelable = self?.requestCollection(
-                    Contoparty.TokenResource.self,
+                    Contoparty.TokenHistoryResource.self,
                     request: request,
                     completion: { (result) in
-                        
                         switch result {
-                        
                         case .failure(let error):
                             completion(.failure(error))
-                            
+
                         case .success(let document):
                             completion(.success(document))
                         }
-                    }
-                )
-            }
-        )
-        
+                })
+        })
+
         return cancelable
     }
 }
