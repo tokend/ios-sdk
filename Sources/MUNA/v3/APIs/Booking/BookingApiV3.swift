@@ -225,7 +225,7 @@ public class BookingApiV3: JSONAPI.BaseApi {
         testAt: Int,
         startTime: Date,
         endTime: Date,
-        additionalPhoto: BlobResponse.BlobContent.Attachment?,
+        additionalPhoto: BlobResponse.Attachment?,
         completion: @escaping ((_ result: RequestSingleResult<MunaBooking.BookingResource>) -> Void)
     ) -> Cancelable {
         
