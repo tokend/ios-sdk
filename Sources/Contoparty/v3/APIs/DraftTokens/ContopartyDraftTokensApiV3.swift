@@ -66,4 +66,83 @@ public extension Contoparty.DraftTokensApiV3 {
         
         return cancelable
     }
+    
+    @discardableResult
+    func getDraftTokenById(
+        id: String,
+        completion: @escaping ((_ result: RequestSingleResult<Contoparty.DraftTokenResource>) -> Void)
+    ) -> Cancelable {
+        
+        let cancelable = self.network.getEmptyCancelable()
+        
+        self.requestBuilder.buildGetDraftTokenById(
+            id: id,
+            completion: { [weak self] (request) in
+                
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self?.requestSingle(
+                    Contoparty.DraftTokenResource.self,
+                    request: request,
+                    completion: { (result) in
+                        
+                        switch result {
+                        
+                        case .failure(let error):
+                            completion(.failure(error))
+                            
+                        case .success(let document):
+                            completion(.success(document))
+                        }
+                    }
+                )
+            }
+        )
+        
+        return cancelable
+    }
+    
+    @discardableResult
+    func updateTokenDetails(
+        id: String,
+        details: [String: Any],
+        completion: @escaping ((_ result: RequestEmptyResult) -> Void)
+    ) -> Cancelable {
+        
+        let cancelable = self.network.getEmptyCancelable()
+        
+        let bodyParameters: [String: Any] = ["details": details]
+        
+        self.requestBuilder.buildUpdateTokenDetails(
+            id: id,
+            bodyParameters: bodyParameters,
+            completion: { [weak self] (request) in
+                
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self?.requestEmpty(
+                    request: request,
+                    completion: { (result) in
+                        
+                        switch result {
+                        
+                        case .failure(let error):
+                            completion(.failure(error))
+                            
+                        case .success:
+                            completion(.success)
+                        }
+                    }
+                )
+            }
+        )
+        
+        return cancelable
+    }
 }

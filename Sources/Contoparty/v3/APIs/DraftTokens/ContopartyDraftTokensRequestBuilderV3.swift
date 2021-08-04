@@ -39,5 +39,46 @@ public extension Contoparty.DraftTokensRequestBuilderV3 {
             completion: completion
         )
     }
+    
+    func buildGetDraftTokenById(
+        id: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+        
+        let path = self.tokens/self.draft/id
+
+        self.buildRequest(
+            .simple(
+                path: path,
+                method: .get
+            ),
+            shouldSign: false,
+            sendDate: sendDate,
+            completion: completion
+        )
+
+    }
+    
+    func buildUpdateTokenDetails(
+        id: String,
+        bodyParameters: [String: Any],
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+        
+        let path = self.tokens/self.draft/id
+        
+        self.buildRequest(
+            .simpleBody(
+                path: path,
+                method: .put,
+                bodyParameters: bodyParameters
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
 }
 
