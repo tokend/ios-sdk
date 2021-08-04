@@ -7,7 +7,10 @@ public class KeyServerApi {
     
     // MARK: - Public properties
     
-    public let apiConfiguration: ApiConfiguration
+    public var apiConfiguration: ApiConfiguration {
+        apiConfigurationProvider.apiConfiguration
+    }
+    public let apiConfigurationProvider: ApiConfigurationProviderProtocol
     public let requestBuilder: KeyServerApiRequestBuilder
     public let network: NetworkFacade
     public let networkV3: JSONAPI.NetworkFacade
@@ -17,7 +20,7 @@ public class KeyServerApi {
     // MARK: -
     
     public init(
-        apiConfiguration: ApiConfiguration,
+        apiConfigurationProvider: ApiConfigurationProviderProtocol,
         callbacks: ApiCallbacks,
         verifyApi: TFAVerifyApi,
         requestSigner: JSONAPI.RequestSignerProtocol,
@@ -25,9 +28,9 @@ public class KeyServerApi {
         networkV3: JSONAPI.NetworkProtocol
         ) {
         
-        self.apiConfiguration = apiConfiguration
+        self.apiConfigurationProvider = apiConfigurationProvider
         self.requestBuilder = KeyServerApiRequestBuilder(
-            apiConfiguration: apiConfiguration,
+            apiConfigurationProvider: apiConfigurationProvider,
             network: networkV3
         )
         self.tfaHandler = TFAHandler(

@@ -11,7 +11,7 @@ import TokenDWallet
 // swiftlint:disable file_length
 // swiftlint:disable line_length
 // swiftlint:disable type_body_length
-class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderProtocol, RequestSignAccountIdProviderProtocol {
+class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderProtocol, RequestSignAccountIdProviderProtocol, ApiConfigurationProviderProtocol {
     
     var privateKey: ECDSA.KeyData? = try? ECDSA.KeyData(
         seed: Base32Check.decodeCheck(
@@ -44,6 +44,10 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
         )
     }()
     
+    var apiConfiguration: ApiConfiguration {
+        apiConfig
+    }
+    
     lazy var apiCallbacks: JSONAPI.ApiCallbacks = {
         return JSONAPI.ApiCallbacks(
             onUnathorizedRequest: { (error) in
@@ -70,7 +74,7 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     
     lazy var tokenDApi: TokenDSDK.APIv3 = {
         let api = TokenDSDK.APIv3(
-            configuration: self.apiConfig,
+            configurationProvider: self,
             callbacks: self.apiCallbacks,
             network: self.network,
             requestSigner: JSONAPI.RequestSigner(keyDataProvider: self, accountIdProvider: self)

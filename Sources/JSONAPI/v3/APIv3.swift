@@ -6,14 +6,17 @@ public class APIv3 {
     
     // MARK: - Public properties
     
-    public let configuration: ApiConfiguration
+    public var configuration: ApiConfiguration {
+        configurationProvider.apiConfiguration
+    }
+    public let configurationProvider: ApiConfigurationProviderProtocol
     public let callbacks: JSONAPI.ApiCallbacks
     public let network: JSONAPI.NetworkProtocol
     public let requestSigner: JSONAPI.RequestSignerProtocol
     
     public private(set) lazy var baseApiStack: JSONAPI.BaseApiStack = {
         return JSONAPI.BaseApiStack(
-            apiConfiguration: self.configuration,
+            apiConfigurationProvider: self.configurationProvider,
             callbacks: self.callbacks,
             network: self.network,
             requestSigner: self.requestSigner
@@ -66,13 +69,13 @@ public class APIv3 {
     // MARK: -
     
     public init(
-        configuration: ApiConfiguration,
+        configurationProvider: ApiConfigurationProviderProtocol,
         callbacks: JSONAPI.ApiCallbacks,
         network: JSONAPI.NetworkProtocol,
         requestSigner: JSONAPI.RequestSignerProtocol
         ) {
         
-        self.configuration = configuration
+        self.configurationProvider = configurationProvider
         self.callbacks = callbacks
         self.network = network
         self.requestSigner = requestSigner

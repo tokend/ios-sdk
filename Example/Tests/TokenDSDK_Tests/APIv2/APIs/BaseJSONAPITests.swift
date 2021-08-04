@@ -36,7 +36,7 @@ class BaseJSONAPITests: XCTestCase {
             ))
         
         return JSONAPI.BaseApiStack(
-            apiConfiguration: apiConfiguration,
+            apiConfigurationProvider: apiConfiguration,
             callbacks: callbacks,
             network: network,
             requestSigner: requestSignerV3
@@ -49,5 +49,9 @@ class BaseJSONAPITests: XCTestCase {
     
     // MARK: -
     
+}
+
+extension ApiConfiguration: ApiConfigurationProviderProtocol {
+    public var apiConfiguration: ApiConfiguration { self }
 }
 // swiftlint:enable force_try

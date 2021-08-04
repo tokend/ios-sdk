@@ -97,7 +97,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     
     lazy var keyServerApi: TokenDSDK.KeyServerApi = {
         let api = TokenDSDK.KeyServerApi(
-            apiConfiguration: self.apiConfig,
+            apiConfigurationProvider: self.apiConfig,
             callbacks: self.apiCallbacks,
             verifyApi: self.verifyApi,
             requestSigner: JSONAPI.RequestSigner(keyDataProvider: self, accountIdProvider: self),
