@@ -7,13 +7,16 @@ public class API {
     
     // MARK: - Public properties
     
-    public let configuration: ApiConfiguration
+    public var configuration: ApiConfiguration {
+        configurationProvider.apiConfiguration
+    }
+    public let configurationProvider: ApiConfigurationProviderProtocol
     public let callbacks: ApiCallbacks
     public let network: NetworkProtocol
     
     public private(set) lazy var baseApiStack: BaseApiStack = {
         return BaseApiStack(
-            apiConfiguration: self.configuration,
+            apiConfigurationProvider: self.configurationProvider,
             callbacks: self.callbacks,
             network: self.network,
             requestSigner: self.requestSigner,
@@ -31,13 +34,13 @@ public class API {
     // MARK: -
     
     public init(
-        configuration: ApiConfiguration,
+        configurationProvider: ApiConfigurationProviderProtocol,
         callbacks: ApiCallbacks,
         network: NetworkProtocol,
         requestSigner: RequestSignerProtocol
         ) {
         
-        self.configuration = configuration
+        self.configurationProvider = configurationProvider
         self.callbacks = callbacks
         self.network = network
         self.requestSigner = requestSigner
@@ -52,7 +55,7 @@ public class API {
     
     private func createTFAApi() -> TFAApi {
         let api = TFAApi(
-            apiConfiguration: self.baseApiStack.apiConfiguration,
+            apiConfigurationProvider: self.baseApiStack.apiConfigurationProvider,
             requestSigner: self.baseApiStack.requestSigner,
             callbacks: self.baseApiStack.callbacks,
             network: self.network
@@ -62,7 +65,7 @@ public class API {
     
     private func createTFAVerifyApi() -> TFAVerifyApi {
         let api = TFAVerifyApi(
-            apiConfiguration: self.configuration,
+            apiConfigurationProvider: self.configurationProvider,
             requestSigner: self.requestSigner,
             network: self.network
         )

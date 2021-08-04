@@ -72,7 +72,7 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
     
     lazy var tfaApi: TokenDSDK.TFAApi = {
         let api = TFAApi(
-            apiConfiguration: self.apiConfig,
+            apiConfigurationProvider: self.apiConfig,
             requestSigner: RequestSigner(keyDataProvider: self, accountIdProvider: self),
             callbacks: self.apiCallbacks,
             network: self.network
@@ -82,7 +82,7 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
     
     lazy var verifyApi: TokenDSDK.TFAVerifyApi = {
         let api = TokenDSDK.TFAVerifyApi(
-            apiConfiguration: self.apiConfig,
+            apiConfigurationProvider: self.apiConfig,
             requestSigner: RequestSigner(keyDataProvider: self, accountIdProvider: self),
             network: self.network
         )

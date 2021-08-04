@@ -13,20 +13,20 @@ public class TFAApi {
     // MARK: -
     
     public init(
-        apiConfiguration: ApiConfiguration,
+        apiConfigurationProvider: ApiConfigurationProviderProtocol,
         requestSigner: RequestSignerProtocol,
         callbacks: ApiCallbacks,
         network: NetworkProtocol
         ) {
         self.requestBuilder = TFARequestBuilder(
             builderStack: BaseApiRequestBuilderStack.init(
-                apiConfiguration: apiConfiguration,
+                apiConfigurationProvider: apiConfigurationProvider,
                 requestSigner: requestSigner
             )
         )
         self.network = NetworkFacade(network: network)
         self.verifyApi = TFAVerifyApi(
-            apiConfiguration: apiConfiguration,
+            apiConfigurationProvider: apiConfigurationProvider,
             requestSigner: requestSigner,
             network: self.network.network
         )

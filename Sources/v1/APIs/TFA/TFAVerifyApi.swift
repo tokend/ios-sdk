@@ -11,14 +11,14 @@ public class TFAVerifyApi {
     // MARK: -
     
     public init(
-        apiConfiguration: ApiConfiguration,
+        apiConfigurationProvider: ApiConfigurationProviderProtocol,
         requestSigner: RequestSignerProtocol,
         network: NetworkProtocol
         ) {
         
         self.requestBuilder = TFARequestBuilder(
             builderStack: BaseApiRequestBuilderStack(
-                apiConfiguration: apiConfiguration,
+                apiConfigurationProvider: apiConfigurationProvider,
                 requestSigner: requestSigner
             )
         )

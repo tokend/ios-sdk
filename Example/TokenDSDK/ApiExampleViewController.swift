@@ -78,7 +78,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     
     lazy var verifyApi: TokenDSDK.TFAVerifyApi = {
         let api = TokenDSDK.TFAVerifyApi(
-            apiConfiguration: self.apiConfig,
+            apiConfigurationProvider: self.apiConfig,
             requestSigner: RequestSigner(keyDataProvider: self, accountIdProvider: self),
             network: self.network
         )
@@ -87,7 +87,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
     
     lazy var tokenDApi: TokenDSDK.API = {
         let api = TokenDSDK.API(
-            configuration: self.apiConfig,
+            configurationProvider: self.apiConfig,
             callbacks: self.apiCallbacks,
             network: self.network,
             requestSigner: RequestSigner(keyDataProvider: self, accountIdProvider: self)
