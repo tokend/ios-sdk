@@ -20,12 +20,12 @@ open class ExternalIdResource: Resource {
     
     // MARK: Attributes
     
-    open var externalId: String? {
-        return self.stringOptionalValue(key: CodingKeys.externalId)
+    open var externalId: String {
+        return self.stringOptionalValue(key: CodingKeys.externalId) ?? ""
     }
     
-    open var externalType: String? {
-        return self.stringOptionalValue(key: CodingKeys.externalType)
+    open var externalType: Contoparty.Enum? {
+        return self.codableOptionalValue(key: CodingKeys.externalType)
     }
     
 }

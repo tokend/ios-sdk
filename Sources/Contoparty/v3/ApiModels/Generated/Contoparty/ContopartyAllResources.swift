@@ -9,12 +9,13 @@ enum AllResources {
     // swiftlint:disable function_body_length
     public static func registerAllResources() {
         let allResources: [Resource.Type] = [
-            DraftTokenResource.self,
             TransactionResource.self,
             TokenHistoryResource.self,
+            ExternalIdResource.self,
             TokenResource.self,
-            EditionResource.self,
-            ExternalIdResource.self
+            DraftTokenResource.self,
+            CreateDraftTokenResource.self,
+            EditionResource.self
         ]
         
         for res in allResources {

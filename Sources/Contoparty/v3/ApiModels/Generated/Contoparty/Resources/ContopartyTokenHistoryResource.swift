@@ -17,6 +17,7 @@ open class TokenHistoryResource: Resource {
         case assetCode
         case createdAt
         case details
+        case externalSystemType
         case opType
         case receiverId
         case senderId
@@ -24,6 +25,7 @@ open class TokenHistoryResource: Resource {
         
         // relations
         case externalId
+        case token
     }
     
     // MARK: Attributes
@@ -38,6 +40,10 @@ open class TokenHistoryResource: Resource {
     
     open var details: [String: Any] {
         return self.dictionaryOptionalValue(key: CodingKeys.details) ?? [:]
+    }
+    
+    open var externalSystemType: Contoparty.Enum? {
+        return self.codableOptionalValue(key: CodingKeys.externalSystemType)
     }
     
     open var opType: Int32 {
@@ -60,6 +66,10 @@ open class TokenHistoryResource: Resource {
     
     open var externalId: Contoparty.ExternalIdResource? {
         return self.relationSingleOptionalValue(key: CodingKeys.externalId)
+    }
+    
+    open var token: Contoparty.TokenResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.token)
     }
     
 }
