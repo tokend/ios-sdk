@@ -27,7 +27,7 @@ public extension FeesRequestBuilderV3 {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = /self.accounts/accountId/self.calculatedFees
+        let path = self.v3/self.accounts/accountId/self.calculatedFees
         
         var parameters = RequestQueryParameters()
         parameters["asset"] = assetId
