@@ -80,5 +80,24 @@ public extension Contoparty.DraftTokensRequestBuilderV3 {
             completion: completion
         )
     }
+    
+    public func buildDeleteDraftTokenRequest(
+        id: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+
+        let path = self.tokens/self.draft/id
+
+        self.buildRequest(
+            .simple(
+                path: path,
+                method: .delete
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
+        )
+    }
 }
 

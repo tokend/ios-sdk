@@ -28,7 +28,6 @@ public extension Contoparty.MintTokenApiV3 {
     @discardableResult
     func mintToken(
         parameters: [String: Any],
-        sendDate: Date = Date(),
         completion: @escaping ((_ result: RequestEmptyResult) -> Void)
     ) -> Cancelable {
         
@@ -36,7 +35,6 @@ public extension Contoparty.MintTokenApiV3 {
         
         self.requestBuilder.buildMintTokenRequest(
             bodyParameters: parameters,
-            sendDate: sendDate,
             completion: { [weak self] request in
                 
                 guard let request = request else {

@@ -145,4 +145,39 @@ public extension Contoparty.DraftTokensApiV3 {
         
         return cancelable
     }
+    
+    @discardableResult
+    func deleteDraftToken(
+        id: String,
+        completion: @escaping ((_ result: RequestEmptyResult) -> Void)
+    ) -> Cancelable {
+        
+        let cancelable = self.network.getEmptyCancelable()
+
+        self.requestBuilder.buildDeleteDraftTokenRequest(
+            id: id,
+            completion: { [weak self] (request) in
+
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+
+                cancelable.cancelable = self?.requestEmpty(
+                    request: request,
+                    completion: { (result) in
+
+                        switch result {
+
+                        case .success:
+                            completion(.success)
+
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                })
+        })
+
+        return cancelable
+    }
 }
