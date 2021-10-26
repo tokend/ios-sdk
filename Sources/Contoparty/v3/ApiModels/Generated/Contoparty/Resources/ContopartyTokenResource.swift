@@ -21,11 +21,12 @@ open class TokenResource: Resource {
         case numberInEdition
         case owner
         case status
-        case type
+        case tokenType
         
         // relations
         case edition
         case externalId
+        case withdrawRequest
     }
     
     // MARK: Attributes
@@ -58,8 +59,8 @@ open class TokenResource: Resource {
         return self.int32OptionalValue(key: CodingKeys.status) ?? 0
     }
     
-    open var attributesType: Int32 {
-        return self.int32OptionalValue(key: CodingKeys.type) ?? 0
+    open var tokenType: Contoparty.Enum? {
+        return self.codableOptionalValue(key: CodingKeys.tokenType)
     }
     
     // MARK: Relations
@@ -70,6 +71,10 @@ open class TokenResource: Resource {
     
     open var externalId: [Contoparty.ExternalIdResource]? {
         return self.relationCollectionOptionalValue(key: CodingKeys.externalId)
+    }
+    
+    open var withdrawRequest: Resource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.withdrawRequest)
     }
     
 }

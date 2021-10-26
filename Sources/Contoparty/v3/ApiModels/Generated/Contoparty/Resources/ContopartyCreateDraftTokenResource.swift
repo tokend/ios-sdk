@@ -26,16 +26,16 @@ open class CreateDraftTokenResource: Resource {
         return self.stringOptionalValue(key: CodingKeys.assetCode) ?? ""
     }
     
-    open var creator: String? {
-        return self.stringOptionalValue(key: CodingKeys.creator)
+    open var creator: String {
+        return self.stringOptionalValue(key: CodingKeys.creator) ?? ""
     }
     
     open var details: [String: Any] {
         return self.dictionaryOptionalValue(key: CodingKeys.details) ?? [:]
     }
     
-    open var attributesType: Int32 {
-        return self.int32OptionalValue(key: CodingKeys.type) ?? 0
+    open var attributesType: Contoparty.Enum? {
+        return self.codableOptionalValue(key: CodingKeys.type)
     }
     
 }

@@ -34,8 +34,8 @@ open class DraftTokenResource: Resource {
         return self.dictionaryOptionalValue(key: CodingKeys.details) ?? [:]
     }
     
-    open var attributesType: Int32 {
-        return self.int32OptionalValue(key: CodingKeys.type) ?? 0
+    open var attributesType: Contoparty.Enum? {
+        return self.codableOptionalValue(key: CodingKeys.type)
     }
     
 }

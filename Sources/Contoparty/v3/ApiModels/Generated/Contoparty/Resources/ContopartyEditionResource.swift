@@ -19,6 +19,9 @@ open class EditionResource: Resource {
         case creator
         case minted
         case name
+        
+        // relations
+        case tokens
     }
     
     // MARK: Attributes
@@ -41,6 +44,12 @@ open class EditionResource: Resource {
     
     open var name: String {
         return self.stringOptionalValue(key: CodingKeys.name) ?? ""
+    }
+    
+    // MARK: Relations
+    
+    open var tokens: [Contoparty.TokenResource]? {
+        return self.relationCollectionOptionalValue(key: CodingKeys.tokens)
     }
     
 }
