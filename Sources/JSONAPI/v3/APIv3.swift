@@ -67,6 +67,7 @@ public class APIv3 {
     public private(set) lazy var contopartyTokensApi: Contoparty.TokensApiV3 = { return create() }()
     public private(set) lazy var contopartyDraftTokensApi: Contoparty.DraftTokensApiV3 = { return create() }()
     public private(set) lazy var contopartyTokensHistoryApi: Contoparty.TokensHistoryApiV3 = { return create() }()
+    public private(set) lazy var contopartyMintTokenApi: Contoparty.MintTokenApiV3 = { return create() }()
     #endif
     
     // MARK: -
