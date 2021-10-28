@@ -22,6 +22,7 @@ open class TokenResource: Resource {
         case owner
         case status
         case tokenType
+        case type
         
         // relations
         case edition
@@ -59,8 +60,12 @@ open class TokenResource: Resource {
         return self.int32OptionalValue(key: CodingKeys.status) ?? 0
     }
     
-    open var tokenType: Contoparty.Enum? {
-        return self.codableOptionalValue(key: CodingKeys.tokenType)
+    open var tokenType: Int32 {
+        return self.int32OptionalValue(key: CodingKeys.tokenType) ?? 0
+    }
+    
+    open var attributesType: Contoparty.Enum? {
+        return self.codableOptionalValue(key: CodingKeys.type)
     }
     
     // MARK: Relations

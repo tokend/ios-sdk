@@ -17,6 +17,7 @@ open class DraftTokenResource: Resource {
         case assetCode
         case creator
         case details
+        case tokenType
         case type
     }
     
@@ -34,8 +35,12 @@ open class DraftTokenResource: Resource {
         return self.dictionaryOptionalValue(key: CodingKeys.details) ?? [:]
     }
     
-    open var attributesType: Contoparty.Enum? {
-        return self.codableOptionalValue(key: CodingKeys.type)
+    open var tokenType: Contoparty.Enum? {
+        return self.codableOptionalValue(key: CodingKeys.tokenType)
+    }
+    
+    open var attributesType: Int32 {
+        return self.int32OptionalValue(key: CodingKeys.type) ?? 0
     }
     
 }
