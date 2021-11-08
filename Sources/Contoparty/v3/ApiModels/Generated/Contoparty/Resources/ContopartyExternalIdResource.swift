@@ -16,6 +16,7 @@ open class ExternalIdResource: Resource {
         // attributes
         case externalId
         case externalType
+        case externalUrl
     }
     
     // MARK: Attributes
@@ -26,6 +27,10 @@ open class ExternalIdResource: Resource {
     
     open var externalType: Contoparty.Enum? {
         return self.codableOptionalValue(key: CodingKeys.externalType)
+    }
+    
+    open var externalUrl: String? {
+        return self.stringOptionalValue(key: CodingKeys.externalUrl)
     }
     
 }

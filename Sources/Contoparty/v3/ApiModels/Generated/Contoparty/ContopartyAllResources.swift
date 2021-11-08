@@ -11,10 +11,12 @@ enum AllResources {
         let allResources: [Resource.Type] = [
             TransactionResource.self,
             TokenHistoryResource.self,
+            MintV2Resource.self,
             ExternalIdResource.self,
             TokenResource.self,
             DraftTokenResource.self,
             CreateDraftTokenResource.self,
+            CreateEditionResource.self,
             EditionResource.self
         ]
         
