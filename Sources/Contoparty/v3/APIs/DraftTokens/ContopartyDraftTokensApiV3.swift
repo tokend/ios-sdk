@@ -180,4 +180,61 @@ public extension Contoparty.DraftTokensApiV3 {
 
         return cancelable
     }
+    
+    @discardableResult
+    func createDraftToken(
+        assetCode: String,
+        creator: String,
+        details: CreateDraftRequest.Attributes.Details,
+        type: Contoparty.Enum,
+        completion: @escaping ((_ result: RequestEmptyResult) -> Void)
+    ) -> Cancelable {
+                
+        let cancelable = self.network.getEmptyCancelable()
+        
+        let request: CreateDraftRequest = .init(
+            data: .init(
+                type: Contoparty.CreateDraftTokenResource.resourceType,
+                attributes: .init(
+                    assetCode: assetCode,
+                    creator: creator,
+                    details: details,
+                    type: .init(
+                        name: type.name,
+                        value: type.value
+                    )
+                )
+            )
+        )
+        guard let encodedRequest = try? request.documentDictionary() else {
+            completion(.failure(JSONAPIError.failedToBuildRequest))
+            return cancelable
+        }
+        
+        self.requestBuilder.buildCreateDraftTokenRequest(
+            bodyParameters: encodedRequest,
+            completion: { [weak self] (request) in
+                
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+                
+                cancelable.cancelable = self?.requestEmpty(
+                    request: request,
+                    completion: { (result) in
+                        
+                        switch result {
+                            
+                        case .success:
+                            completion(.success)
+                            
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    })
+            })
+        
+        return cancelable
+    }
 }
