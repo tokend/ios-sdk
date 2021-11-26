@@ -37,19 +37,19 @@ extension CreateDraftRequest.Attributes {
     public struct Details: Encodable {
         let logo: String
         let name: String
-        let image: String
-        let medium: String
-        let logoUrl: String
-        let isDraft: String
-        let dimensions: String
+        let image: String?
+        let medium: String?
+        let logoUrl: String?
+        let isDraft: String?
+        let dimensions: String?
         let logoDraft: BlobResponse.BlobContent.Attachment
-        let mediaSize: String
+        let mediaSize: Int64?
         let description: String
         let mediaDraft: BlobResponse.BlobContent.Attachment
-        let collaborators: String
-        let dateOrSeason: String
-        let representation: String
-        let directionsForUse: String
-        let unlockableContent: String
+        let collaborators: String?
+        let dateOrSeason: String?
+        let representation: String?
+        let directionsForUse: String?
+        let unlockableContent: String?
     }
 }
