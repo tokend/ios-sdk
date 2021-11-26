@@ -185,8 +185,24 @@ public extension Contoparty.DraftTokensApiV3 {
     func createDraftToken(
         assetCode: String,
         creator: String,
-        details: CreateDraftRequest.Attributes.Details,
-        type: Contoparty.Enum,
+        logo: String,
+        name: String,
+        image: String,
+        medium: String,
+        logoUrl: String,
+        isDraft: String,
+        dimensions: String,
+        logoDraft: BlobResponse.BlobContent.Attachment,
+        mediaSize: String,
+        description: String,
+        mediaDraft: BlobResponse.BlobContent.Attachment,
+        collaborators: String,
+        dateOrSeason: String,
+        representation: String,
+        directionsForUse: String,
+        unlockableContent: String,
+        tokenTypeName: String,
+        tokenTypeValue: Int32,
         completion: @escaping ((_ result: RequestEmptyResult) -> Void)
     ) -> Cancelable {
                 
@@ -198,10 +214,27 @@ public extension Contoparty.DraftTokensApiV3 {
                 attributes: .init(
                     assetCode: assetCode,
                     creator: creator,
-                    details: details,
+                    details: .init(
+                        logo: logo,
+                        name: name,
+                        image: image,
+                        medium: medium,
+                        logoUrl: logoUrl,
+                        isDraft: isDraft,
+                        dimensions: dimensions,
+                        logoDraft: logoDraft,
+                        mediaSize: mediaSize,
+                        description: description,
+                        mediaDraft: mediaDraft,
+                        collaborators: collaborators,
+                        dateOrSeason: dateOrSeason,
+                        representation: representation,
+                        directionsForUse: directionsForUse,
+                        unlockableContent: unlockableContent
+                    ),
                     type: .init(
-                        name: type.name,
-                        value: type.value
+                        name: tokenTypeName,
+                        value: tokenTypeValue
                     )
                 )
             )
