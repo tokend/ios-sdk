@@ -190,7 +190,7 @@ public extension Contoparty.DraftTokensApiV3 {
         image: String?,
         medium: String?,
         logoUrl: String?,
-        isDraft: String?,
+        isDraft: Bool,
         dimensions: String?,
         logoDraft: BlobResponse.BlobContent.Attachment,
         mediaSize: Int64,

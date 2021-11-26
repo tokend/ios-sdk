@@ -40,7 +40,7 @@ extension CreateDraftRequest.Attributes {
         let image: String?
         let medium: String?
         let logoUrl: String?
-        let isDraft: String?
+        let isDraft: Bool
         let dimensions: String?
         let logoDraft: BlobResponse.BlobContent.Attachment
         let mediaSize: Int64?
