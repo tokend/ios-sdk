@@ -46,6 +46,7 @@ extension CreateDraftRequest.Attributes {
         let mediaSize: Int64?
         let description: String
         let mediaDraft: BlobResponse.BlobContent.Attachment
+        let animationUrl: String?
         let collaborators: String?
         let dateOrSeason: String?
         let representation: String?
