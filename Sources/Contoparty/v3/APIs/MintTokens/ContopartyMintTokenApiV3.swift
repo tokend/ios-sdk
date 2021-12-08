@@ -27,14 +27,64 @@ public extension Contoparty.MintTokenApiV3 {
     
     @discardableResult
     func mintToken(
-        parameters: [String: Any],
+        id: String,
+        ipfsUrl: String,
+        assetCode: String,
+        details: MintTokenRequest.Attributes.Details,
+        senderAccountId: String,
+        amount: Int64,
+        mintTarget: MintTokenRequest.Attributes.ObjectType,
+        type: MintTokenRequest.Attributes.ObjectType,
+        isEdition: Bool,
         completion: @escaping ((_ result: RequestEmptyResult) -> Void)
     ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
         
+        let relationships: MintTokenRequest.Relationships
+        let included: [MintTokenRequest.Included]?
+        if isEdition {
+            relationships = .init(
+                edition: .init(id: details.name),
+                draftToDelete: .init(id: id)
+            )
+            included = [
+                .init(
+                    id: details.name,
+                    attributes: .init(name: details.name)
+                )
+            ]
+        } else {
+            relationships = .init(
+                edition: nil,
+                draftToDelete: .init(id: id)
+            )
+            included = nil
+        }
+        let request: MintTokenRequest = .init(
+            data: .init(
+                type: Contoparty.MintV2Resource.resourceType,
+                attributes: .init(
+                    ipfsUrl: ipfsUrl,
+                    assetCode: assetCode,
+                    details: details,
+                    senderAccountId: senderAccountId,
+                    amount: amount,
+                    mintTarget: mintTarget,
+                    type: type
+                ),
+                relationships: relationships
+            ),
+            included: included
+        )
+        
+        guard let encodedRequest = try? request.documentDictionary() else {
+            completion(.failure(JSONAPIError.failedToBuildRequest))
+            return cancelable
+        }
+        
         self.requestBuilder.buildMintTokenRequest(
-            bodyParameters: parameters,
+            bodyParameters: encodedRequest,
             completion: { [weak self] request in
                 
                 guard let request = request else {

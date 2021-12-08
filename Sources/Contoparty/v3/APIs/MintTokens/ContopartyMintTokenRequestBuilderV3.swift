@@ -7,6 +7,7 @@ public extension Contoparty {
         // MARK: - Private properties
         
         private var tokens: String { "tokens" }
+        private var v2: String { "v2" }
         private var mint: String { "mint" }
     }
 }
@@ -20,7 +21,7 @@ public extension Contoparty.MintTokenRequestBuilderV3 {
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
-        let path = /self.tokens/self.mint
+        let path = /self.tokens/self.v2/self.mint
         
         self.buildRequest(
             .simpleBody(
