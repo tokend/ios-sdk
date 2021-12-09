@@ -145,14 +145,28 @@ extension MintTokenRequest {
 extension MintTokenRequest.Relationships {
     
     struct EditionData: Encodable {
-        let id: String
-        let type: String = "create-edition"
+        let data: CreateEditionKey
     }
 }
 
 extension MintTokenRequest.Relationships {
     
     struct DraftToDeleteData: Encodable {
+        let data: DraftTokenKey
+    }
+}
+
+extension MintTokenRequest.Relationships.EditionData {
+    
+    struct CreateEditionKey: Encodable {
+        let id: String
+        let type: String = "create-edition"
+    }
+}
+
+extension MintTokenRequest.Relationships.DraftToDeleteData {
+    
+    struct DraftTokenKey: Encodable {
         let id: String
         let type: String = "draft-tokens"
     }
