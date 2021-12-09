@@ -25,7 +25,7 @@ public extension MintTokenRequest {
         let senderAccountId: String
         let amount: Int64
         let mintTarget: ObjectType
-        let type: ObjectType
+        let tokenType: ObjectType
     }
 }
 

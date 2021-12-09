@@ -34,7 +34,7 @@ public extension Contoparty.MintTokenApiV3 {
         senderAccountId: String,
         amount: Int64,
         mintTarget: MintTokenRequest.Attributes.ObjectType,
-        type: MintTokenRequest.Attributes.ObjectType,
+        tokenType: MintTokenRequest.Attributes.ObjectType,
         isEdition: Bool,
         completion: @escaping ((_ result: RequestEmptyResult) -> Void)
     ) -> Cancelable {
@@ -71,7 +71,7 @@ public extension Contoparty.MintTokenApiV3 {
                     senderAccountId: senderAccountId,
                     amount: amount,
                     mintTarget: mintTarget,
-                    type: type
+                    tokenType: tokenType
                 ),
                 relationships: relationships
             ),
