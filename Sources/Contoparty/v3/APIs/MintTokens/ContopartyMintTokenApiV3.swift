@@ -45,8 +45,12 @@ public extension Contoparty.MintTokenApiV3 {
         let included: [MintTokenRequest.Included]?
         if isEdition {
             relationships = .init(
-                edition: .init(id: details.name),
-                draftToDelete: .init(id: id)
+                edition: .init(
+                    data: .init(id: details.name)
+                ),
+                draftToDelete: .init(
+                    data: .init(id: id)
+                )
             )
             included = [
                 .init(
@@ -57,7 +61,9 @@ public extension Contoparty.MintTokenApiV3 {
         } else {
             relationships = .init(
                 edition: nil,
-                draftToDelete: .init(id: id)
+                draftToDelete: .init(
+                    data: .init(id: id)
+                )
             )
             included = nil
         }
