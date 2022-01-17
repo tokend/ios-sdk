@@ -36,7 +36,7 @@ public extension Contoparty.MintTokenApiV3 {
         mintTarget: MintTokenRequest.Attributes.ObjectType,
         tokenType: MintTokenRequest.Attributes.ObjectType,
         isEdition: Bool,
-        completion: @escaping ((_ result: RequestSingleResult<Contoparty.ContopartyMintTokenResource>) -> Void)
+        completion: @escaping ((_ result: RequestSingleResult<Resource>) -> Void)
     ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -99,7 +99,7 @@ public extension Contoparty.MintTokenApiV3 {
                 }
                 
                 cancelable.cancelable = self?.requestSingle(
-                    Contoparty.ContopartyMintTokenResource.self,
+                    Resource.self,
                     request: request,
                     completion: { (result) in
                         
