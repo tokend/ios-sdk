@@ -29,7 +29,7 @@ extension Contoparty {
         
         // MARK: Relations
         
-        open var mintedTokens: [ContopartyTokenKeyResource]? {
+        open var mintedTokens: [Resource]? {
             return self.relationCollectionOptionalValue(key: CodingKeys.mintedTokens)
         }
     }
