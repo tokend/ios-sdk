@@ -64,4 +64,24 @@ public extension Contoparty.TokensRequestBuilderV3 {
             completion: completion
         )
     }
+    
+    func buildGetTokenById(
+        id: String,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+        
+        let path = self.tokens/id
+
+        self.buildRequest(
+            .simple(
+                path: path,
+                method: .get
+            ),
+            shouldSign: false,
+            sendDate: sendDate,
+            completion: completion
+        )
+
+    }
 }
