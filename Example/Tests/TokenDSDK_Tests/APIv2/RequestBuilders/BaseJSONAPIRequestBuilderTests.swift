@@ -25,7 +25,7 @@ class BaseJSONAPIRequestBuilderTests: XCTestCase {
         )
         
         return JSONAPI.BaseApiRequestBuilderStack(
-            apiConfiguration: apiConfiguration,
+            apiConfigurationProvider: apiConfiguration,
             requestSigner: requestSigner,
             network: network
         )

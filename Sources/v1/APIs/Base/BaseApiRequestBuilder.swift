@@ -5,17 +5,20 @@ public struct BaseApiRequestBuilderStack {
     
     // MARK: - Public properties
     
-    public let apiConfiguration: ApiConfiguration
+    public var apiConfiguration: ApiConfiguration {
+        apiConfigurationProvider.apiConfiguration
+    }
+    public let apiConfigurationProvider: ApiConfigurationProviderProtocol
     public let requestSigner: RequestSignerProtocol
     
     // MARK: -
     
     public init(
-        apiConfiguration: ApiConfiguration,
+        apiConfigurationProvider: ApiConfigurationProviderProtocol,
         requestSigner: RequestSignerProtocol
         ) {
         
-        self.apiConfiguration = apiConfiguration
+        self.apiConfigurationProvider = apiConfigurationProvider
         self.requestSigner = requestSigner
     }
     
@@ -23,7 +26,7 @@ public struct BaseApiRequestBuilderStack {
     
     public static func fromApiStack(_ apiStack: BaseApiStack) -> BaseApiRequestBuilderStack {
         return BaseApiRequestBuilderStack(
-            apiConfiguration: apiStack.apiConfiguration,
+            apiConfigurationProvider: apiStack.apiConfigurationProvider,
             requestSigner: apiStack.requestSigner
         )
     }
@@ -32,13 +35,16 @@ public struct BaseApiRequestBuilderStack {
 /// Parent for other request builder classes.
 public class BaseApiRequestBuilder {
     
-    public let apiConfiguration: ApiConfiguration
+    public var apiConfiguration: ApiConfiguration {
+        apiConfigurationProvider.apiConfiguration
+    }
+    public var apiConfigurationProvider: ApiConfigurationProviderProtocol
     public let requestSigner: RequestSignerProtocol
     
     // MARK: -
     
     public init(builderStack: BaseApiRequestBuilderStack) {
-        self.apiConfiguration = builderStack.apiConfiguration
+        self.apiConfigurationProvider = builderStack.apiConfigurationProvider
         self.requestSigner = builderStack.requestSigner
     }
     

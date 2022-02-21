@@ -20,3 +20,9 @@ public struct ApiConfiguration {
         self.userAgent = userAgent
     }
 }
+
+/// Protocol provides up to date `ApiConfiguration` model
+public protocol ApiConfigurationProviderProtocol {
+    
+    var apiConfiguration: ApiConfiguration { get }
+}

@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+
+### Added
+- `FeesApiV3` to `APIv3`
+
+## [4.0.4] 2021-08-04
+
+### Fixed
+- `ApiConfigurationProviderProtocol` usage instead of `ApiConfiguration`
+
+## [4.0.3] 2021-08-04
+
+### Added
+ - `ApiConfigurationProviderProtocol` to `API`s
+
+## [4.0.2] 2021-07-29
+
+### Deprecated
+ - `BlobResponse.BlobContent`
+
 ## [4.0.1] 2021-06-09
 
 ### Fixed

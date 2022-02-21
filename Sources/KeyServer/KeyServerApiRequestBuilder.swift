@@ -6,7 +6,10 @@ public class KeyServerApiRequestBuilder {
     
     // MARK: - Public properties
     
-    public let apiConfiguration: ApiConfiguration
+    public var apiConfiguration: ApiConfiguration {
+        apiConfigurationProvider.apiConfiguration
+    }
+    public let apiConfigurationProvider: ApiConfigurationProviderProtocol
     public let network: JSONAPI.NetworkProtocol
 
     // MARK: - Internal properties
@@ -16,11 +19,11 @@ public class KeyServerApiRequestBuilder {
     // MARK: -
     
     public init(
-        apiConfiguration: ApiConfiguration,
+        apiConfigurationProvider: ApiConfigurationProviderProtocol,
         network: JSONAPI.NetworkProtocol
         ) {
         
-        self.apiConfiguration = apiConfiguration
+        self.apiConfigurationProvider = apiConfigurationProvider
         self.network = network
     }
 }

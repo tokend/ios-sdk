@@ -6,19 +6,22 @@ public struct BaseApiRequestBuilderStackJSONAPI {
     
     // MARK: - Public properties
     
-    public let apiConfiguration: ApiConfiguration
+    public var apiConfiguration: ApiConfiguration {
+        apiConfigurationProvider.apiConfiguration
+    }
+    public let apiConfigurationProvider: ApiConfigurationProviderProtocol
     public let requestSigner: JSONAPI.RequestSignerProtocol
     public let network: JSONAPI.NetworkProtocol
     
     // MARK: -
     
     public init(
-        apiConfiguration: ApiConfiguration,
+        apiConfigurationProvider: ApiConfigurationProviderProtocol,
         requestSigner: JSONAPI.RequestSignerProtocol,
         network: JSONAPI.NetworkProtocol
         ) {
         
-        self.apiConfiguration = apiConfiguration
+        self.apiConfigurationProvider = apiConfigurationProvider
         self.requestSigner = requestSigner
         self.network = network
     }
@@ -27,7 +30,7 @@ public struct BaseApiRequestBuilderStackJSONAPI {
     
     public static func fromApiStack(_ apiStack: JSONAPI.BaseApiStack) -> JSONAPI.BaseApiRequestBuilderStack {
         return JSONAPI.BaseApiRequestBuilderStack(
-            apiConfiguration: apiStack.apiConfiguration,
+            apiConfigurationProvider: apiStack.apiConfigurationProvider,
             requestSigner: apiStack.requestSigner,
             network: apiStack.network
         )
@@ -39,7 +42,8 @@ public class BaseApiRequestBuilderJSONAPI {
     
     // MARK: - Public properties
     
-    public let apiConfiguration: ApiConfiguration
+    public var apiConfiguration: ApiConfiguration { apiConfigurationProvider.apiConfiguration }
+    public let apiConfigurationProvider: ApiConfigurationProviderProtocol
     public let requestSigner: JSONAPI.RequestSignerProtocol
     public let network: JSONAPI.NetworkProtocol
     
@@ -48,7 +52,7 @@ public class BaseApiRequestBuilderJSONAPI {
     // MARK: -
     
     public init(builderStack: JSONAPI.BaseApiRequestBuilderStack) {
-        self.apiConfiguration = builderStack.apiConfiguration
+        self.apiConfigurationProvider = builderStack.apiConfigurationProvider
         self.requestSigner = builderStack.requestSigner
         self.network = builderStack.network
     }

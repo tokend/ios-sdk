@@ -72,7 +72,7 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
     
     lazy var tfaApi: TokenDSDK.TFAApi = {
         let api = TFAApi(
-            apiConfiguration: self.apiConfig,
+            apiConfigurationProvider: self.apiConfig,
             requestSigner: RequestSigner(keyDataProvider: self, accountIdProvider: self),
             callbacks: self.apiCallbacks,
             network: self.network
@@ -82,7 +82,7 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
     
     lazy var verifyApi: TokenDSDK.TFAVerifyApi = {
         let api = TokenDSDK.TFAVerifyApi(
-            apiConfiguration: self.apiConfig,
+            apiConfigurationProvider: self.apiConfig,
             requestSigner: RequestSigner(keyDataProvider: self, accountIdProvider: self),
             network: self.network
         )
@@ -91,7 +91,7 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
     
     lazy var keyServerApi: TokenDSDK.KeyServerApi = {
         let api = TokenDSDK.KeyServerApi(
-            apiConfiguration: self.apiConfig,
+            apiConfigurationProvider: self.apiConfig,
             callbacks: self.apiCallbacks,
             verifyApi: self.verifyApi,
             requestSigner: JSONAPI.RequestSigner(keyDataProvider: self, accountIdProvider: self),
@@ -447,4 +447,9 @@ class KeyServerExampleViewController: UIViewController, RequestSignKeyDataProvid
         self.inputTFAText = tf.text ?? ""
     }
 }
+
+extension ApiConfiguration: ApiConfigurationProviderProtocol {
+    public var apiConfiguration: ApiConfiguration { self }
+}
+
 // swiftlint:enable type_body_length line_length

@@ -45,6 +45,6 @@ extension BookEventRequest {
 extension BookEventRequest {
     
     struct Documents: Encodable {
-        let additionalPhoto: BlobResponse.BlobContent.Attachment?
+        let additionalPhoto: BlobResponse.Attachment?
     }
 }

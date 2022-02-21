@@ -3,7 +3,10 @@ import Foundation
 /// Base api stack model.
 public struct BaseApiStack {
     
-    public let apiConfiguration: ApiConfiguration
+    public var apiConfiguration: ApiConfiguration {
+        apiConfigurationProvider.apiConfiguration
+    }
+    public let apiConfigurationProvider: ApiConfigurationProviderProtocol
     public let callbacks: ApiCallbacks
     public let network: NetworkProtocol
     public let requestSigner: RequestSignerProtocol
@@ -12,14 +15,14 @@ public struct BaseApiStack {
     // MARK: -
     
     public init(
-        apiConfiguration: ApiConfiguration,
+        apiConfigurationProvider: ApiConfigurationProviderProtocol,
         callbacks: ApiCallbacks,
         network: NetworkProtocol,
         requestSigner: RequestSignerProtocol,
         verifyApi: TFAVerifyApi
         ) {
         
-        self.apiConfiguration = apiConfiguration
+        self.apiConfigurationProvider = apiConfigurationProvider
         self.callbacks = callbacks
         self.network = network
         self.requestSigner = requestSigner
@@ -30,13 +33,16 @@ public struct BaseApiStack {
 /// Parent for other api classes.
 public class BaseApi {
     
-    public let apiConfiguration: ApiConfiguration
+    public var apiConfiguration: ApiConfiguration {
+        apiConfigurationProvider.apiConfiguration
+    }
+    public let apiConfigurationProvider: ApiConfigurationProviderProtocol
     public let network: NetworkFacade
     public let requestSigner: RequestSignerProtocol
     public let tfaHandler: TFAHandler
     
     public required init(apiStack: BaseApiStack) {
-        self.apiConfiguration = apiStack.apiConfiguration
+        self.apiConfigurationProvider = apiStack.apiConfigurationProvider
         self.network = NetworkFacade(network: apiStack.network)
         self.requestSigner = apiStack.requestSigner
         self.tfaHandler = TFAHandler(

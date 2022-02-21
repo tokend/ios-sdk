@@ -4,7 +4,10 @@ import DLJSONAPI
 /// Base api stack model.
 public struct BaseApiStackJSONAPI {
     
-    public let apiConfiguration: ApiConfiguration
+    public var apiConfiguration: ApiConfiguration {
+        apiConfigurationProvider.apiConfiguration
+    }
+    public let apiConfigurationProvider: ApiConfigurationProviderProtocol
     public let callbacks: JSONAPI.ApiCallbacks
     public let network: JSONAPI.NetworkProtocol
     public let requestSigner: JSONAPI.RequestSignerProtocol
@@ -12,13 +15,13 @@ public struct BaseApiStackJSONAPI {
     // MARK: -
     
     public init(
-        apiConfiguration: ApiConfiguration,
+        apiConfigurationProvider: ApiConfigurationProviderProtocol,
         callbacks: JSONAPI.ApiCallbacks,
         network: JSONAPI.NetworkProtocol,
         requestSigner: JSONAPI.RequestSignerProtocol
         ) {
         
-        self.apiConfiguration = apiConfiguration
+        self.apiConfigurationProvider = apiConfigurationProvider
         self.callbacks = callbacks
         self.network = network
         self.requestSigner = requestSigner
@@ -28,7 +31,10 @@ public struct BaseApiStackJSONAPI {
 /// Parent for other api classes.
 public class BaseApiJSONAPI {
     
-    public let apiConfiguration: ApiConfiguration
+    public var apiConfiguration: ApiConfiguration {
+        apiConfigurationProvider.apiConfiguration
+    }
+    public let apiConfigurationProvider: ApiConfigurationProviderProtocol
     public let baseRequestBuilder: JSONAPI.BaseApiRequestBuilder
     public let network: JSONAPI.NetworkFacade
     public let requestSigner: JSONAPI.RequestSignerProtocol
@@ -36,7 +42,7 @@ public class BaseApiJSONAPI {
     // MARK: -
     
     public required init(apiStack: JSONAPI.BaseApiStack) {
-        self.apiConfiguration = apiStack.apiConfiguration
+        self.apiConfigurationProvider = apiStack.apiConfigurationProvider
         self.baseRequestBuilder = JSONAPI.BaseApiRequestBuilder(
             builderStack: JSONAPI.BaseApiRequestBuilderStack.fromApiStack(apiStack)
         )

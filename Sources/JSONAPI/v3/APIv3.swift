@@ -6,14 +6,17 @@ public class APIv3 {
     
     // MARK: - Public properties
     
-    public let configuration: ApiConfiguration
+    public var configuration: ApiConfiguration {
+        configurationProvider.apiConfiguration
+    }
+    public let configurationProvider: ApiConfigurationProviderProtocol
     public let callbacks: JSONAPI.ApiCallbacks
     public let network: JSONAPI.NetworkProtocol
     public let requestSigner: JSONAPI.RequestSignerProtocol
     
     public private(set) lazy var baseApiStack: JSONAPI.BaseApiStack = {
         return JSONAPI.BaseApiStack(
-            apiConfiguration: self.configuration,
+            apiConfigurationProvider: self.configurationProvider,
             callbacks: self.callbacks,
             network: self.network,
             requestSigner: self.requestSigner
@@ -36,6 +39,7 @@ public class APIv3 {
     public private(set) lazy var transactionsApi: TransactionsApiV3 = { return self.create() }()
     public private(set) lazy var kycApi: KYCApiV3 = { return create() }()
     public private(set) lazy var infoApi: InfoApiV3 = { return create() }()
+    public private(set) lazy var feesApi: FeesApiV3 = { return create() }()
     
     #if TOKENDSDK_CONTOPASSAPI
     public private(set) lazy var invitationsApi: InvitationsApiV3 = { return create() }()
@@ -73,13 +77,13 @@ public class APIv3 {
     // MARK: -
     
     public init(
-        configuration: ApiConfiguration,
+        configurationProvider: ApiConfigurationProviderProtocol,
         callbacks: JSONAPI.ApiCallbacks,
         network: JSONAPI.NetworkProtocol,
         requestSigner: JSONAPI.RequestSignerProtocol
         ) {
         
-        self.configuration = configuration
+        self.configurationProvider = configurationProvider
         self.callbacks = callbacks
         self.network = network
         self.requestSigner = requestSigner
