@@ -54,22 +54,34 @@ public class SalesApiV3: JSONAPI.BaseApi {
     @discardableResult
     public func getSales(
         filters: SalesRequestFiltersV3,
+        include: [String]? = nil,
         pagination: RequestPagination,
         onRequestBuilt: ((_ request: JSONAPI.RequestModel) -> Void)? = nil,
         completion: @escaping ((_ result: RequestCollectionResult<Horizon.SaleResource>) -> Void)
-        ) -> Cancelable {
-        
-        let request = self.requestBuilder.buildGetSalesRequest(
+    ) -> Cancelable {
+
+        let cancelable = self.network.getEmptyCancelable()
+
+        self.requestBuilder.buildGetSalesRequest(
             filters: filters,
-            pagination: pagination
+            include: include,
+            pagination: pagination,
+            completion: { [weak self] (request) in
+                guard let request = request else {
+                    completion(.failure(JSONAPIError.failedToSignRequest))
+                    return
+                }
+
+                onRequestBuilt?(request)
+
+                cancelable.cancelable = self?.requestCollection(
+                    Horizon.SaleResource.self,
+                    request: request,
+                    completion: completion
+                )
+
+            }
         )
-        
-        onRequestBuilt?(request)
-        
-        return self.requestCollection(
-            Horizon.SaleResource.self,
-            request: request,
-            completion: completion
-        )
+        return cancelable
     }
 }

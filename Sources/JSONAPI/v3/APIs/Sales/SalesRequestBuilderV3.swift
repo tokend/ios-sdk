@@ -36,20 +36,27 @@ public class SalesRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     /// - Returns: `RequestModel`.
     public func buildGetSalesRequest(
         filters: SalesRequestFiltersV3,
-        pagination: RequestPagination
-        ) -> JSONAPI.RequestModel {
-        
+        include: [String]?,
+        pagination: RequestPagination,
+        sendDate: Date = Date(),
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
+    ) {
+
         let path = /self.v3/self.sales
-        
+
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
-        
-        return self.buildRequest(
-            JSONAPI.BaseRequestBuildModel.simpleQueryPagination(
+
+        self.buildRequest(
+            JSONAPI.BaseRequestBuildModel.simpleQueryIncludePagination(
                 path: path,
                 method: .get,
                 queryParameters: queryParameters,
+                include: include,
                 pagination: pagination
-            )
+            ),
+            shouldSign: true,
+            sendDate: sendDate,
+            completion: completion
         )
     }
 }

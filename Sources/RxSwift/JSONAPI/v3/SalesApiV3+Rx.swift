@@ -16,17 +16,26 @@ extension Reactive where Base: SalesRequestBuilderV3 {
     
     public func buildGetSalesRequest(
         filters: SalesRequestFiltersV3,
-        pagination: RequestPagination
-        ) -> Single<JSONAPI.RequestModel> {
-        
+        include: [String]?,
+        pagination: RequestPagination,
+        sendDate: Date = Date()
+    ) -> Single<JSONAPI.RequestModel> {
+
         return Single<JSONAPI.RequestModel>.create(subscribe: { (event) in
-            let request = self.base.buildGetSalesRequest(
+            self.base.buildGetSalesRequest(
                 filters: filters,
-                pagination: pagination
-            )
-            
-            event(.success(request))
-            
+                include: include,
+                pagination: pagination,
+                sendDate: sendDate,
+                completion: { (request) in
+                    guard let request = request else {
+                        event(.failure(JSONAPIError.failedToSignRequest))
+                        return
+                    }
+
+                    event(.success(request))
+                })
+
             return Disposables.create()
         })
     }
