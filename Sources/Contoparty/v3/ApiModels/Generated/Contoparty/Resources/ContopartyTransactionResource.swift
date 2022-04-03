@@ -9,7 +9,7 @@ extension Contoparty {
 open class TransactionResource: Resource {
     
     open override class var resourceType: String {
-        return "transactions"
+        return "transactions-bp"
     }
     
     public enum CodingKeys: String, CodingKey {

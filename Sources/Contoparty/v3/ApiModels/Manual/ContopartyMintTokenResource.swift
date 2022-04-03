@@ -5,7 +5,7 @@ extension Contoparty {
     open class ContopartyMintTokenResource: Resource {
         
         open override class var resourceType: String {
-            return "transactions"
+            return "transactions-mint"
         }
         
         public enum CodingKeys: String, CodingKey {
