@@ -31,6 +31,7 @@ public class OffersApiV3: JSONAPI.BaseApi {
     /// - Returns: `Cancelable`
     @discardableResult
     public func requestOffers(
+        filters: OffersRequestFilterV3,
         parameters: OffersRequestParametersV3?,
         other: RequestQueryParameters?,
         pagination: RequestPagination,
@@ -41,6 +42,7 @@ public class OffersApiV3: JSONAPI.BaseApi {
         let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildOffersRequest(
+            filters: filters,
             parameters: parameters,
             other: other,
             pagination: pagination,
