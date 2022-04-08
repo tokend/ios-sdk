@@ -17,6 +17,7 @@ public class OffersRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     ///   - pagination: Pagination option.
     ///   - completion: Returns `RequestModel` or nil.
     public func buildOffersRequest(
+        filters: OffersRequestFilterV3,
         parameters: OffersRequestParametersV3?,
         other: RequestQueryParameters?,
         pagination: RequestPagination,
@@ -25,6 +26,8 @@ public class OffersRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         ) {
         
         let path = /self.v3/self.offers
+        
+        let queryFilters = self.buildFilterQueryItems(filters.filterItems)
         
         var queryParameters = RequestQueryParameters()
         
@@ -66,7 +69,7 @@ public class OffersRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
             JSONAPI.BaseRequestBuildModel.simpleQueryPagination(
                 path: path,
                 method: .get,
-                queryParameters: queryParameters,
+                queryParameters: queryFilters,
                 pagination: pagination
             ),
             shouldSign: true,
