@@ -25,6 +25,10 @@ open class TransactionResource: Resource {
         case ledgerEntryChanges
         case operations
         case source
+#if TOKENDSDK_CONTOPARTYAPI
+        case mintedTokens
+#endif
+        
     }
     
     // MARK: Attributes
@@ -67,5 +71,10 @@ open class TransactionResource: Resource {
         return self.relationSingleOptionalValue(key: CodingKeys.source)
     }
     
+#if TOKENDSDK_CONTOPARTYAPI
+    open var mintedTokens: [Resource]? {
+        return self.relationCollectionOptionalValue(key: CodingKeys.mintedTokens)
+    }
+#endif
 }
 }

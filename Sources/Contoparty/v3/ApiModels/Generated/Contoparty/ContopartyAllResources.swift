@@ -18,7 +18,7 @@ enum AllResources {
             CreateDraftTokenResource.self,
             CreateEditionResource.self,
             EditionResource.self,
-            ContopartyMintTokenResource.self
+//            ContopartyMintTokenResource.self
         ]
         
         for res in allResources {
