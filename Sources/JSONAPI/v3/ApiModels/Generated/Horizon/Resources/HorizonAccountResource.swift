@@ -25,6 +25,7 @@ open class AccountResource: Resource {
         case limitsWithStats
         case referrer
         case role
+        case signers
     }
     
     // MARK: Attributes
@@ -65,6 +66,10 @@ open class AccountResource: Resource {
     
     open var role: Horizon.AccountRoleResource? {
         return self.relationSingleOptionalValue(key: CodingKeys.role)
+    }
+    
+    open var signers: [Horizon.SignerResource]? {
+        return self.relationCollectionOptionalValue(key: CodingKeys.signers)
     }
     
 }
