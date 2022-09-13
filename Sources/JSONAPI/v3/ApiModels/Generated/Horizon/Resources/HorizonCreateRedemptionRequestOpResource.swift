@@ -29,8 +29,8 @@ open class CreateRedemptionRequestOpResource: BaseOperationDetailsResource {
         return self.decimalOptionalValue(key: CodingKeys.amount) ?? 0.0
     }
     
-    open var creatorDetails: String {
-        return self.stringOptionalValue(key: CodingKeys.creatorDetails) ?? ""
+    open var creatorDetails: [String: Any] {
+        return self.dictionaryOptionalValue(key: CodingKeys.creatorDetails) ?? [:]
     }
     
     // MARK: Relations

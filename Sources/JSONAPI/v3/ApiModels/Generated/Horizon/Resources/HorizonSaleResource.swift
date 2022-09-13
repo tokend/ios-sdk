@@ -18,6 +18,8 @@ open class SaleResource: Resource {
         case baseHardCap
         case details
         case endTime
+        case participantsCount
+        case participationsCount
         case saleState
         case saleType
         case startTime
@@ -45,6 +47,14 @@ open class SaleResource: Resource {
     
     open var endTime: Date {
         return self.dateOptionalValue(key: CodingKeys.endTime) ?? Date()
+    }
+    
+    open var participantsCount: Int32 {
+        return self.int32OptionalValue(key: CodingKeys.participantsCount) ?? 0
+    }
+    
+    open var participationsCount: Int32 {
+        return self.int32OptionalValue(key: CodingKeys.participationsCount) ?? 0
     }
     
     open var saleState: Horizon.Enum? {

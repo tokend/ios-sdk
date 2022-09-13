@@ -11,6 +11,7 @@ public enum BaseOperationDetailsType {
     case cancelDataRemoveRequestOp(_ resource: Horizon.CancelDataRemoveRequestOpResource)
     case cancelDataUpdateRequestOp(_ resource: Horizon.CancelDataUpdateRequestOpResource)
     case cancelDeferredPaymentCreationRequestOp(_ resource: Horizon.CancelDeferredPaymentCreationRequestOpResource)
+    case cancelSaleRequestOp(_ resource: Horizon.CancelSaleRequestOpResource)
     case checkSaleStateOp(_ resource: Horizon.CheckSaleStateOpResource)
     case closeSwapOp(_ resource: Horizon.CloseSwapOpResource)
     case createAccountOp(_ resource: Horizon.CreateAccountOpResource)
@@ -40,8 +41,11 @@ public enum BaseOperationDetailsType {
     case manageAssetOp(_ resource: Horizon.ManageAssetOpResource)
     case manageAssetPairOp(_ resource: Horizon.ManageAssetPairOpResource)
     case manageBalanceOp(_ resource: Horizon.ManageBalanceOpResource)
+    case manageContractOp(_ resource: Horizon.ManageContractOpResource)
+    case manageContractRequestOp(_ resource: Horizon.ManageContractRequestOpResource)
     case manageCreatePollRequestOp(_ resource: Horizon.ManageCreatePollRequestOpResource)
     case manageExternalSystemAccountIDPoolEntryOp(_ resource: Horizon.ManageExternalSystemAccountIDPoolEntryOpResource)
+    case manageInvoiceOp(_ resource: Horizon.ManageInvoiceOpResource)
     case manageKeyValueOp(_ resource: Horizon.ManageKeyValueOpResource)
     case manageOfferOp(_ resource: Horizon.ManageOfferOpResource)
     case managePollOp(_ resource: Horizon.ManagePollOpResource)
@@ -80,6 +84,8 @@ extension Horizon.BaseOperationDetailsResource {
             return .cancelDataUpdateRequestOp(resource)
         } else if let resource = self as? Horizon.CancelDeferredPaymentCreationRequestOpResource {
             return .cancelDeferredPaymentCreationRequestOp(resource)
+        } else if let resource = self as? Horizon.CancelSaleRequestOpResource {
+            return .cancelSaleRequestOp(resource)
         } else if let resource = self as? Horizon.CheckSaleStateOpResource {
             return .checkSaleStateOp(resource)
         } else if let resource = self as? Horizon.CloseSwapOpResource {
@@ -138,10 +144,16 @@ extension Horizon.BaseOperationDetailsResource {
             return .manageAssetPairOp(resource)
         } else if let resource = self as? Horizon.ManageBalanceOpResource {
             return .manageBalanceOp(resource)
+        } else if let resource = self as? Horizon.ManageContractOpResource {
+            return .manageContractOp(resource)
+        } else if let resource = self as? Horizon.ManageContractRequestOpResource {
+            return .manageContractRequestOp(resource)
         } else if let resource = self as? Horizon.ManageCreatePollRequestOpResource {
             return .manageCreatePollRequestOp(resource)
         } else if let resource = self as? Horizon.ManageExternalSystemAccountIDPoolEntryOpResource {
             return .manageExternalSystemAccountIDPoolEntryOp(resource)
+        } else if let resource = self as? Horizon.ManageInvoiceOpResource {
+            return .manageInvoiceOp(resource)
         } else if let resource = self as? Horizon.ManageKeyValueOpResource {
             return .manageKeyValueOp(resource)
         } else if let resource = self as? Horizon.ManageOfferOpResource {
@@ -206,6 +218,9 @@ extension Horizon.BaseOperationDetailsResource {
         
         
     case .cancelDeferredPaymentCreationRequestOp(let resource):
+        
+        
+    case .cancelSaleRequestOp(let resource):
         
         
     case .checkSaleStateOp(let resource):
@@ -295,10 +310,19 @@ extension Horizon.BaseOperationDetailsResource {
     case .manageBalanceOp(let resource):
         
         
+    case .manageContractOp(let resource):
+        
+        
+    case .manageContractRequestOp(let resource):
+        
+        
     case .manageCreatePollRequestOp(let resource):
         
         
     case .manageExternalSystemAccountIDPoolEntryOp(let resource):
+        
+        
+    case .manageInvoiceOp(let resource):
         
         
     case .manageKeyValueOp(let resource):
