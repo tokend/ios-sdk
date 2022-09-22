@@ -35,6 +35,8 @@ public enum BaseOperationDetailsType {
     case createWithdrawRequestOp(_ resource: Horizon.CreateWithdrawRequestOpResource)
     case initiateKYCRecoveryOp(_ resource: Horizon.InitiateKYCRecoveryOpResource)
     case licenseOp(_ resource: Horizon.LicenseOpResource)
+    case lpManageLiquidityOp(_ resource: Horizon.LpManageLiquidityOpResource)
+    case lpSwapOp(_ resource: Horizon.LpSwapOpResource)
     case manageAccountRoleOp(_ resource: Horizon.ManageAccountRoleOpResource)
     case manageAccountRuleOp(_ resource: Horizon.ManageAccountRuleOpResource)
     case manageAccountSpecificRuleOp(_ resource: Horizon.ManageAccountSpecificRuleOpResource)
@@ -132,6 +134,10 @@ extension Horizon.BaseOperationDetailsResource {
             return .initiateKYCRecoveryOp(resource)
         } else if let resource = self as? Horizon.LicenseOpResource {
             return .licenseOp(resource)
+        } else if let resource = self as? Horizon.LpManageLiquidityOpResource {
+            return .lpManageLiquidityOp(resource)
+        } else if let resource = self as? Horizon.LpSwapOpResource {
+            return .lpSwapOp(resource)
         } else if let resource = self as? Horizon.ManageAccountRoleOpResource {
             return .manageAccountRoleOp(resource)
         } else if let resource = self as? Horizon.ManageAccountRuleOpResource {
@@ -290,6 +296,12 @@ extension Horizon.BaseOperationDetailsResource {
         
         
     case .licenseOp(let resource):
+        
+        
+    case .lpManageLiquidityOp(let resource):
+        
+        
+    case .lpSwapOp(let resource):
         
         
     case .manageAccountRoleOp(let resource):

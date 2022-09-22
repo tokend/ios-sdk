@@ -12,6 +12,8 @@ public enum BaseOperationDetailsRelatedToBalance {
     case createPaymentRequestOp(_ resource: Horizon.CreatePaymentRequestOpResource)
     case createRedemptionRequestOp(_ resource: Horizon.CreateRedemptionRequestOpResource)
     case createWithdrawRequestOp(_ resource: Horizon.CreateWithdrawRequestOpResource)
+    case lpManageLiquidityOp(_ resource: Horizon.LpManageLiquidityOpResource)
+    case lpSwapOp(_ resource: Horizon.LpSwapOpResource)
     case openSwapOp(_ resource: Horizon.OpenSwapOpResource)
     case paymentOp(_ resource: Horizon.PaymentOpResource)
     case payoutOp(_ resource: Horizon.PayoutOpResource)
@@ -37,6 +39,10 @@ extension Horizon.BaseOperationDetailsResource {
             return .createRedemptionRequestOp(resource)
         } else if let resource = self as? Horizon.CreateWithdrawRequestOpResource {
             return .createWithdrawRequestOp(resource)
+        } else if let resource = self as? Horizon.LpManageLiquidityOpResource {
+            return .lpManageLiquidityOp(resource)
+        } else if let resource = self as? Horizon.LpSwapOpResource {
+            return .lpSwapOp(resource)
         } else if let resource = self as? Horizon.OpenSwapOpResource {
             return .openSwapOp(resource)
         } else if let resource = self as? Horizon.PaymentOpResource {
@@ -74,6 +80,12 @@ extension Horizon.BaseOperationDetailsResource {
         
         
     case .createWithdrawRequestOp(let resource):
+        
+        
+    case .lpManageLiquidityOp(let resource):
+        
+        
+    case .lpSwapOp(let resource):
         
         
     case .openSwapOp(let resource):

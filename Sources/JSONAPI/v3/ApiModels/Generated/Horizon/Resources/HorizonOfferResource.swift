@@ -48,8 +48,8 @@ open class OfferResource: Resource {
         return self.boolOptionalValue(key: CodingKeys.isBuy) ?? false
     }
     
-    open var orderBookId: String {
-        return self.stringOptionalValue(key: CodingKeys.orderBookId) ?? ""
+    open var orderBookId: Int64 {
+        return self.int64OptionalValue(key: CodingKeys.orderBookId) ?? 0
     }
     
     open var price: Decimal {
