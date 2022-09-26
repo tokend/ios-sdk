@@ -71,7 +71,7 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         )
     }
     
-    public func buildGetTitlesListRequest(
+    public func buildGetSalesListRequest(
         pagination: RequestPagination,
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void

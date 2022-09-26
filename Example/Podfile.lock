@@ -46,6 +46,9 @@ PODS:
   - TokenDSDK/MUNAKeyServer (4.0.4):
     - TokenDSDK/KeyServer
     - TokenDWallet (= 3.1.1)
+  - TokenDSDK/Nifty (4.0.4):
+    - TokenDSDK/JSONAPI
+    - TokenDWallet (= 3.1.1)
   - TokenDSDK/RxJSONAPI (4.0.4):
     - RxCocoa (~> 6.0.0-rc.1)
     - RxSwift (~> 6.0.0-rc.1)
@@ -66,6 +69,7 @@ DEPENDENCIES:
   - TokenDSDK/DMS (from `../`)
   - TokenDSDK/MUNA (from `../`)
   - TokenDSDK/MUNAKeyServer (from `../`)
+  - TokenDSDK/Nifty (from `../`)
   - TokenDSDK/RxJSONAPI (from `../`)
 
 SPEC REPOS:
@@ -97,6 +101,6 @@ SPEC CHECKSUMS:
   TokenDSDK: e7d902208853437a4369533864136232404ed9b5
   TokenDWallet: d13f6dfd420e9258ff4734e2d52e57bcdfc60eb3
 
-PODFILE CHECKSUM: 7900c9d4007b7a3a9f54393fff1c73d596a9f52d
+PODFILE CHECKSUM: 6fa7328b70e5cb0636e2fe0307d5f9e1a01869ef
 
 COCOAPODS: 1.11.3
