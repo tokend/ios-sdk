@@ -10,7 +10,9 @@ enum AllResources {
     public static func registerAllResources() {
         let allResources: [Resource.Type] = [
             ReactionResource.self,
-            TitleResource.self
+            AssetResource.self,
+            SaleQuoteAssetResource.self,
+            SaleResource.self
         ]
         
         for res in allResources {

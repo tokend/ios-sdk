@@ -10,6 +10,7 @@ def main_pods
   pod 'TokenDSDK/AlamofireNetwork', :path => '../'
   pod 'TokenDSDK/MUNA', path: '../'
   pod 'TokenDSDK/ContoFA', path: '../'
+  pod 'TokenDSDK/Nifty', path: '../'
   pod 'TokenDSDK/Contopass', path: '../'
   pod 'TokenDSDK/DMS', path: '../'
   pod 'TokenDSDK/MUNAKeyServer', path: '../'

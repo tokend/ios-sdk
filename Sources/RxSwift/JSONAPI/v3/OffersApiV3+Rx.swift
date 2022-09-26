@@ -15,6 +15,7 @@ extension Reactive where Base: OffersRequestBuilderV3 {
         
         return Single<JSONAPI.RequestModel>.create(subscribe: { (event) in
             self.base.buildOffersRequest(
+                filters: OffersRequestFilterV3(),
                 parameters: parameters,
                 other: other,
                 pagination: pagination,
@@ -66,6 +67,7 @@ extension Reactive where Base: OffersApiV3 {
         
         return Single<Document<[Horizon.OfferResource]>>.create(subscribe: { (event) in
             let cancelable = self.base.requestOffers(
+                filters: OffersRequestFilterV3(),
                 parameters: parameters,
                 other: other,
                 pagination: pagination,

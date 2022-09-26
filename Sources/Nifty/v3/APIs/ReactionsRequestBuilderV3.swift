@@ -7,7 +7,7 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     private let integrations: String = "integrations"
     public let likes = "likes"
     public let reactions = "reactions"
-    public let titles = "titles"
+    public let sales = "sales"
     
     // MARK: - Public
     
@@ -77,7 +77,7 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.likes/self.titles
+        let path = /self.integrations/self.likes/self.sales
 
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simplePagination(

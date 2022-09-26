@@ -107,7 +107,7 @@ public class ReactionsApiV3: JSONAPI.BaseApi {
     @discardableResult
     public func getReactionsList(
         filters: ReactionsRequestFiltersV3,
-        completion: @escaping ((_ result: RequestCollectionResult<Nifty.TitleResource>) -> Void)
+        completion: @escaping ((_ result: RequestCollectionResult<Nifty.AssetResource>) -> Void)
     ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -122,7 +122,7 @@ public class ReactionsApiV3: JSONAPI.BaseApi {
                 }
 
                 cancelable.cancelable = self?.requestCollection(
-                    Nifty.TitleResource.self,
+                    Nifty.AssetResource.self,
                     request: request,
                     completion: { (result) in
                         switch result {
@@ -143,7 +143,7 @@ public class ReactionsApiV3: JSONAPI.BaseApi {
     @discardableResult
     public func getTitlesList(
         pagination: RequestPagination,
-        completion: @escaping ((_ result: RequestCollectionResult<Nifty.TitleResource>) -> Void)
+        completion: @escaping ((_ result: RequestCollectionResult<Nifty.AssetResource>) -> Void)
     ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -158,7 +158,7 @@ public class ReactionsApiV3: JSONAPI.BaseApi {
                 }
                 
                 cancelable.cancelable = self?.requestCollection(
-                    Nifty.TitleResource.self,
+                    Nifty.AssetResource.self,
                     request: request,
                     completion: { (result) in
                         

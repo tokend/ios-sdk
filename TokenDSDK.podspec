@@ -25,6 +25,8 @@ Pod::Spec.new do |s|
 
   jsonapi_muna_v3_source_files = 'Sources/MUNA/v3/**/*.swift'
 
+  jsonapi_nifty_v3_source_files = 'Sources/Nifty/v3/**/*.swift'
+  
   jsonapi_contopass_v3_source_files = 'Sources/Contopass/v3/**/*.swift'
 
   jsonapi_contofa_v3_source_files = 'Sources/ContoFA/v3/**/*.swift'
@@ -60,6 +62,12 @@ Pod::Spec.new do |s|
   s.subspec 'MUNA' do |ss|
     ss.xcconfig = { 'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'TOKENDSDK_MUNAAPI' }
     ss.source_files = jsonapi_muna_v3_source_files
+    ss.dependency 'TokenDSDK/JSONAPI'
+  end
+  
+  s.subspec 'Nifty' do |ss|
+    ss.xcconfig = { 'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'TOKENDSDK_NIFTYAPI' }
+    ss.source_files = jsonapi_nifty_v3_source_files
     ss.dependency 'TokenDSDK/JSONAPI'
   end
 

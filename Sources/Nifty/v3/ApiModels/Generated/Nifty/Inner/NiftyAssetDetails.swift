@@ -2,10 +2,10 @@
 
 import Foundation
 
-// MARK: - TitleDetails
+// MARK: - AssetDetails
 
 extension Nifty {
-public struct TitleDetails: Decodable {
+public struct AssetDetails: Decodable {
     
     public enum CodingKeys: String, CodingKey {
         // attributes

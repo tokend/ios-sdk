@@ -3,13 +3,13 @@
 import Foundation
 import DLJSONAPI
 
-// MARK: - TitleResource
+// MARK: - AssetResource
 
 extension Nifty {
-open class TitleResource: Resource {
+open class AssetResource: Resource {
     
     open override class var resourceType: String {
-        return "title"
+        return "assets"
     }
     
     public enum CodingKeys: String, CodingKey {
@@ -31,7 +31,7 @@ open class TitleResource: Resource {
         return self.decimalOptionalValue(key: CodingKeys.availableForIssuance) ?? 0.0
     }
     
-    open var details: Nifty.TitleDetails? {
+    open var details: Nifty.AssetDetails? {
         return self.codableOptionalValue(key: CodingKeys.details)
     }
     

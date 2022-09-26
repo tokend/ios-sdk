@@ -104,6 +104,22 @@ class ApiExampleViewControllerV3: UIViewController, RequestSignKeyDataProviderPr
     
     @objc func runTest() {
         self.addChild(self.vc)
+        
+        self.tokenDApi.reactionsApi.getTitlesList(
+            pagination: .init(.indexedStrategy(.init(index: nil, limit: 10, order: .descending))),
+            completion: { [weak self] (result) in
+                
+                switch result {
+
+                case .failure(let error):
+                    break
+
+                case .success(let document):
+                    print(document)
+                }
+        })
+        //.init(.indexedSingle(index: 0, limit: 5, order: .descending))
+        
 //        self.tokenDApi.accountsApi.requestAccount(
 //            // id 17
 //            accountId: "GDGUMUW7RVCLW5UA7426SVQLGXBPHOFIX4GI55MIINAWHNGSTJ2SKJXP",

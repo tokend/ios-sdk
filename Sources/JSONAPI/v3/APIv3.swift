@@ -40,10 +40,13 @@ public class APIv3 {
     public private(set) lazy var kycApi: KYCApiV3 = { return create() }()
     public private(set) lazy var infoApi: InfoApiV3 = { return create() }()
     public private(set) lazy var feesApi: FeesApiV3 = { return create() }()
-    public private(set) lazy var reactionsApi: ReactionsApiV3 = { return create() }()
     
     #if TOKENDSDK_CONTOPASSAPI
     public private(set) lazy var invitationsApi: InvitationsApiV3 = { return create() }()
+    #endif
+    
+    #if TOKENDSDK_NIFTYAPI
+    public private(set) lazy var reactionsApi: ReactionsApiV3 = { return create() }()
     #endif
     
     #if TOKENDSDK_CONTOFAAPI
@@ -91,10 +94,13 @@ public class APIv3 {
         Horizon.AllResources.registerAllResources()
         KYC.AllResources.registerAllResources()
         Blobs.AllResources.registerAllResources()
-        Nifty.AllResources.registerAllResources()
         
         #if TOKENDSDK_CONTOPASSAPI
         Invitations.AllResources.registerAllResources()
+        #endif
+        
+        #if TOKENDSDK_NIFTYAPI
+        Nifty.AllResources.registerAllResources()
         #endif
         
         #if TOKENDSDK_CONTOFAAPI
