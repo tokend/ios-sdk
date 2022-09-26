@@ -45,6 +45,10 @@ public class APIv3 {
     public private(set) lazy var invitationsApi: InvitationsApiV3 = { return create() }()
     #endif
     
+    #if TOKENDSDK_NIFTYAPI
+    public private(set) lazy var reactionsApi: ReactionsApiV3 = { return create() }()
+    #endif
+    
     #if TOKENDSDK_CONTOFAAPI
     public private(set) lazy var cardsApi: CardsApi = { return self.create() }()
     public private(set) lazy var friendsApi: FriendsApi = { return self.create() }()
@@ -93,6 +97,10 @@ public class APIv3 {
         
         #if TOKENDSDK_CONTOPASSAPI
         Invitations.AllResources.registerAllResources()
+        #endif
+        
+        #if TOKENDSDK_NIFTYAPI
+        Nifty.AllResources.registerAllResources()
         #endif
         
         #if TOKENDSDK_CONTOFAAPI
