@@ -72,6 +72,7 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     }
     
     public func buildGetSalesListRequest(
+        include: [String]?,
         pagination: RequestPagination,
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
@@ -80,11 +81,12 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         let path = /self.integrations/self.likes/self.sales
 
         self.buildRequest(
-            JSONAPI.BaseRequestBuildModel.simplePagination(
+            JSONAPI.BaseRequestBuildModel.simpleQueryIncludePagination(
                 path: path,
                 method: .get,
-                pagination: pagination
-            ),
+                queryParameters: RequestQueryParameters(),
+                include: include,
+                pagination: pagination),
             shouldSign: true,
             sendDate: sendDate,
             completion: completion
