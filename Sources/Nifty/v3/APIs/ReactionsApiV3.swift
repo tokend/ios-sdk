@@ -24,7 +24,7 @@ public class ReactionsApiV3: JSONAPI.BaseApi {
     public func createReaction(
         titleId: String,
         reactionType: String,
-        completion: @escaping ((_ result: RequestSingleResult<Nifty.ReactionResource>) -> Void)
+        completion: @escaping ((_ result: RequestEmptyResult) -> Void)
         ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -48,8 +48,7 @@ public class ReactionsApiV3: JSONAPI.BaseApi {
                     return
                 }
                 
-                cancelable.cancelable = self?.requestSingle(
-                    Nifty.ReactionResource.self,
+                cancelable.cancelable = self?.requestEmpty(
                     request: request,
                     completion: { (result) in
                         
@@ -58,8 +57,8 @@ public class ReactionsApiV3: JSONAPI.BaseApi {
                         case .failure(let error):
                             completion(.failure(error))
                             
-                        case .success(let document):
-                            completion(.success(document))
+                        case .success:
+                            completion(.success)
                         }
                     }
                 )
@@ -107,7 +106,7 @@ public class ReactionsApiV3: JSONAPI.BaseApi {
     @discardableResult
     public func getReactionsList(
         filters: ReactionsRequestFiltersV3,
-        completion: @escaping ((_ result: RequestCollectionResult<Nifty.AssetResource>) -> Void)
+        completion: @escaping ((_ result: RequestCollectionResult<Nifty.ReactionResource>) -> Void)
     ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -122,7 +121,7 @@ public class ReactionsApiV3: JSONAPI.BaseApi {
                 }
 
                 cancelable.cancelable = self?.requestCollection(
-                    Nifty.AssetResource.self,
+                    Nifty.ReactionResource.self,
                     request: request,
                     completion: { (result) in
                         switch result {

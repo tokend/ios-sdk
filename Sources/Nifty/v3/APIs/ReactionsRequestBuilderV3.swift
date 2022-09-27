@@ -17,7 +17,7 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = /self.integrations/self.likes
+        let path = /self.integrations/self.likes/self.reactions
 
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simpleBody(
