@@ -141,6 +141,7 @@ public class ReactionsApiV3: JSONAPI.BaseApi {
     
     @discardableResult
     public func getSalesList(
+        include: [String]?,
         pagination: RequestPagination,
         completion: @escaping ((_ result: RequestCollectionResult<Nifty.SaleResource>) -> Void)
     ) -> Cancelable {
@@ -148,6 +149,7 @@ public class ReactionsApiV3: JSONAPI.BaseApi {
         let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildGetSalesListRequest(
+            include: include,
             pagination: pagination,
             completion: { [weak self] (request) in
                 
