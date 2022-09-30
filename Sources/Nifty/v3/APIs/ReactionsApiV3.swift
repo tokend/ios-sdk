@@ -105,6 +105,7 @@ public class ReactionsApiV3: JSONAPI.BaseApi {
     
     @discardableResult
     public func getReactionsList(
+        include: [String]?,
         filters: ReactionsRequestFiltersV3,
         completion: @escaping ((_ result: RequestCollectionResult<Nifty.ReactionResource>) -> Void)
     ) -> Cancelable {
@@ -112,6 +113,7 @@ public class ReactionsApiV3: JSONAPI.BaseApi {
         let cancelable = self.network.getEmptyCancelable()
         
         self.requestBuilder.buildGetReactionsListRequest(
+            include: include,
             filters: filters,
             completion: { [weak self] (request) in
 

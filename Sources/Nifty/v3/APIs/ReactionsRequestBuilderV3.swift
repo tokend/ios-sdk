@@ -51,6 +51,7 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     }
     
     public func buildGetReactionsListRequest(
+        include: [String]?,
         filters: ReactionsRequestFiltersV3,
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
@@ -60,10 +61,11 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
 
         self.buildRequest(
-            JSONAPI.BaseRequestBuildModel.simpleQuery(
+            JSONAPI.BaseRequestBuildModel.simpleQueryInclude(
                 path: path,
                 method: .get,
-                queryParameters: queryParameters
+                queryParameters: queryParameters,
+                include: include
             ),
             shouldSign: true,
             sendDate: sendDate,
