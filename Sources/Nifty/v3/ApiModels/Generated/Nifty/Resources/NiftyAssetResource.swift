@@ -9,7 +9,7 @@ extension Nifty {
 open class AssetResource: Resource {
     
     open override class var resourceType: String {
-        return "asset"
+        return "likes-asset"
     }
     
     public enum CodingKeys: String, CodingKey {
@@ -31,8 +31,8 @@ open class AssetResource: Resource {
         return self.decimalOptionalValue(key: CodingKeys.availableForIssuance) ?? 0.0
     }
     
-    open var details: Nifty.AssetDetails? {
-        return self.codableOptionalValue(key: CodingKeys.details)
+    open var details: [String: Any] {
+        return self.dictionaryOptionalValue(key: CodingKeys.details) ?? [:]
     }
     
     open var issued: Decimal {

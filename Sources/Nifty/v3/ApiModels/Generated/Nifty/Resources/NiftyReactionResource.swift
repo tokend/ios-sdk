@@ -9,7 +9,7 @@ extension Nifty {
 open class ReactionResource: Resource {
     
     open override class var resourceType: String {
-        return "reaction"
+        return "likes-reaction"
     }
     
     public enum CodingKeys: String, CodingKey {
@@ -19,6 +19,7 @@ open class ReactionResource: Resource {
         // relations
         case asset
         case sale
+        case saleQuoteAsset
     }
     
     // MARK: Attributes
@@ -35,6 +36,10 @@ open class ReactionResource: Resource {
     
     open var sale: Nifty.SaleResource? {
         return self.relationSingleOptionalValue(key: CodingKeys.sale)
+    }
+    
+    open var saleQuoteAsset: Nifty.SaleQuoteAssetResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.saleQuoteAsset)
     }
     
 }

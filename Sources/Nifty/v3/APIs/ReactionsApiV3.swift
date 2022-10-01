@@ -145,7 +145,7 @@ public class ReactionsApiV3: JSONAPI.BaseApi {
     public func getSalesList(
         include: [String]?,
         pagination: RequestPagination,
-        completion: @escaping ((_ result: RequestCollectionResult<Horizon.SaleResource>) -> Void)
+        completion: @escaping ((_ result: RequestCollectionResult<Nifty.SaleResource>) -> Void)
     ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -161,7 +161,7 @@ public class ReactionsApiV3: JSONAPI.BaseApi {
                 }
                 
                 cancelable.cancelable = self?.requestCollection(
-                    Horizon.SaleResource.self,
+                    Nifty.SaleResource.self,
                     request: request,
                     completion: { (result) in
                         

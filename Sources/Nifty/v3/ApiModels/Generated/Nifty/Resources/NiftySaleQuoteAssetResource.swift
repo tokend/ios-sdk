@@ -9,7 +9,7 @@ extension Nifty {
 open class SaleQuoteAssetResource: Resource {
     
     open override class var resourceType: String {
-        return "sale-quote-assets"
+        return "likes-sale-quote-asset"
     }
     
     public enum CodingKeys: String, CodingKey {
