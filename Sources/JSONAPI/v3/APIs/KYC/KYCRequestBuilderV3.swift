@@ -15,7 +15,7 @@ public class KYCRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.kyc/accountId
+        let path = self.integrations/self.kyc/accountId
 
         self.buildRequest(
             .simple(
@@ -35,7 +35,7 @@ public class KYCRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.kyc
+        let path = self.integrations/self.kyc
 
         self.buildRequest(
             .init(

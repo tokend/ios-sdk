@@ -17,7 +17,7 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = /self.integrations/self.likes/self.reactions
+        let path = self.integrations/self.likes/self.reactions
 
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simpleBody(
@@ -37,7 +37,7 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.likes/self.reactions/titleId
+        let path = self.integrations/self.likes/self.reactions/titleId
 
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(
@@ -57,7 +57,7 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.likes/self.reactions
+        let path = self.integrations/self.likes/self.reactions
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
 
         self.buildRequest(
@@ -80,7 +80,7 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.likes/self.sales
+        let path = self.integrations/self.likes/self.sales
 
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simpleQueryIncludePagination(

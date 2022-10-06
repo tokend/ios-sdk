@@ -21,7 +21,7 @@ public class TestResultsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = /self.integrations/self.testResults
+        let path = self.integrations/self.testResults
         
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         
@@ -45,7 +45,7 @@ public class TestResultsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = /self.integrations/self.testResults/self.accounts/accountId/self.personalData
+        let path = self.integrations/self.testResults/self.accounts/accountId/self.personalData
         
         self.buildRequest(
             .simple(
@@ -66,7 +66,7 @@ public class TestResultsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = /self.integrations/self.testResults/self.testTypes
+        let path = self.integrations/self.testResults/self.testTypes
         
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         
@@ -92,7 +92,7 @@ public class TestResultsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = /self.integrations/self.testResults/self.verifications
+        let path = self.integrations/self.testResults/self.verifications
         
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         

@@ -20,7 +20,7 @@ public class FriendsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.friends/accountId
+        let path = self.integrations/self.friends/accountId
 
         self.buildRequest(
             .simpleQueryIncludePagination(
@@ -44,7 +44,7 @@ public class FriendsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.friends/accountId/self.multi
+        let path = self.integrations/self.friends/accountId/self.multi
 
         self.buildRequest(
             .simpleBody(
@@ -68,7 +68,7 @@ public class FriendsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.friends/accountId/self.recentPayments
+        let path = self.integrations/self.friends/accountId/self.recentPayments
 
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
 
@@ -94,7 +94,7 @@ public class FriendsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.friends/accountId/self.recentPayments
+        let path = self.integrations/self.friends/accountId/self.recentPayments
 
         self.buildRequest(
             .simpleBody(

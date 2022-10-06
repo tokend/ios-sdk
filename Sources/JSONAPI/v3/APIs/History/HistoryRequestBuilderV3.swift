@@ -19,7 +19,7 @@ public class HistoryRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
         
-        let path = /self.v3/self.history
+        let path = self.v3/self.history
         
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         
@@ -46,7 +46,7 @@ public class HistoryRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
         
-        let path = /self.v3/self.movements
+        let path = self.v3/self.movements
         
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         

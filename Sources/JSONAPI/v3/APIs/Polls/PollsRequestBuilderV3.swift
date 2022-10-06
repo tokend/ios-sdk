@@ -17,7 +17,7 @@ public class PollsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         pagination: RequestPagination
         ) -> JSONAPI.RequestModel {
         
-        let path = /self.v3/self.polls
+        let path = self.v3/self.polls
         
         let queryParameters = self.buildFilterQueryItems(filter.filterItems)
         
@@ -38,7 +38,7 @@ public class PollsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
 
-        let path = /self.v3/self.polls/pollId
+        let path = self.v3/self.polls/pollId
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(
                 path: path,
@@ -58,7 +58,7 @@ public class PollsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
         
-        let path = /self.v3/self.polls/pollId/self.relationships/self.votes
+        let path = self.v3/self.polls/pollId/self.relationships/self.votes
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(
                 path: path,
@@ -79,7 +79,7 @@ public class PollsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
         
-        let path = /self.v3/self.polls/pollId/self.relationships/self.votes/voterAccountId
+        let path = self.v3/self.polls/pollId/self.relationships/self.votes/voterAccountId
         return self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simplePagination(
                 path: path,
@@ -100,7 +100,7 @@ public class PollsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
         
-        let path = /self.v3/self.votes/voterAccountId
+        let path = self.v3/self.votes/voterAccountId
         return self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simplePagination(
                 path: path,

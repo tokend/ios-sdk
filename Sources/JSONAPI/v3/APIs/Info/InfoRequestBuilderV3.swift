@@ -15,7 +15,7 @@ public extension InfoRequestBuilderV3 {
     func buildInfoRequest(
     ) -> JSONAPI.RequestModel {
         
-        let path = /self.v3/self.info
+        let path = self.v3/self.info
         
         return self.buildRequest(
             .simple(

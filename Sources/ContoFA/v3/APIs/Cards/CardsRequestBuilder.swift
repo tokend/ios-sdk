@@ -22,7 +22,7 @@ public class CardsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.cards
+        let path = self.integrations/self.cards
 
         self.buildRequest(
             .simpleBody(
@@ -43,7 +43,7 @@ public class CardsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.cards/cardNumber
+        let path = self.integrations/self.cards/cardNumber
 
         self.buildRequest(
             .init(
@@ -65,7 +65,7 @@ public class CardsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.cards
+        let path = self.integrations/self.cards
 
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
 
@@ -91,7 +91,7 @@ public class CardsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.cards/"\(cardNumber)"
+        let path = self.integrations/self.cards/"\(cardNumber)"
 
         self.buildRequest(
             .simpleQueryInclude(
@@ -112,7 +112,7 @@ public class CardsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
         include: [String]?
     ) -> JSONAPI.RequestModel {
 
-        let path = /self.integrations/self.cards/self.publicCards
+        let path = self.integrations/self.cards/self.publicCards
 
         return self.buildRequest(
             .init(
@@ -132,7 +132,7 @@ public class CardsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.cards/cardNumber
+        let path = self.integrations/self.cards/cardNumber
 
         self.buildRequest(
             .init(
@@ -151,7 +151,7 @@ public class CardsRequestBuilder: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.cards/self.info
+        let path = self.integrations/self.cards/self.info
 
         self.buildRequest(
             .init(

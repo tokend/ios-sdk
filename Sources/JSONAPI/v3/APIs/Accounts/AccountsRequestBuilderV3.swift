@@ -28,7 +28,7 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
         
-        let path = /self.v3/self.accounts/accountId
+        let path = self.v3/self.accounts/accountId
         
         let pagination = pagination ?? RequestPagination(
             .indexedSingle(index: 0, limit: 1, order: .ascending)
@@ -57,7 +57,7 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
         
-        let path = /self.v3/self.accounts/accountId/self.signers
+        let path = self.v3/self.accounts/accountId/self.signers
         
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(
@@ -79,7 +79,7 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
         
-        let path = /self.v3/self.changeRoleRequests
+        let path = self.v3/self.changeRoleRequests
         
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         
@@ -106,7 +106,7 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
         
-        let path = /self.v3/self.accounts/accountId/self.requests/requestId
+        let path = self.v3/self.accounts/accountId/self.requests/requestId
         
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simplePagination(
@@ -129,7 +129,7 @@ public class AccountsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
         
-        let path = /self.v3/self.accounts/accountId/self.convertedBalances/convertationAsset
+        let path = self.v3/self.accounts/accountId/self.convertedBalances/convertationAsset
         
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simpleQueryInclude(

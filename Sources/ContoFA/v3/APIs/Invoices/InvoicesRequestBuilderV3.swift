@@ -16,7 +16,7 @@ public class InvoicesRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.invoices
+        let path = self.integrations/self.invoices
 
         self.buildRequest(
             .simpleBody(

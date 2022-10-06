@@ -17,7 +17,7 @@ public class TutorialsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
-        let path = /self.integrations/self.video
+        let path = self.integrations/self.video
         
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         
