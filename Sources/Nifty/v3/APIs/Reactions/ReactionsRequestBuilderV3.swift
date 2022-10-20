@@ -17,7 +17,7 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = /self.integrations/self.likes/self.reactions
+        let path = self.integrations/self.likes/self.reactions
 
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simpleBody(
@@ -37,7 +37,7 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.likes/self.reactions/titleId
+        let path = self.integrations/self.likes/self.reactions/titleId
 
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(
@@ -51,19 +51,21 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     }
     
     public func buildGetReactionsListRequest(
+        include: [String]?,
         filters: ReactionsRequestFiltersV3,
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.likes/self.reactions
+        let path = self.integrations/self.likes/self.reactions
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
 
         self.buildRequest(
-            JSONAPI.BaseRequestBuildModel.simpleQuery(
+            JSONAPI.BaseRequestBuildModel.simpleQueryInclude(
                 path: path,
                 method: .get,
-                queryParameters: queryParameters
+                queryParameters: queryParameters,
+                include: include
             ),
             shouldSign: true,
             sendDate: sendDate,
@@ -72,17 +74,20 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     }
     
     public func buildGetSalesListRequest(
+        include: [String]?,
         pagination: RequestPagination,
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.likes/self.sales
+        let path = self.integrations/self.likes/self.sales
 
         self.buildRequest(
-            JSONAPI.BaseRequestBuildModel.simplePagination(
+            JSONAPI.BaseRequestBuildModel.simpleQueryIncludePagination(
                 path: path,
                 method: .get,
+                queryParameters: RequestQueryParameters(),
+                include: include,
                 pagination: pagination
             ),
             shouldSign: true,

@@ -16,7 +16,7 @@ public class EventHistoryRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
-        let path: String = /self.v3/self.data
+        let path: String = self.v3/self.data
         
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         

@@ -19,7 +19,7 @@ public class BookingRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
-        let path = /self.integrations/self.booking
+        let path = self.integrations/self.booking
         
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         
@@ -45,7 +45,7 @@ public class BookingRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
-        let path = /self.integrations/self.booking/bookingId
+        let path = self.integrations/self.booking/bookingId
         
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(
@@ -66,7 +66,7 @@ public class BookingRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
-        let path = /self.integrations/self.booking/self.businesses
+        let path = self.integrations/self.booking/self.businesses
         
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         
@@ -92,7 +92,7 @@ public class BookingRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
-        let path = /self.integrations/self.booking/self.businesses/businessId
+        let path = self.integrations/self.booking/self.businesses/businessId
         
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(
@@ -114,7 +114,7 @@ public class BookingRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
-        let path = /self.integrations/self.booking/self.businesses/businessId/self.bookings
+        let path = self.integrations/self.booking/self.businesses/businessId/self.bookings
         
         self.buildRequest(
             .simpleBody(
@@ -139,7 +139,7 @@ public class BookingRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = /self.integrations/self.booking/self.businesses/businessId/self.bookings/bookingId
+        let path = self.integrations/self.booking/self.businesses/businessId/self.bookings/bookingId
         
         self.buildRequest(
             .init(

@@ -44,7 +44,7 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
-        let path = /self.integrations/self.invitations
+        let path = self.integrations/self.invitations
         
         self.buildRequest(
             .simpleBody(
@@ -71,7 +71,7 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
 
-        let path = /self.integrations/self.invitations/self.sorted
+        let path = self.integrations/self.invitations/self.sorted
         var queryParameters = self.buildFilterQueryItems(filters.filterItems)
         queryParameters["sort"] = sort.value
 
@@ -98,7 +98,7 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.invitations/id/self.accept
+        let path = self.integrations/self.invitations/id/self.accept
 
         self.buildRequest(
             .simple(
@@ -120,7 +120,7 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.invitations/id/self.cancel
+        let path = self.integrations/self.invitations/id/self.cancel
 
         self.buildRequest(
             .simple(
@@ -142,7 +142,7 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.invitations/id
+        let path = self.integrations/self.invitations/id
 
         self.buildRequest(
             .simple(
@@ -164,7 +164,7 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.invitations/id/self.wait
+        let path = self.integrations/self.invitations/id/self.wait
 
         self.buildRequest(
             .simple(
@@ -183,7 +183,7 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.invitations/id/self.redeem
+        let path = self.integrations/self.invitations/id/self.redeem
 
         self.buildRequest(
             .simple(
@@ -204,7 +204,7 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.invitations/self.history
+        let path = self.integrations/self.invitations/self.history
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
 
         self.buildRequest(
@@ -226,7 +226,7 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = /self.integrations/self.invitations/self.info
+        let path = self.integrations/self.invitations/self.info
         
         self.buildRequest(
             .simple(
@@ -247,7 +247,7 @@ public class InvitationsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
 
-        let path = /self.integrations/self.invitations
+        let path = self.integrations/self.invitations
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
 
         self.buildRequest(

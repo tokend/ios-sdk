@@ -19,7 +19,7 @@ public class VaccineResultsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         
-        let path = /self.integrations/self.vaccineResults
+        let path = self.integrations/self.vaccineResults
         
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         
@@ -45,7 +45,7 @@ public class VaccineResultsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
-        let path = /self.integrations/self.vaccineResults/vaccineResultId
+        let path = self.integrations/self.vaccineResults/vaccineResultId
         
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(
@@ -66,7 +66,7 @@ public class VaccineResultsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
-        let path = /self.integrations/self.vaccineResults/self.vaccineType
+        let path = self.integrations/self.vaccineResults/self.vaccineType
         
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         
@@ -92,7 +92,7 @@ public class VaccineResultsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
-        let path = /self.integrations/self.vaccineResults/self.vaccineType/vaccineTypeId
+        let path = self.integrations/self.vaccineResults/self.vaccineType/vaccineTypeId
         
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(

@@ -15,7 +15,7 @@ public class RecurringPaymentsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     public func buildSystemInfoRequest(
     ) -> JSONAPI.RequestModel {
 
-        let path = /self.integrations/self.rpayments/self.info
+        let path = self.integrations/self.rpayments/self.info
 
         return self.buildRequest(
             .simple(
@@ -32,7 +32,7 @@ public class RecurringPaymentsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.rpayments/self.schedule
+        let path = self.integrations/self.rpayments/self.schedule
 
         self.buildRequest(
             .simpleBody(
@@ -55,7 +55,7 @@ public class RecurringPaymentsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.rpayments/self.schedule
+        let path = self.integrations/self.rpayments/self.schedule
 
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
 
@@ -81,7 +81,7 @@ public class RecurringPaymentsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.rpayments/self.schedule/id
+        let path = self.integrations/self.rpayments/self.schedule/id
 
         self.buildRequest(
             .simpleQueryInclude(
@@ -103,7 +103,7 @@ public class RecurringPaymentsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
 
-        let path = /self.integrations/self.rpayments/self.schedule/id
+        let path = self.integrations/self.rpayments/self.schedule/id
 
         self.buildRequest(
             .init(

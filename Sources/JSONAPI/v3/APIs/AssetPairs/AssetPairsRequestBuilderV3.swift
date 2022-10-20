@@ -19,7 +19,7 @@ public class AssetPairsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         pagination: RequestPagination
         ) -> JSONAPI.RequestModel {
         
-        let path = /self.v3/self.assetPairs
+        let path = self.v3/self.assetPairs
         
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         
@@ -44,7 +44,7 @@ public class AssetPairsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         sendDate: Date = Date()
         ) -> JSONAPI.RequestModel {
         
-        let path = /self.v3/self.assetPairs/"\(baseAsset)-\(quoteAsset)"
+        let path = self.v3/self.assetPairs/"\(baseAsset)-\(quoteAsset)"
         
         // TODO: Check signing required
         return self.buildRequest(

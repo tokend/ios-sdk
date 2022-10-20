@@ -21,7 +21,7 @@ public class SchedulerRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
-        let path = /self.integrations/self.scheduler/self.calendars/calendarId/self.freebusy
+        let path = self.integrations/self.scheduler/self.calendars/calendarId/self.freebusy
         
         let queryParameters: RequestQueryParameters = [
             "start-time": "\(startTime)",
