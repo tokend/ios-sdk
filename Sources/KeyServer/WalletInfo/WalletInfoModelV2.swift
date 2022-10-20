@@ -27,6 +27,7 @@ public struct WalletInfoModelV2: Encodable {
                 case login = "email"
                 case salt
                 case keychainData
+                case verificationCode
             }
         }
 
