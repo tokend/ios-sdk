@@ -40,6 +40,7 @@ public struct WalletInfoBuilderV2 {
     public static func createWalletInfo(
         login unchekedLogin: String,
         password: String,
+        verificationCode: String? = nil,
         kdfParams: KDFParams,
         salt: Data = Common.Random.generateRandom(length: 16),
         keys: [ECDSA.KeyData],
@@ -58,6 +59,7 @@ public struct WalletInfoBuilderV2 {
             walletDetails = try WalletDetailsModelV2.createWalletDetails(
                 login: login,
                 password: password,
+                verificationCode: verificationCode,
                 keyPairs: keys,
                 kdfParams: kdfParams,
                 salt: newKeyPairSalt,
@@ -81,6 +83,7 @@ public struct WalletInfoBuilderV2 {
             passwordFactorDetails = try WalletDetailsModelV2.createWalletDetails(
                 login: login,
                 password: password,
+                verificationCode: verificationCode,
                 keyPairs: [passwordFactorKeyPair],
                 kdfParams: kdfParams,
                 salt: passwordFactorKeyPairSalt,
@@ -142,7 +145,8 @@ public struct WalletInfoBuilderV2 {
             accountId: walletDetails.accountIdBase32Check,
             login: walletDetails.login,
             salt: walletDetails.saltBase64,
-            keychainData: walletDetails.keychainDataBase64
+            keychainData: walletDetails.keychainDataBase64,
+            verificationCode: walletDetails.verificationCode
         )
 
         let walletInfoData = WalletInfoModelV2.WalletInfoData.init(
@@ -367,7 +371,8 @@ public struct WalletInfoBuilderV2 {
             accountId: walletDetails.accountIdBase32Check,
             login: walletDetails.login,
             salt: walletDetails.saltBase64,
-            keychainData: walletDetails.keychainDataBase64
+            keychainData: walletDetails.keychainDataBase64,
+            verificationCode: walletDetails.verificationCode
         )
 
         let walletInfoData = WalletInfoModelV2.WalletInfoData.init(

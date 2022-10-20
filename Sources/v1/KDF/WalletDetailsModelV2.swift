@@ -20,6 +20,7 @@ public struct WalletDetailsModelV2 {
     public let login: String
     public let saltBase64: String
     public let keychainDataBase64: String
+    public let verificationCode: String?
 
     /// Errors that may occur for `WalletDetailsModel.createWalletDetails(...)`.
     public enum CreateWalletDetailsError: Swift.Error, LocalizedError {
@@ -57,6 +58,7 @@ public struct WalletDetailsModelV2 {
     public static func createWalletDetails(
         login: String,
         password: String,
+        verificationCode: String? = nil,
         keyPairs: [ECDSA.KeyData],
         kdfParams: KDFParams,
         salt: Data, // 128 bits
@@ -114,7 +116,8 @@ public struct WalletDetailsModelV2 {
             accountIdBase32Check: accountId,
             login: login,
             saltBase64: salt.base64EncodedString(),
-            keychainDataBase64: keychainData.base64EncodedString()
+            keychainDataBase64: keychainData.base64EncodedString(),
+            verificationCode: verificationCode
         )
 
         return walletInfo

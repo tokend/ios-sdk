@@ -19,6 +19,7 @@ public struct WalletInfoModelV2: Encodable {
             public let login: String?
             public let salt: String
             public let keychainData: String
+            public let verificationCode: String?
 
             public enum CodingKeys: String, CodingKey {
                 case accountId
@@ -295,7 +296,9 @@ extension WalletInfoModelV2.WalletInfoData.Attributes: CustomDebugStringConverti
         }
         fields.append(DebugFormatted(base64EncodedData: self.salt, title: "salt", clipOriginal: false))
         fields.append(DebugFormatted(base64EncodedString: self.keychainData, title: "keychainData", clipOriginal: true))
-
+        if let code = self.verificationCode {
+            fields.append("verificationCode: \(code)")
+        }
         let description = DebugFormattedDescription(fields)
 
         return description
