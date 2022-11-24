@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '10.0'
 
-  s.ios.dependency 'TokenDWallet', '3.1.1'
+  s.ios.dependency 'TokenDWallet', '3.1.2'
 
   v1_source_files = 'Sources/Common/**/*.swift',
                     'Sources/v1/**/*.swift'

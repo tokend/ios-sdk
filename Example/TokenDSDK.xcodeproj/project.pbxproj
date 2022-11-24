@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1790A374EAFFD2FE807DC7BF /* libPods-TokenDSDK_IntegrationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC6FC85D0B04436C56966E1B /* libPods-TokenDSDK_IntegrationTests.a */; };
-		2A0A46594968B92EEC0AEFD6 /* libPods-TokenDSDK_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3471F854665D42EB0D3EEAE6 /* libPods-TokenDSDK_Tests.a */; };
-		442BD57650252D1C90CBBAFF /* libPods-TokenDSDK_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB5F215BB9404B36B94E2A1 /* libPods-TokenDSDK_Example.a */; };
+		144925990B7E38184D1E7932 /* libPods-TokenDSDK_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6C8D0056A774C7691D8A0D6 /* libPods-TokenDSDK_Tests.a */; };
+		5061BCE805CBB3A73DC40105 /* libPods-TokenDSDK_IntegrationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F04DB65DF084DCCA6534E99 /* libPods-TokenDSDK_IntegrationTests.a */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
@@ -27,6 +26,7 @@
 		7FE317B322328E39007ECDAE /* test_upload_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FE317B222328E39007ECDAE /* test_upload_image.png */; };
 		7FECDD232213157E00EB0367 /* HistoryApiIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FECDD222213157E00EB0367 /* HistoryApiIntegrationTests.swift */; };
 		7FECDD252213158E00EB0367 /* BaseIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FECDD242213158E00EB0367 /* BaseIntegrationTests.swift */; };
+		A938DED05DAF9A20D82FBE37 /* libPods-TokenDSDK_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 980C4F6D6F4643510754B589 /* libPods-TokenDSDK_Example.a */; };
 		C4C0129124095ED000018CC8 /* IntegrationTestsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C0129024095ED000018CC8 /* IntegrationTestsConstants.swift */; };
 		C4C012932409601300018CC8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C012922409601300018CC8 /* Constants.swift */; };
 /* End PBXBuildFile section */
@@ -50,16 +50,15 @@
 
 /* Begin PBXFileReference section */
 		2102703D8F1F1DFCDB4C9849 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		3471F854665D42EB0D3EEAE6 /* libPods-TokenDSDK_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokenDSDK_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CC6DD3545D054C7C1764C2E /* Pods-TokenDSDK_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Tests.release.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_Tests/Pods-TokenDSDK_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		417D190D07CBD28080E28907 /* Pods-TokenDSDK_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Tests.debug.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_Tests/Pods-TokenDSDK_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		41E5AA6C8B3C46F254B27FF8 /* TokenDSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = TokenDSDK.podspec; path = ../TokenDSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		4FB5F215BB9404B36B94E2A1 /* libPods-TokenDSDK_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokenDSDK_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD01AFB9204008FA782 /* TokenDSDK_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TokenDSDK_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* TokenDSDK_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokenDSDK_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		77D755B343B4167CEB9D5522 /* Pods-TokenDSDK_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Example.debug.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_Example/Pods-TokenDSDK_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		7F01C18F2217094800205456 /* KeyServerIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyServerIntegrationTests.swift; sourceTree = "<group>"; };
 		7F186FBE21FF67AD009ED556 /* ApiExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiExampleViewController.swift; sourceTree = "<group>"; };
 		7F5119EF21F75B8A00025F96 /* AssetsRequestBuilderV3Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsRequestBuilderV3Tests.swift; sourceTree = "<group>"; };
@@ -77,15 +76,16 @@
 		7FE317B222328E39007ECDAE /* test_upload_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test_upload_image.png; sourceTree = "<group>"; };
 		7FECDD222213157E00EB0367 /* HistoryApiIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryApiIntegrationTests.swift; sourceTree = "<group>"; };
 		7FECDD242213158E00EB0367 /* BaseIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseIntegrationTests.swift; sourceTree = "<group>"; };
-		88B6A9B90B443C13A977F189 /* Pods-TokenDSDK_IntegrationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_IntegrationTests.release.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_IntegrationTests/Pods-TokenDSDK_IntegrationTests.release.xcconfig"; sourceTree = "<group>"; };
-		976BCCEDDBF16A300BE60E98 /* Pods-TokenDSDK_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Example.release.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_Example/Pods-TokenDSDK_Example.release.xcconfig"; sourceTree = "<group>"; };
-		C46B692F3572BACFE0A827CE /* Pods-TokenDSDK_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Tests.release.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_Tests/Pods-TokenDSDK_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		8F04DB65DF084DCCA6534E99 /* libPods-TokenDSDK_IntegrationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokenDSDK_IntegrationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		980C4F6D6F4643510754B589 /* libPods-TokenDSDK_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokenDSDK_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1487896C3E27E9C463FF149 /* Pods-TokenDSDK_IntegrationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_IntegrationTests.release.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_IntegrationTests/Pods-TokenDSDK_IntegrationTests.release.xcconfig"; sourceTree = "<group>"; };
+		B4F95B19B2CF8B1CFD89550D /* Pods-TokenDSDK_IntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_IntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_IntegrationTests/Pods-TokenDSDK_IntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B68E7A2E88D86754A21BD17A /* Pods-TokenDSDK_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Example.debug.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_Example/Pods-TokenDSDK_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		C4C0129024095ED000018CC8 /* IntegrationTestsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationTestsConstants.swift; sourceTree = "<group>"; };
 		C4C012922409601300018CC8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CA870871D23FF6195488CBCB /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		D7CC5FAA68093D676BC7208C /* Pods-TokenDSDK_IntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_IntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_IntegrationTests/Pods-TokenDSDK_IntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
-		DC6FC85D0B04436C56966E1B /* libPods-TokenDSDK_IntegrationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokenDSDK_IntegrationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F50A5DF749D44B9A7EAB2BC7 /* Pods-TokenDSDK_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Tests.debug.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_Tests/Pods-TokenDSDK_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		EB3A916EE7202E5641CF2C62 /* Pods-TokenDSDK_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokenDSDK_Example.release.xcconfig"; path = "Target Support Files/Pods-TokenDSDK_Example/Pods-TokenDSDK_Example.release.xcconfig"; sourceTree = "<group>"; };
+		F6C8D0056A774C7691D8A0D6 /* libPods-TokenDSDK_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokenDSDK_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,7 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				442BD57650252D1C90CBBAFF /* libPods-TokenDSDK_Example.a in Frameworks */,
+				A938DED05DAF9A20D82FBE37 /* libPods-TokenDSDK_Example.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,7 +101,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2A0A46594968B92EEC0AEFD6 /* libPods-TokenDSDK_Tests.a in Frameworks */,
+				144925990B7E38184D1E7932 /* libPods-TokenDSDK_Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,7 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1790A374EAFFD2FE807DC7BF /* libPods-TokenDSDK_IntegrationTests.a in Frameworks */,
+				5061BCE805CBB3A73DC40105 /* libPods-TokenDSDK_IntegrationTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,24 +119,14 @@
 		01731069C4855BF1992C969A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				77D755B343B4167CEB9D5522 /* Pods-TokenDSDK_Example.debug.xcconfig */,
-				976BCCEDDBF16A300BE60E98 /* Pods-TokenDSDK_Example.release.xcconfig */,
-				D7CC5FAA68093D676BC7208C /* Pods-TokenDSDK_IntegrationTests.debug.xcconfig */,
-				88B6A9B90B443C13A977F189 /* Pods-TokenDSDK_IntegrationTests.release.xcconfig */,
-				F50A5DF749D44B9A7EAB2BC7 /* Pods-TokenDSDK_Tests.debug.xcconfig */,
-				C46B692F3572BACFE0A827CE /* Pods-TokenDSDK_Tests.release.xcconfig */,
+				B68E7A2E88D86754A21BD17A /* Pods-TokenDSDK_Example.debug.xcconfig */,
+				EB3A916EE7202E5641CF2C62 /* Pods-TokenDSDK_Example.release.xcconfig */,
+				B4F95B19B2CF8B1CFD89550D /* Pods-TokenDSDK_IntegrationTests.debug.xcconfig */,
+				B1487896C3E27E9C463FF149 /* Pods-TokenDSDK_IntegrationTests.release.xcconfig */,
+				417D190D07CBD28080E28907 /* Pods-TokenDSDK_Tests.debug.xcconfig */,
+				3CC6DD3545D054C7C1764C2E /* Pods-TokenDSDK_Tests.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		1B794C8D56CF516417AC53E8 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				4FB5F215BB9404B36B94E2A1 /* libPods-TokenDSDK_Example.a */,
-				DC6FC85D0B04436C56966E1B /* libPods-TokenDSDK_IntegrationTests.a */,
-				3471F854665D42EB0D3EEAE6 /* libPods-TokenDSDK_Tests.a */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		607FACC71AFB9204008FA782 = {
@@ -147,7 +137,7 @@
 				607FACE81AFB9204008FA782 /* Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
 				01731069C4855BF1992C969A /* Pods */,
-				1B794C8D56CF516417AC53E8 /* Frameworks */,
+				FE6A81BA09077590D2566C18 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -272,6 +262,16 @@
 			path = TokenDSDK_Tests;
 			sourceTree = "<group>";
 		};
+		FE6A81BA09077590D2566C18 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				980C4F6D6F4643510754B589 /* libPods-TokenDSDK_Example.a */,
+				8F04DB65DF084DCCA6534E99 /* libPods-TokenDSDK_IntegrationTests.a */,
+				F6C8D0056A774C7691D8A0D6 /* libPods-TokenDSDK_Tests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -279,11 +279,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "TokenDSDK_Example" */;
 			buildPhases = (
-				97D9D2B8D57917767CEBA3D9 /* [CP] Check Pods Manifest.lock */,
+				33F7F31AFD726792CED65B60 /* [CP] Check Pods Manifest.lock */,
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
 				7FE04BB82174C52D0018399F /* SwiftLint */,
+				877512856970930192E35880 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -298,10 +299,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "TokenDSDK_Tests" */;
 			buildPhases = (
-				4A5BEAF0E56C194CB84F2DCB /* [CP] Check Pods Manifest.lock */,
+				2328E5B533AFA8856FBB13F9 /* [CP] Check Pods Manifest.lock */,
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
+				12BB4F02A91D77AFB9F4B0A2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -317,10 +319,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7FA55D4121D279F80092E536 /* Build configuration list for PBXNativeTarget "TokenDSDK_IntegrationTests" */;
 			buildPhases = (
-				735B8092D0344F6CC0D4F86C /* [CP] Check Pods Manifest.lock */,
+				0C9179F3853FC9AFA6E8CDFE /* [CP] Check Pods Manifest.lock */,
 				7FA55D3421D279F80092E536 /* Sources */,
 				7FA55D3521D279F80092E536 /* Frameworks */,
 				7FA55D3621D279F80092E536 /* Resources */,
+				A0980E5B25D751BBF1CBA6CF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -412,7 +415,47 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4A5BEAF0E56C194CB84F2DCB /* [CP] Check Pods Manifest.lock */ = {
+		0C9179F3853FC9AFA6E8CDFE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TokenDSDK_IntegrationTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		12BB4F02A91D77AFB9F4B0A2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TokenDSDK_Tests/Pods-TokenDSDK_Tests-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/DLOpenSSL/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TokenDSDK_Tests/Pods-TokenDSDK_Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2328E5B533AFA8856FBB13F9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -434,7 +477,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		735B8092D0344F6CC0D4F86C /* [CP] Check Pods Manifest.lock */ = {
+		33F7F31AFD726792CED65B60 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -449,7 +492,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TokenDSDK_IntegrationTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TokenDSDK_Example-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -474,26 +517,40 @@
 			shellPath = /bin/sh;
 			shellScript = "cd ..\nif which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
-		97D9D2B8D57917767CEBA3D9 /* [CP] Check Pods Manifest.lock */ = {
+		877512856970930192E35880 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
+				"${PODS_ROOT}/Target Support Files/Pods-TokenDSDK_Example/Pods-TokenDSDK_Example-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/DLOpenSSL/OpenSSL.framework/OpenSSL",
 			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TokenDSDK_Example-checkManifestLockResult.txt",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TokenDSDK_Example/Pods-TokenDSDK_Example-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A0980E5B25D751BBF1CBA6CF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TokenDSDK_IntegrationTests/Pods-TokenDSDK_IntegrationTests-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/DLOpenSSL/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TokenDSDK_IntegrationTests/Pods-TokenDSDK_IntegrationTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -667,7 +724,7 @@
 		};
 		607FACF01AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 77D755B343B4167CEB9D5522 /* Pods-TokenDSDK_Example.debug.xcconfig */;
+			baseConfigurationReference = B68E7A2E88D86754A21BD17A /* Pods-TokenDSDK_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
@@ -689,7 +746,7 @@
 		};
 		607FACF11AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 976BCCEDDBF16A300BE60E98 /* Pods-TokenDSDK_Example.release.xcconfig */;
+			baseConfigurationReference = EB3A916EE7202E5641CF2C62 /* Pods-TokenDSDK_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
@@ -711,7 +768,7 @@
 		};
 		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F50A5DF749D44B9A7EAB2BC7 /* Pods-TokenDSDK_Tests.debug.xcconfig */;
+			baseConfigurationReference = 417D190D07CBD28080E28907 /* Pods-TokenDSDK_Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -740,7 +797,7 @@
 		};
 		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C46B692F3572BACFE0A827CE /* Pods-TokenDSDK_Tests.release.xcconfig */;
+			baseConfigurationReference = 3CC6DD3545D054C7C1764C2E /* Pods-TokenDSDK_Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -765,7 +822,7 @@
 		};
 		7FA55D3F21D279F80092E536 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D7CC5FAA68093D676BC7208C /* Pods-TokenDSDK_IntegrationTests.debug.xcconfig */;
+			baseConfigurationReference = B4F95B19B2CF8B1CFD89550D /* Pods-TokenDSDK_IntegrationTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -798,7 +855,7 @@
 		};
 		7FA55D4021D279F80092E536 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 88B6A9B90B443C13A977F189 /* Pods-TokenDSDK_IntegrationTests.release.xcconfig */;
+			baseConfigurationReference = B1487896C3E27E9C463FF149 /* Pods-TokenDSDK_IntegrationTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;

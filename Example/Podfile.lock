@@ -5,7 +5,7 @@ PODS:
   - DLJSONAPI (1.0.9):
     - DLJSONAPI/Default (= 1.0.9)
   - DLJSONAPI/Default (1.0.9)
-  - DLOpenSSL (1.0.2)
+  - DLOpenSSL (1.1.1100)
   - RxCocoa (6.0.0-rc.1):
     - RxRelay (= 6.0.0-rc.1)
     - RxSwift (= 6.0.0-rc.1)
@@ -17,43 +17,43 @@ PODS:
     - TokenDSDK/API (= 4.0.4)
     - TokenDSDK/JSONAPI (= 4.0.4)
     - TokenDSDK/KeyServer (= 4.0.4)
-    - TokenDWallet (= 3.1.1)
+    - TokenDWallet (= 3.1.2)
   - TokenDSDK/AlamofireNetwork (4.0.4):
     - Alamofire (= 5.3.0)
-    - TokenDWallet (= 3.1.1)
+    - TokenDWallet (= 3.1.2)
   - TokenDSDK/AlamofireNetworkJSONAPI (4.0.4):
     - Alamofire (= 5.3.0)
-    - TokenDWallet (= 3.1.1)
+    - TokenDWallet (= 3.1.2)
   - TokenDSDK/API (4.0.4):
-    - TokenDWallet (= 3.1.1)
+    - TokenDWallet (= 3.1.2)
   - TokenDSDK/ContoFA (4.0.4):
     - TokenDSDK/JSONAPI
-    - TokenDWallet (= 3.1.1)
+    - TokenDWallet (= 3.1.2)
   - TokenDSDK/Contopass (4.0.4):
     - TokenDSDK/JSONAPI
-    - TokenDWallet (= 3.1.1)
+    - TokenDWallet (= 3.1.2)
   - TokenDSDK/DMS (4.0.4):
     - TokenDSDK/JSONAPI
-    - TokenDWallet (= 3.1.1)
+    - TokenDWallet (= 3.1.2)
   - TokenDSDK/JSONAPI (4.0.4):
     - DLJSONAPI (>= 1.0.9)
-    - TokenDWallet (= 3.1.1)
+    - TokenDWallet (= 3.1.2)
   - TokenDSDK/KeyServer (4.0.4):
-    - TokenDWallet (= 3.1.1)
+    - TokenDWallet (= 3.1.2)
   - TokenDSDK/MUNA (4.0.4):
     - TokenDSDK/JSONAPI
-    - TokenDWallet (= 3.1.1)
+    - TokenDWallet (= 3.1.2)
   - TokenDSDK/MUNAKeyServer (4.0.4):
     - TokenDSDK/KeyServer
-    - TokenDWallet (= 3.1.1)
+    - TokenDWallet (= 3.1.2)
   - TokenDSDK/Nifty (4.0.4):
     - TokenDSDK/JSONAPI
-    - TokenDWallet (= 3.1.1)
+    - TokenDWallet (= 3.1.2)
   - TokenDSDK/RxJSONAPI (4.0.4):
     - RxCocoa (~> 6.0.0-rc.1)
     - RxSwift (~> 6.0.0-rc.1)
-    - TokenDWallet (= 3.1.1)
-  - TokenDWallet (3.1.1):
+    - TokenDWallet (= 3.1.2)
+  - TokenDWallet (3.1.2):
     - DLCryptoKit (>= 2.0.2)
 
 DEPENDENCIES:
@@ -93,13 +93,13 @@ SPEC CHECKSUMS:
   Alamofire: 2c792affbdc2f18016e08fdbcacd60aebe1ba593
   DLCryptoKit: 89c9b51260db5a08ca73b81eba2dd5a6a9792ce1
   DLJSONAPI: 6cccdea7276f50ed127b90b95a402b3eacdb0704
-  DLOpenSSL: 78d928228cb6d95fcaa354f4f9aba041ccf95457
+  DLOpenSSL: 30059698d6b4fb7554f6e063b4df55dbaa48a4cf
   RxCocoa: a28d75145c07b7547b85faf1e1ad8b25af88a752
   RxRelay: 56abad6d32f73567858506d08735fdb341935b9a
   RxSwift: dae1a32c48148897494b9e2a6b00a68b40694236
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  TokenDSDK: e7d902208853437a4369533864136232404ed9b5
-  TokenDWallet: d13f6dfd420e9258ff4734e2d52e57bcdfc60eb3
+  TokenDSDK: e6176452aea6f9a3263d7b5221e591547dbe4e7e
+  TokenDWallet: d18ea0b2c3b55f4b16e9e6973e8fedac6a8d8a85
 
 PODFILE CHECKSUM: 6fa7328b70e5cb0636e2fe0307d5f9e1a01869ef
 
