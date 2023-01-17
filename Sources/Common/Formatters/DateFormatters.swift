@@ -6,6 +6,7 @@ public enum DateFormatters {
     /// ISO 8601 date formatter
     static public private(set) var iso8601DateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "uk_UA")
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
         dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
         return dateFormatter
@@ -14,6 +15,7 @@ public enum DateFormatters {
     /// RFC 3339 date formatter
     static public private(set) var rfc3339DateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "uk_UA")
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
         return dateFormatter
