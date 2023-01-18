@@ -107,6 +107,7 @@ public class ReactionsApiV3: JSONAPI.BaseApi {
     public func getReactionsList(
         include: [String]?,
         filters: ReactionsRequestFiltersV3,
+        pagination: RequestPagination,
         completion: @escaping ((_ result: RequestCollectionResult<Nifty.ReactionResource>) -> Void)
     ) -> Cancelable {
         
@@ -115,6 +116,7 @@ public class ReactionsApiV3: JSONAPI.BaseApi {
         self.requestBuilder.buildGetReactionsListRequest(
             include: include,
             filters: filters,
+            pagination: pagination,
             completion: { [weak self] (request) in
 
                 guard let request = request else {

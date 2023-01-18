@@ -53,6 +53,7 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     public func buildGetReactionsListRequest(
         include: [String]?,
         filters: ReactionsRequestFiltersV3,
+        pagination: RequestPagination,
         sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
@@ -61,11 +62,12 @@ public class ReactionsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
 
         self.buildRequest(
-            JSONAPI.BaseRequestBuildModel.simpleQueryInclude(
+            JSONAPI.BaseRequestBuildModel.simpleQueryIncludePagination(
                 path: path,
                 method: .get,
                 queryParameters: queryParameters,
-                include: include
+                include: include,
+                pagination: pagination
             ),
             shouldSign: true,
             sendDate: sendDate,
