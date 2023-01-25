@@ -47,6 +47,25 @@ extension JSONAPIError {
             return error.status == status
         })
     }
+    
+    public func contains(operation: String) -> Bool {
+        let errorObjects: [ErrorObject]
+        
+        switch self {
+            
+        case .errors(let errors):
+            errorObjects = errors
+            
+        case .serialization:
+            return false
+        }
+        
+        return errorObjects.contains(where: { (error) -> Bool in
+            let resultCodes = error.meta?.dictionary["resultCodes"] as? [String: Any]
+            let operations = resultCodes?["operations"] as? [String]
+            return operations?.first == operation
+        })
+    }
 }
 
 extension Error {
@@ -59,5 +78,11 @@ extension Error {
         guard let jsonApiError = self as? JSONAPIError else { return false }
         
         return jsonApiError.contains(status: status)
+    }
+    
+    public func contains(operation: String) -> Bool {
+        guard let jsonApiError = self as? JSONAPIError else { return false }
+        
+        return jsonApiError.contains(operation: operation)
     }
 }

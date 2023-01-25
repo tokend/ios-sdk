@@ -3,6 +3,24 @@ import DLJSONAPI
 
 public class TransactionsApiV3: JSONAPI.BaseApi {
 
+    enum GetTransactionsError: Swift.Error, LocalizedError {
+
+        case opOrderViolatesHardCap
+        case opSaleAlreadyEnded
+
+        // MARK: - Swift.Error
+
+        public var errorDescription: String? {
+            switch self {
+
+            case .opOrderViolatesHardCap:
+                return "Your offer exceeds the hard cap. Try to buy less"
+            case .opSaleAlreadyEnded:
+                return "Sale already ended"
+            }
+        }
+    }
+    
     // MARK: - Public properties
 
     public let requestBuilder: TransactionsRequestBuilderV3
@@ -53,7 +71,16 @@ public class TransactionsApiV3: JSONAPI.BaseApi {
                         switch result {
 
                         case .failure(let error):
-                            completion(.failure(error))
+                            let requestError: Swift.Error
+                            
+                            if error.contains(operation: ApiError.Code.opOrderViolatesHardCap) {
+                                requestError = GetTransactionsError.opOrderViolatesHardCap
+                            } else if error.contains(operation: ApiError.Code.opSaleAlreadyEnded) {
+                                requestError = GetTransactionsError.opOrderViolatesHardCap
+                            } else {
+                                requestError = error
+                            }
+                            completion(.failure(requestError))
 
                         case .success(let document):
                             completion(.success(document))
