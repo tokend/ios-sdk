@@ -6,6 +6,7 @@ public extension KeyServerApi {
 
         /// KDF params not found for given login.
         case loginNotFound
+        case unauthorized
 
         // MARK: - Swift.Error
 
@@ -14,6 +15,8 @@ public extension KeyServerApi {
 
             case .loginNotFound:
                 return "KDF for login not found"
+            case .unauthorized:
+                return "Unauthorized"
             }
         }
     }
@@ -59,7 +62,10 @@ public extension KeyServerApi {
                     let requestError: Swift.Error
                     if errors.contains(status: ApiError.Status.notFound) {
                         requestError = GetWalletKDFError.loginNotFound
-                    } else {
+                    } else if errors.contains(status: ApiError.Status.unauthorized) {
+                        requestError = GetWalletKDFError.unauthorized
+                    }
+                    else {
                         requestError = errors
                     }
                     completion(.failure(requestError))
