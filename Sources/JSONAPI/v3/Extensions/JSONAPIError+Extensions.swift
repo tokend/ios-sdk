@@ -63,7 +63,10 @@ extension JSONAPIError {
         return errorObjects.contains(where: { (error) -> Bool in
             let resultCodes = error.meta?.dictionary["resultCodes"] as? [String: Any]
             let operations = resultCodes?["operations"] as? [String]
-            return operations?.first == operation
+            if let errorOperation = operations?.first(where: { $0 == operation }) {
+                return errorOperation == operation
+            }
+            return false
         })
     }
 }

@@ -76,7 +76,7 @@ public class TransactionsApiV3: JSONAPI.BaseApi {
                             if error.contains(operation: ApiError.Code.opOrderViolatesHardCap) {
                                 requestError = GetTransactionsError.opOrderViolatesHardCap
                             } else if error.contains(operation: ApiError.Code.opSaleAlreadyEnded) {
-                                requestError = GetTransactionsError.opOrderViolatesHardCap
+                                requestError = GetTransactionsError.opSaleAlreadyEnded
                             } else {
                                 requestError = error
                             }
