@@ -122,6 +122,7 @@ public struct ApiError: Decodable, Swift.Error, LocalizedError, CustomDebugStrin
         static public let verificationRequired  = "verification_required"
         static public let opOrderViolatesHardCap = "op_order_violates_hard_cap"
         static public let opSaleAlreadyEnded = "op_sale_already_ended"
+        static public let opAssetPairNotTradable = "op_asset_pair_not_tradable"
     }
     
     public enum Title {

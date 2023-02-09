@@ -3,10 +3,11 @@ import DLJSONAPI
 
 public class TransactionsApiV3: JSONAPI.BaseApi {
 
-    enum GetTransactionsError: Swift.Error, LocalizedError {
+    public enum GetTransactionsError: Swift.Error, LocalizedError {
 
         case opOrderViolatesHardCap
         case opSaleAlreadyEnded
+        case opAssetPairNotTradable
 
         // MARK: - Swift.Error
 
@@ -17,6 +18,8 @@ public class TransactionsApiV3: JSONAPI.BaseApi {
                 return "Your offer exceeds the hard cap. Try to buy less"
             case .opSaleAlreadyEnded:
                 return "Sale already ended"
+            case .opAssetPairNotTradable:
+                return "Sale not tradable"
             }
         }
     }
@@ -77,6 +80,8 @@ public class TransactionsApiV3: JSONAPI.BaseApi {
                                 requestError = GetTransactionsError.opOrderViolatesHardCap
                             } else if error.contains(operation: ApiError.Code.opSaleAlreadyEnded) {
                                 requestError = GetTransactionsError.opSaleAlreadyEnded
+                            } else if error.contains(operation: ApiError.Code.opAssetPairNotTradable) {
+                                requestError = GetTransactionsError.opAssetPairNotTradable
                             } else {
                                 requestError = error
                             }
