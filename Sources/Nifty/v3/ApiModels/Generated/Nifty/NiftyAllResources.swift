@@ -9,6 +9,7 @@ enum AllResources {
     // swiftlint:disable function_body_length
     public static func registerAllResources() {
         let allResources: [Resource.Type] = [
+            SecondaryMarketResource.self,
             ReactionResource.self,
             AssetResource.self,
             SaleQuoteAssetResource.self,

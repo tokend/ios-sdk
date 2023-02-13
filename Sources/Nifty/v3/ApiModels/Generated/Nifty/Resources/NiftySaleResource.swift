@@ -18,6 +18,7 @@ open class SaleResource: Resource {
         case baseHardCap
         case details
         case endTime
+        case index
         case participantsCount
         case participationsCount
         case saleState
@@ -47,6 +48,10 @@ open class SaleResource: Resource {
     
     open var endTime: Date {
         return self.dateOptionalValue(key: CodingKeys.endTime) ?? Date()
+    }
+    
+    open var index: Int32 {
+        return self.int32OptionalValue(key: CodingKeys.index) ?? 0
     }
     
     open var participantsCount: Int32 {
