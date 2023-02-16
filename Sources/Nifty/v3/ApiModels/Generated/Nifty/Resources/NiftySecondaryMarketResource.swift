@@ -16,7 +16,6 @@ open class SecondaryMarketResource: Resource {
         // attributes
         case accountId
         case firstReserve
-        case index
         case secondReserve
         
         // relations
@@ -34,10 +33,6 @@ open class SecondaryMarketResource: Resource {
     
     open var firstReserve: Decimal {
         return self.decimalOptionalValue(key: CodingKeys.firstReserve) ?? 0.0
-    }
-    
-    open var index: Int32 {
-        return self.int32OptionalValue(key: CodingKeys.index) ?? 0
     }
     
     open var secondReserve: Decimal {

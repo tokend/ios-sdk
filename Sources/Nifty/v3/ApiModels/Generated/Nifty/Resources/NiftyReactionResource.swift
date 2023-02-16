@@ -18,6 +18,7 @@ open class ReactionResource: Resource {
         
         // relations
         case asset
+        case liquidityPool
         case sale
         case saleQuoteAsset
     }
@@ -32,6 +33,10 @@ open class ReactionResource: Resource {
     
     open var asset: Nifty.AssetResource? {
         return self.relationSingleOptionalValue(key: CodingKeys.asset)
+    }
+    
+    open var liquidityPool: Nifty.SecondaryMarketResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.liquidityPool)
     }
     
     open var sale: Nifty.SaleResource? {

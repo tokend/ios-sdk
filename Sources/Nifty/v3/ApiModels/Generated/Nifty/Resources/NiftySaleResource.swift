@@ -18,7 +18,6 @@ open class SaleResource: Resource {
         case baseHardCap
         case details
         case endTime
-        case index
         case participantsCount
         case participationsCount
         case saleState
@@ -28,6 +27,7 @@ open class SaleResource: Resource {
         // relations
         case baseAsset
         case defaultQuoteAsset
+        case liquidityPool
         case owner
         case quoteAssets
     }
@@ -48,10 +48,6 @@ open class SaleResource: Resource {
     
     open var endTime: Date {
         return self.dateOptionalValue(key: CodingKeys.endTime) ?? Date()
-    }
-    
-    open var index: Int32 {
-        return self.int32OptionalValue(key: CodingKeys.index) ?? 0
     }
     
     open var participantsCount: Int32 {
@@ -82,6 +78,10 @@ open class SaleResource: Resource {
     
     open var defaultQuoteAsset: Nifty.SaleQuoteAssetResource? {
         return self.relationSingleOptionalValue(key: CodingKeys.defaultQuoteAsset)
+    }
+    
+    open var liquidityPool: Nifty.SecondaryMarketResource? {
+        return self.relationSingleOptionalValue(key: CodingKeys.liquidityPool)
     }
     
     open var owner: Resource? {
