@@ -18,4 +18,5 @@ public enum KeyValueEntries {
     public static let saleCreateTasks: String = "sale_create_tasks:*"
     public static let signerRoleDefault: String = "signer_role:default"
     public static let withdrawalTasks: String = "withdrawal_tasks:*"
+    public static let fiatAssets: String = "fiat_assets"
 }
