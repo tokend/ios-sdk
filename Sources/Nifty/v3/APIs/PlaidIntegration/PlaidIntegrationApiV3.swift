@@ -24,7 +24,7 @@ public class PlaidIntegrationApiV3: JSONAPI.BaseApi {
     public func initKyc(
         accountId: String,
         email: String,
-        completion: @escaping (_ result: RequestSingleResult<PlaidIntegration.LinkTokenResource>) -> Void)
+        completion: @escaping ((_ result: RequestSingleResult<PlaidIntegration.LinkTokenResource>) -> Void)
     ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
@@ -118,7 +118,7 @@ public class PlaidIntegrationApiV3: JSONAPI.BaseApi {
             }
             
             cancelable.cancelable = self?.requestCollection(
-                Nifty.ReactionResource.self,
+                PlaidIntegration.KYCStatusResource.self,
                 request: request,
                 completion: { (result) in
                     switch result {
