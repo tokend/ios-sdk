@@ -58,18 +58,19 @@ public class PlaidIntegrationApiV3: JSONAPI.BaseApi {
                         completion(.failure(error))
                         
                     case .success(let document):
-                        completion(.success(document)
+                        completion(.success(document))
                     }
                 }
             )
         }
         return cancelable
     }
-                
+     
+    
     @discardableResult
     public func getKycStatus(
         accountId: String,
-        completion: @escaping ((_result: RequestSingleResult<PlaidIntegration.KYCStatusResource)) -> Void
+        completion: @escaping ((_ result: RequestSingleResult<PlaidIntegration.KYCStatusResource>) -> Void)
     ) -> Cancelable {
         let cancelable = self.network.getEmptyCancelable()
         
@@ -82,7 +83,7 @@ public class PlaidIntegrationApiV3: JSONAPI.BaseApi {
             }
             
             cancelable.cancelable = self?.requestSingle(
-                Nifty.KYCStatusResource.self,
+                PlaidIntegration.KYCStatusResource.self,
                 request: request,
                 completion: { (result) in
                     switch result {
@@ -102,7 +103,7 @@ public class PlaidIntegrationApiV3: JSONAPI.BaseApi {
     public func getListKycStatuses(
         filters: PlaidIntegrationRequestFiletersV3,
         pagination: RequestPagination,
-        completion: @escaping ((_result: RequestCollectionResult<PlaidIntegration.KYCStatusResource>) -> Void)
+        completion: @escaping ((_ result: RequestCollectionResult<PlaidIntegration.KYCStatusResource>) -> Void)
     ) -> Cancelable {
         
         let cancelable = self.network.getEmptyCancelable()
