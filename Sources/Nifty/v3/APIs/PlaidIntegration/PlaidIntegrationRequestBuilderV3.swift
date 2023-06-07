@@ -20,7 +20,7 @@ public class PlaidIntegrationRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     
     public func buildInitKycRequest(
         bodyParameters: [String: Any],
-        sendDate: Date = Date()
+        sendDate: Date = Date(),
         completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         let path = self.integrations/self.identitySvc/self.startKyc
@@ -40,7 +40,7 @@ public class PlaidIntegrationRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
     public func buildGetKycStatusRequest(
         accountId: String,
         sendDate: Date = Date(),
-        completion: @escaping (JSONAPI.RequestModel?)
+        completion: @escaping (JSONAPI.RequestModel?) -> Void
     ) {
         let path = self.integrations/self.identitySvc/self.kycStatus/accountId
         
