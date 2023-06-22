@@ -49,6 +49,7 @@ public class APIv3 {
     #if TOKENDSDK_NIFTYAPI
     public private(set) lazy var reactionsApi: ReactionsApiV3 = { return create() }()
     public private(set) lazy var saleCloserApi: SaleCloserApiV3 = { return create() }()
+    public private(set) lazy var plaidApiV3: PlaidIntegrationApiV3 = { return create() }()
     #endif
     
     #if TOKENDSDK_CONTOFAAPI
@@ -104,6 +105,7 @@ public class APIv3 {
         #if TOKENDSDK_NIFTYAPI
         Nifty.AllResources.registerAllResources()
         SaleCloser.AllResources.registerAllResources()
+        PlaidIntegration.AllResources.registerAllResources()
         #endif
         
         #if TOKENDSDK_CONTOFAAPI
