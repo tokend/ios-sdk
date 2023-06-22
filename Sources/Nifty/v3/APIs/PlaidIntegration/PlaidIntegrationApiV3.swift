@@ -30,8 +30,11 @@ public class PlaidIntegrationApiV3: JSONAPI.BaseApi {
         let cancelable = self.network.getEmptyCancelable()
         
         let request: InitPlaidKycRequest = .init(
-            accountId: accountId,
-            email: email
+            data: .init(
+                attributes: .init(
+                    account_id: accountId, email: email
+                )
+            )
         )
         
         guard let encodedRequest = try? request.documentDictionary() else {
