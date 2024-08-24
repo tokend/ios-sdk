@@ -22,7 +22,7 @@ public class BalancesRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
         
-        let path = /self.v3/self.balances
+        let path = self.v3/self.balances
         
         var parameters = RequestQueryParameters()
         
@@ -56,7 +56,7 @@ public class BalancesRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
         
-        let path = /self.v3/self.balances/balanceId
+        let path = self.v3/self.balances/balanceId
         
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(

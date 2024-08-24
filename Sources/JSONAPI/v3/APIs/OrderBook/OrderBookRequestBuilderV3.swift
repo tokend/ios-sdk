@@ -32,7 +32,7 @@ public class OrderBookRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         ) -> JSONAPI.RequestModel {
         
         let id = "\(baseAsset):\(quoteAsset):\(orderBookId)"
-        let path = /self.v3/self.orderBooks/id
+        let path = self.v3/self.orderBooks/id
         
         let queryParameters: RequestQueryParameters = ["max_entries": "\(maxEntries)"]
         

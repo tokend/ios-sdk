@@ -24,7 +24,7 @@ public class OffersRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
         
-        let path = /self.v3/self.offers
+        let path = self.v3/self.offers
         
         var queryParameters = RequestQueryParameters()
         
@@ -85,7 +85,7 @@ public class OffersRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
         
-        let path = /self.v3/self.offers/offerId
+        let path = self.v3/self.offers/offerId
         
         self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(

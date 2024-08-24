@@ -16,7 +16,7 @@ public class RequestsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
         
-        let path = /self.v3/self.requests
+        let path = self.v3/self.requests
         
         let queryParameters: RequestQueryParameters
         if let filters = filters {

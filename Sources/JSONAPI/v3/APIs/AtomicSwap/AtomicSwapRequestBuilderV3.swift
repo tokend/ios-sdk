@@ -16,7 +16,7 @@ public class AtomicSwapRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         completion: @escaping (JSONAPI.RequestModel?) -> Void
         ) {
         
-        let path = /self.v3/self.asksPath
+        let path = self.v3/self.asksPath
         
         let queryParameters: RequestQueryParameters
         if let filters = filters {

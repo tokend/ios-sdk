@@ -18,7 +18,7 @@ public class AssetsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         pagination: RequestPagination
         ) -> JSONAPI.RequestModel {
         
-        let path = /self.v3/self.assets
+        let path = self.v3/self.assets
         
         return self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simplePagination(
@@ -37,7 +37,7 @@ public class AssetsRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         assetId: String
         ) -> JSONAPI.RequestModel {
         
-        let path = /self.v3/self.assets/assetId
+        let path = self.v3/self.assets/assetId
         
         return self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(

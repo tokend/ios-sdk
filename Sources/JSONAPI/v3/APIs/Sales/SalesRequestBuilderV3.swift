@@ -18,7 +18,7 @@ public class SalesRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         saleId: String
         ) -> JSONAPI.RequestModel {
         
-        let path = /self.v3/self.sales/saleId
+        let path = self.v3/self.sales/saleId
         
         return self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(
@@ -39,7 +39,7 @@ public class SalesRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         pagination: RequestPagination
         ) -> JSONAPI.RequestModel {
         
-        let path = /self.v3/self.sales
+        let path = self.v3/self.sales
         
         let queryParameters = self.buildFilterQueryItems(filters.filterItems)
         

@@ -18,7 +18,7 @@ public class KeyValuesRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         pagination: RequestPagination
         ) -> JSONAPI.RequestModel {
         
-        let path = /self.v3/self.keyValues
+        let path = self.v3/self.keyValues
         
         return self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simplePagination(
@@ -37,7 +37,7 @@ public class KeyValuesRequestBuilderV3: JSONAPI.BaseApiRequestBuilder {
         key: String
         ) -> JSONAPI.RequestModel {
         
-        let path = /self.v3/self.keyValues/key
+        let path = self.v3/self.keyValues/key
         
         return self.buildRequest(
             JSONAPI.BaseRequestBuildModel.simple(
