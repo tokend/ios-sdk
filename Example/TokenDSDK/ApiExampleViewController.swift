@@ -513,19 +513,19 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
         let sourceFee = TokenDWallet.Fee(
             fixed: 0,
             percent: 0,
-            ext: .emptyVersion()
+            ext: .emptyVersion
         )
         let destinationFee = TokenDWallet.Fee(
             fixed: 0,
             percent: 0,
-            ext: .emptyVersion()
+            ext: .emptyVersion
         )
         
         let feeData = PaymentFeeData(
             sourceFee: sourceFee,
             destinationFee: destinationFee,
             sourcePaysForDest: true,
-            ext: .emptyVersion()
+            ext: .emptyVersion
         )
         
         let amount: Uint64 = 1000
@@ -558,7 +558,7 @@ class ApiExampleViewController: UIViewController, RequestSignKeyDataProviderProt
             feeData: feeData,
             subject: "",
             reference: "",
-            ext: .emptyVersion()
+            ext: .emptyVersion
         )
         
         let sendDate = Date()
