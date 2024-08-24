@@ -83,7 +83,7 @@ public class KeyServerApiRequestBuilder {
         ) {
         
         let baseUrl = self.apiConfiguration.urlString
-        let path = /"wallets"/walletId
+        let path = "wallets"/walletId
         let url = baseUrl/path
         let method: RequestMethod = .put
         
