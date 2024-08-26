@@ -54,17 +54,16 @@ public class BalancesApi: BaseApi {
                     completion(.failure(.failedToSignRequest))
                     return
                 }
-                
+
                 cancelable.cancelable = self?.network.responseObject(
-                    [BalanceDecodeHelpers.Balance].self,
+                    BalanceDecodeHelpers.Balances.self,
                     url: request.url,
                     method: request.method,
                     headers: request.signedHeaders,
                     completion: { (result) in
                         switch result {
-                            
-                        case .success(let objects):
-                            completion(.success(balances: object.map { $0.toBalanceDetails() }))
+                        case .success(let object):
+                            completion(.success(balances: object.toBalanceDetails()))
                             
                         case .failure(let errors):
                             completion(.failure(errors))

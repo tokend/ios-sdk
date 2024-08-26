@@ -1,7 +1,7 @@
 import Foundation
 
 enum BalanceDecodeHelpers {
-    struct Balance: Codable {
+    struct Balances: Codable {
         let included: [BalanceIncluded]
 
         func toBalanceDetails() -> [BalanceDetails] {
