@@ -22,7 +22,7 @@ enum BalanceDecodeHelpers {
                     )
                 }
             }
-            return nil
+            return balanceDetails
         }
     }
 
