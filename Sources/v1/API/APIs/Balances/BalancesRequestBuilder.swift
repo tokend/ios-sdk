@@ -18,7 +18,8 @@ public class BalancesRequestBuilder: BaseApiRequestBuilder {
         ) {
         
         let baseUrl = self.apiConfiguration.urlString
-        let url = baseUrl.addPath("accounts").addPath(accountId).addPath("balances").addPath("details")
+
+        let url = "\(baseUrl)/accounts/\(accountId)/balances?include=balances.state"
         
         self.buildRequestSigned(
             baseUrl: baseUrl,
