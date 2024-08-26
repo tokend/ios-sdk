@@ -1,38 +1,70 @@
 import Foundation
 
-public struct BalanceDetails {
-    public let accountId: String
-    public let asset: String
-    public let balance: Decimal
-    public let balanceId: String
-    public let convertedBalance: Decimal
-    public let convertedLocked: Decimal
-    public let locked: Decimal
-    public let requireReview: Bool
+enum BalanceDecodeHelpers {
+    struct Balance: Codable {
+        let included: [BalanceIncluded]
+
+        func toBalanceDetails() -> [BalanceDetails] {
+            var balanceDetails: [BalanceDetails] = []
+            for include in self.included {
+                if include.type == "balances-state" { 
+                    guard let balance = included.first(where: {
+                        $0.type == "balances" && $0.id == include.id
+                    }) else { continue }
+
+                    balanceDetails.append(
+                        .init(
+                            asset: balance.relationships?.asset?.data?.id ?? "",
+                            balance: Decimal(string: include.attributes?.available ?? "") ?? 0,
+                            locked: Decimal(string: include.attributes?.locked ?? "") ?? 0,
+                            balanceId: balance.id
+                        )
+                    )
+                }
+            }
+            return nil
+        }
+    }
+
+    struct BalanceIncluded: Codable {
+        let id: String
+        let type: String
+        let relationships: BalanceRelationships?
+        let attributes: BalanceAttributes?
+    }
+
+    struct BalanceAttributes: Codable {
+        let available: String?
+        let locked: String?
+    }
+
+    struct BalanceRelationships: Codable {
+        let asset: AssetData?
+        let state: StateData?
+    }
+
+    struct AssetData: Codable {
+        let data: Asset?
+    }
+
+    struct Asset: Codable {
+        let id: String
+        let type: String
+    }
+
+    struct StateData: Codable {
+        let data: State?
+    }
+
+    struct State: Codable {
+        let id: String
+        let type: String
+    }
 }
 
-extension BalanceDetails: Decodable {
-    enum CodingKeys: String, CodingKey {
-        case accountId
-        case asset
-        case balance
-        case balanceId
-        case convertedBalance
-        case convertedLocked
-        case locked
-        case requireReview
-    }
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.balance = try container.decodeDecimalString(key: .balance)
-        self.convertedBalance = try container.decodeDecimalString(key: .convertedBalance)
-        self.locked = try container.decodeDecimalString(key: .locked)
-        self.convertedLocked = try container.decodeDecimalString(key: .convertedLocked)
-        self.asset = try container.decode(String.self, forKey: .asset)
-        self.balanceId = try container.decode(String.self, forKey: .balanceId)
-        self.requireReview = try container.decode(Bool.self, forKey: .requireReview)
-        self.accountId = try container.decode(String.self, forKey: .accountId)
-    }
+public struct BalanceDetails {
+    public let asset: String
+    public let balance: Decimal
+    public let locked: Decimal
+    public let balanceId: String
 }

@@ -56,7 +56,7 @@ public class BalancesApi: BaseApi {
                 }
                 
                 cancelable.cancelable = self?.network.responseObject(
-                    [BalanceDetails].self,
+                    [BalanceDecodeHelpers.Balance].self,
                     url: request.url,
                     method: request.method,
                     headers: request.signedHeaders,
@@ -64,7 +64,7 @@ public class BalancesApi: BaseApi {
                         switch result {
                             
                         case .success(let objects):
-                            completion(.success(balances: objects))
+                            completion(.success(balances: object.map { $0.toBalanceDetails() }))
                             
                         case .failure(let errors):
                             completion(.failure(errors))
