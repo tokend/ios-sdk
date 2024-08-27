@@ -17,7 +17,7 @@ public struct ChartResponse: Decodable {
         
         self.timestamp = try container.decodeDateString(
             key: .timestamp,
-            dateFormatter: DateFormatters.rfc3339DateFormatter
+            dateFormatter: DateFormatters.iso8601Formatter
         )
         self.value = try container.decodeDecimalString(key: .value)
     }
